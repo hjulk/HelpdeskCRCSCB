@@ -17,7 +17,7 @@
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                {{--  <img src="{{asset("assets/$theme/dist/img/user2-160x160.jpg")}}" class="img-circle" alt="User Image">  --}}
+                                {{--  <img src="{{asset("assets/dist/img/{!! Session::get('ProfilePicM') !!}")}}" class="img-circle" alt="User Image">  --}}
                                 {!! Session::get('ProfilePicM') !!}
                                      <p>
 

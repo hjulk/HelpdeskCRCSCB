@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\User;
+namespace App\Models\HelpDesk;
 
 use App\Models\Admin\Usuarios;
 use Illuminate\Support\Facades\DB;
@@ -12,23 +12,23 @@ class Tickets extends Model
     public $timestamps = false;
 
     public static function Tickets(){
-        $tickets = DB::Select("SELECT * FROM ticket WHERE id_estado IN (1,2) AND finalizado = 0");
+        $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND finalizado = 0");
         return $tickets;
     }
 
     public static function TicketsUsuario($id_user,$IdRolUSer){
         $categoria = DB::SELECT("SELECT * FROM USER WHERE ID = $id_user");
         foreach($categoria as $valor){
-            $id_categoria = $valor->id_categoria;
+            $category_id = $valor->category_id;
         }
         if($IdRolUSer === 2){
-            if(($id_categoria === 1) || ($id_categoria === 2)){
-                $tickets = DB::Select("SELECT * FROM ticket WHERE id_estado IN (1,2) AND finalizado = 0 AND id_categoria IN (1,2,5)");
+            if(($category_id === 1) || ($category_id === 2)){
+                $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND finalizado = 0 AND category_id IN (1,2,5)");
             }else{
-                $tickets = DB::Select("SELECT * FROM ticket WHERE id_estado IN (1,2) AND finalizado = 0 AND asignado_a = $id_user");
+                $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND finalizado = 0 AND asigned_id = $id_user");
             }
         }else{
-            $tickets = DB::Select("SELECT * FROM ticket WHERE id_estado IN (1,2) AND finalizado = 0 AND asignado_a = $id_user");
+            $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND finalizado = 0 AND asigned_id = $id_user");
         }
 
 
@@ -45,8 +45,8 @@ class Tickets extends Model
         return $tickets;
     }
 
-    public static function Categoria($id_categoria){
-        $tickets = DB::Select("SELECT nombre FROM categoria where id = $id_categoria");
+    public static function Categoria($category_id){
+        $tickets = DB::Select("SELECT nombre FROM categoria where id = $category_id");
         return $tickets;
     }
 
@@ -65,8 +65,8 @@ class Tickets extends Model
         return $tickets;
     }
 
-    public static function Estado($id_estado){
-        $tickets = DB::Select("SELECT name FROM estado where id = $id_estado");
+    public static function Estado($status_id){
+        $tickets = DB::Select("SELECT name FROM estado where id = $status_id");
         return $tickets;
     }
 
@@ -91,38 +91,38 @@ class Tickets extends Model
     }
 
     public static function EnDesarrollo(){
-        $desarrollo = DB::Select("SELECT count(*) as total FROM ticket WHERE id_estado = 2");
+        $desarrollo = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 2");
         return $desarrollo;
     }
     public static function EnDesarrolloUsuario($id_user){
-        $desarrollo = DB::Select("SELECT count(*) as total FROM ticket WHERE id_estado = 2 AND asignado_a = $id_user");
+        $desarrollo = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 2 AND asignado_id = $id_user");
         return $desarrollo;
     }
 
     public static function Pendientes(){
-        $pendientes = DB::Select("SELECT count(*) as total FROM ticket WHERE id_estado = 1");
+        $pendientes = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 1");
         return $pendientes;
     }
     public static function PendientesUsuario($id_user){
-        $pendientes = DB::Select("SELECT count(*) as total FROM ticket WHERE id_estado = 1 AND asignado_a = $id_user");
+        $pendientes = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 1 AND asignado_id = $id_user");
         return $pendientes;
     }
 
     public static function Terminados(){
-        $terminados = DB::Select("SELECT count(*) as total FROM ticket WHERE id_estado = 3 AND finalizado = 1");
+        $terminados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 3");
         return $terminados;
     }
     public static function TerminadosUsuario($id_user){
-        $terminados = DB::Select("SELECT count(*) as total FROM ticket WHERE id_estado = 3 AND finalizado = 1 AND actualizado_por = $id_user");
+        $terminados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 3 AND user_id = $id_user");
         return $terminados;
     }
 
     public static function Cancelados(){
-        $cancelados = DB::Select("SELECT count(*) as total FROM ticket WHERE id_estado = 4 AND finalizado = 1");
+        $cancelados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 4");
         return $cancelados;
     }
     public static function CanceladosUsuario($id_user){
-        $cancelados = DB::Select("SELECT count(*) as total FROM ticket WHERE id_estado = 4 AND finalizado = 1 AND actualizado_por = $id_user");
+        $cancelados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 4 AND user_id = $id_user");
         return $cancelados;
     }
 
@@ -132,10 +132,10 @@ class Tickets extends Model
     }
 
     public static function GuardarMes($mesActual){
-        $ticketsMes     = DB::Select("SELECT count(*) as total FROM mes_graficas WHERE nombre like '%$mesActual%'");
+        $ticketsMes     = DB::Select("SELECT count(*) as total FROM mes_graficas WHERE nombre LIKE '%$mesActual%'");
         $Tickets        = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE())");
-        $Incidentes     = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND id_tipo = 1");
-        $Requerimientos = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND id_tipo = 2");
+        $Incidentes     = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND kind_id = 1");
+        $Requerimientos = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND kind_id = 2");
 
         foreach($ticketsMes as $value){
             $total = $value->total;
@@ -171,9 +171,9 @@ class Tickets extends Model
 
     public static function GuardarMesUsuario($mesActual,$id_user){
         $ticketsMes     = DB::Select("SELECT count(*) as total FROM mes_graficas_user WHERE nombre like '%$mesActual%' AND id_user = $id_user");
-        $Tickets        = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND asignado_a = $id_user");
-        $Incidentes     = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND id_tipo = 1 AND asignado_a = $id_user AND id_estado = 3");
-        $Requerimientos = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND id_tipo = 2 AND asignado_a = $id_user AND id_estado = 3");
+        $Tickets        = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND asigned_id = $id_user");
+        $Incidentes     = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND kind_id = 1 AND asigned_id = $id_user AND status_id = 3");
+        $Requerimientos = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND kind_id = 2 AND asigned_id = $id_user AND status_id = 3");
 
         foreach($ticketsMes as $value){
             $total = $value->total;
@@ -217,27 +217,22 @@ class Tickets extends Model
     }
 
     public static function Infraestructura(){
-        $infraestructura = DB::Select("SELECT count(*) as total FROM ticket WHERE id_categoria = 1 AND id_estado = 3");
+        $infraestructura = DB::Select("SELECT count(*) as total FROM ticket WHERE category_id = 2 AND status_id = 3");
         return $infraestructura;
     }
 
     public static function Redes(){
-        $redes = DB::Select("SELECT count(*) as total FROM ticket WHERE id_categoria = 2 AND id_estado = 3");
+        $redes = DB::Select("SELECT count(*) as total FROM ticket WHERE category_id = 3 AND status_id = 3");
         return $redes;
     }
 
     public static function Aplicaciones(){
-        $aplicaciones = DB::Select("SELECT count(*) as total FROM ticket WHERE id_categoria = 3 AND id_estado = 3");
+        $aplicaciones = DB::Select("SELECT count(*) as total FROM ticket WHERE category_id = 1 AND status_id = 3");
         return $aplicaciones;
     }
 
-    public static function Desarrollo(){
-        $desarrollo = DB::Select("SELECT count(*) as total FROM ticket WHERE id_categoria = 4 AND id_estado = 3");
-        return $desarrollo;
-    }
-
     public static function Soporte(){
-        $soporte = DB::Select("SELECT count(*) as total FROM ticket WHERE id_categoria = 5 AND id_estado = 3");
+        $soporte = DB::Select("SELECT count(*) as total FROM ticket WHERE category_id = 4 AND status_id = 3");
         return $soporte;
     }
 
@@ -252,13 +247,13 @@ class Tickets extends Model
         }else{
             $finalizado = 0;
         }
-        $crearTicket = DB::insert('INSERT INTO ticket (titulo,descripcion,created_at,id_tipo,creado_por,asignado_a,id_categoria,
+        $crearTicket = DB::insert('INSERT INTO ticket (titulo,descripcion,created_at,id_tipo,creado_por,asigned_id,category_id,
                                                     id_zona,id_sede,id_area,nombre_usuario,telefono_usuario,email_usuario,cargo_usuario,
-                                                    nombre_jefe,telefono_jefe,id_prioridad,id_estado,session_id,finalizado,actualizado_por)
+                                                    nombre_jefe,telefono_jefe,id_prioridad,status_id,session_id,finalizado,actualizado_por)
                                     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
                                     [$Asunto,$Descripcion,$fechaCreacion,$idTipo,$creadoPor,$AsignadoA,$Categoria,$IdZona,$IdSede,
                                     $IdArea,$NombreUsuario,$TelefonoUsuario,$CorreUsuario,$CargoUsuario,$NombreJefe,$TelefonoJefe,$Prioridad,$Estado,$creadoPor,$finalizado,$creadoPor]);
-        DB::Insert('INSERT INTO notificaciones (creado_por, asignado_a,leido,fecha_notificacion)
+        DB::Insert('INSERT INTO notificaciones (creado_por, asigned_id,leido,fecha_notificacion)
                     VALUES (?,?,?,?)',
                     [$creadoPor,$AsignadoA,0,$fechaCreacion]);
         return $crearTicket;
@@ -277,8 +272,8 @@ class Tickets extends Model
                                         updated_at = '$fechaActualizacion',
                                         id_tipo = $idTipo,
                                         creado_por = $creadoPor,
-                                        asignado_a = $AsignadoA,
-                                        id_categoria = $Categoria,
+                                        asigned_id = $AsignadoA,
+                                        category_id = $Categoria,
                                         id_zona = $IdZona,
                                         id_sede = $IdSede,
                                         id_area = $IdArea,
@@ -289,7 +284,7 @@ class Tickets extends Model
                                         nombre_jefe = '$NombreJefe',
                                         telefono_jefe = '$TelefonoJefe',
                                         id_prioridad = $Prioridad,
-                                        id_estado = $Estado,
+                                        status_id = $Estado,
                                         session_id = $creadoPor,
                                         actualizado_por = $creadoPor
                                         WHERE id = $idTicket");
@@ -302,7 +297,7 @@ class Tickets extends Model
             foreach($buscarUsuario as $row){
                 $nombre_usuario = $row->nombre;
             }
-            DB::insert('INSERT INTO historial_ticket (id_ticket,observacion,id_estado,id_user,nombre_usuario,creado)
+            DB::insert('INSERT INTO historial_ticket (id_ticket,observacion,status_id,id_user,nombre_usuario,creado)
                         VALUES (?,?,?,?,?,?)', [$idTicket,$comentario,$Estado,$creadoPor,$nombre_usuario,$fechaActualizacion]);
         }
 
@@ -310,7 +305,7 @@ class Tickets extends Model
     }
 
     public static function BuscarLastTicket($idUser){
-        $buscarUltimo = DB::Select("SELECT max(id) as id FROM ticket WHERE creado_por = $idUser");
+        $buscarUltimo = DB::Select("SELECT max(id) as id FROM ticket WHERE user_id = $idUser");
         return $buscarUltimo;
     }
 
@@ -321,17 +316,17 @@ class Tickets extends Model
     }
 
     public static function buscarGestion(){
-        $usuarios = DB::Select("SELECT * FROM user WHERE activo = 1 AND id_categoria NOT IN (7)");
+        $usuarios = DB::Select("SELECT * FROM user WHERE is_active = 1 AND category_id NOT IN (6)");
         foreach($usuarios as $row){
             $id_user = $row->id;
-            $nombre_user = $row->nombre;
-            $ticketsDesarrollo  = DB::Select("SELECT * FROM ticket WHERE asignado_a = $id_user AND id_estado = 2 AND finalizado = 0;");
+            $nombre_user = $row->name;
+            $ticketsDesarrollo  = DB::Select("SELECT * FROM ticket WHERE asigned_id = $id_user AND status_id = 2");
             $tDesarrollo        = count($ticketsDesarrollo);
-            $ticketsPendientes  = DB::Select("SELECT * FROM ticket WHERE asignado_a = $id_user AND id_estado = 1 AND finalizado = 0;");
+            $ticketsPendientes  = DB::Select("SELECT * FROM ticket WHERE asigned_id = $id_user AND status_id = 1");
             $tPendientes        = count($ticketsPendientes);
-            $ticketsTerminados  = DB::Select("SELECT * FROM ticket WHERE asignado_a = $id_user AND id_estado = 3 AND finalizado = 1;");
+            $ticketsTerminados  = DB::Select("SELECT * FROM ticket WHERE asigned_id = $id_user AND status_id = 3");
             $tTerminados        = count($ticketsTerminados);
-            $ticketsCancelados  = DB::Select("SELECT * FROM ticket WHERE asignado_a = $id_user AND id_estado = 4 AND finalizado = 1;");
+            $ticketsCancelados  = DB::Select("SELECT * FROM ticket WHERE asigned_id = $id_user AND status_id = 4");
             $tCancelados        = count($ticketsCancelados);
             $buscarUsuario      = DB::Select("SELECT * FROM gestion WHERE id_user = $id_user");
             if($buscarUsuario){
@@ -378,7 +373,7 @@ class Tickets extends Model
             $vtipo  = '1';
         }
         if (!empty($idCategoria)) {
-            $categoria   = 'id_categoria';
+            $categoria   = 'category_id';
             $vcategoria  = $idCategoria;
         }
         else{
@@ -394,7 +389,7 @@ class Tickets extends Model
             $vusuarioC  = '1';
         }
         if (!empty($idUsuarioA)) {
-            $usuarioA   = 'asignado_a';
+            $usuarioA   = 'asigned_id';
             $vusuarioA  = $idUsuarioA;
         }
         else{
@@ -410,7 +405,7 @@ class Tickets extends Model
             $vprioridad  = '1';
         }
         if (!empty($idEstado)) {
-            $estado   = 'id_estado';
+            $estado   = 'status_id';
             $vestado  = $idEstado;
         }
         else{
@@ -461,10 +456,10 @@ class Tickets extends Model
         date_default_timezone_set('America/Bogota');
         $fecha_sistema  = date('Y-m-d H:i');
         $fechaActualizacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
-        $aperturaTicket = DB::Update("UPDATE ticket SET id_categoria = $idCategoria,
-                                                        asignado_a = $idUsuario,
+        $aperturaTicket = DB::Update("UPDATE ticket SET category_id = $idCategoria,
+                                                        asigned_id = $idUsuario,
                                                         id_prioridad = $idPrioridad,
-                                                        id_estado = $idEstado,
+                                                        status_id = $idEstado,
                                                         actualizado_por = $User,
                                                         updated_at = '$fechaActualizacion',
                                                         finalizado = 0
@@ -476,7 +471,7 @@ class Tickets extends Model
         }
 
         if($aperturaTicket){
-            DB::insert('INSERT INTO historial_ticket (id_ticket,observacion,id_estado,id_user,nombre_usuario,creado)
+            DB::insert('INSERT INTO historial_ticket (id_ticket,observacion,status_id,id_user,nombre_usuario,creado)
                     VALUES (?,?,?,?,?,?)', [$idTicket,$desrcipcion,$idEstado,$User,$nombre_usuario,$fechaActualizacion]);
         }
 
@@ -488,15 +483,15 @@ class Tickets extends Model
         return $busqueda;
     }
 
-    public static function UpdateNotificacion($asignado_a){
+    public static function UpdateNotificacion($asigned_id){
         date_default_timezone_set('America/Bogota');
         $fecha_sistema  = date('Y-m-d H:i');
         $fechaActualizacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
-        DB::Update("UPDATE notificaciones SET leido = 1, fecha_lectura = '$fechaActualizacion' WHERE asignado_a = $asignado_a");
+        DB::Update("UPDATE notificaciones SET leido = 1, fecha_lectura = '$fechaActualizacion' WHERE asigned_id = $asigned_id");
     }
 
-    public static function Notificaciones($asignado_a){
-        $notificaciones = DB::Select("SELECT * FROM notificaciones WHERE asignado_a = $asignado_a AND leido = 0");
+    public static function Notificaciones($asigned_id){
+        $notificaciones = DB::Select("SELECT * FROM notificaciones WHERE usuario2 = $asigned_id AND leido = 0");
         return $notificaciones;
     }
 

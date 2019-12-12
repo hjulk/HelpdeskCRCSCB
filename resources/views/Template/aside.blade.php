@@ -64,7 +64,7 @@
 
                         </a>
                       </li> --}}
-                    @if(Session::get('Administracion') === 1)
+                    @if(Session::get('Rol') === 1)
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-gear"></i> <span>Administración</span>

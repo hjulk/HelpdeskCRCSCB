@@ -22,10 +22,9 @@ class AdminMiddleware
         if($idUsuario){
             $Usuario = Usuarios::BuscarNombre($idUsuario);
             foreach($Usuario as $value){
-                $is_admin = $value->administrador;
-                $rol = $value->id_rol;
+                $rol = $value->rol_id;
             }
-            if ($is_admin === 1)
+            if ($rol === 1)
                 return $next($request);
             if($rol === 5)
                 return redirect('dashboardMonitoreo');

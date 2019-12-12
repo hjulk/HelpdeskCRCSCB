@@ -21,14 +21,13 @@ class MonitoreoMiddleware
         if($idUsuario){
             $Usuario = Usuarios::BuscarNombre($idUsuario);
             foreach($Usuario as $value){
-                $is_admin = $value->administrador;
-                $rol = $value->id_rol;
+                $rol = $value->rol_id;
             }
-            if (($is_admin === 2) && ($rol != 5))
+            if (($rol === 2) && ($rol != 3) && ($rol != 4))
                 return redirect('/user/dashboard');
-            if($rol === 5)
+            if($rol === 6)
                 return $next($request);
-            if($is_admin === 1)
+            if($rol === 1)
                 return redirect('/admin/dashboard');
         }else{
             return redirect('/');

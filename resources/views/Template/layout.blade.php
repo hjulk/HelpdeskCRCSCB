@@ -41,10 +41,10 @@
         <!-- Site wrapper -->
         <div class="wrapper">
             <!--Inicio Header-->
-            @include("theme/header")
+            @include("Template/header")
             <!--Fin Header-->
             <!--Inicio Aside-->
-            @include("theme/aside")
+            @include("Template/aside")
             <!--Fin Aside-->
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
@@ -53,7 +53,7 @@
                 </section>
             </div>
             <!--Inicio Footer-->
-            @include("theme/footer")
+            @include("Template/footer")
             <!--Fin Footer-->
         </div>
         <!-- jQuery-->

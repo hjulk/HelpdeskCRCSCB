@@ -3,9 +3,9 @@
     <!-- Logo -->
     <a href="dashboard" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b><img src="{{asset("assets/$theme/dist/img/logo.png")}}"></b></span>
+        <span class="logo-mini"><b><img src="{{asset("assets/dist/img/logo.png")}}"></b></span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg" style="font-size:16px;"><i class="fa fa-ticket"></i>&nbsp;Mesa de Ayuda TIC´S</span>
+        <span class="logo-lg" style="font-size:16px;"><i class="fa fa-ticket"></i>&nbsp;HelpDesk TIC´S</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -43,30 +43,7 @@
                         <li class="footer"><a href="tickets">Ver Todos</a></li>
                     </ul>
                 </li>
-                <li class="dropdown notifications-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-list-alt"></i>
-                            <span class="label label-warning">{!! Session::get('Cambios') !!}</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">Usted tiene {!! Session::get('Cambios') !!} solicitudes asignadas</li>
-                            <li>
-                                <!-- inner menu: contains the actual data -->
-                                <ul class="menu">
-                                    @if(Session::get('Cambio'))
-                                        @foreach(Session::get('Cambio') as $valor)
-                                            <li>
-                                                <a href="controlCambios">
-                                                    <i class="fa fa-ticket text-aqua"></i>{{$valor['creador']}} le asigno una solicitud de control de cambios
-                                                </a>
-                                            </li>
-                                        @endforeach
-                                    @endif
-                                </ul>
-                            </li>
-                            <li class="footer"><a href="controlCambios">Ver Todas</a></li>
-                        </ul>
-                    </li>
+
                 <!-- Tasks: style can be found in dropdown.less -->
 
                 <!-- User Account: style can be found in dropdown.less -->
@@ -78,7 +55,7 @@
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            {{--  <img src="{{asset("assets/$theme/dist/img/user2-160x160.jpg")}}" class="img-circle" alt="User Image">  --}}
+                            {{--  <img src="{{asset("assets/dist/img/user2-160x160.jpg")}}" class="img-circle" alt="User Image">  --}}
                             {!! Session::get('ProfilePic') !!}
                                  <p>
 

@@ -136,13 +136,13 @@ class Usuarios extends Model
     }
 
     public static function BuscarNombreRol($id_rol){
-        $consulta = DB::Select("SELECT nombre FROM rol WHERE id = $id_rol");
+        $consulta = DB::Select("SELECT name FROM rol WHERE rol_id = $id_rol");
         // $consulta = DB::table('user')->where('username',$Usuario)->get();
         return $consulta;
     }
 
     public static function BuscarNombreCategoria($id_categoria){
-        $consulta = DB::Select("SELECT nombre FROM categoria WHERE id = $id_categoria");
+        $consulta = DB::Select("SELECT name FROM category WHERE id = $id_categoria");
         // $consulta = DB::table('user')->where('username',$Usuario)->get();
         return $consulta;
     }
@@ -154,13 +154,7 @@ class Usuarios extends Model
     }
 
     public static function BuscarNombreSede($id_sede){
-        $consulta = DB::Select("SELECT nombre FROM sedes WHERE id = $id_sede");
-        // $consulta = DB::table('user')->where('username',$Usuario)->get();
-        return $consulta;
-    }
-
-    public static function BuscarNombreZona($id_zona){
-        $consulta = DB::Select("SELECT nombre FROM zona WHERE id = $id_zona");
+        $consulta = DB::Select("SELECT name FROM project WHERE id = $id_sede");
         // $consulta = DB::table('user')->where('username',$Usuario)->get();
         return $consulta;
     }
@@ -171,12 +165,12 @@ class Usuarios extends Model
     }
 
     public static function Categoria(){
-        $Categoria = DB::Select("SELECT * FROM categoria");
+        $Categoria = DB::Select("SELECT * FROM category");
         return $Categoria;
     }
 
     public static function RolID($id_rol){
-        $Rol = DB::Select("SELECT * FROM rol WHERE id = $id_rol");
+        $Rol = DB::Select("SELECT * FROM rol WHERE rol_id = $id_rol");
         return $Rol;
     }
 
