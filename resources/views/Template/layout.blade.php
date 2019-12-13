@@ -12,7 +12,7 @@
         <meta http-equiv="expires" content="0" />
         <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
         <meta http-equiv="pragma" content="no-cache" />
-        <link type="image/x-icon" rel="icon" href="{{asset("assets/dist/img/servisalud.png")}}">
+        <link type="image/x-icon" rel="icon" href="{{asset("assets/dist/img/logo.png")}}">
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="stylesheet" href="{{asset("assets/bower_components/bootstrap/dist/css/bootstrap.min.css")}}">
         <link rel="stylesheet" href="{{asset("assets/bower_components/font-awesome/css/font-awesome.min.css")}}">

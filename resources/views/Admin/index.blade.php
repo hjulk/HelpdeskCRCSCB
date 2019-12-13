@@ -6,125 +6,143 @@ Dahsboard
 
 @section('contenido')
 @include('Modals.ModalGraficas')
-
+<section class="content-header">
+    <h1><i class="fa fa-home"></i>&nbsp;Home</h1>
+    <ol class="breadcrumb">
+        <li><a href="dashboard"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li class="active">Dashboard</li>
+    </ol>
+</section>
+<section class="content">
     <div class="row">
         <div class="col-md-12">
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><strong>Dashboard Tickets</strong></h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
-
-                    </div>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="info-box bg-aqua">
-
-                                <span class="info-box-icon"><i class="fa fa-spinner fa-pulse"></i></span>
-
-                                <div class="info-box-content">
-                                    <a data-toggle="modal" href="#modal-desarrollo">
-                                        <span class="info-box-text"><font style="font-size: 20px;color:white;">En Desarrollo</font></span>
-                                        <span class="info-box-number"><font style="font-size: 36px;color:white;">{{ $EnDesarrollo }}</font></span>
-                                    </a>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-md-3">
-                            <div class="info-box bg-red">
-                                <span class="info-box-icon"><i class="fa fa-exclamation-triangle faa-ring animated fa-fw"></i></span>
-
-                                <div class="info-box-content">
-                                    <a data-toggle="modal" href="#modal-pendientes">
-                                        <span class="info-box-text"><font style="font-size: 20px;color:white;">Pendientes</font></span>
-                                        <span class="info-box-number"><font style="font-size: 36px;color:white;">{{ $Pendientes }}</font></span>
-                                    </a>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="info-box bg-green">
-                                <span class="info-box-icon"><i class="fa fa-trophy faa-burst animated"></i></span>
-
-                                <div class="info-box-content">
-                                    <a data-toggle="modal" href="#modal-terminados">
-                                        <span class="info-box-text"><font style="font-size: 20px;color:white;">Terminados</font></span>
-                                        <span class="info-box-number"><font style="font-size: 36px;color:white;">{{ $Terminados }}</font></span>
-                                    </a>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="info-box bg-yellow">
-                                <span class="info-box-icon"><i class="fa fa-ban faa-passing animated"></i></span>
-
-                                <div class="info-box-content">
-                                    <a data-toggle="modal" href="#modal-cancelados">
-                                        <span class="info-box-text"><font style="font-size: 20px;color:white;">Cancelados</font></span>
-                                        <span class="info-box-number"><font style="font-size: 36px;color:white;">{{ $Cancelados }}</font></span>
-                                    </a>
-                                </div>
-                                <!-- /.info-box-content -->
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="info-box bg-aqua">
+                            <span class="info-box-icon"><i class="fa fa-spinner fa-pulse"></i></span>
+                            <div class="info-box-content">
+                                <a data-toggle="modal" href="#modal-desarrollo">
+                                    <span class="info-box-text"><font style="font-size: 20px;color:white;">En Desarrollo</font></span>
+                                    <span class="info-box-number"><font style="font-size: 36px;color:white;">{{ $EnDesarrollo }}</font></span>
+                                </a>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <!-- /.col -->
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-7">
-                                    <div class='panel panel-default'>
-                                        <div class='panel-body'>
-                                            <div id='barras' style="height: -webkit-fill-available; width: -webkit-fill-available;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class='panel panel-default'>
-                                        <div class='panel-body'>
-                                            <div id='graficas' style="height: -webkit-fill-available; width: -webkit-fill-available;"></div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="col-md-3">
+                        <div class="info-box bg-red">
+                            <span class="info-box-icon"><i class="fa fa-exclamation-triangle faa-ring animated fa-fw"></i></span>
+                            <div class="info-box-content">
+                                <a data-toggle="modal" href="#modal-pendientes">
+                                    <span class="info-box-text"><font style="font-size: 20px;color:white;">Pendientes</font></span>
+                                    <span class="info-box-number"><font style="font-size: 36px;color:white;">{{ $Pendientes }}</font></span>
+                                </a>
                             </div>
-
-                            <!-- /.progress-group -->
                         </div>
-                        <!-- /.col -->
                     </div>
-                    <!-- /.row -->
-                </div>
-                <!-- ./box-body -->
+                    <div class="col-md-3">
+                        <div class="info-box bg-green">
+                            <span class="info-box-icon"><i class="fa fa-trophy faa-burst animated"></i></span>
+                            <div class="info-box-content">
+                                <a data-toggle="modal" href="#modal-terminados">
+                                    <span class="info-box-text"><font style="font-size: 20px;color:white;">Terminados</font></span>
+                                    <span class="info-box-number"><font style="font-size: 36px;color:white;">{{ $Terminados }}</font></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="info-box bg-yellow">
+                            <span class="info-box-icon"><i class="fa fa-ban faa-passing animated"></i></span>
+                            <div class="info-box-content">
+                                <a data-toggle="modal" href="#modal-cancelados">
+                                    <span class="info-box-text"><font style="font-size: 20px;color:white;">Cancelados</font></span>
+                                    <span class="info-box-number"><font style="font-size: 36px;color:white;">{{ $Cancelados }}</font></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
 
-                <!-- /.box-footer -->
             </div>
-            <!-- /.box -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class='panel panel-default'>
+                                <div class='panel-body'>
+                                    <div id='gestionTics' style="height: -webkit-fill-available; width: -webkit-fill-available;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class='panel panel-default'>
+                                <div class='panel-body'>
+                                    <div id='barras' style="height: -webkit-fill-available; width: -webkit-fill-available;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class='panel panel-default'>
+                                <div class='panel-body'>
+                                    <div id='graficas' style="height: -webkit-fill-available; width: -webkit-fill-available;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class='panel panel-default'>
+                                <div class='panel-body'>
+                                    <div id='gestionSedes' style="height: -webkit-fill-available; width: -webkit-fill-available;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class='panel panel-default'>
+                                <div class='panel-body'>
+                                    <div id='porcentaje' style="height: -webkit-fill-available; width: -webkit-fill-available;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class='panel panel-default'>
+                                <div class='panel-body'>
+                                    <div id='calificacion' style="height: -webkit-fill-available; width: -webkit-fill-available;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- /.col -->
     </div>
+</div>
+</section>
+@endsection
 
-    @endsection
-
-    @section('scripts')
+@section('scripts')
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v3.3"></script>
 
     <script asyn src="https://livegap.com/charts/js/webfont.js"></script>
     <script src="https://livegap.com/charts/js/Chart.min.js"></script>
     <script src="{{asset("assets/Highcharts/code/modules/exporting.js")}}" type="text/javascript"></script>
-        <script src="{{asset("assets/Highcharts/code/highcharts.js")}}" type="text/javascript"></script>
-        <script src="{{asset("assets/Highcharts/code/highcharts-more.js")}}" type="text/javascript"></script>
-        <script src="{{asset("assets/Highcharts/code/highcharts.js")}}" type="text/javascript"></script>
-        <script src="{{asset("assets/Highcharts/code/highcharts-3d.js")}}" type="text/javascript"></script>
-        <script src="{{asset("assets/Highcharts/code/modules/exporting.js")}}" type="text/javascript"></script>
-        <script src="{{asset("assets/Highcharts/code/modules/export-data.js")}}" type="text/javascript"></script>
+    <script src="{{asset("assets/Highcharts/code/highcharts.js")}}" type="text/javascript"></script>
+    <script src="{{asset("assets/Highcharts/code/highcharts-more.js")}}" type="text/javascript"></script>
+    <script src="{{asset("assets/Highcharts/code/highcharts.js")}}" type="text/javascript"></script>
+    <script src="{{asset("assets/Highcharts/code/highcharts-3d.js")}}" type="text/javascript"></script>
+    <script src="{{asset("assets/Highcharts/code/modules/exporting.js")}}" type="text/javascript"></script>
+    <script src="{{asset("assets/Highcharts/code/modules/export-data.js")}}" type="text/javascript"></script>
     <script src="{{asset("assets/dist/js/dashboard.js")}}"></script>
     <script>
 
@@ -148,6 +166,11 @@ Dahsboard
                         @endforeach
                         @endif
                     ],
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
+                    },
                     crosshair: true
                 },
                 yAxis: {
@@ -237,7 +260,7 @@ Dahsboard
     </script>
 
     <script>
-        $(document).ready(function () {
+
             Highcharts.chart('terminados', {
             chart: {
                 type: 'column'
@@ -447,9 +470,244 @@ Dahsboard
 
         }]
     });
-});
-    </script>
 
+    </script>
+    <script>
+        Highcharts.chart('gestionTics', {
+            chart: {
+                type: 'bar',
+            },
+            title: {
+                text: 'Tickets Actuales'
+            },
+
+            colors:[
+                    '#7cb5ec',
+                    '#f7a35c'
+                    ],
+            xAxis: {
+                categories: [
+                    @if($Gestion)
+                    @foreach($Gestion as $valor)
+                        '{{$valor['nombre']}}' {{$valor['separador']}}
+                    @endforeach
+                    @endif
+                ],
+                labels: {
+                    style: {
+                        fontSize: '10px'
+                    }
+                },
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Numero de Tickets'
+                }
+            },
+            tooltip: {
+
+
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'En Desarrollo',
+                data: [
+                    @if($Gestion)
+                    @foreach($Gestion as $valor)
+                        {{$valor['desarrollo']}} {{$valor['separador']}}
+                    @endforeach
+                    @endif
+            ]
+            }, {
+                name: 'Pendientes',
+                data: [
+                    @if($Gestion)
+                    @foreach($Gestion as $valor)
+                        {{$valor['pendientes']}} {{$valor['separador']}}
+                    @endforeach
+                    @endif
+            ]
+            }]
+        });
+        Highcharts.chart('gestionSedes', {
+            chart: {
+                type: 'bar',
+            },
+            title: {
+                text: 'Tickets Gestionados por Sede'
+            },
+
+            colors:[
+                    '#7cb5ec',
+                    '#f7a35c'
+                    ],
+            xAxis: {
+                categories: [
+                    @if($GestionS)
+                    @foreach($GestionS as $valor)
+                        '{{$valor['nombre']}}' {{$valor['separador']}}
+                    @endforeach
+                    @endif
+                ],
+                labels: {
+                    style: {
+                        fontSize: '10px'
+                    }
+                },
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Numero de Tickets Gestionados'
+                }
+            },
+            tooltip: {
+
+
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Incidentes',
+                data: [
+                    @if($GestionS)
+                    @foreach($GestionS as $valor)
+                        {{$valor['incidentes']}} {{$valor['separador']}}
+                    @endforeach
+                    @endif
+            ]
+            }, {
+                name: 'Requerimientos',
+                data: [
+                    @if($GestionS)
+                    @foreach($GestionS as $valor)
+                        {{$valor['requerimientos']}} {{$valor['separador']}}
+                    @endforeach
+                    @endif
+            ]
+            }]
+        });
+    </script>
+    <script>
+        Highcharts.chart('calificacion', {
+            chart: {
+                type: 'column',
+            },
+            title: {
+                text: 'Calificacion Gestión Ticket'
+            },
+
+            colors:[
+                @if($GestionC)
+                    @foreach($GestionC as $valor)
+                        '{{$valor['color']}}' {{$valor['separador']}}
+                    @endforeach
+                    @endif
+                    ],
+            xAxis: {
+                type: 'category',
+                labels: {
+                    style: {
+                        fontSize: '10px'
+                    }
+                },
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Total por Calificacion'
+                }
+            },
+            tooltip: {
+
+
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Valoraciones',
+                colorByPoint: true,
+                data: [
+                    ['Muy Insatisfecho', {{ $MuySatisfecho }}],
+                    ['Insatisfecho', {{ $Insatisfecho }}],
+                    ['Neutral', {{ $Neutral }}],
+                    ['Satisfecho', {{ $Satisfecho }}],
+                    ['Muy Satisfecho', {{ $MuySatisfecho }}]
+                ]
+            }]
+        });
+        Highcharts.chart('porcentaje', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            colors:[
+                @if($GestionC)
+                    @foreach($GestionC as $valor)
+                        '{{$valor['color']}}' {{$valor['separador']}}
+                    @endforeach
+                    @endif
+            ],
+            title: {
+                text: 'Porcentaje Calificación'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: 'Porcentaje',
+                colorByPoint: true,
+                data: [
+                    ['Muy Insatisfecho', {{ $PMuySatisfecho }}],
+                    ['Insatisfecho', {{ $PInsatisfecho }}],
+                    ['Neutral', {{ $PNeutral }}],
+                    ['Satisfecho', {{ $PSatisfecho }}],
+                    ['Muy Satisfecho', {{ $PMuySatisfecho }}]
+                ]
+            }]
+        });
+    </script>
 
     @endsection
 

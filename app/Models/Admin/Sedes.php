@@ -15,7 +15,7 @@ class Sedes extends Model
         return $Zonas;
     }
     public static function Sedes(){
-        $Sedes = DB::Select("SELECT * FROM sedes ORDER BY nombre");
+        $Sedes = DB::Select("SELECT * FROM project ORDER BY name");
         return $Sedes;
     }
     public static function Sedes1(){
@@ -80,7 +80,7 @@ class Sedes extends Model
         return $consultaSede;
     }
     public static function BuscarSedeID($idsede){
-        $consultaSedeId = DB::Select("SELECT * FROM sedes WHERE id = $idsede AND activa = 1");
+        $consultaSedeId = DB::Select("SELECT * FROM project WHERE id = $idsede");
 
         return $consultaSedeId;
     }

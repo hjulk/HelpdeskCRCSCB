@@ -17,7 +17,12 @@ class Roles extends Model
     }
 
     public static function ListarCategorias(){
-        $categorias = DB::Select("SELECT * FROM categoria");
+        $categorias = DB::Select("SELECT * FROM category");
+        return $categorias;
+    }
+
+    public static function BuscarCategoriaID($IdCategoria){
+        $categorias = DB::Select("SELECT * FROM category WHERE id = $IdCategoria");
         return $categorias;
     }
 

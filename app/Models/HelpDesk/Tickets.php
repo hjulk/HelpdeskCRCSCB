@@ -12,7 +12,7 @@ class Tickets extends Model
     public $timestamps = false;
 
     public static function Tickets(){
-        $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND finalizado = 0");
+        $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2)");
         return $tickets;
     }
 
@@ -36,7 +36,7 @@ class Tickets extends Model
     }
 
     public static function Tipo($id_tipo){
-        $tickets = DB::Select("SELECT nombre FROM tipo where id = $id_tipo");
+        $tickets = DB::Select("SELECT name FROM kind where id = $id_tipo");
         return $tickets;
     }
 
@@ -45,33 +45,23 @@ class Tickets extends Model
         return $tickets;
     }
 
-    public static function Categoria($category_id){
-        $tickets = DB::Select("SELECT nombre FROM categoria where id = $category_id");
-        return $tickets;
-    }
-
-    public static function ListarCategoria(){
-        $tickets = DB::Select("SELECT * FROM categoria WHERE activo = 1 AND id NOT IN (7)");
-        return $tickets;
-    }
-
-    public static function Prioridad($id_prioridad){
-        $tickets = DB::Select("SELECT nombre FROM prioridad where id = $id_prioridad");
+    public static function BuscarPrioridadID($IdPrioridad){
+        $tickets = DB::Select("SELECT * FROM priority WHERE id = $IdPrioridad");
         return $tickets;
     }
 
     public static function ListarPrioridad(){
-        $tickets = DB::Select("SELECT * FROM prioridad");
+        $tickets = DB::Select("SELECT * FROM priority");
         return $tickets;
     }
 
     public static function Estado($status_id){
-        $tickets = DB::Select("SELECT name FROM estado where id = $status_id");
+        $tickets = DB::Select("SELECT * FROM status where id = $status_id");
         return $tickets;
     }
 
     public static function ListarEstado(){
-        $tickets = DB::Select("SELECT * FROM estado");
+        $tickets = DB::Select("SELECT * FROM status");
         return $tickets;
     }
 
@@ -81,12 +71,12 @@ class Tickets extends Model
     }
 
     public static function ListarEstadoA(){
-        $tickets = DB::Select("SELECT * FROM estado WHERE id not in (3,4)");
+        $tickets = DB::Select("SELECT * FROM status WHERE id not in (3,4)");
         return $tickets;
     }
 
     public static function ListarEstadoUpd(){
-        $tickets = DB::Select("SELECT * FROM estado");
+        $tickets = DB::Select("SELECT * FROM status");
         return $tickets;
     }
 
@@ -113,7 +103,7 @@ class Tickets extends Model
         return $terminados;
     }
     public static function TerminadosUsuario($id_user){
-        $terminados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 3 AND user_id = $id_user");
+        $terminados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 3 AND asignado_id = $id_user");
         return $terminados;
     }
 
@@ -122,7 +112,7 @@ class Tickets extends Model
         return $cancelados;
     }
     public static function CanceladosUsuario($id_user){
-        $cancelados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 4 AND user_id = $id_user");
+        $cancelados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 4 AND asignado_id = $id_user");
         return $cancelados;
     }
 
@@ -131,11 +121,15 @@ class Tickets extends Model
         return $ticketsMes;
     }
 
-    public static function GuardarMes($mesActual){
-        $ticketsMes     = DB::Select("SELECT count(*) as total FROM mes_graficas WHERE nombre LIKE '%$mesActual%'");
-        $Tickets        = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE())");
-        $Incidentes     = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND kind_id = 1");
-        $Requerimientos = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND kind_id = 2");
+    public static function GuardarMes($mesActual,$ActualYear){
+        // $ticketsMes     = DB::Select("SELECT count(*) as total FROM mes_graficas WHERE mes LIKE '%Nov' AND year = $ActualYear");
+        // $Tickets        = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH('2019-11-01') AND YEAR(created_at)=YEAR(CURDATE())");
+        // $Incidentes     = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH('2019-11-01') AND YEAR(created_at)=YEAR(CURDATE()) AND kind_id = 1");
+        // $Requerimientos = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH('2019-11-01') AND YEAR(created_at)=YEAR(CURDATE()) AND kind_id = 2");
+        $ticketsMes     = DB::Select("SELECT count(*) as total FROM mes_graficas WHERE mes LIKE '%$mesActual%' AND year = $ActualYear");
+        $Tickets        = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND YEAR(created_at)=YEAR(CURDATE())");
+        $Incidentes     = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND YEAR(created_at)=YEAR(CURDATE()) AND kind_id = 1");
+        $Requerimientos = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND YEAR(created_at)=YEAR(CURDATE()) AND kind_id = 2");
 
         foreach($ticketsMes as $value){
             $total = $value->total;
@@ -152,7 +146,7 @@ class Tickets extends Model
 
         if($total === 0){
             if($totalTickets > 0){
-                $guardarMes = DB::insert('INSERT INTO mes_graficas (nombre,incidentes,requerimientos) VALUES (?,?,?)', [$mesActual,$totalIncidentes,$totalRequerimientos]);
+                $guardarMes = DB::insert('INSERT INTO mes_graficas (mes,year,incidentes,requerimientos) VALUES (?,?,?,?)', [$mesActual,$ActualYear,$totalIncidentes,$totalRequerimientos]);
                 if($guardarMes){
                     return true;
                 }
@@ -161,7 +155,7 @@ class Tickets extends Model
             }
 
         }else{
-            $guardarMes = DB::Update("UPDATE mes_graficas SET incidentes = $totalIncidentes,requerimientos = $totalRequerimientos where NOMBRE like '%$mesActual%'");
+            $guardarMes = DB::Update("UPDATE mes_graficas SET incidentes = $totalIncidentes,requerimientos = $totalRequerimientos WHERE mes LIKE '%$mesActual%' AND year = $ActualYear");
             if($guardarMes){
                 return true;
             }
@@ -207,8 +201,8 @@ class Tickets extends Model
 
     }
 
-    public static function BuscarMes(){
-        $ticketsMes = DB::Select("SELECT * FROM mes_graficas");
+    public static function BuscarMes($ActualYear){
+        $ticketsMes = DB::Select("SELECT * FROM mes_graficas WHERE year = $ActualYear");
         return $ticketsMes;
     }
     public static function BuscarMesUsuario($id_user){
@@ -290,9 +284,9 @@ class Tickets extends Model
                                         WHERE id = $idTicket");
 
         if($actualizarTicket){
-            if(($Estado === 3) || ($Estado === 4)){
-                $actualizarEstado = DB::Update("UPDATE ticket SET finalizado = 1 WHERE id = $idTicket");
-            }
+            // if(($Estado === 3) || ($Estado === 4)){
+            //     $actualizarEstado = DB::Update("UPDATE ticket SET finalizado = 1 WHERE id = $idTicket");
+            // }
             $buscarUsuario = Usuarios::BuscarNombre($creadoPor);
             foreach($buscarUsuario as $row){
                 $nombre_usuario = $row->nombre;
@@ -316,7 +310,7 @@ class Tickets extends Model
     }
 
     public static function buscarGestion(){
-        $usuarios = DB::Select("SELECT * FROM user WHERE is_active = 1 AND category_id NOT IN (6)");
+        $usuarios = DB::Select("SELECT * FROM user WHERE is_active = 1 AND rol_id NOT IN (6) ORDER BY category_id");
         foreach($usuarios as $row){
             $id_user = $row->id;
             $nombre_user = $row->name;
@@ -341,8 +335,75 @@ class Tickets extends Model
         return $gestion;
     }
 
+    public static function buscarGestionSede(){
+        $sedes = DB::Select("SELECT * FROM project");
+        foreach($sedes as $row){
+            $id_sede = $row->id;
+            $nombre_user = $row->name;
+            $ticketsIncidentes      = DB::Select("SELECT * FROM ticket WHERE project_id = $id_sede AND kind_id = 1");
+            $tIncidentes            = count($ticketsIncidentes);
+            $ticketsRequerimientos  = DB::Select("SELECT * FROM ticket WHERE project_id = $id_sede AND kind_id = 1");
+            $tRequerimientos        = count($ticketsRequerimientos);
+
+            $buscarUsuario      = DB::Select("SELECT * FROM gestionSede WHERE id_sede = $id_sede");
+            if($buscarUsuario){
+                $actualizarGestion = DB::Update("UPDATE gestionSede SET incidentes = $tIncidentes,requerimientos = $tRequerimientos WHERE id_sede = $id_sede");
+            }else{
+                $ingresarGestion = DB::insert('INSERT INTO gestionSede (nombre_sede,incidentes,requerimientos,id_sede)
+                                                VALUES (?,?,?,?)', [$nombre_user,$tIncidentes,$tRequerimientos,$id_sede]);
+            }
+
+        }
+        $gestion = DB::Select("SELECT * FROM gestionSede");
+        return $gestion;
+    }
+
+    public static function buscarGestionCalificacion(){
+        $calificacion           = DB::Select("SELECT * FROM tipo_calificacion");
+        $totalCalificaciones    = DB::Select("SELECT * FROM calificacion");
+        $tCalificaciones        = (int)count($totalCalificaciones);
+        foreach($calificacion as $row){
+            $id_calificacion = (int)$row->id;
+            switch($id_calificacion){
+                Case 1  :   $color = '#dd4b39';
+                            break;
+                Case 2  :   $color = '#ffbc75';
+                            break;
+                Case 3  :   $color = 'grey';
+                            break;
+                Case 4  :   $color = '#90ed7d';
+                            break;
+                Case 5  :   $color = 'green';
+                            break;
+
+            }
+            $nombre_user = $row->name;
+            $totalCalificacion  = DB::Select("SELECT * FROM calificacion WHERE puntuacion = $id_calificacion");
+            $tCalificacion      = (int)count($totalCalificacion);
+            $tPorcentaje        = round($tCalificacion/$tCalificaciones*100);
+            $buscarUsuario      = DB::Select("SELECT * FROM gestioncalificacion WHERE id_calificacion = $id_calificacion");
+            if($buscarUsuario){
+                $actualizarGestion = DB::Update("UPDATE gestioncalificacion SET total = $tCalificacion,porcentaje = $tPorcentaje WHERE id_calificacion = $id_calificacion");
+            }else{
+                $ingresarGestion = DB::insert('INSERT INTO gestioncalificacion (nombre,total,porcentaje,id_calificacion,color)
+                                                VALUES (?,?,?,?,?)', [$nombre_user,$tCalificacion,$tPorcentaje,$id_calificacion,$color]);
+            }
+
+        }
+        $gestion = DB::Select("SELECT * FROM gestioncalificacion");
+        return $gestion;
+    }
+
     public static function buscarGestionTotal(){
         $gestion = DB::Select("SELECT count(*) as total FROM gestion");
+        return $gestion;
+    }
+    public static function buscarGestionTotalSede(){
+        $gestion = DB::Select("SELECT count(*) as total FROM gestionSede");
+        return $gestion;
+    }
+    public static function buscarGestionTotalCalificacion(){
+        $gestion = DB::Select("SELECT count(*) as total FROM gestioncalificacion");
         return $gestion;
     }
     public static function buscarGestionTotalUsuario($id_user){
@@ -356,7 +417,7 @@ class Tickets extends Model
     }
 
     public static function HistorialTicket($id_ticket){
-        $historial = DB::Select("SELECT * FROM historial_ticket WHERE id_ticket = $id_ticket");
+        $historial = DB::Select("SELECT * FROM historial WHERE id_ticket = $id_ticket");
         return $historial;
     }
 
@@ -487,7 +548,7 @@ class Tickets extends Model
         date_default_timezone_set('America/Bogota');
         $fecha_sistema  = date('Y-m-d H:i');
         $fechaActualizacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
-        DB::Update("UPDATE notificaciones SET leido = 1, fecha_lectura = '$fechaActualizacion' WHERE asigned_id = $asigned_id");
+        DB::Update("UPDATE notificaciones SET leido = 1, fecha = '$fechaActualizacion' WHERE usuario2 = $asigned_id");
     }
 
     public static function Notificaciones($asigned_id){
@@ -510,4 +571,44 @@ class Tickets extends Model
         return $Calificar;
     }
 
+    public static function BuscarMInsatisfecho(){
+        $BuscarMInsatisfecho = DB::Select("SELECT count(*) as total FROM calificacion WHERE puntuacion = 1");
+        return $BuscarMInsatisfecho;
+    }
+    public static function BuscarInsatisfecho(){
+        $BuscarInsatisfecho = DB::Select("SELECT count(*) as total FROM calificacion WHERE puntuacion = 2");
+        return $BuscarInsatisfecho;
+    }
+    public static function BuscarNeutral(){
+        $BuscarNeutral = DB::Select("SELECT count(*) as total FROM calificacion WHERE puntuacion = 3");
+        return $BuscarNeutral;
+    }
+    public static function BuscarSatisfecho(){
+        $BuscarSatisfecho = DB::Select("SELECT count(*) as total FROM calificacion WHERE puntuacion = 4");
+        return $BuscarSatisfecho;
+    }
+    public static function BuscarMSatisfecho(){
+        $BuscarMSatisfecho = DB::Select("SELECT count(*) as total FROM calificacion WHERE puntuacion = 5");
+        return $BuscarMSatisfecho;
+    }
+    public static function PorcentajeMInsatisfecho(){
+        $PorcentajeMInsatisfecho = DB::Select("SELECT porcentaje FROM gestioncalificacion WHERE id_calificacion = 1");
+        return $PorcentajeMInsatisfecho;
+    }
+    public static function PorcentajeInsatisfecho(){
+        $PorcentajeInsatisfecho = DB::Select("SELECT porcentaje FROM gestioncalificacion WHERE id_calificacion = 2");
+        return $PorcentajeInsatisfecho;
+    }
+    public static function PorcentajeNeutral(){
+        $PorcentajeNeutral = DB::Select("SELECT porcentaje FROM gestioncalificacion WHERE id_calificacion = 3");
+        return $PorcentajeNeutral;
+    }
+    public static function PorcentajeSatisfecho(){
+        $PorcentajeSatisfecho = DB::Select("SELECT porcentaje FROM gestioncalificacion WHERE id_calificacion = 4");
+        return $PorcentajeSatisfecho;
+    }
+    public static function PorcentajeMSatisfecho(){
+        $PorcentajeMSatisfecho = DB::Select("SELECT porcentaje FROM gestioncalificacion WHERE id_calificacion = 5");
+        return $PorcentajeMSatisfecho;
+    }
 }

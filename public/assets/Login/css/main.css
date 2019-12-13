@@ -58,7 +58,7 @@ a:focus {
 
 a:hover {
 	text-decoration: none;
-  color: #57b846;
+  color: #a21b25;
 }
 
 /*---------------------------------------------*/
@@ -258,7 +258,7 @@ iframe {
   width: 100%;
   height: 100%;
   box-shadow: 0px 0px 0px 0px;
-  color: rgba(87,184,70, 0.8);
+  color: rgba(162,27,37);
 }
 
 .input100:focus + .focus-input100 {
@@ -306,7 +306,7 @@ iframe {
 }
 
 .input100:focus + .focus-input100 + .symbol-input100 {
-  color: #57b846;
+  color: #a21b25;
   padding-left: 28px;
 }
 
@@ -334,7 +334,7 @@ iframe {
   width: 100%;
   height: 50px;
   border-radius: 25px;
-  background: #57b846;
+  background: #a21b25;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -408,7 +408,7 @@ iframe {
   position: absolute;
   max-width: 70%;
   background-color: white;
-  border: 1px solid #c80000;
+  border: 1px solid #a21b25;
   border-radius: 13px;
   padding: 4px 25px 4px 10px;
   top: 50%;
@@ -421,7 +421,7 @@ iframe {
   pointer-events: none;
 
   font-family: Poppins-Medium;
-  color: #c80000;
+  color: #a21b25;
   font-size: 13px;
   line-height: 1.4;
   text-align: left;
@@ -440,7 +440,7 @@ iframe {
   font-family: FontAwesome;
   display: block;
   position: absolute;
-  color: #c80000;
+  color: #a21b25;
   font-size: 15px;
   top: 50%;
   -webkit-transform: translateY(-50%);
