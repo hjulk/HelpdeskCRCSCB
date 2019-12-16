@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use App\Models\Admin\Sedes;
-use App\Models\User\Tickets;
+use App\Models\Helpdesk\Tickets;
 use Validator;
 use App\Models\Admin\Usuarios;
 use Illuminate\Support\Facades\Mail;

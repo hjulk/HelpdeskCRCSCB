@@ -56,16 +56,15 @@ h1 {
 }
 
 .w3layouts-main{
-    background-image: url('../images/bg.jpg');
-    background-repeat: repeat-x;
-    animation: slideleft 20000s infinite linear;
-    -webkit-animation: slideleft 20000s infinite linear;
-    background-size: cover;
-	-webkit-background-size:cover;
-	-moz-background-size:cover;
-    background-attachment: fixed;
+    background-image: url('../images/bg.png');
+    background-repeat: no-repeat;
+    -webkit-background-size:    contain;
+    -moz-background-size:       cover;
+    -o-background-size:         cover;
+
     position: relative;
-	min-height: 100vh;
+    background-attachment: fixed;
+    background-position: center;
 }
 
 .bg-layer {

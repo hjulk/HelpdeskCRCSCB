@@ -1,11 +1,12 @@
-<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-        <link rel="stylesheet" href="{{asset("assets/DataTables/bower_components/bootstrap/dist/css/bootstrap.min.css")}}">
-        <link rel="stylesheet" href="{{asset("assets/DataTables/bower_components/font-awesome/css/font-awesome.min.css")}}">
-        <link rel="stylesheet" href="{{asset("assets/DataTables/bower_components/Ionicons/css/ionicons.min.css")}}">
-        <link rel="stylesheet" href="{{asset("assets/DataTables/dist/css/AdminLTE.min.css")}}">
-        <link rel="stylesheet" href="{{asset("assets/DataTables/dist/css/skins/_all-skins.min.css")}}">
-        <link rel="stylesheet" href="{{asset("assets/DataTables/CodeSeven/build/toastr.min.css")}}">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="{{asset("assets/DataTables/bower_components/bootstrap/dist/css/bootstrap.min.css")}}">
+    <link rel="stylesheet" href="{{asset("assets/DataTables/bower_components/font-awesome/css/font-awesome.min.css")}}">
+    <link rel="stylesheet" href="{{asset("assets/DataTables/bower_components/Ionicons/css/ionicons.min.css")}}">
+    <link rel="stylesheet" href="{{asset("assets/DataTables/dist/css/AdminLTE.min.css")}}">
+    <link rel="stylesheet" href="{{asset("assets/DataTables/dist/css/skins/_all-skins.min.css")}}">
+    <link rel="stylesheet" href="{{asset("assets/DataTables/CodeSeven/build/toastr.min.css")}}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 <div class="row">
     <div class="col-md-12">
         <br>
@@ -93,16 +94,15 @@
     </table>
 @endif
 <br>
-    <table border="1" cellspacing="0" style="margin:0px;color:rgb(97,97,97);font-family:&quot;Open Sans&quot;;font-size:14px;border-collapse:collapse;border-color:transparent;border-width:0px">
-        <tbody>
-            <tr>
-
+        <table style='max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;font-family:Verdana;font-size:13px;' class='tg' cellpadding='5'>
+            <tbody>
                 <tr>
-                    <td colspan="2" style="vertical-align:top;width:60px">
+                    <td colspan="2" style="vertical-align:top;width:60px;">
                         {{-- <img src="http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/firma.jpg" usemap="#m_3620493203722104036_SignatureSanitizer_m_-8559001894841881195_SignatureSanitizer_image-map" class="CToWUd"> --}}
                         <img src="http://crcscbmesadeayuda.cruzrojabogota.org.co/images/firma.jpg" usemap="#m_3620493203722104036_SignatureSanitizer_m_-8559001894841881195_SignatureSanitizer_image-map" class="CToWUd">
                     </td>
                 </tr>
+
             </tbody>
         </table>
     </div>

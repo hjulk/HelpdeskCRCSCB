@@ -9,7 +9,6 @@
 
             {!! Form::open(['url' => 'crearTicket', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
             <div class="modal-body">
-                <input type="hidden" name="IdUsuario" id="IdUsuario" value="{!! Session::get('IdUsuario') !!}">
                 <div class="box-body">
                     <div class="form-group">
                         <div class="row">
@@ -105,37 +104,37 @@
                     <div class="box-body">
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-4 control-label">No. de Ticket</label>
-                            <div class="col-sm-3">
+                            <div class="col-md-3">
                                 {!! Form::number('id_ticket',$Asunto,['class'=>'form-control','id'=>'id_ticket','placeholder'=>'Nro. del Ticket']) !!}
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-4 control-label">Descripcion Apertura</label>
-                            <div class="col-sm-8">
+                            <div class="col-md-8">
                                     {!! Form::textarea('descripcion_ticket',$Descripcion,['class'=>'form-control','id'=>'descripcion_ticket','placeholder'=>'Ingrese la descripción de la apertura','rows'=>'3']) !!}
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-4 control-label">Categoria</label>
-                            <div class="col-sm-4">
+                            <div class="col-md-5">
                                 {!! Form::select('id_categoriaT',$NombreCategoria,null,['class'=>'form-control','id'=>'id_categoriaT','onchange'=>'categoriaTFunc();']) !!}
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-4 control-label">Asignado</label>
-                            <div class="col-sm-4">
+                            <div class="col-md-5">
                                     {!! Form::select('id_usuarioT',$NombreUsuario,null,['class'=>'form-control','id'=>'id_usuarioT']) !!}
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-4 control-label">Estado</label>
-                            <div class="col-sm-4">
+                            <div class="col-md-5">
                                 {!! Form::select('id_estadoT',$NombreEstadoA,null,['class'=>'form-control','id'=>'id_estadoT']) !!}
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-4 control-label">Prioridad</label>
-                            <div class="col-sm-4">
+                            <div class="col-md-5">
                                 {!! Form::select('id_prioridadT',$NombrePrioridad,null,['class'=>'form-control','id'=>'id_prioridadT']) !!}
                             </div>
                         </div>

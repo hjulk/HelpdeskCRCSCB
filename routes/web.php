@@ -38,19 +38,13 @@ Route::group(['middleware' => 'revalidate'], function () {
         Route::post('actualizarUsuario','UsuarioController@actualizarUsuario')->name('actualizarUsuario');
         Route::post('actualizarUsuarioP','UsuarioController@actualizarUsuarioP')->name('actualizarUsuarioP');
         Route::post('actualizarUsuarioAdmin','UsuarioController@actualizarUsuarioAdmin')->name('actualizarUsuarioAdmin');
-        Route::post('crearZona','SedesController@crearZona')->name('crearZona');
-        Route::post('actualizarZona','SedesController@actualizarZona')->name('actualizarZona');
         Route::post('crearSede','SedesController@crearSede')->name('crearSede');
         Route::post('actualizarSede','SedesController@actualizarSede')->name('actualizarSede');
-        Route::post('crearArea','SedesController@crearArea')->name('crearArea');
-        Route::post('actualizarArea','SedesController@actualizarArea')->name('actualizarArea');
         Route::get('tickets','AdministracionController@tickets')->name('tickets');
         Route::post('reabrirTicket','TicketsController@reabrirTicket')->name('reabrirTicket');
         Route::get('reporteTickets','TicketsController@reporteTickets')->name('reporteTickets');
         Route::post('consultarTicket','TicketsController@consultarTickets')->name('consultarTicket');
-        Route::get('controlCambios','AdministracionController@controlCambios')->name('controlCambios');
-        Route::get('reporteCambios','ControlCambiosController@reporteCambios')->name('reporteCambios');
-        Route::post('consultarCambios','ControlCambiosController@consultarCambios')->name('consultarCambios');
+        Route::get('ticketsUsuario','AdministracionController@ticketsUsuario')->name('ticketsUsuario');
         Route::post('reabrirsolicitud','ControlCambiosController@reabrirsolicitud')->name('reabrirsolicitud');
         Route::get('mobile','InventarioController@mobile')->name('mobile');
         Route::get('detalleNovedadM', 'InventarioController@detalleNovedadM')->name('detalleNovedadM');
@@ -101,12 +95,13 @@ Route::group(['middleware' => 'revalidate'], function () {
     // MODULO TICKETS
 
     Route::post('crearTicket', 'TicketsController@crearTicket')->name('crearTicket');
+    Route::post('crearTicketUsuario', 'TicketsController@crearTicketUsuario')->name('crearTicketUsuario');
     Route::get('buscarCategoria', 'TicketsController@buscarCategoria')->name('buscarCategoria');
     Route::get('buscarCategoriaRepo','TicketsController@buscarCategoriaRepo')->name('buscarCategoriaRepo');
     Route::get('buscarCategoriaUPD', 'TicketsController@buscarCategoriaUPD')->name('buscarCategoriaUPD');
-    Route::get('buscarZona', 'TicketsController@buscarZona')->name('buscarZona');
     Route::get('buscarSede', 'TicketsController@buscarSede')->name('buscarSede');
     Route::post('actualizarTicket', 'TicketsController@actualizarTicket')->name('actualizarTicket');
+    Route::post('actualizarTicketUsuario', 'TicketsController@actualizarTicketUsuario')->name('actualizarTicketUsuario');
     Route::any('calificarTicket', 'TicketsController@calificarTicket')->name('calificarTicket');
 
     // MODULO INVENTARIOS

@@ -65,11 +65,6 @@ class Tickets extends Model
         return $tickets;
     }
 
-    public static function ListarCargo(){
-        $tickets = DB::Select("SELECT * FROM cargo_usuario WHERE activo = 1");
-        return $tickets;
-    }
-
     public static function ListarEstadoA(){
         $tickets = DB::Select("SELECT * FROM status WHERE id not in (3,4)");
         return $tickets;
@@ -252,45 +247,36 @@ class Tickets extends Model
         return $crearTicket;
     }
 
-    public static function ActualizarTicket($idTicket,$idTipo,$Asunto,$Descripcion,$NombreUsuario,$TelefonoUsuario,$CorreUsuario,$CargoUsuario,
-                                            $IdZona,$IdSede,$IdArea,$Prioridad,$Categoria,$AsignadoA,$Estado,$creadoPor,$comentario,$NombreJefe,$TelefonoJefe){
+    public static function ActualizarTicket($idTicket,$idTipo,$Asunto,$Descripcion,$NombreUsuario,$TelefonoUsuario,$CorreUsuario,
+                                            $IdSede,$IdArea,$Prioridad,$Categoria,$AsignadoA,$Estado,$creadoPor,$comentario){
 
         date_default_timezone_set('America/Bogota');
         $fecha_sistema  = date('Y-m-d H:i');
         $fechaActualizacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
 
         $actualizarTicket = DB::Update("UPDATE ticket SET
-                                        titulo = '$Asunto',
-                                        descripcion = '$Descripcion',
-                                        updated_at = '$fechaActualizacion',
-                                        id_tipo = $idTipo,
-                                        creado_por = $creadoPor,
-                                        asigned_id = $AsignadoA,
+                                        title       = '$Asunto',
+                                        description = '$Descripcion',
+                                        updated_at  = '$fechaActualizacion',
+                                        kind_id     = $idTipo,
+                                        user_id     = $creadoPor,
+                                        asigned_id  = $AsignadoA,
                                         category_id = $Categoria,
-                                        id_zona = $IdZona,
-                                        id_sede = $IdSede,
-                                        id_area = $IdArea,
-                                        nombre_usuario = '$NombreUsuario',
-                                        telefono_usuario = '$TelefonoUsuario',
-                                        email_usuario = '$CorreUsuario',
-                                        cargo_usuario = '$CargoUsuario',
-                                        nombre_jefe = '$NombreJefe',
-                                        telefono_jefe = '$TelefonoJefe',
-                                        id_prioridad = $Prioridad,
-                                        status_id = $Estado,
-                                        session_id = $creadoPor,
-                                        actualizado_por = $creadoPor
+                                        project_id  = $IdSede,
+                                        dependencia = $IdArea,
+                                        name_user   = '$NombreUsuario',
+                                        tel_user    = '$TelefonoUsuario',
+                                        user_email  = '$CorreUsuario',
+                                        priority_id = $Prioridad,
+                                        status_id   = $Estado
                                         WHERE id = $idTicket");
 
         if($actualizarTicket){
-            // if(($Estado === 3) || ($Estado === 4)){
-            //     $actualizarEstado = DB::Update("UPDATE ticket SET finalizado = 1 WHERE id = $idTicket");
-            // }
             $buscarUsuario = Usuarios::BuscarNombre($creadoPor);
             foreach($buscarUsuario as $row){
-                $nombre_usuario = $row->nombre;
+                $nombre_usuario = $row->name;
             }
-            DB::insert('INSERT INTO historial_ticket (id_ticket,observacion,status_id,id_user,nombre_usuario,creado)
+            DB::insert('INSERT INTO historial (id_ticket,observacion,status_id,asigne_id,user_id,created)
                         VALUES (?,?,?,?,?,?)', [$idTicket,$comentario,$Estado,$creadoPor,$nombre_usuario,$fechaActualizacion]);
         }
 
@@ -518,20 +504,18 @@ class Tickets extends Model
         $fechaActualizacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
         $aperturaTicket = DB::Update("UPDATE ticket SET category_id = $idCategoria,
                                                         asigned_id = $idUsuario,
-                                                        id_prioridad = $idPrioridad,
+                                                        priority_id = $idPrioridad,
                                                         status_id = $idEstado,
-                                                        actualizado_por = $User,
-                                                        updated_at = '$fechaActualizacion',
-                                                        finalizado = 0
+                                                        updated_at = '$fechaActualizacion'
                                                     WHERE id = $idTicket");
 
         $buscarUsuario = Usuarios::BuscarNombre($User);
         foreach($buscarUsuario as $row){
-            $nombre_usuario = $row->nombre;
+            $nombre_usuario = $row->name;
         }
 
         if($aperturaTicket){
-            DB::insert('INSERT INTO historial_ticket (id_ticket,observacion,status_id,id_user,nombre_usuario,creado)
+            DB::Insert('INSERT INTO historial (id_ticket,observacion,status_id,asigne_id,user_id,created)
                     VALUES (?,?,?,?,?,?)', [$idTicket,$desrcipcion,$idEstado,$User,$nombre_usuario,$fechaActualizacion]);
         }
 
@@ -556,7 +540,7 @@ class Tickets extends Model
     }
 
     public static function BuscarCalificacion($idTicket,$ip){
-        $buscarCalificacion = DB::Select("SELECT * FROM calificacion_ticket WHERE id_ticket = $idTicket AND ip_cliente = '$ip'");
+        $buscarCalificacion = DB::Select("SELECT * FROM calificacion WHERE ticket = $idTicket AND ip_client = '$ip'");
         return $buscarCalificacion;
     }
 
@@ -564,7 +548,7 @@ class Tickets extends Model
         date_default_timezone_set('America/Bogota');
         $fecha_sistema  = date('Y-m-d H:i');
         $fechaCalificacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
-        $Calificar = DB::insert('INSERT INTO calificacion_ticket (id_ticket,puntuacion,ip_cliente,nombre_maquina,fecha_calificacion)
+        $Calificar = DB::insert('INSERT INTO calificacion (ticket,puntuacion,ip_client,user_name,update_at)
                                  VALUES (?,?,?,?,?)',
                                  [$idTicket,$puntuacion,$ip,$UserName,$fechaCalificacion]);
         return $Calificar;

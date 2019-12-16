@@ -334,7 +334,7 @@ class AdministracionController extends Controller
             }
 
             $tickets[$cont]['status_id']   = (int)$value->status_id;
-            $IdEstado   = (int)$value->priority_id;
+            $IdEstado   = (int)$value->status_id;
             $Estado     =  Tickets::Estado($IdEstado);
             foreach($Estado as $row){
                 $tickets[$cont]['estado'] = strtoupper($row->name);
@@ -343,11 +343,17 @@ class AdministracionController extends Controller
             $tickets[$cont]['name_user']    = strtoupper($value->name_user);
             $tickets[$cont]['tel_user']     = $value->tel_user;
             $tickets[$cont]['user_email']   = $value->user_email;
-
-            if($value->evidencia != 'null'){
-                $tickets[$cont]['evidencia'] = "<a href='../assets/dis/img/evidencias/".$value->evidencia."' target='_blank'>Anexo Inicial</a>";
+            $tickets[$cont]['evidencia']    = null;
+            $evidenciaTicket = Tickets::EvidenciaTicket($id_ticket);
+            $contadorEvidencia = count($evidenciaTicket);
+            if($contadorEvidencia > 0){
+                $contE = 1;
+                foreach($evidenciaTicket as $row){
+                    $tickets[$cont]['evidencia'] .= "<a href='../assets/dist/img/evidencias/".$row->nombre_evidencia."' target='_blank'>Anexo Ticket  $id_ticket No.".$contE."</a><p>";
+                    $contE++;
+                }
             }else{
-                $tickets[$cont]['evidencia'] = "";
+                $tickets[$cont]['evidencia'] = null;
             }
 
             $historialTicket = Tickets::HistorialTicket($id_ticket);
@@ -438,6 +444,8 @@ class AdministracionController extends Controller
                                     'Dependencia' => null]);
     }
 
-
+    public function ticketsUsuario(){
+        return view('tickets.ticketsUsuario');
+    }
 
 }

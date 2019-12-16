@@ -75,7 +75,7 @@ Tickets
                                     <input type="hidden" value="{{$value['asigned_id']}}" id="asigned_id{{$value['id']}}">
                                     <input type="hidden" value="{{$value['title']}}" id="title{{$value['id']}}">
                                     <input type="hidden" value="{{$value['description']}}" id="description{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['dependencia']}}" id="dependencia{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['area']}}" id="area{{$value['id']}}">
                                     <input type="hidden" value="{{$value['evidencia']}}" id="evidencia{{$value['id']}}">
                                     <input type="hidden" value="{{$value['historial']}}" id="historial{{$value['id']}}">
                                     <input type="hidden" value="{{$value['name_user']}}" id="name_user{{$value['id']}}">
@@ -93,7 +93,7 @@ Tickets
 
 </section>
 @include('Modals.ModalTickets')
-{{--  @include('Modals.ModalUpdTicket')  --}}
+ @include('Modals.ModalUpdTicket')
 @endsection
 
 @section('scripts')

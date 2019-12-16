@@ -7,10 +7,10 @@ Dahsboard
 @section('contenido')
 @include('Modals.ModalGraficas')
 <section class="content-header">
-    <h1><i class="fa fa-home"></i>&nbsp;Home</h1>
+    <h1><i class="fa fa-home"></i>&nbsp;Mesa de Ayuda</h1>
     <ol class="breadcrumb">
         <li><a href="dashboard"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li class="active">Dashboard</li>
+        <li class="active">Mesa de Ayuda</li>
     </ol>
 </section>
 <section class="content">

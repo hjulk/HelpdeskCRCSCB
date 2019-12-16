@@ -12,7 +12,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="tickets"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                    <li><a href="createUsers"><i class="fa fa-user-plus"></i> Creación Usuarios</a></li>
+                    <li><a href="ticketsUsuario"><i class="fa fa-user-plus"></i> Creación Usuarios</a></li>
                     <li><a href="reporteTickets"><i class="fa fa-list"></i> Reportes</a></li>
                 </ul>
             </li>

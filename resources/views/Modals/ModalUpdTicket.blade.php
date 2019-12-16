@@ -9,8 +9,7 @@
 
                 {!! Form::open(['url' => 'actualizarTicket', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
                 <div class="modal-body">
-                        <input type="hidden" name="IdUsuario" id="IdUsuario" value="{!! Session::get('IdUsuario') !!}">
-                        <input type="hidden" name="idT" id="mod_idT">
+                    <input type="hidden" name="idT" id="mod_idT">
                     <div class="box-body">
                         <div class="form-group">
                             <div class="row">
@@ -42,19 +41,15 @@
                         </div>
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-5">
                                     <label for="exampleInputEmail1" class="col-sm-12 control-label">Nombre Usuario</label>
                                     {!! Form::text('nombre_usuario_upd',$Usuario,['class'=>'form-control','id'=>'mod_nombre_usuario','placeholder'=>'Nombre de quien reporta']) !!}
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="exampleInputEmail1" class="col-sm-5 control-label">Cargo</label>
-                                    {!! Form::text('cargo_usuario_upd',$NombreCargo,['class'=>'form-control','id'=>'mod_cargo_usuario','placeholder'=>'Cargo Usuario']) !!}
                                 </div>
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-md-5 control-label">Telefóno</label>
                                     {!! Form::text('telefono_usuario_upd',$TelefonoUsuario,['class'=>'form-control','id'=>'mod_telefono_usuario','placeholder'=>'No. de telefóno del reportante']) !!}
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Correo</label>
                                     {!! Form::text('correo_usuario_upd',$CorreoUsuario,['class'=>'form-control','id'=>'mod_correo_usuario','placeholder'=>'Correo(s) del reportante']) !!}
                                 </div>
@@ -63,28 +58,12 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <label for="exampleInputEmail1" class="col-sm-12 control-label">Nombre Jefe Directo</label>
-                                    {!! Form::text('nombre_jefe',$NombreJefe,['class'=>'form-control','id'=>'mod_nombre_jefe','placeholder'=>'Nombre Jefe Directo']) !!}
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="exampleInputEmail1" class="col-md-12 control-label">Telefono Jefe</label>
-                                    {!! Form::text('telefono_jefe',$TelefonoJefe,['class'=>'form-control','id'=>'mod_telefono_jefe','placeholder'=>'No. telefónico jefe']) !!}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <label for="exampleInputEmail1" class="col-sm-5 control-label">Zona</label>
-                                    {!! Form::select('id_zona_upd',$NombreZona,null,['class'=>'form-control','id'=>'mod_id_zona','readonly']) !!}
-                                </div>
-                                <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Sede</label>
-                                    {!! Form::select('id_sede_upd',$NombreSedes,null,['class'=>'form-control','id'=>'mod_id_sede','readonly']) !!}
+                                    {!! Form::select('id_sede_upd',$NombreSede,null,['class'=>'form-control','id'=>'mod_id_sede','readonly']) !!}
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-5">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Área</label>
-                                    {!! Form::select('id_area_upd',$NombreAreas,null,['class'=>'form-control','id'=>'mod_id_area','readonly']) !!}
+                                    {!! Form::text('dependencia_upd',$Dependencia,['class'=>'form-control','id'=>'mod_dependencia','readonly']) !!}
                                 </div>
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Prioridad</label>
@@ -135,31 +114,26 @@
     </div>
     <script>
         function obtener_datos_ticket(id) {
-            var tipo                = $("#id_tipo" + id).val();
-            var categoria           = $("#id_categoria" + id).val();
-            var zona                = $("#id_zona" + id).val();
-            var sede                = $("#id_sede" + id).val();
-            var area                = $("#id_area" + id).val();
-            var prioridad           = $("#id_prioridad" + id).val();
-            var estado              = $("#id_estado" + id).val();
+            var tipo                = $("#kind_id" + id).val();
+            var categoria           = $("#category_id" + id).val();
+            var sede                = $("#project_id" + id).val();
+            var area                = $("#area" + id).val();
+            var prioridad           = $("#priority_id" + id).val();
+            var estado              = $("#status_id" + id).val();
             var usuario             = $("#id_usuario" + id).val();
-            var titulo              = $("#titulo" + id).val();
-            var descripcion         = $("#descripcion" + id).val();
-            var evidencias          = $("#evidencias" + id).val();
+            var titulo              = $("#title" + id).val();
+            var descripcion         = $("#description" + id).val();
+            var evidencias          = $("#evidencia" + id).val();
             var historial           = $("#historial" + id).val();
-            var nombre_usuario      = $("#nombre_usuario" + id).val();
-            var correo_usuario      = $("#correo_usuario" + id).val();
-            var cargo_usuario       = $("#cargo_usuario" + id).val();
-            var telefono_usuario    = $("#telefono_usuario" + id).val();
-            var nombre_jefe         = $("#nombre_jefe" + id).val();
-            var telefono_jefe       = $("#telefono_jefe" + id).val();
+            var nombre_usuario      = $("#name_user" + id).val();
+            var correo_usuario      = $("#user_email" + id).val();
+            var telefono_usuario    = $("#tel_user" + id).val();
 
             $("#mod_idT").val(id);
             $("#mod_id_tipo").val(tipo);
             $("#mod_id_categoria").val(categoria);
-            $("#mod_id_zona").val(zona);
             $("#mod_id_sede").val(sede);
-            $("#mod_id_area").val(area);
+            $("#mod_dependencia").val(area);
             $("#mod_id_prioridad").val(prioridad);
             $("#mod_id_estado").val(estado);
             $("#mod_id_asignado").val(usuario);
@@ -170,9 +144,6 @@
             $("#mod_nombre_usuario").val(nombre_usuario);
             $("#mod_correo_usuario").val(correo_usuario);
             $("#mod_telefono_usuario").val(telefono_usuario);
-            $("#mod_cargo_usuario").val(cargo_usuario);
-            $("#mod_nombre_jefe").val(nombre_jefe);
-            $("#mod_telefono_jefe").val(telefono_jefe);
 
             $("#VerAnexos").click(function(){
                 document.getElementById('anexos').innerHTML = evidencias;
