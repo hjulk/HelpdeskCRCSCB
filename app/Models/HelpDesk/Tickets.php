@@ -41,7 +41,7 @@ class Tickets extends Model
     }
 
     public static function ListarTipo(){
-        $tickets = DB::Select("SELECT * FROM tipo");
+        $tickets = DB::Select("SELECT * FROM kind");
         return $tickets;
     }
 
@@ -230,24 +230,23 @@ class Tickets extends Model
         return $soporte;
     }
 
-    public static function CrearTicket($idTipo,$Asunto,$Descripcion,$NombreUsuario,$TelefonoUsuario,$CorreUsuario,$CargoUsuario,
-    $IdZona,$IdSede,$IdArea,$Prioridad,$Categoria,$AsignadoA,$Estado,$creadoPor,$NombreJefe,$TelefonoJefe){
+    public static function Servinte(){
+        $soporte = DB::Select("SELECT count(*) as total FROM ticket WHERE category_id = 6 AND status_id = 3");
+        return $soporte;
+    }
+
+    public static function CrearTicket($idTipo,$Asunto,$Descripcion,$NombreUsuario,$TelefonoUsuario,$CorreUsuario,
+    $IdSede,$Area,$Prioridad,$Categoria,$AsignadoA,$Estado,$creadoPor){
 
         date_default_timezone_set('America/Bogota');
         $fecha_sistema  = date('Y-m-d H:i');
         $fechaCreacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
-        if(($Estado === 3) || ($Estado === 4) ){
-            $finalizado = 1;
-        }else{
-            $finalizado = 0;
-        }
-        $crearTicket = DB::insert('INSERT INTO ticket (titulo,descripcion,created_at,id_tipo,creado_por,asigned_id,category_id,
-                                                    id_zona,id_sede,id_area,nombre_usuario,telefono_usuario,email_usuario,cargo_usuario,
-                                                    nombre_jefe,telefono_jefe,id_prioridad,status_id,session_id,finalizado,actualizado_por)
-                                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                                    [$Asunto,$Descripcion,$fechaCreacion,$idTipo,$creadoPor,$AsignadoA,$Categoria,$IdZona,$IdSede,
-                                    $IdArea,$NombreUsuario,$TelefonoUsuario,$CorreUsuario,$CargoUsuario,$NombreJefe,$TelefonoJefe,$Prioridad,$Estado,$creadoPor,$finalizado,$creadoPor]);
-        DB::Insert('INSERT INTO notificaciones (creado_por, asigned_id,leido,fecha_notificacion)
+        $crearTicket = DB::insert('INSERT INTO ticket (title,description,created_at,kind_id,user_id,asigned_id,project_id,dependencia,
+                                                    category_id,priority_id,status_id,name_user,tel_user,user_email,session_id,tipo,h_asigned_id)
+                                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                                    [$Asunto,$Descripcion,$fechaCreacion,$idTipo,$creadoPor,$AsignadoA,$IdSede,$Area,$Categoria,$Prioridad,
+                                    $Estado,$NombreUsuario,$TelefonoUsuario,$CorreUsuario,$creadoPor,0,$AsignadoA]);
+        DB::Insert('INSERT INTO notificaciones (usuario1,usuario2,leido,fecha)
                     VALUES (?,?,?,?)',
                     [$creadoPor,$AsignadoA,0,$fechaCreacion]);
         return $crearTicket;
@@ -610,5 +609,15 @@ class Tickets extends Model
     public static function PorcentajeMSatisfecho(){
         $PorcentajeMSatisfecho = DB::Select("SELECT porcentaje FROM gestioncalificacion WHERE id_calificacion = 5");
         return $PorcentajeMSatisfecho;
+    }
+
+    public static function Categoria($Categoria){
+        $BuscarCategoria = DB::Select("SELECT * FROM category WHERE id = $Categoria");
+        return $BuscarCategoria;
+    }
+
+    public static function Prioridad($Prioridad){
+        $BuscarPrioridad = DB::Select("SELECT * FROM priority WHERE id = $Prioridad");
+        return $BuscarPrioridad;
     }
 }

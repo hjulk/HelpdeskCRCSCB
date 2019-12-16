@@ -131,7 +131,6 @@ class Usuarios extends Model
 
     public static function BuscarNombre($id_usuario){
         $consulta = DB::Select("SELECT * FROM user WHERE id = $id_usuario");
-        // $consulta = DB::table('user')->where('username',$Usuario)->get();
         return $consulta;
     }
 
@@ -200,7 +199,7 @@ class Usuarios extends Model
     }
 
     public static function BuscarXCategoria($id_categoria){
-        $activo = DB::Select("SELECT * FROM user WHERE id_categoria = $id_categoria ORDER BY nombre");
+        $activo = DB::Select("SELECT * FROM user WHERE category_id = $id_categoria ORDER BY name");
         return $activo;
     }
 

@@ -42,11 +42,11 @@ var DataTable = $.fn.dataTable;
 var collection = DataTable.ext.foundationVersion === 6 ?
 	{
 		tag: 'div',
-		className: 'dropdown-pane is-open button-group stacked'
+		className: 'dt-button-collection dropdown-pane is-open button-group stacked'
 	} :
 	{
 		tag: 'ul',
-		className: 'f-dropdown open dropdown-pane is-open',
+		className: 'dt-button-collection f-dropdown open dropdown-pane is-open',
 		button: {
 			tag: 'li',
 			className: 'small',
@@ -81,7 +81,7 @@ $.extend( true, DataTable.Buttons.defaults, {
 } );
 
 
-DataTable.ext.buttons.collection.className = 'dropdown';
+DataTable.ext.buttons.collection.className = 'buttons-collection dropdown';
 
 
 return DataTable.Buttons;

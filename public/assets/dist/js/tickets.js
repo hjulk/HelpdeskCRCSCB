@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('#tickets').DataTable({
+    $('#ticketsPrincipal').DataTable({
         columnDefs: [
             { responsivePriority: 1, targets: 0 },
             { responsivePriority: 2, targets: -1 }],

@@ -65,6 +65,11 @@ class AdministracionController extends Controller
             $SoporteT = $valor->total;
         }
 
+        $Servinte     = Tickets::Servinte();
+        foreach($Servinte as $valor){
+            $ServinteT = $valor->total;
+        }
+
         $BuscarMInsatisfecho     = Tickets::BuscarMInsatisfecho();
         foreach($BuscarMInsatisfecho as $valor){
             $MuyInsatisfecho = $valor->total;
@@ -224,7 +229,7 @@ class AdministracionController extends Controller
         return view('admin.index',['EnDesarrollo' => $desarrolloT,'Pendientes' => $pendientesT,
                                    'Terminados' => $terminadosT,'Cancelados' => $canceladosT,
                                    'MesGraficas' => $resultado_consulta,'Infraestructura' => $InfraestructuraT,
-                                   'Redes' => $RedesT,'Aplicaciones' => $AplicacionesT,
+                                   'Redes' => $RedesT,'Aplicaciones' => $AplicacionesT,'ServinteT' => $ServinteT,
                                    'Soporte' => $SoporteT,'Gestion' => $resultado_gestion,'GestionS' => $resultado_gestionS,
                                    'GestionC' => $resultado_gestionC,'MuyInsatisfecho' => $MuyInsatisfecho,'Insatisfecho' => $Insatisfecho,
                                    'Neutral' => $Neutral,'Satisfecho' => $Satisfecho,'MuySatisfecho' => $MuySatisfecho,
@@ -247,8 +252,14 @@ class AdministracionController extends Controller
             $tickets[$cont]['title']        = $value->title;
             $tickets[$cont]['description']  = $value->description;
             $tickets[$cont]['created_at']   = date('d/m/Y h:i A', strtotime($value->created_at));
+            if($value->updated_at){
+                $tickets[$cont]['updated_at']   = date('d/m/Y h:i A', strtotime($value->updated_at));
+            }else{
+                $tickets[$cont]['updated_at']   = "SIN FECHA DE ACTUALIZACIÓN";
+            }
 
-            $tickets[$cont]['kin_id']       = (int)$value->kind_id;
+
+            $tickets[$cont]['kind_id']       = (int)$value->kind_id;
             $idTipoTicket = (int)$value->kind_id;
             $TipoTicket = Tickets::Tipo($idTipoTicket);
             foreach($TipoTicket as $row){
@@ -263,14 +274,21 @@ class AdministracionController extends Controller
 
             $Asignador  = Usuarios::BuscarNombre($idAsignador);
             $Asignado   = Usuarios::BuscarNombre($idAsignado);
-
-            foreach($Asignador as $row){
-                $tickets[$cont]['asignado_por'] = strtoupper($row->name);
+            if($Asignador){
+                foreach($Asignador as $row){
+                    $tickets[$cont]['asignado_por'] = strtoupper($row->name);
+                }
+            }else{
+                $tickets[$cont]['asignado_por'] = 'SIN NOMBRE';
+            }
+            if($Asignado){
+                foreach($Asignado as $row){
+                    $tickets[$cont]['asignado_a'] = strtoupper($row->name);
+                }
+            }else{
+                $tickets[$cont]['asignado_a'] = 'SIN NOMBRE';
             }
 
-            foreach($Asignado as $row){
-                $tickets[$cont]['asignado_a'] = strtoupper($row->name);
-            }
 
             $tickets[$cont]['project_id']   = (int)$value->project_id;
             $idSede = (int)$value->project_id;
@@ -279,7 +297,7 @@ class AdministracionController extends Controller
                 $tickets[$cont]['sede'] = strtoupper($row->name);
             }
 
-
+            $tickets[$cont]['dependencia']   = (int)$value->dependencia;
             $dependencia = $value->dependencia;
             if($dependencia === null){
                 $tickets[$cont]['area'] = "SIN ÁREA/DEPENDENCIA";
@@ -303,11 +321,14 @@ class AdministracionController extends Controller
             }
 
             if($IdPrioridad === 1){
-                $tickets[$cont]['prioridad'] = "<span class='label label-danger' style='font-size:13px;'><b>".$NombrePrioridad."</b></span>";
+                $tickets[$cont]['prioridad']    = $NombrePrioridad;
+                $tickets[$cont]['label']        = 'label label-danger';
             }else if($IdPrioridad === 2){
-                $tickets[$cont]['prioridad'] = "<span class='label label-warning' style='font-size:13px;'><b>".$NombrePrioridad."</b></span>";
+                $tickets[$cont]['prioridad']    = $NombrePrioridad;
+                $tickets[$cont]['label']        = 'label label-warning';
             }else if($IdPrioridad === 3){
-                $tickets[$cont]['prioridad'] = "<span class='label label-success' style='font-size:13px;'><b>".$NombrePrioridad."</b></span>";
+                $tickets[$cont]['prioridad']    = $NombrePrioridad;
+                $tickets[$cont]['label']        = 'label label-success';
             }else{
                 $NombrePrioridad = 'SIN PRIORIDAD';
             }
@@ -366,15 +387,22 @@ class AdministracionController extends Controller
 
         $NombreUsuario = array();
         $NombreUsuario[''] = 'Seleccione: ';
+
         $NombreSede = array();
         $NombreSede[''] = 'Seleccione: ';
+
         $Sedes  = Sedes::Sedes();
-        $NombreSedes = array();
-        $NombreSedes[''] = 'Seleccione: ';
+
         foreach ($Sedes as $row){
-            $NombreSedes[$row->id] = $row->name;
+            $NombreSede[$row->id] = $row->name;
         }
 
+        $Tipo  = Tickets::ListarTipo();
+        $NombreTipo = array();
+        $NombreTipo[0] = 'Seleccione: ';
+        foreach ($Tipo as $row){
+            $NombreTipo[$row->id] = $row->name;
+        }
 
         $Estado  = Tickets::ListarEstado();
         $NombreEstado = array();
@@ -404,10 +432,10 @@ class AdministracionController extends Controller
         Session::put('Notificacion',$valorNull);
         return view('tickets.tickets',['Tickets' => $tickets,'NombreCategoria' => $NombreCategoria,
                                     'NombreUsuario' => $NombreUsuario,'NombrePrioridad' => $NombrePrioridad,'NombreEstado' => $NombreEstado,'NombreEstadoUpd' => $NombreEstadoUpd,
-                                    'NombreSede' => $NombreSede,'CorreoUsuario' => null,
+                                    'NombreSede' => $NombreSede,'CorreoUsuario' => null,'NombreTipo' => $NombreTipo,
                                     'Usuario' => null,'Descripcion' => null,'TelefonoUsuario' => null,'Evidencia' => null,'Asunto' => null,'Comentario' => null,
-                                    'NombreSedes' => $NombreSedes,'NombreEstadoA' => $NombreEstadoA,'NombreCargo' => null,
-                                    'NombreJefe' => null,'TelefonoJefe' => null]);
+                                    'NombreEstadoA' => $NombreEstadoA,'NombreCargo' => null,
+                                    'Dependencia' => null]);
     }
 
 

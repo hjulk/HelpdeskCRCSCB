@@ -4,44 +4,40 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Crear Ticket</h4>
+                <h4 class="modal-title"><b>Crear Ticket</b></h4>
             </div>
 
             {!! Form::open(['url' => 'crearTicket', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
             <div class="modal-body">
-                    <input type="hidden" name="IdUsuario" id="IdUsuario" value="{!! Session::get('IdUsuario') !!}">
+                <input type="hidden" name="IdUsuario" id="IdUsuario" value="{!! Session::get('IdUsuario') !!}">
                 <div class="box-body">
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Tipo</label>
-                                {!! Form::select('id_tipo',$NombreTipo,null,['class'=>'form-control','id'=>'id_tipo']) !!}
+                                {!! Form::select('kind_id',$NombreTipo,null,['class'=>'form-control','id'=>'kind_id']) !!}
                             </div>
                             <div class="col-md-6">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Asunto</label>
-                                {!! Form::text('asunto',$Asunto,['class'=>'form-control','id'=>'asunto','placeholder'=>'Asunto del Ticket']) !!}
+                                {!! Form::text('title',$Asunto,['class'=>'form-control','id'=>'title','placeholder'=>'Asunto del Ticket']) !!}
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1" class="col-sm-5 control-label">Descripcion Solicitud</label>
-                        {!! Form::textarea('descripcion',$Descripcion,['class'=>'form-control','id'=>'descripcion','placeholder'=>'Ingrese la descripción de la solicitud','rows'=>'3']) !!}
+                        {!! Form::textarea('description',$Descripcion,['class'=>'form-control','id'=>'description','placeholder'=>'Ingrese la descripción de la solicitud','rows'=>'3']) !!}
                     </div>
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-md-3">
-                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Nombre Usuario</label>
+                            <div class="col-md-5">
+                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Quien solicita</label>
                                 {!! Form::text('nombre_usuario',$Usuario,['class'=>'form-control','id'=>'nombre_usuario','placeholder'=>'Nombre de quien reporta']) !!}
-                            </div>
-                            <div class="col-md-3">
-                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Cargo</label>
-                                {!! Form::text('cargo_usuario',$NombreCargo,['class'=>'form-control','id'=>'cargo_usuario','placeholder'=>'Cargo Usuario']) !!}
                             </div>
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-md-5 control-label">Telefóno</label>
                                 {!! Form::text('telefono_usuario',$TelefonoUsuario,['class'=>'form-control','id'=>'telefono_usuario','placeholder'=>'No. de telefóno del reportante']) !!}
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Correo</label>
                                 {!! Form::text('correo_usuario',$CorreoUsuario,['class'=>'form-control','id'=>'correo_usuario','placeholder'=>'Correo(s) del reportante']) !!}
                             </div>
@@ -50,32 +46,16 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-4">
-                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Nombre Jefe Directo</label>
-                                {!! Form::text('nombre_jefe',$NombreJefe,['class'=>'form-control','id'=>'nombre_jefe','placeholder'=>'Nombre Jefe Directo']) !!}
-                            </div>
-                            <div class="col-md-4">
-                                <label for="exampleInputEmail1" class="col-md-12 control-label">Telefono Jefe</label>
-                                {!! Form::text('telefono_jefe',$TelefonoJefe,['class'=>'form-control','id'=>'telefono_jefe','placeholder'=>'No. telefónico jefe']) !!}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Zona</label>
-                                {!! Form::select('id_zona',$NombreZona,null,['class'=>'form-control','id'=>'id_zona','onchange'=>'zonaFunc();']) !!}
-                            </div>
-                            <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Sede</label>
-                                {!! Form::select('id_sede',$NombreSede,null,['class'=>'form-control','id'=>'id_sede','onchange'=>'sedeFunc();']) !!}
+                                {!! Form::select('project_id',$NombreSede,null,['class'=>'form-control','id'=>'project_id','onchange'=>'sedeFunc();']) !!}
                             </div>
-                            <div class="col-md-3">
-                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Área</label>
-                                {!! Form::select('id_area',$NombreArea,null,['class'=>'form-control','id'=>'id_area']) !!}
+                            <div class="col-md-5">
+                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Área / Dependencia</label>
+                                {!! Form::text('dependencia',$Dependencia,['class'=>'form-control','id'=>'dependencia']) !!}
                             </div>
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Prioridad</label>
-                                {!! Form::select('id_prioridad',$NombrePrioridad,null,['class'=>'form-control','id'=>'id_prioridad']) !!}
+                                {!! Form::select('priority_id',$NombrePrioridad,null,['class'=>'form-control','id'=>'priority_id']) !!}
                             </div>
                         </div>
                     </div>
@@ -94,7 +74,7 @@
                                 {!! Form::select('id_estado',$NombreEstado,null,['class'=>'form-control','id'=>'id_estado']) !!}
                             </div>
                             <div class="col-md-3">
-                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Evidencia</label>
+                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Anexar Evidencia</label>
                                 <input type="file" id="evidencia[]" name="evidencia[]" class="form-control" multiple>
                             </div>
                         </div>
@@ -224,33 +204,4 @@
                 }
             });
         }
-
-        function zonaFunc() {
-            var selectBox = document.getElementById("id_zona");
-            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-            var tipo = 'post';
-            var select = document.getElementById("id_sede");
-
-            $.ajax({
-                url: "{{route('buscarZona')}}",
-                type: "get",
-                data: {_method: tipo, id_zona: selectedValue},
-                success: function (data) {
-                    var vValido = data['valido'];
-
-                    if (vValido === 'true') {
-                        var ListSedes = data['Sedes'];
-                        select.options.length = 0;
-                        for (index in ListSedes) {
-                            select.options[select.options.length] = new Option(ListSedes[index], index);
-                        }
-
-                    }
-
-                }
-            });
-        }
-
-
-
     </script>

@@ -23,7 +23,7 @@ Tickets
                 <div class="row">
                     <div class="col-md-6">
                         <button class="btn btn-primary" data-toggle="modal" data-target="#modal-tickets">Crear Ticket</button>
-                        @if(Session::get('Administracion') === 1)
+                        @if(Session::get('Rol') === 1)
                             <button class="btn btn-success" data-toggle="modal" data-target="#modal-reabrir-tickets">Reabrir Ticket</button>
                         @endif
                         <br>
@@ -33,59 +33,56 @@ Tickets
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <table id="tickets" class="display responsive hover" style="width: 100%;">
+                        <table id="ticketsPrincipal" class="display responsive hover" style="width: 100%;">
                             <thead style="background: linear-gradient(60deg,rgba(51,101,155,1),rgba(66,132,206,1));color: #ECF0F1;">
                                 <tr>
-                                    <th>Ticket</th>
-                                    <th>Tipo</th>
-                                    <th>Asunto</th>
-                                    <th>Sede</th>
-                                    <th>Area</th>
-                                    <th>Prioridad</th>
-                                    <th>Estado</th>
-                                    <th>Creación</th>
-                                    <th>Actualización</th>
-                                    <th>Creador</th>
-                                    <th>Asignado A</th>
-                                    <th>Editar</th>
+                                    <th style="text-align: center;">Nro</th>
+                                    <th style="text-align: center;">Tipo</th>
+                                    <th style="text-align: center;">Asunto</th>
+                                    <th style="text-align: center;">Sede</th>
+                                    <th style="text-align: center;">Area</th>
+                                    <th style="text-align: center;">Prioridad</th>
+                                    <th style="text-align: center;">Estado</th>
+                                    <th style="text-align: center;">Fecha Creación</th>
+                                    <th style="text-align: center;">Creador</th>
+                                    <th style="text-align: center;">Asignado A</th>
+                                    <th style="text-align: center;">Fecha Actualización</th>
+                                    <th style="text-align: center;">Editar</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {{--  @foreach($Tickets as $value)
+                                 @foreach($Tickets as $value)
                                 <tr>
                                     <td>{{$value['id']}}</td>
-                                    <td>{{$value['tipo']}}</td>
-                                    <td>{{$value['titulo']}}</td>
+                                    <td>{{$value['tipo_ticket']}}</td>
+                                    <td>{{$value['title']}}</td>
                                     <td>{{$value['sede']}}</td>
                                     <td>{{$value['area']}}</td>
                                     <td><span class="{{$value['label']}}" style="font-size:13px;"><b>{{$value['prioridad']}}</b></span></td>
                                     <td>{{$value['estado']}}</td>
-                                    <td>{{$value['fecha_creacion']}}</td>
-                                    <td>{{$value['fecha_actualizacion']}}</td>
-                                    <td>{{$value['creado_por']}}</td>
+                                    <td>{{$value['created_at']}}</td>
+                                    <td>{{$value['asignado_por']}}</td>
                                     <td>{{$value['asignado_a']}}</td>
+                                    <td>{{$value['updated_at']}}</td>
                                     <td><a href="#" class="btn btn-warning" title="Editar" data-toggle="modal" data-target="#modal-tickets-upd" onclick="obtener_datos_ticket('{{$value['id']}}');"><i class="glyphicon glyphicon-edit"></i></a></td>
                                     <input type="hidden" value="{{$value['id']}}" id="id{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['id_tipo']}}" id="id_tipo{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['id_categoria']}}" id="id_categoria{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['id_zona']}}" id="id_zona{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['id_sede']}}" id="id_sede{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['id_area']}}" id="id_area{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['id_prioridad']}}" id="id_prioridad{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['id_estado']}}" id="id_estado{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['id_usuario']}}" id="id_usuario{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['titulo']}}" id="titulo{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['descripcion']}}" id="descripcion{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['evidencias']}}" id="evidencias{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['kind_id']}}" id="kind_id{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['category_id']}}" id="category_id{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['project_id']}}" id="project_id{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['priority_id']}}" id="priority_id{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['status_id']}}" id="status_id{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['user_id']}}" id="user_id{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['asigned_id']}}" id="asigned_id{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['title']}}" id="title{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['description']}}" id="description{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['dependencia']}}" id="dependencia{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['evidencia']}}" id="evidencia{{$value['id']}}">
                                     <input type="hidden" value="{{$value['historial']}}" id="historial{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['nombre_usuario']}}" id="nombre_usuario{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['correo_usuario']}}" id="correo_usuario{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['telefono_usuario']}}" id="telefono_usuario{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['cargo_usuario']}}" id="cargo_usuario{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['nombre_jefe']}}" id="nombre_jefe{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['telefono_jefe']}}" id="telefono_jefe{{$value['id']}}">
-                                </tr>
-                                @endforeach  --}}
+                                    <input type="hidden" value="{{$value['name_user']}}" id="name_user{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['user_email']}}" id="user_email{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['tel_user']}}" id="tel_user{{$value['id']}}">
+                                 </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -95,8 +92,8 @@ Tickets
     </div>
 
 </section>
-{{--  @include('Modals.ModalTickets')
-@include('Modals.ModalUpdTicket')  --}}
+@include('Modals.ModalTickets')
+{{--  @include('Modals.ModalUpdTicket')  --}}
 @endsection
 
 @section('scripts')

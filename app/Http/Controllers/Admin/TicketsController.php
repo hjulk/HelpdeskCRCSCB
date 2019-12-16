@@ -24,11 +24,6 @@ class TicketsController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
     public function crearTicket()
     {
@@ -36,7 +31,7 @@ class TicketsController extends Controller
         $creadoPor          = (int)Input::get('IdUsuario');
         $buscarUsuario = Usuarios::BuscarNombre($creadoPor);
         foreach($buscarUsuario as $value){
-            $Administrador = (int)$value->administrador;
+            $Administrador = (int)$value->rol_id;
         }
         $reglas = array(
             'id_tipo'           =>  'required',
@@ -354,14 +349,13 @@ class TicketsController extends Controller
 
     public function buscarCategoria()
     {
-
         $data = Input::all();
         $id   = Input::get('id_categoria');
         $NombreUsuario = array();
         $buscarUsuario = Usuarios::BuscarXCategoria($id);
         $NombreUsuario[0] = 'Seleccione: ';
         foreach ($buscarUsuario as $row){
-            $NombreUsuario[$row->id] = $row->nombre;
+            $NombreUsuario[$row->id] = $row->name;
         }
         return \Response::json(array('valido'=>'true','Usuario'=>$NombreUsuario));
 

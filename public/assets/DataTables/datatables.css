@@ -4,10 +4,10 @@
  *
  * To rebuild or modify this file with the latest versions of the included
  * software please visit:
- *   https://datatables.net/download/#dt/jq-3.3.1/jszip-2.5.0/pdfmake-0.1.36/dt-1.10.20/af-2.3.4/b-1.6.1/b-colvis-1.6.1/b-flash-1.6.1/b-html5-1.6.1/b-print-1.6.1/cr-1.5.2/fc-3.3.0/fh-3.1.6/kt-2.5.1/r-2.2.3/rg-1.1.1/rr-1.2.6/sc-2.0.1/sl-1.3.1
+ *   https://datatables.net/download/#dt/jqc-1.12.4/dt-1.10.18/af-2.3.3/b-1.5.6/b-flash-1.5.6/b-html5-1.5.6/b-print-1.5.6/cr-1.5.0/fc-3.2.5/fh-3.1.4/r-2.2.2/rg-1.1.0/rr-1.2.4/sc-2.0.0/sl-1.3.0
  *
  * Included libraries:
- *   jQuery 3 3.3.1, JSZip 2.5.0, pdfmake 0.1.36, DataTables 1.10.20, AutoFill 2.3.4, Buttons 1.6.1, Column visibility 1.6.1, Flash export 1.6.1, HTML5 export 1.6.1, Print view 1.6.1, ColReorder 1.5.2, FixedColumns 3.3.0, FixedHeader 3.1.6, KeyTable 2.5.1, Responsive 2.2.3, RowGroup 1.1.1, RowReorder 1.2.6, Scroller 2.0.1, Select 1.3.1
+ *   jQuery 1 1.12.4, DataTables 1.10.18, AutoFill 2.3.3, Buttons 1.5.6, Flash export 1.5.6, HTML5 export 1.5.6, Print view 1.5.6, ColReorder 1.5.0, FixedColumns 3.2.5, FixedHeader 3.1.4, Responsive 2.2.2, RowGroup 1.1.0, RowReorder 1.2.4, Scroller 2.0.0, Select 1.3.0
  */
 
 /*
@@ -55,19 +55,19 @@ table.dataTable thead .sorting_desc_disabled {
   background-position: center right;
 }
 table.dataTable thead .sorting {
-  background-image: url("DataTables-1.10.20/images/sort_both.png");
+  background-image: url("DataTables-1.10.18/images/sort_both.png");
 }
 table.dataTable thead .sorting_asc {
-  background-image: url("DataTables-1.10.20/images/sort_asc.png");
+  background-image: url("DataTables-1.10.18/images/sort_asc.png");
 }
 table.dataTable thead .sorting_desc {
-  background-image: url("DataTables-1.10.20/images/sort_desc.png");
+  background-image: url("DataTables-1.10.18/images/sort_desc.png");
 }
 table.dataTable thead .sorting_asc_disabled {
-  background-image: url("DataTables-1.10.20/images/sort_asc_disabled.png");
+  background-image: url("DataTables-1.10.18/images/sort_asc_disabled.png");
 }
 table.dataTable thead .sorting_desc_disabled {
-  background-image: url("DataTables-1.10.20/images/sort_desc_disabled.png");
+  background-image: url("DataTables-1.10.18/images/sort_desc_disabled.png");
 }
 table.dataTable tbody tr {
   background-color: #ffffff;
@@ -562,7 +562,6 @@ a.dt-button {
   user-select: none;
   text-decoration: none;
   outline: none;
-  text-overflow: ellipsis;
 }
 button.dt-button.disabled,
 div.dt-button.disabled,
@@ -689,7 +688,11 @@ div.dt-button-collection {
   z-index: 2002;
   border-radius: 5px;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
-  box-sizing: border-box;
+  -webkit-column-gap: 8px;
+  -moz-column-gap: 8px;
+  -ms-column-gap: 8px;
+  -o-column-gap: 8px;
+  column-gap: 8px;
 }
 div.dt-button-collection button.dt-button,
 div.dt-button-collection div.dt-button,
@@ -730,7 +733,7 @@ div.dt-button-collection.fixed {
   border-radius: 0;
 }
 div.dt-button-collection.fixed.two-column {
-  margin-left: -200px;
+  margin-left: -150px;
 }
 div.dt-button-collection.fixed.three-column {
   margin-left: -225px;
@@ -738,22 +741,12 @@ div.dt-button-collection.fixed.three-column {
 div.dt-button-collection.fixed.four-column {
   margin-left: -300px;
 }
-div.dt-button-collection > :last-child {
-  display: block !important;
-  -webkit-column-gap: 8px;
-  -moz-column-gap: 8px;
-  -ms-column-gap: 8px;
-  -o-column-gap: 8px;
-  column-gap: 8px;
-}
-div.dt-button-collection > :last-child > * {
+div.dt-button-collection > * {
   -webkit-column-break-inside: avoid;
   break-inside: avoid;
 }
 div.dt-button-collection.two-column {
-  width: 400px;
-}
-div.dt-button-collection.two-column > :last-child {
+  width: 300px;
   padding-bottom: 1px;
   -webkit-column-count: 2;
   -moz-column-count: 2;
@@ -763,8 +756,6 @@ div.dt-button-collection.two-column > :last-child {
 }
 div.dt-button-collection.three-column {
   width: 450px;
-}
-div.dt-button-collection.three-column > :last-child {
   padding-bottom: 1px;
   -webkit-column-count: 3;
   -moz-column-count: 3;
@@ -774,8 +765,6 @@ div.dt-button-collection.three-column > :last-child {
 }
 div.dt-button-collection.four-column {
   width: 600px;
-}
-div.dt-button-collection.four-column > :last-child {
   padding-bottom: 1px;
   -webkit-column-count: 4;
   -moz-column-count: 4;
@@ -896,17 +885,6 @@ table.fixedHeader-locked {
   table.fixedHeader-floating {
     display: none;
   }
-}
-
-
-table.dataTable tbody th.focus,
-table.dataTable tbody td.focus {
-  box-shadow: inset 0 0 1px 2px #3366ff;
-}
-
-div.dtk-focus-alt table.dataTable tbody th.focus,
-div.dtk-focus-alt table.dataTable tbody td.focus {
-  box-shadow: inset 0 0 1px 2px #ff8b33;
 }
 
 

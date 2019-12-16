@@ -46,7 +46,7 @@ $.extend( true, DataTable.Buttons.defaults, {
 		},
 		collection: {
 			tag: 'ul',
-			className: 'dropdown-menu',
+			className: 'dt-button-collection dropdown-menu',
 			button: {
 				tag: 'li',
 				className: 'dt-button',
