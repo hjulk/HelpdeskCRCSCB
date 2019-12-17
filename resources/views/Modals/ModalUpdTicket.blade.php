@@ -1,7 +1,7 @@
 <div class="modal fade bs-example-modal-lg-udpZ" id="modal-tickets-upd">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Actualizar Ticket</h4>

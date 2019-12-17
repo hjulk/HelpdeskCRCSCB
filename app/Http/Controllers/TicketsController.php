@@ -19,7 +19,7 @@ class TicketsController extends Controller
 
     public function crearTicket(){
         $data = Input::all();
-        $creadoPor          = (int)Input::get('IdUsuario');
+        $creadoPor          = (int)\Session::get('IdUsuario');
         $buscarUsuario = Usuarios::BuscarNombre($creadoPor);
         foreach($buscarUsuario as $value){
             $Administrador = (int)$value->rol_id;
@@ -35,7 +35,7 @@ class TicketsController extends Controller
             'project_id'        =>  'required',
             'dependencia'       =>  'required',
             'priority_id'       =>  'required',
-            'id_categoria'       =>  'required',
+            'id_categoria'      =>  'required',
             'id_usuario'        =>  'required',
             'id_estado'         =>  'required',
             'evidencia'         =>  'max:5120'
@@ -59,7 +59,7 @@ class TicketsController extends Controller
             $Categoria          = (int)Input::get('id_categoria');
             $AsignadoA          = (int)Input::get('id_usuario');
             $Estado             = (int)Input::get('id_estado');
-            $creadoPor          = (int)Input::get('IdUsuario');
+            $creadoPor          = (int)\Session::get('IdUsuario');
 
             $nombreCategoria    = Tickets::Categoria($Categoria);
             $nombrePrioridad    = Tickets::Prioridad($Prioridad);
@@ -79,15 +79,17 @@ class TicketsController extends Controller
                 $nameAsignado = $row->name;
                 $emailAsignado = $row->email;
             }
+            $ticketUser = 0;
 
             $CrearTicket = Tickets::CrearTicket($idTipo,$Asunto,$Descripcion,$NombreUsuario,$TelefonoUsuario,$CorreUsuario,
-                                                $IdSede,$Area,$Prioridad,$Categoria,$AsignadoA,$Estado,$creadoPor);
+                                                $IdSede,$Area,$Prioridad,$Categoria,$AsignadoA,$Estado,$creadoPor,$ticketUser);
 
             if($CrearTicket){
                 $buscarUltimo = Tickets::BuscarLastTicket($creadoPor);
                 foreach($buscarUltimo as $row){
                     $ticket = $row->id;
                 }
+                Tickets::CrearTicketAsignado($ticket,$Asunto,$Descripcion,$creadoPor,$AsignadoA);
                 $destinationPath = null;
                 $filename        = null;
                 if (Input::hasFile('evidencia')) {
@@ -508,6 +510,442 @@ class TicketsController extends Controller
             return \Response::json(['valido'=>'false','errors'=>$verrors]);
         }
 
+    }
+
+    public function crearTicketUsuario(){
+        $data           = Input::all();
+        $creadoPor      = (int)\Session::get('IdUsuario');
+        $buscarUsuario  = Usuarios::BuscarNombre($creadoPor);
+        foreach($buscarUsuario as $value){
+            $Administrador = (int)$value->rol_id;
+        }
+        $url = TicketsController::BuscarURL($Administrador);
+        $reglas = array(
+            'nombres'           =>  'required',
+            'identificacion'    =>  'required',
+            'cargo'             =>  'required',
+            'sede'              =>  'required',
+            'area'              =>  'required',
+            'jefe'              =>  'required',
+            'fechaIngreso'      =>  'required',
+            'correoS'           =>  'required',
+            'cargo_nuevo'       =>  'required',
+            'estado'            =>  'required',
+            'prioridad'         =>  'required'
+        );
+        $validador  = Validator::make($data, $reglas);
+        $messages   = $validador->messages();
+        foreach ($reglas as $key => $value){
+            $verrors[$key] = $messages->first($key);
+        }
+        if($validador->passes()) {
+            $Redes = 0;
+            $Infraestructura = 0;
+            $Aplicaciones = 0;
+            $Nombres                = Input::get('nombres');
+            $Identificacion         = Input::get('identificacion');
+            $Cargo                  = Input::get('cargo');
+            $Sede                   = (int)Input::get('sede');
+            $BuscarSede             = Sedes::BuscarSedeID($Sede);
+            foreach($BuscarSede as $value){
+                $NombreSede = $value->name;
+            }
+            $Area                   = Input::get('area');
+            $Jefe                   = Input::get('jefe');
+            $FechaIngreso           = Input::get('fechaIngreso');
+            $CorreoS                = Input::get('correoS');
+            $CargoNuevo             = (int)Input::get('cargo_nuevo');
+            if($CargoNuevo === 1){
+                $CargoNuevo_desc = 'Sí';
+            }else{
+                $CargoNuevo_desc = 'No';
+            }
+            if(Input::get('funcionario')){
+                $Funcionario            = Input::get('funcionario');
+            }else{
+                $Funcionario = 'SIN FUNCIONARIO';
+            }
+            if(Input::get('usuario_dominio')){
+                $UsuarioDominio     = (int)Input::get('usuario_dominio');
+                if($UsuarioDominio === 1){
+                    $Infraestructura++;
+                    $UsuarioDominio_desc = 'Sí';
+                }
+            }else{
+                $UsuarioDominio     = 0;
+                $UsuarioDominio_desc = 'No';
+            }
+            if(Input::get('correo_electronico')){
+                $CorreoElectronico   = (int)Input::get('correo_electronico');
+                if($CorreoElectronico === 1){
+                    $Infraestructura++;
+                    $CorreoElectronico_desc   = 'Sí';
+                }
+            }else{
+                $CorreoElectronico   = 0;
+                $CorreoElectronico_desc = 'No';
+            }
+
+            if(Input::get('correo_funcionario')){
+                $CorreoFuncionario      = Input::get('correo_funcionario');
+            }else{
+                $CorreoFuncionario      = 'SIN CORREO';
+            }
+            if(Input::get('equipo_computo')){
+                $EquipoComputo      = (int)Input::get('equipo_computo');
+                if($EquipoComputo === 1){
+                    $Infraestructura++;
+                    $EquipoComputo_desc = 'Portatil';
+                }else if($EquipoComputo === 2){
+                    $Infraestructura++;
+                    $EquipoComputo_desc = 'Escritorio';
+                }
+            }else{
+                $EquipoComputo      = 0;
+                $EquipoComputo_desc = 'No';
+            }
+
+            if(Input::get('acceso_carpeta')){
+                $AccesoCarpeta          = Input::get('acceso_carpeta');
+            }else{
+                $AccesoCarpeta          = 'SIN CARPETA';
+            }
+            if(Input::get('celular')){
+                $Celular            = (int)Input::get('celular');
+                if($Celular === 1){
+                    $Redes++;
+                    $Celular_desc = 'Sí';
+                }
+            }else{
+                $Celular            = 0;
+                $Celular_desc       = 'No';
+            }
+            if(Input::get('datos')){
+                $Datos              = (int)Input::get('datos');
+                if($Datos === 1){
+                    $Redes++;
+                    $Datos_desc = 'Sí';
+                }
+            }else{
+                $Datos              = 0;
+                $Datos_desc         = 'No';
+            }
+            if(Input::get('minutos')){
+                $Minutos            = (int)Input::get('minutos');
+                if($Minutos === 1){
+                    $Redes++;
+                    $Minutos_desc = 'Sí';
+                }
+            }else{
+                $Minutos            = 0;
+                $Minutos_desc       = 'No';
+            }
+            if(Input::get('extension_tel')){
+                $ExtensionTel       = (int)Input::get('extension_tel');
+                if($ExtensionTel === 1){
+                    $Redes++;
+                    $ExtensionTel_desc = 'Sí';
+                }
+            }else{
+                $ExtensionTel       = 0;
+                $ExtensionTel_desc  = 'No';
+            }
+            if(Input::get('conectividad')){
+                $Conectividad       = (int)Input::get('conectividad');
+                if($Conectividad === 1){
+                    $Redes++;
+                    $Conectividad_desc = 'Sí';
+                }
+            }else{
+                $Conectividad       = 0;
+                $Conectividad_desc  = 'No';
+            }
+            if(Input::get('acceso_internet')){
+                $AccesoInternet     = (int)Input::get('acceso_internet');
+                switch($AccesoInternet){
+                    Case 1  :   $AccesoInternet_desc = 'Básico';
+                                $Redes++;
+                                break;
+                    Case 2  :   $AccesoInternet_desc = 'Medio';
+                                $Redes++;
+                                break;
+                    Case 3  :   $AccesoInternet_desc = 'VIP';
+                                $Redes++;
+                                break;
+                    Case 4  :   $AccesoInternet_desc = 'Bloqueo';
+                                $Redes++;
+                                break;
+                    Case 0  :   $AccesoInternet_desc = 'NO';
+                                $Redes++;
+                                break;
+                }
+            }else{
+                $AccesoInternet         = 0;
+                $AccesoInternet_desc    = 'No';
+            }
+            if(Input::get('app_85')){
+                $App85              = (int)Input::get('app_85');
+                if($App85 === 1){
+                    $Aplicaciones++;
+                    $App85_desc = 'Sí';
+                }
+            }else{
+                $App85              = 0;
+                $App85_desc = 'No';
+            }
+            if(Input::get('app_dinamica')){
+                $AppDinamica        = (int)Input::get('app_dinamica');
+                if($AppDinamica === 1){
+                    $Aplicaciones++;
+                    $AppDinamica_desc = 'Sí';
+                }
+            }else{
+                $AppDinamica        = 0;
+                $AppDinamica_desc   = 'No';
+            }
+            if(Input::get('otro_aplicativo')){
+                $OtroAplicativo     = Input::get('otro_aplicativo');
+                $Aplicaciones++;
+            }else{
+                $OtroAplicativo     = 'NINGUNO';
+            }
+            if(Input::get('cap_85')){
+                $Cap85              = (int)Input::get('cap_85');
+                if($Cap85 === 1){
+                    $Aplicaciones++;
+                    $Cap85_desc = 'Sí';
+                }
+            }else{
+                $Cap85              = 0;
+                $Cap85_desc         = 'No';
+            }
+            if(Input::get('cap_dinamica')){
+                $CapDinamica        = (int)Input::get('cap_dinamica');
+                if($CapDinamica === 1){
+                    $Aplicaciones++;
+                    $CapDinamica_desc = 'Sí';
+                }
+            }else{
+                $CapDinamica        = 0;
+                $CapDinamica_desc = 'No';
+            }
+            $Observaciones          = Input::get('observaciones');
+            $Estado                 = (int)Input::get('estado');
+            $Prioridad              = (int)Input::get('prioridad');
+            $nombrePrioridad        = Tickets::Prioridad($Prioridad);
+            $nombreEstado           = Tickets::Estado($Estado);
+            foreach($nombrePrioridad as $row){
+                $namePrioridad = $row->name;
+            }
+            foreach($nombreEstado as $row){
+                $nameEstado = $row->name;
+            }
+
+            $TicketUsuario = Tickets::CrearTicketUsuario($Nombres,$Identificacion,$Cargo,$Sede,$Area,$Jefe,$FechaIngreso,$CorreoS,$CargoNuevo,$Funcionario,$UsuarioDominio,$CorreoElectronico,$CorreoFuncionario,$EquipoComputo,$AccesoCarpeta,$Celular,$Datos,$Minutos,$ExtensionTel,$Conectividad,$AccesoInternet,$App85,$AppDinamica,$OtroAplicativo,$Cap85,$CapDinamica,$Observaciones,$Estado,$Prioridad,$creadoPor);
+
+            if($TicketUsuario){
+                $buscarUltimo = Tickets::BuscarLastTicketUsuario($creadoPor);
+                foreach($buscarUltimo as $row){
+                    $ticketUser = $row->id;
+                }
+                $Asunto             = 'Creación de Usuario '.$Nombres;
+                $NombreUsuario      = 'Gestión Humana';
+                $TelefonoUsuario    = 'Ext. 619';
+                $Tickets            = "Creación";
+                $emailAsignado      = "";
+                $idTipo             = 2;
+
+                $Descripcion        = "Nombres y Apellidos: $Nombres\n
+                                    Identificación: $Identificacion\n
+                                    Cargo: $Cargo\n
+                                    Sede: $NombreSede\n
+                                    Área: $Area\n
+                                    Jefe Inmediato: $Jefe\n
+                                    Fecha Ingreso: $FechaIngreso\n";
+
+                if($Redes > 0){
+                    $Categoria = 3;
+                    $BuscarUsuario = Usuarios::UsuarioTicket($Categoria);
+                    if($BuscarUsuario){
+                        foreach($BuscarUsuario as $row){
+                            $IdUsuario      = $row->id;
+                        }
+                    }else{
+                        $BuscarUsuario = Usuarios::UsuarioTicketBackup($Categoria);
+                        foreach($BuscarUsuario as $row){
+                            $IdUsuario = $row->id;
+                        }
+                    }
+                    $Descripcion .= "Requiere Celular Coorporativo: $Celular_desc\n
+                                    Requiere Datos: $Datos_desc\n
+                                    Extensión Telefónica: $ExtensionTel_desc\n
+                                    Conectividad VPN: $Conectividad_desc\n
+                                    Nivel Internet: $AccesoInternet_desc\n
+                                    Observación: $Observaciones";
+                    $CrearTicket  = Tickets::CrearTicket($idTipo,$Asunto,$Descripcion,$NombreUsuario,$TelefonoUsuario,$CorreoS,
+                                                $Sede,$Area,$Prioridad,$Categoria,$IdUsuario,$Estado,$creadoPor,$ticketUser);
+                    $buscarUltimo = Tickets::BuscarLastTicket($creadoPor);
+                    foreach($buscarUltimo as $row){
+                        $idticket = $row->id;
+                    }
+                    $Tickets    .= "Ticket Redes y Comunicaciones: $idticket,";
+                    $buscarCorreo = Usuarios::BuscarNombre($IdUsuario);
+                    foreach($buscarCorreo as $rows){
+                        if($emailAsignado === ""){
+                            $emailAsignado  .= $rows->email;
+                        }else{
+                            $emailAsignado  .= ';'.$rows->email;
+                        }
+                    }
+                }
+                if($Infraestructura > 0){
+                    $Categoria = 2;
+                    $BuscarUsuario = Usuarios::UsuarioTicket($Categoria);
+                    if($BuscarUsuario){
+                        foreach($BuscarUsuario as $row){
+                            $IdUsuario = $row->id;
+                        }
+                    }else{
+                        $BuscarUsuario = Usuarios::UsuarioTicketBackup($Categoria);
+                        foreach($BuscarUsuario as $row){
+                            $IdUsuario = $row->id;
+                        }
+                    }
+                    $Descripcion .= "Cargo Nuevo: $CargoNuevo_desc\n
+                                    Usuario Dominio: $UsuarioDominio_desc\n
+                                    Funcionario que Reemplaza: $Funcionario\n
+                                    Correo Funcionario que reemplaza: $CorreoFuncionario\n
+                                    Requiere Correo Electronico: $CorreoElectronico_desc\n
+                                    Requiere Equipo de Computo: $EquipoComputo_desc\n
+                                    Carpeta Compartida: $AccesoCarpeta\n
+                                    Observación: $Observaciones";
+                    $CrearTicket  = Tickets::CrearTicket($idTipo,$Asunto,$Descripcion,$NombreUsuario,$TelefonoUsuario,$CorreoS,
+                                                $Sede,$Area,$Prioridad,$Categoria,$IdUsuario,$Estado,$creadoPor,$ticketUser);
+                    $buscarUltimo = Tickets::BuscarLastTicket($creadoPor);
+                    foreach($buscarUltimo as $row){
+                        $idticket = $row->id;
+                    }
+                    $Tickets    .= "Ticket Infraestructura: $idticket,";
+                    $buscarCorreo = Usuarios::BuscarNombre($IdUsuario);
+                    foreach($buscarCorreo as $rows){
+                        if($emailAsignado === ""){
+                            $emailAsignado  .= $rows->email;
+                        }else{
+                            $emailAsignado  .= ';'.$rows->email;
+                        }
+                    }
+                }
+                if($Aplicaciones > 0){
+                    $Categoria = 1;
+                    $BuscarUsuario = Usuarios::UsuarioTicket($Categoria);
+                    if($BuscarUsuario){
+                        foreach($BuscarUsuario as $row){
+                            $IdUsuario = $row->id;
+                        }
+                    }else{
+                        $BuscarUsuario = Usuarios::UsuarioTicketBackup($Categoria);
+                        foreach($BuscarUsuario as $row){
+                            $IdUsuario = $row->id;
+                        }
+                    }
+                    $Descripcion .= "Sistema 8.5: $App85_desc\n
+                                    Dínamica: $AppDinamica_desc\n
+                                    Otro Aplicativo: $OtroAplicativo\n
+                                    Capacitación 8.5: $Cap85_desc\n
+                                    Capacitación Dinamica: $CapDinamica_desc\n
+                                    Observación: $Observaciones";
+                                    $CrearTicket  = Tickets::CrearTicket($idTipo,$Asunto,$Descripcion,$NombreUsuario,$TelefonoUsuario,$CorreoS,
+                                                $Sede,$Area,$Prioridad,$Categoria,$IdUsuario,$Estado,$creadoPor,$ticketUser);
+                    $buscarUltimo = Tickets::BuscarLastTicket($creadoPor);
+                    foreach($buscarUltimo as $row){
+                        $idticket = $row->id;
+                    }
+                    $Tickets    .= "Ticket Aplicaciones: $idticket,";
+                    $buscarCorreo = Usuarios::BuscarNombre($IdUsuario);
+                    foreach($buscarCorreo as $rows){
+                        if($emailAsignado === ""){
+                            $emailAsignado  .= $rows->email;
+                        }else{
+                            $emailAsignado  .= ';'.$rows->email;
+                        }
+                    }
+                }
+                $DescriptionT = "<b>Nombres y Apellidos:</b> $Nombres<br>
+                                <b>Identificación:</b> $Identificacion<br>
+                                <b>Cargo:</b> $Cargo<br>
+                                <b>Sede:</b> $NombreSede<br>
+                                <b>Área:</b> $Area<br>
+                                <b>Jefe Inmediato:</b> $Jefe<br>
+                                <b>Fecha Ingreso:</b> $FechaIngreso<br>
+                                <b>Cargo Nuevo:</b> $CargoNuevo_desc<br>
+                                <b>Funcionario que Reemplaza:</b> $Funcionario<br>
+                                <b>Correo Funcionario que reemplaza:</b> $CorreoFuncionario<br>
+                                <b>Requiere Correo Electronico:</b> $CorreoElectronico_desc<br>
+                                <b>Requiere Equipo de Computo:</b> $EquipoComputo_desc<br>
+                                <b>Requiere Celular Coorporativo:</b> $Celular_desc<br>
+                                <b>Requiere Datos:</b> $Datos_desc<br>
+                                <b>Extensión Telefónica:</b> $ExtensionTel_desc<br>
+                                <b>Conectividad VPN:</b> $Conectividad_desc<br>
+                                <b>Nivel Internet:</b> $AccesoInternet_desc<br>
+                                <b>Sistema 8.5:</b> $App85_desc<br>
+                                <b>Dínamica:</b> $AppDinamica_desc<br>
+                                <b>Otro Aplicativo:</b> $OtroAplicativo<br>
+                                <b>Capacitación 8.5:</b> $Cap85_desc<br>
+                                <b>Capacitación Dinamica:</b> $CapDinamica_desc";
+                $fecha_sistema  = date('d-m-Y h:i a');
+                $fechaCreacion  = date('d-m-Y h:i a', strtotime($fecha_sistema));
+
+                $subject = "Creación ticket Mesa de ayuda";
+
+                $buscar = strpos($CorreoS,';');
+                if($buscar === false){
+                    $for = "$CorreoS";
+                }else{
+                    $for = array();
+                    $for = explode(';',$CorreoS);
+                }
+                $copia = strpos($emailAsignado,';');
+                if($copia === false){
+                    $cco = "$emailAsignado";
+                }else{
+                    $cco = array();
+                    $cco = explode(';',$emailAsignado);
+                }
+                // $cco = "$emailAsignado";
+                $calificacion = 0;
+                $calificacion1 = null;
+                $calificacion2 = null;
+                $calificacion3 = null;
+                $calificacion4 = null;
+                $calificacion5 = null;
+                $correoEmail = 'julian.orjuela@gmail.com;'.$CorreoS;
+                Mail::send('email/EmailCreacion',
+                        ['Ticket' => $Tickets,'Asunto' => $Asunto,'Categoria' => 'Mesa de Ayuda','Prioridad' => $namePrioridad,
+                        'Mensaje' => $DescriptionT, 'NombreReportante' => $NombreUsuario, 'Telefono' => $TelefonoUsuario,
+                        'Correo' => $correoEmail,'AsignadoA' => 'Mesa de Ayuda','Estado' => $nameEstado,'Fecha' => $fecha_sistema,'Calificacion' => $calificacion,
+                        'Calificacion1' => $calificacion1,'Calificacion2' => $calificacion2,'Calificacion3' => $calificacion3,
+                        'Calificacion4' => $calificacion4,'Calificacion5' => $calificacion5],
+                        function($msj) use($subject,$for,$cco){
+                            $msj->from("soporte.sistemas@cruzrojabogota.org.co","Mesa de Ayuda - Tics");
+                            $msj->subject($subject);
+                            $msj->to($for);
+                            $msj->cc($cco);
+                        });
+                if(count(Mail::failures()) === 0){
+                    $verrors = 'Se creo con éxito el ticket '.$idticket;
+                    return redirect($url.'/ticketsUsuario')->with('mensaje', $verrors);
+                }else{
+                    $verrors = 'Se creo con éxito el ticket '.$idticket.', pero no pudo ser enviado el correo al usuario';
+                    return redirect($url.'/ticketsUsuario')->with('precaucion', $verrors);
+                }
+            }else{
+                $verrors = array();
+                array_push($verrors, 'Hubo un problema al crear el ticket');
+                return \Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
+            }
+        }else{
+            return \Redirect::to($url.'/ticketsUsuario')->withErrors(['errors' => $verrors])->withInput();
+        }
     }
 
     public function calificarTicket(){

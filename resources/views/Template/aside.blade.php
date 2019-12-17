@@ -3,6 +3,9 @@
     <section class="sidebar">
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MENÚ DE NAVEGACIÓN</li>
+            <li>
+                <a href="dashboard"><i class="fa fa-home"></i> <span>Inicio</span></a>
+            </li>
             <li class="treeview">
                 <a href="tickets">
                     <i class="fa fa-ticket"></i> <span>Tickets</span>

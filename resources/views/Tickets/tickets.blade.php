@@ -21,8 +21,8 @@ Tickets
         <div class="box box-primary">
             <div class="box-body">
                 <div class="row">
-                    <div class="col-md-6">
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#modal-tickets">Crear Ticket</button>
+                    <div class="col-md-12">
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#modal-tickets"><i class="fa fa-plus-circle"></i>&nbsp;Crear Ticket</button>
                         @if(Session::get('Rol') === 1)
                             <button class="btn btn-success" data-toggle="modal" data-target="#modal-reabrir-tickets">Reabrir Ticket</button>
                         @endif
@@ -93,7 +93,7 @@ Tickets
 
 </section>
 @include('Modals.ModalTickets')
- @include('Modals.ModalUpdTicket')
+@include('Modals.ModalUpdTicket')
 @endsection
 
 @section('scripts')

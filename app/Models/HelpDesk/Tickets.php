@@ -16,6 +16,11 @@ class Tickets extends Model
         return $tickets;
     }
 
+    public static function ListarTicketsUsuario(){
+        $ticketsU = DB::Select("SELECT * FROM user_create WHERE estado IN (1,2)");
+        return $ticketsU;
+    }
+
     public static function TicketsUsuario($id_user,$IdRolUSer){
         $categoria = DB::SELECT("SELECT * FROM USER WHERE ID = $id_user");
         foreach($categoria as $valor){
@@ -52,6 +57,11 @@ class Tickets extends Model
 
     public static function ListarPrioridad(){
         $tickets = DB::Select("SELECT * FROM priority");
+        return $tickets;
+    }
+
+    public static function ListarPrioridadA(){
+        $tickets = DB::Select("SELECT * FROM priority WHERE id not in (3)");
         return $tickets;
     }
 
@@ -231,20 +241,30 @@ class Tickets extends Model
     }
 
     public static function CrearTicket($idTipo,$Asunto,$Descripcion,$NombreUsuario,$TelefonoUsuario,$CorreUsuario,
-    $IdSede,$Area,$Prioridad,$Categoria,$AsignadoA,$Estado,$creadoPor){
+    $IdSede,$Area,$Prioridad,$Categoria,$AsignadoA,$Estado,$creadoPor,$ticketUser){
 
         date_default_timezone_set('America/Bogota');
         $fecha_sistema  = date('Y-m-d H:i');
         $fechaCreacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
         $crearTicket = DB::insert('INSERT INTO ticket (title,description,created_at,kind_id,user_id,asigned_id,project_id,dependencia,
-                                                    category_id,priority_id,status_id,name_user,tel_user,user_email,session_id,tipo,h_asigned_id)
-                                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                                                    category_id,priority_id,status_id,name_user,tel_user,user_email,session_id,tipo,h_asigned_id,id_create_user)
+                                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
                                     [$Asunto,$Descripcion,$fechaCreacion,$idTipo,$creadoPor,$AsignadoA,$IdSede,$Area,$Categoria,$Prioridad,
-                                    $Estado,$NombreUsuario,$TelefonoUsuario,$CorreUsuario,$creadoPor,0,$AsignadoA]);
+                                    $Estado,$NombreUsuario,$TelefonoUsuario,$CorreUsuario,$creadoPor,0,$AsignadoA,$ticketUser]);
         DB::Insert('INSERT INTO notificaciones (usuario1,usuario2,leido,fecha)
                     VALUES (?,?,?,?)',
                     [$creadoPor,$AsignadoA,0,$fechaCreacion]);
+
         return $crearTicket;
+    }
+
+    public static function CrearTicketAsignado($idTicket,$Asunto,$Descripcion,$creadoPor,$AsignadoA){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema  = date('Y-m-d H:i');
+        $fechaCreacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
+        DB::Insert('INSERT INTO h_ticket_asigned (id_ticket,title,description,created_at,user_id,asigned_id)
+                    VALUES (?,?,?,?,?,?)',
+                    [$idTicket,$Asunto,$Descripcion,$fechaCreacion,$creadoPor,$AsignadoA]);
     }
 
     public static function ActualizarTicket($idTicket,$idTipo,$Asunto,$Descripcion,$NombreUsuario,$TelefonoUsuario,$CorreUsuario,
@@ -288,6 +308,11 @@ class Tickets extends Model
         return $buscarUltimo;
     }
 
+    public static function BuscarLastTicketUsuario($idUser){
+        $buscarUltimo = DB::Select("SELECT max(id) as id FROM user_create WHERE id_user = $idUser");
+        return $buscarUltimo;
+    }
+
     public static function Evidencia($idticket,$nombrearchivo){
         $Evidencia = DB::insert('INSERT INTO evidencia_tickets (nombre_evidencia,id_ticket) VALUES (?, ?)', [$nombrearchivo,$idticket]);
         return $Evidencia;
@@ -299,6 +324,7 @@ class Tickets extends Model
         foreach($usuarios as $row){
             $id_user = $row->id;
             $nombre_user = $row->name;
+            $category_id = $row->category_id;
             $ticketsDesarrollo  = DB::Select("SELECT * FROM ticket WHERE asigned_id = $id_user AND status_id = 2");
             $tDesarrollo        = count($ticketsDesarrollo);
             $ticketsPendientes  = DB::Select("SELECT * FROM ticket WHERE asigned_id = $id_user AND status_id = 1");
@@ -309,14 +335,14 @@ class Tickets extends Model
             $tCancelados        = count($ticketsCancelados);
             $buscarUsuario      = DB::Select("SELECT * FROM gestion WHERE id_user = $id_user");
             if($buscarUsuario){
-                $actualizarGestion = DB::Update("UPDATE gestion SET desarrollo = $tDesarrollo,pendientes = $tPendientes,terminados = $tTerminados,cancelados = $tCancelados WHERE id_user = $id_user");
+                $actualizarGestion = DB::Update("UPDATE gestion SET desarrollo = $tDesarrollo,pendientes = $tPendientes,terminados = $tTerminados,cancelados = $tCancelados,category_id = $category_id WHERE id_user = $id_user");
             }else{
-                $ingresarGestion = DB::insert('INSERT INTO gestion (nombre_usuario,desarrollo,pendientes,terminados,cancelados,id_user)
-                                                VALUES (?,?,?,?,?,?)', [$nombre_user,$tDesarrollo,$tPendientes,$tTerminados,$tCancelados,$id_user]);
+                $ingresarGestion = DB::insert('INSERT INTO gestion (nombre_usuario,desarrollo,pendientes,terminados,cancelados,id_user,category_id)
+                                                VALUES (?,?,?,?,?,?,?)', [$nombre_user,$tDesarrollo,$tPendientes,$tTerminados,$tCancelados,$id_user,$category_id]);
             }
 
         }
-        $gestion = DB::Select("SELECT * FROM gestion");
+        $gestion = DB::Select("SELECT * FROM gestion ORDER BY category_id");
         return $gestion;
     }
 
@@ -603,5 +629,13 @@ class Tickets extends Model
     public static function Prioridad($Prioridad){
         $BuscarPrioridad = DB::Select("SELECT * FROM priority WHERE id = $Prioridad");
         return $BuscarPrioridad;
+    }
+
+    public static function CrearTicketUsuario($Nombres,$identificacion,$Cargo,$Sede,$Area,$Jefe,$FechaIngreso,$CorreoS,$CargoNuevo,$Funcionario,$UsuarioDominio,$CorreoElectronico,$CorreoFuncionario,$EquipoComputo,$AccesoCarpeta,$Celular,$Datos,$Minutos,$ExtensionTel,$Conectividad,$AccesoInternet,$App85,$AppDinamica,$OtroAplicativo,$Cap85,$CapDinamica,$Observaciones,$Estado,$Prioridad,$creadoPor){
+        $Fecha_Ingreso = date('Y-m-d H:i:s', strtotime($FechaIngreso));
+        $CrearTicketUsuario = DB::Insert('INSERT INTO user_create (nombres,identificacion,cargo,id_sede,area,jefe,fecha_ingreso,email,new_cargo,funcionario_rem,correo_fun,new_email,celular,datos,minutos,equipo,extension,app85,dinamica,other_app,carpeta,vpn,internet,cap85,capdinamica,prioridad,estado,id_user,observaciones,user_dominio)
+                                            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                                            [$Nombres,$identificacion,$Cargo,$Sede,$Area,$Jefe,$Fecha_Ingreso,$CorreoS,$CargoNuevo,$Funcionario,$CorreoFuncionario,$CorreoElectronico,$Celular,$Datos,$Minutos,$EquipoComputo,$ExtensionTel,$App85,$AppDinamica,$OtroAplicativo,$AccesoCarpeta,$Conectividad,$AccesoInternet,$Cap85,$CapDinamica,$Prioridad,$Estado,$creadoPor,$Observaciones,$UsuarioDominio]);
+        return $CrearTicketUsuario;
     }
 }

@@ -41,7 +41,7 @@
 
     <tr>
         <td><b>Descripción:</b></td>
-        <td style="text-align: justify;">{{$Mensaje}}</td>
+        <td style="text-align: justify;">{!! $Mensaje !!}</td>
     </tr>
     <tr>
         <td><b>Nombre de quien solicita:</b></td>

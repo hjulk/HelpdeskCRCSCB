@@ -70,7 +70,7 @@ Dahsboard
                         <div class="col-md-6">
                             <div class='panel panel-default'>
                                 <div class='panel-body'>
-                                    <div id='gestionTics' style="height: -webkit-fill-available; width: -webkit-fill-available;"></div>
+                                    <div id='graficas' style="height: -webkit-fill-available; width: -webkit-fill-available;"></div>
                                 </div>
                             </div>
                         </div>
@@ -90,14 +90,14 @@ Dahsboard
                         <div class="col-md-6">
                             <div class='panel panel-default'>
                                 <div class='panel-body'>
-                                    <div id='graficas' style="height: -webkit-fill-available; width: -webkit-fill-available;"></div>
+                                    <div id='gestionTics' style="height:  500px; width: -webkit-fill-available;"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class='panel panel-default'>
                                 <div class='panel-body'>
-                                    <div id='gestionSedes' style="height: -webkit-fill-available; width: -webkit-fill-available;"></div>
+                                    <div id='gestionSedes' style="height:  500px; width: -webkit-fill-available;"></div>
                                 </div>
                             </div>
                         </div>
@@ -489,7 +489,7 @@ Dahsboard
                 categories: [
                     @if($Gestion)
                     @foreach($Gestion as $valor)
-                        '{{$valor['nombre']}}' {{$valor['separador']}}
+                    '<span style=\"fill: {{$valor['color']}};\">'+'{{$valor['nombre']}}'+'</span>' {{$valor['separador']}}
                     @endforeach
                     @endif
                 ],

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\User;
+namespace App\Models\HelpDesk;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -280,5 +280,10 @@ class Inventario extends Model
     public static function ListarEstado(){
         $ListarEstado = DB::Select("SELECT * FROM activo");
         return $ListarEstado;
+    }
+
+    public static function ListarEquipoUsuarioC(){
+        $ListarEquipo = DB::Select("SELECT * FROM tipo_equipo WHERE id IN (1,2)");
+        return $ListarEquipo;
     }
 }

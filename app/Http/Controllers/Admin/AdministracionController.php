@@ -7,6 +7,7 @@ use App\Models\HelpDesk\Tickets;
 use App\Models\Admin\Sedes;
 use App\Models\Admin\Usuarios;
 use App\Models\Admin\Roles;
+use App\Models\HelpDesk\Inventario;
 use Illuminate\Support\Facades\Session;
 
 class AdministracionController extends Controller
@@ -150,11 +151,25 @@ class AdministracionController extends Controller
             $contadorGestion = count($buscarGestion);
             $contG = 0;
             foreach($buscarGestion as $consulta){
-                    $resultado_gestion[$contG]['nombre']= $consulta->nombre_usuario;
-                    $resultado_gestion[$contG]['desarrollo']= $consulta->desarrollo;
-                    $resultado_gestion[$contG]['pendientes']= $consulta->pendientes;
-                    $resultado_gestion[$contG]['terminados']= $consulta->terminados;
-                    $resultado_gestion[$contG]['cancelados']= $consulta->cancelados;
+                    $categoria = (int)$consulta->category_id;
+                    switch($categoria){
+                        Case 1  :   $color = '#8B103E';
+                                    break;
+                        Case 2  :   $color = '#FE9129';
+                                    break;
+                        Case 3  :   $color = '#64D9A8';
+                                    break;
+                        Case 4  :   $color = '#33B2E3';
+                                    break;
+                        default :   $color = '#000000';
+                                    break;
+                    }
+                    $resultado_gestion[$contG]['nombre']        = $consulta->nombre_usuario;
+                    $resultado_gestion[$contG]['color']         = $color;
+                    $resultado_gestion[$contG]['desarrollo']    = $consulta->desarrollo;
+                    $resultado_gestion[$contG]['pendientes']    = $consulta->pendientes;
+                    $resultado_gestion[$contG]['terminados']    = $consulta->terminados;
+                    $resultado_gestion[$contG]['cancelados']    = $consulta->cancelados;
 
                     if($contG >= ($contadorGestion-1)){
                         $resultado_gestion[$contG]['separador']= '';
@@ -445,7 +460,147 @@ class AdministracionController extends Controller
     }
 
     public function ticketsUsuario(){
-        return view('tickets.ticketsUsuario');
+        $buscarTicketsU = Tickets::ListarTicketsUsuario();
+        $ticketsUsuario = array();
+        $cont = 0;
+        date_default_timezone_set('America/Bogota');
+        foreach($buscarTicketsU as $value){
+            $ticketsUsuario[$cont]['id']                = $value->id;
+            $ticketsUsuario[$cont]['nombres']           = strtoupper($value->nombres);
+            $ticketsUsuario[$cont]['identificacion']    = $value->identificacion;
+            $ticketsUsuario[$cont]['cargo']             = $value->cargo;
+
+            $ticketsUsuario[$cont]['id_sede']           = $value->id_sede;
+            $idSede = (int)$value->id_sede;
+            $BuscarSede = Sedes::BuscarSedeID($idSede);
+            foreach($BuscarSede as $row){
+                $ticketsUsuario[$cont]['nombre_sede']   = strtoupper($row->name);
+            }
+
+            $ticketsUsuario[$cont]['area']              = $value->area;
+            $ticketsUsuario[$cont]['jefe']              = $value->jefe;
+            $ticketsUsuario[$cont]['fecha_ingreso']     = date('d/m/Y', strtotime($value->fecha_ingreso));
+            $ticketsUsuario[$cont]['email']             = $value->email;
+            $ticketsUsuario[$cont]['new_cargo']         = $value->new_cargo;
+            $ticketsUsuario[$cont]['funcionario_rem']   = $value->funcionario_rem;
+            $ticketsUsuario[$cont]['correo_fun']        = $value->correo_fun;
+            $ticketsUsuario[$cont]['new_email']         = $value->new_email;
+            $ticketsUsuario[$cont]['celular']           = $value->celular;
+            $ticketsUsuario[$cont]['datos']             = $value->datos;
+            $ticketsUsuario[$cont]['minutos']           = $value->minutos;
+            $ticketsUsuario[$cont]['equipo']            = $value->equipo;
+            $ticketsUsuario[$cont]['extension']         = $value->extension;
+            $ticketsUsuario[$cont]['app85']             = $value->app85;
+            $ticketsUsuario[$cont]['dinamica']          = $value->dinamica;
+            $ticketsUsuario[$cont]['other_app']         = $value->other_app;
+            $ticketsUsuario[$cont]['carpeta']           = $value->carpeta;
+            $ticketsUsuario[$cont]['vpn']               = $value->vpn;
+            $ticketsUsuario[$cont]['internet']          = $value->internet;
+            $ticketsUsuario[$cont]['cap85']             = $value->cap85;
+            $ticketsUsuario[$cont]['capdinamica']       = $value->capdinamica;
+
+            $ticketsUsuario[$cont]['prioridad']         = (int)$value->prioridad;
+            $IdPrioridad                                = (int)$value->prioridad;
+            $Prioridad                                  =  Tickets::BuscarPrioridadID($IdPrioridad);
+            foreach($Prioridad as $row){
+                $NombrePrioridad                        = strtoupper($row->name);
+            }
+            if($IdPrioridad === 1){
+                $ticketsUsuario[$cont]['prioridad']     = $NombrePrioridad;
+                $ticketsUsuario[$cont]['label']         = 'label label-danger';
+            }else if($IdPrioridad === 2){
+                $ticketsUsuario[$cont]['prioridad']     = $NombrePrioridad;
+                $ticketsUsuario[$cont]['label']         = 'label label-warning';
+            }else if($IdPrioridad === 3){
+                $ticketsUsuario[$cont]['prioridad']     = $NombrePrioridad;
+                $ticketsUsuario[$cont]['label']         = 'label label-success';
+            }else{
+                $ticketsUsuario[$cont]['prioridad']     = 'SIN PRIORIDAD';
+                $ticketsUsuario[$cont]['label']         = 'label label-general';
+            }
+
+            $ticketsUsuario[$cont]['estado']            = $value->estado;
+            $IdEstado   = (int)$value->estado;
+            $Estado     =  Tickets::Estado($IdEstado);
+            foreach($Estado as $row){
+                $ticketsUsuario[$cont]['nombre_estado'] = strtoupper($row->name);
+            }
+
+            $ticketsUsuario[$cont]['estado_rc']         = $value->estado_rc;
+            $ticketsUsuario[$cont]['estado_app']        = $value->estado_app;
+            $ticketsUsuario[$cont]['estado_it']         = $value->estado_it;
+            $EstadoRc       = (int)$value->estado_rc;
+            $EstadoApp      = (int)$value->estado_app;
+            $EstadoIt       = (int)$value->estado_it;
+            if($EstadoRc === 1){
+                $ticketsUsuario[$cont]['estadorc']      = 'CREADO';
+            }else{
+                $ticketsUsuario[$cont]['estadorc']      = 'NO CREADO';
+            }
+            if($EstadoApp === 1){
+                $ticketsUsuario[$cont]['estadoapp']     = 'CREADO';
+            }else{
+                $ticketsUsuario[$cont]['estadoapp']     = 'NO CREADO';
+            }
+            if($EstadoIt === 1){
+                $ticketsUsuario[$cont]['estadoit']      = 'CREADO';
+            }else{
+                $ticketsUsuario[$cont]['estadoit']      = 'NO CREADO';
+            }
+
+            $ticketsUsuario[$cont]['id_user']           = $value->id_user;
+            $ticketsUsuario[$cont]['observaciones']     = $value->observaciones;
+            $ticketsUsuario[$cont]['user_dominio']      = $value->user_dominio;
+
+            $cont++;
+        }
+
+        $Prioridad  = Tickets::ListarPrioridadA();
+        $NombrePrioridad = array();
+        $NombrePrioridad[''] = 'Seleccione: ';
+        foreach ($Prioridad as $row){
+            $NombrePrioridad[$row->id] = $row->name;
+        }
+
+        $EstadoA  = Tickets::ListarEstadoA();
+        $NombreEstadoA = array();
+        $NombreEstadoA[0] = 'Seleccione: ';
+        foreach ($EstadoA as $row){
+            $NombreEstadoA[$row->id] = $row->name;
+        }
+
+        $Opciones       = array();
+        $Opciones['']   = 'Seleccione: ';
+        $Opciones[1]    = 'SI';
+        $Opciones[0]    = 'NO';
+
+        $NombreEquipo       = array();
+        $NombreEquipo['']   = 'Seleccione: ';
+        $Equipo             = Inventario::ListarEquipoUsuarioC();
+        foreach ($Equipo as $row){
+            $NombreEquipo[$row->id] = $row->name;
+        }
+
+        $NombreSede = array();
+        $NombreSede[''] = 'Seleccione: ';
+        $Sedes  = Sedes::Sedes();
+        foreach ($Sedes as $row){
+            $NombreSede[$row->id] = $row->name;
+        }
+
+        $Acceso       = array();
+        $Acceso['']   = 'Seleccione: ';
+        $Acceso[1]    = 'Básico';
+        $Acceso[2]    = 'Medio';
+        $Acceso[3]    = 'VIP';
+        $Acceso[4]    = 'Bloqueo';
+        $Acceso[0]    = 'NO';
+
+        return view('tickets.ticketsUsuario',['Opciones' => $Opciones,'Prioridad' => $NombrePrioridad,'Estado' => $NombreEstadoA,
+                                              'TicketUsuario' => $ticketsUsuario,'NombresCompletos' => null,'Identificacion' =>null,
+                                              'Cargo' => null,'Sede' => $NombreSede,'Area' => null,'Jefe' => null,'FechaIngreso' => null,
+                                              'CorreoSolicitante' => null,'Funcionario' => null,'CorreoFuncionario' => null,'Equipo' => $NombreEquipo,
+                                              'Aplicativo' => null,'Carpeta' => null,'Acceso' => $Acceso,'Observaciones' => null]);
     }
 
 }

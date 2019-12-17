@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>HelpDesk QCL | @yield('titulo','Dashboard')</title>
+        <title>HelpDesk | @yield('titulo','Dashboard') - {!! Session::get('NombreUsuario') !!}</title>
         <meta name="csrf-token" content="{{ csrf_token() }}" />
         <meta http-equiv="cache-control" content="max-age=0" />
         <meta http-equiv="cache-control" content="no-cache" />

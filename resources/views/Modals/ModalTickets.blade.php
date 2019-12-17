@@ -1,10 +1,10 @@
 <div class="modal fade" id="modal-tickets">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><b>Crear Ticket</b></h4>
+                <h4 class="modal-title">Crear Ticket</h4>
             </div>
 
             {!! Form::open(['url' => 'crearTicket', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
@@ -14,23 +14,23 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Tipo</label>
-                                {!! Form::select('kind_id',$NombreTipo,null,['class'=>'form-control','id'=>'kind_id']) !!}
+                                {!! Form::select('kind_id',$NombreTipo,null,['class'=>'form-control','id'=>'kind_id','required']) !!}
                             </div>
                             <div class="col-md-6">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Asunto</label>
-                                {!! Form::text('title',$Asunto,['class'=>'form-control','id'=>'title','placeholder'=>'Asunto del Ticket']) !!}
+                                {!! Form::text('title',$Asunto,['class'=>'form-control','id'=>'title','placeholder'=>'Asunto del Ticket','required']) !!}
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1" class="col-sm-5 control-label">Descripcion Solicitud</label>
-                        {!! Form::textarea('description',$Descripcion,['class'=>'form-control','id'=>'description','placeholder'=>'Ingrese la descripción de la solicitud','rows'=>'3']) !!}
+                        {!! Form::textarea('description',$Descripcion,['class'=>'form-control','id'=>'description','placeholder'=>'Ingrese la descripción de la solicitud','rows'=>'3','required']) !!}
                     </div>
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-5">
                                 <label for="exampleInputEmail1" class="col-sm-12 control-label">Quien solicita</label>
-                                {!! Form::text('nombre_usuario',$Usuario,['class'=>'form-control','id'=>'nombre_usuario','placeholder'=>'Nombre de quien reporta']) !!}
+                                {!! Form::text('nombre_usuario',$Usuario,['class'=>'form-control','id'=>'nombre_usuario','placeholder'=>'Nombre de quien reporta','required']) !!}
                             </div>
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-md-5 control-label">Telefóno</label>
@@ -38,7 +38,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Correo</label>
-                                {!! Form::text('correo_usuario',$CorreoUsuario,['class'=>'form-control','id'=>'correo_usuario','placeholder'=>'Correo(s) del reportante']) !!}
+                                {!! Form::text('correo_usuario',$CorreoUsuario,['class'=>'form-control','id'=>'correo_usuario','placeholder'=>'Correo(s) del reportante','required']) !!}
                             </div>
                         </div>
                     </div>
@@ -46,15 +46,15 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Sede</label>
-                                {!! Form::select('project_id',$NombreSede,null,['class'=>'form-control','id'=>'project_id','onchange'=>'sedeFunc();']) !!}
+                                {!! Form::select('project_id',$NombreSede,null,['class'=>'form-control','id'=>'project_id','onchange'=>'sedeFunc();','required']) !!}
                             </div>
                             <div class="col-md-5">
                                 <label for="exampleInputEmail1" class="col-sm-12 control-label">Área / Dependencia</label>
-                                {!! Form::text('dependencia',$Dependencia,['class'=>'form-control','id'=>'dependencia']) !!}
+                                {!! Form::text('dependencia',$Dependencia,['class'=>'form-control','id'=>'dependencia','required']) !!}
                             </div>
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Prioridad</label>
-                                {!! Form::select('priority_id',$NombrePrioridad,null,['class'=>'form-control','id'=>'priority_id']) !!}
+                                {!! Form::select('priority_id',$NombrePrioridad,null,['class'=>'form-control','id'=>'priority_id','required']) !!}
                             </div>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Categoria</label>
-                                {!! Form::select('id_categoria',$NombreCategoria,null,['class'=>'form-control','id'=>'id_categoria','onchange'=>'categoriaFunc();']) !!}
+                                {!! Form::select('id_categoria',$NombreCategoria,null,['class'=>'form-control','id'=>'id_categoria','onchange'=>'categoriaFunc();','required']) !!}
                             </div>
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Asignado</label>
@@ -70,7 +70,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Estado</label>
-                                {!! Form::select('id_estado',$NombreEstado,null,['class'=>'form-control','id'=>'id_estado']) !!}
+                                {!! Form::select('id_estado',$NombreEstado,null,['class'=>'form-control','id'=>'id_estado','required']) !!}
                             </div>
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-sm-12 control-label">Anexar Evidencia</label>
@@ -92,7 +92,7 @@
 <div class="modal fade" id="modal-reabrir-tickets">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Reabrir Ticket</h4>

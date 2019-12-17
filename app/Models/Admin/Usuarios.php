@@ -146,12 +146,6 @@ class Usuarios extends Model
         return $consulta;
     }
 
-    public static function BuscarNombreArea($id_area){
-        $consulta = DB::Select("SELECT nombre FROM areas WHERE id = $id_area");
-        // $consulta = DB::table('user')->where('username',$Usuario)->get();
-        return $consulta;
-    }
-
     public static function BuscarNombreSede($id_sede){
         $consulta = DB::Select("SELECT name FROM project WHERE id = $id_sede");
         // $consulta = DB::table('user')->where('username',$Usuario)->get();
@@ -183,10 +177,6 @@ class Usuarios extends Model
         return $activo;
     }
 
-    public static function Desicion(){
-        $activo = DB::Select("SELECT * FROM desicion");
-        return $activo;
-    }
 
     public static function ActivoID($id_activo){
         $activo = DB::Select("SELECT * FROM activo WHERE id = $id_activo");
@@ -200,11 +190,6 @@ class Usuarios extends Model
 
     public static function BuscarXCategoria($id_categoria){
         $activo = DB::Select("SELECT * FROM user WHERE category_id = $id_categoria ORDER BY name");
-        return $activo;
-    }
-
-    public static function BuscarXZona($id_zona){
-        $activo = DB::Select("SELECT * FROM sedes WHERE id_zona = $id_zona ORDER BY nombre");
         return $activo;
     }
 
@@ -231,6 +216,16 @@ class Usuarios extends Model
 
         $contrasena = DB::Update("UPDATE user SET PASSWORD = '$nuevaContrasena' WHERE id = $idUser");
         return $contrasena;
+    }
+
+    public static function UsuarioTicket($Categoria){
+        $BuscarUsuario = DB::Select("SELECT * FROM user WHERE category_id = $Categoria AND rol_id = 3 AND is_active = 1");
+        return $BuscarUsuario;
+    }
+
+    public static function UsuarioTicketBackup($Categoria){
+        $BuscarUsuario = DB::Select("SELECT * FROM user WHERE category_id = $Categoria AND is_active = 1");
+        return $BuscarUsuario;
     }
 
 }
