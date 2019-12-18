@@ -12,12 +12,12 @@ class Roles extends Model
     protected $fillable = array('id','nombre');
 
     public static function ListarRoles(){
-        $roles = DB::Select("SELECT * FROM rol");
+        $roles = DB::Select("SELECT * FROM rol WHERE activo = 1");
         return $roles;
     }
 
     public static function ListarCategorias(){
-        $categorias = DB::Select("SELECT * FROM category");
+        $categorias = DB::Select("SELECT * FROM category WHERE activo = 1");
         return $categorias;
     }
 
@@ -27,33 +27,33 @@ class Roles extends Model
     }
 
     public static function BuscarNombreRol($nombreRol){
-        $consultaRol = DB::Select("SELECT * FROM rol WHERE nombre like '%$nombreRol%'");
+        $consultaRol = DB::Select("SELECT * FROM rol WHERE name like '%$nombreRol%'");
         return $consultaRol;
     }
 
     public static function CrearRol($nombreRol){
-        $crearRol = DB::insert('INSERT INTO rol (nombre,activo) values (?,?)', [$nombreRol,1]);
+        $crearRol = DB::insert('INSERT INTO rol (name,activo) values (?,?)', [$nombreRol,1]);
         return $crearRol;
     }
 
     public static function ActualizarRol($id,$nombreRol,$idactivo){
-        $actualizarRol = DB::Update("UPDATE rol SET nombre = '$nombreRol', activo = $idactivo WHERE id = $id");
+        $actualizarRol = DB::Update("UPDATE rol SET name = '$nombreRol', activo = $idactivo WHERE rol_id = $id");
         return $actualizarRol;
     }
 
     public static function BuscarNombreCategoria($nombreCategoria){
-        $consultaCategoria = DB::Select("SELECT * FROM categoria WHERE nombre like '%$nombreCategoria%'");
+        $consultaCategoria = DB::Select("SELECT * FROM category WHERE name like '%$nombreCategoria%'");
         // dd("SELECT * FROM categoria WHERE nombre like '%$nombreCategoria%'");
         return $consultaCategoria;
     }
 
     public static function CrearCategoria($nombreCategoria){
-        $crearCategoria = DB::insert('INSERT INTO categoria (nombre,activo) values (?,?)', [$nombreCategoria,1]);
+        $crearCategoria = DB::insert('INSERT INTO category (name,activo) values (?,?)', [$nombreCategoria,1]);
         return $crearCategoria;
     }
 
     public static function ActualizarCategoria($id,$nombreCategoria,$idactivo){
-        $actualizarCategoria = DB::Update("UPDATE categoria SET nombre = '$nombreCategoria', activo = $idactivo WHERE id = $id");
+        $actualizarCategoria = DB::Update("UPDATE category SET name = '$nombreCategoria', activo = $idactivo WHERE id = $id");
         return $actualizarCategoria;
     }
 }

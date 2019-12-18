@@ -33,28 +33,28 @@ class RolesController extends Controller
         $NombreActivo = array();
         $NombreActivo[''] = 'Seleccione: ';
         foreach ($Activo as $row){
-            $NombreActivo[$row->id] = $row->nombre;
+            $NombreActivo[$row->id] = $row->name;
         }
 
         foreach($Roles as $value){
-            $RolIndex[$contR]['id'] = $value->id;
-            $RolIndex[$contR]['nombre'] = $value->nombre;
+            $RolIndex[$contR]['id'] = $value->rol_id;
+            $RolIndex[$contR]['name'] = $value->name;
+            $RolIndex[$contR]['activoR'] = $value->activo;
             $idactivo = $value->activo;
-            $RolIndex[$contR]['id_activo'] = $value->activo;
             $nombreActivoS = Usuarios::ActivoID($idactivo);
             foreach($nombreActivoS as $valor){
-                $RolIndex[$contR]['activo'] = $valor->nombre;
+                $RolIndex[$contR]['activo'] = $valor->name;
             }
             $contR++;
         }
         foreach($Categoria as $value){
             $CategoriaIndex[$contC]['id'] = $value->id;
-            $CategoriaIndex[$contC]['nombre'] = $value->nombre;
+            $CategoriaIndex[$contC]['name'] = $value->name;
+            $CategoriaIndex[$contC]['activoC'] = $value->activo;
             $idactivo = $value->activo;
-            $CategoriaIndex[$contC]['id_activo'] = $value->activo;
             $nombreActivoS = Usuarios::ActivoID($idactivo);
             foreach($nombreActivoS as $valor){
-                $CategoriaIndex[$contC]['activo'] = $valor->nombre;
+                $CategoriaIndex[$contC]['activo'] = $valor->name;
             }
             $contC++;
         }
@@ -63,16 +63,11 @@ class RolesController extends Controller
                                     'RolName' => null,'CategoriaName' => null]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function crearRol()
     {
         $data = Input::all();
         $reglas = array(
-            'rol'    =>  'required'
+            'nombre_rol'    =>  'required'
         );
         $validador = Validator::make($data, $reglas);
         $messages = $validador->messages();
@@ -80,7 +75,7 @@ class RolesController extends Controller
             $verrors[$key] = $messages->first($key);
         }
         if($validador->passes()) {
-            $nombreRol = Input::get('rol');
+            $nombreRol = Input::get('nombre_rol');
             $busquedaNombre = Roles::BuscarNombreRol($nombreRol);
             if($busquedaNombre){
                 $verrors = array();
@@ -109,8 +104,8 @@ class RolesController extends Controller
     {
         $data = Input::all();
         $reglas = array(
-            'rol'           =>  'required',
-            'id_activo'    =>  'required'
+            'nombre_rol_upd'    =>  'required',
+            'id_activoR'        =>  'required'
         );
         $validador = Validator::make($data, $reglas);
         $messages = $validador->messages();
@@ -119,8 +114,8 @@ class RolesController extends Controller
         }
         if($validador->passes()) {
             $id         = Input::get('idR');
-            $nombreRol  = Input::get('rol');
-            $idactivo   = Input::get('id_activo');
+            $nombreRol  = Input::get('nombre_rol_upd');
+            $idactivo   = Input::get('id_activoR');
             $ActualizarRol = Roles::ActualizarRol($id,$nombreRol,$idactivo);
             if($ActualizarRol){
                 $verrors = 'Se actualizo con éxito el rol '.$nombreRol;
@@ -140,7 +135,7 @@ class RolesController extends Controller
     {
         $data = Input::all();
         $reglas = array(
-            'categoria'    =>  'required'
+            'nombre_categoria'    =>  'required'
         );
         $validador = Validator::make($data, $reglas);
         $messages = $validador->messages();
@@ -148,7 +143,7 @@ class RolesController extends Controller
             $verrors[$key] = $messages->first($key);
         }
         if($validador->passes()) {
-            $nombreCategoria = Input::get('categoria');
+            $nombreCategoria = Input::get('nombre_categoria');
             $busquedaNombre = Roles::BuscarNombreCategoria($nombreCategoria);
             if($busquedaNombre){
                 $verrors = array();
@@ -177,8 +172,8 @@ class RolesController extends Controller
     {
         $data = Input::all();
         $reglas = array(
-            'categoria'    =>  'required',
-            'id_activo'    =>  'required'
+            'nombre_categoria_upd'    =>  'required',
+            'id_activoC'        =>  'required'
         );
         $validador = Validator::make($data, $reglas);
         $messages = $validador->messages();
@@ -187,8 +182,8 @@ class RolesController extends Controller
         }
         if($validador->passes()) {
             $id                 = Input::get('idC');
-            $nombreCategoria    = Input::get('categoria');
-            $idactivo           = Input::get('id_activo');
+            $nombreCategoria    = Input::get('nombre_categoria_upd');
+            $idactivo           = Input::get('id_activoC');
             $ActualizarCategoria = Roles::ActualizarCategoria($id,$nombreCategoria,$idactivo);
             if($ActualizarCategoria){
                 $verrors = 'Se actualizo con éxito la categoria '.$nombreCategoria;
@@ -204,59 +199,5 @@ class RolesController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Admin\Roles  $roles
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Roles $roles)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Admin\Roles  $roles
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Roles $roles)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Admin\Roles  $roles
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Roles $roles)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Admin\Roles  $roles
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Roles $roles)
-    {
-        //
-    }
 }

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Input;
 use App\Models\Admin\Sedes;
 use App\Models\Helpdesk\Tickets;
 use Validator;
+use App\Models\HelpDesk\Inventario;
 use App\Models\Admin\Usuarios;
 use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Mail;
@@ -552,7 +553,7 @@ class TicketsController extends Controller
             }
             $Area                   = Input::get('area');
             $Jefe                   = Input::get('jefe');
-            $FechaIngreso           = Input::get('fechaIngreso');
+            $FechaIngreso           = date('Y-m-d H:i:s', strtotime(Input::get('fechaIngreso')));
             $CorreoS                = Input::get('correoS');
             $CargoNuevo             = (int)Input::get('cargo_nuevo');
             if($CargoNuevo === 1){
@@ -788,6 +789,7 @@ class TicketsController extends Controller
                     foreach($buscarUltimo as $row){
                         $idticket = $row->id;
                     }
+                    Tickets::CrearTicketAsignado($idticket,$Asunto,$Descripcion,$creadoPor,$IdUsuario);
                     $Tickets    .= "Ticket Redes y Comunicaciones: $idticket,";
                     $buscarCorreo = Usuarios::BuscarNombre($IdUsuario);
                     foreach($buscarCorreo as $rows){
@@ -825,6 +827,7 @@ class TicketsController extends Controller
                     foreach($buscarUltimo as $row){
                         $idticket = $row->id;
                     }
+                    Tickets::CrearTicketAsignado($idticket,$Asunto,$Descripcion,$creadoPor,$IdUsuario);
                     $Tickets    .= "Ticket Infraestructura: $idticket,";
                     $buscarCorreo = Usuarios::BuscarNombre($IdUsuario);
                     foreach($buscarCorreo as $rows){
@@ -860,6 +863,7 @@ class TicketsController extends Controller
                     foreach($buscarUltimo as $row){
                         $idticket = $row->id;
                     }
+                    Tickets::CrearTicketAsignado($idticket,$Asunto,$Descripcion,$creadoPor,$IdUsuario);
                     $Tickets    .= "Ticket Aplicaciones: $idticket,";
                     $buscarCorreo = Usuarios::BuscarNombre($IdUsuario);
                     foreach($buscarCorreo as $rows){
@@ -918,7 +922,7 @@ class TicketsController extends Controller
                 $calificacion3 = null;
                 $calificacion4 = null;
                 $calificacion5 = null;
-                $correoEmail = 'julian.orjuela@gmail.com;'.$CorreoS;
+                $correoEmail = 'seleccion@cruzrojabogota.org.co;'.$CorreoS;
                 Mail::send('email/EmailCreacion',
                         ['Ticket' => $Tickets,'Asunto' => $Asunto,'Categoria' => 'Mesa de Ayuda','Prioridad' => $namePrioridad,
                         'Mensaje' => $DescriptionT, 'NombreReportante' => $NombreUsuario, 'Telefono' => $TelefonoUsuario,

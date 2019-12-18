@@ -196,7 +196,7 @@ class loginController extends Controller
                         Mail::send('email/EmailRContrasena',
                                 ['Contrasena' => $b,'NombreUser' => $UserName,],
                                 function($msj) use($subject,$for){
-                                    $msj->from("soporte@utservisalud.com.co","Mesa de Ayuda Tics - Servisalud QCL");
+                                    $msj->from("soporte.sistemas@cruzrojabogota.org.co","Mesa de Ayuda Tics");
                                     $msj->subject($subject);
                                     $msj->to($for);
 
@@ -226,7 +226,7 @@ class loginController extends Controller
                     $nuevaContrasena = Hash('sha512',$b);
                     foreach($BuscarUsuario as $value){
                         $idUser = $value->id;
-                        $userName = $value->nombre;
+                        $userName = $value->name;
                         $emailUser = $value->email;
                     }
                     $UpdatePassword = Usuarios::NuevaContrasena($idUser,$nuevaContrasena);
@@ -236,7 +236,7 @@ class loginController extends Controller
                         Mail::send('email/EmailRContrasena',
                                 ['Contrasena' => $b,'NombreUser' => $userName,],
                                 function($msj) use($subject,$for){
-                                    $msj->from("soporte@utservisalud.com.co","Mesa de Ayuda Tics - Servisalud QCL");
+                                    $msj->from("soporte.sistemas@cruzrojabogota.org.co","Mesa de Ayuda Tics");
                                     $msj->subject($subject);
                                     $msj->to($for);
 
@@ -265,7 +265,7 @@ class loginController extends Controller
                     $nuevaContrasena = Hash('sha512',$b);
                     foreach($BuscarUsuario as $value){
                         $idUser = $value->id;
-                        $userName = $value->nombre;
+                        $userName = $value->name;
                         $emailUser = $value->email;
                     }
                     $UpdatePassword = Usuarios::NuevaContrasena($idUser,$nuevaContrasena);
@@ -274,7 +274,7 @@ class loginController extends Controller
                         Mail::send('email/EmailRContrasena',
                                 ['Contrasena' => $b,'NombreUser' => $userName,],
                                 function($msj) use($subject,$for){
-                                    $msj->from("soporte@utservisalud.com.co","Mesa de Ayuda Tics - Servisalud QCL");
+                                    $msj->from("soporte.sistemas@cruzrojabogota.org.co","Mesa de Ayuda Tics");
                                     $msj->subject($subject);
                                     $msj->to($for);
 

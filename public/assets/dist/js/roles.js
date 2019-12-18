@@ -37,21 +37,8 @@ $(document).ready(function () {
                 row: "registro",
                 selected: "seleccionado"
             }
-        },
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                extend: 'collection',
-                text: 'Exportar',
-                buttons: [
-                    'copy',
-                    'excel',
-                    'csv',
-                    {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'A4'},
-                    'print'
-                ]
-            }
-        ]
+        }
+
 
     });
 
@@ -89,21 +76,7 @@ $(document).ready(function () {
                 row: "registro",
                 selected: "seleccionado"
             }
-        },
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                extend: 'collection',
-                text: 'Exportar',
-                buttons: [
-                    'copy',
-                    'excel',
-                    'csv',
-                    {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'A4'},
-                    'print'
-                ]
-            }
-        ]
+        }
 
     });
 });

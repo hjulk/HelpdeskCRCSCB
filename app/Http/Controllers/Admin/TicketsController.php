@@ -5,455 +5,390 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use App\Models\Admin\Sedes;
-use App\Models\Helpdesk\Tickets;
-use Validator;
 use App\Models\Admin\Usuarios;
+use App\Models\Admin\Roles;
+use App\Models\Helpdesk\Tickets;
+use App\Models\HelpDesk\Inventario;
+use Validator;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 
 class TicketsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-
-    public function crearTicket()
-    {
-        $data = Input::all();
-        $creadoPor          = (int)Input::get('IdUsuario');
-        $buscarUsuario = Usuarios::BuscarNombre($creadoPor);
-        foreach($buscarUsuario as $value){
-            $Administrador = (int)$value->rol_id;
-        }
-        $reglas = array(
-            'id_tipo'           =>  'required',
-            'asunto'            =>  'required',
-            'descripcion'       =>  'required',
-            'nombre_usuario'    =>  'required',
-            'telefono_usuario'  =>  'required',
-            'correo_usuario'    =>  'required',
-            'id_zona'           =>  'required',
-            'id_sede'           =>  'required',
-            'id_area'           =>  'required',
-            'id_prioridad'      =>  'required',
-            'id_categoria'      =>  'required',
-            'id_usuario'        =>  'required',
-            'id_estado'         =>  'required'
-        );
-        $validador = Validator::make($data, $reglas);
-        $messages = $validador->messages();
-        foreach ($reglas as $key => $value){
-            $verrors[$key] = $messages->first($key);
-        }
-        if($validador->passes()) {
-
-            $idTipo             = (int)Input::get('id_tipo');
-            $Asunto             = Input::get('asunto');
-            $Descripcion        = Input::get('descripcion');
-            $NombreUsuario      = Input::get('nombre_usuario');
-            $TelefonoUsuario    = Input::get('telefono_usuario');
-            $CorreUsuario       = Input::get('correo_usuario');
-            $IdZona             = (int)Input::get('id_zona');
-            $IdSede             = (int)Input::get('id_sede');
-            $IdArea             = (int)Input::get('id_area');
-            $Prioridad          = (int)Input::get('id_prioridad');
-            $Categoria          = (int)Input::get('id_categoria');
-            $AsignadoA          = (int)Input::get('id_usuario');
-            $Estado             = (int)Input::get('id_estado');
-            $creadoPor          = (int)Input::get('IdUsuario');
-            $CargoUsuario       = Input::get('cargo_usuario');
-            $NombreJefe         = Input::get('nombre_jefe');
-            $TelefonoJefe       = Input::get('telefono_jefe');
-
-            $nombreCategoria    = Tickets::Categoria($Categoria);
-            $nombrePrioridad    = Tickets::Prioridad($Prioridad);
-            $nombreEstado       = Tickets::Estado($Estado);
-            $nombreAsignado     = Usuarios::BuscarNombre($AsignadoA);
-
-            foreach($nombreCategoria as $row){
-                $nameCategoria = $row->nombre;
-            }
-            foreach($nombrePrioridad as $row){
-                $namePrioridad = $row->nombre;
-            }
-            foreach($nombreEstado as $row){
-                $nameEstado = $row->name;
-            }
-            foreach($nombreAsignado as $row){
-                $nameAsignado = $row->nombre;
-                $emailAsignado = $row->email;
-            }
-
-            $CrearTicket = Tickets::CrearTicket($idTipo,$Asunto,$Descripcion,$NombreUsuario,$TelefonoUsuario,$CorreUsuario,$CargoUsuario,
-                                                $IdZona,$IdSede,$IdArea,$Prioridad,$Categoria,$AsignadoA,$Estado,$creadoPor,$NombreJefe,$TelefonoJefe);
-
-            if($CrearTicket){
-                $buscarUltimo = Tickets::BuscarLastTicket($creadoPor);
-                foreach($buscarUltimo as $row){
-                    $ticket = $row->id;
-                }
-                $destinationPath = null;
-                $filename        = null;
-                if (Input::hasFile('evidencia')) {
-                    $files = Input::file('evidencia');
-                    foreach($files as $file){
-                        $destinationPath    = public_path().'/aplicativo/evidencias';
-                        $extension          = $file->getClientOriginalExtension();
-                        $name               = $file->getClientOriginalName();
-                        $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
-                        $filename           = $nombrearchivo.'_Ticket_'.$ticket.'.'.$extension;
-                        $uploadSuccess      = $file->move($destinationPath, $filename);
-                        $archivofoto        = file_get_contents($uploadSuccess);
-                        $NombreFoto         = $filename;
-                        $actualizarEvidencia = Tickets::Evidencia($ticket,$NombreFoto);
-                    }
-                }
-
-
-                $fecha_sistema  = date('d-m-Y h:i a');
-                $fechaCreacion  = date('d-m-Y h:i a', strtotime($fecha_sistema));
-
-                $subject = "Creación ticket Mesa de ayuda";
-
-                $buscar = strpos($CorreUsuario,';');
-                if($buscar === false){
-                    $for = "$CorreUsuario";
-                }else{
-                    $for = array();
-                    $for = explode(';',$CorreUsuario);
-                }
-                // $for = "$CorreUsuario";
-                $cco = "$emailAsignado";
-                $calificacion = 1;
-                if($Estado === 3){
-                    $calificacion1 = "<a href='http://192.168.0.116:8080/helpdesk/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.116:8080/helpdesk/public/aplicativo/like.png' width='60' height='60'/></a>";
-                    $calificacion2 = "<a href='http://192.168.0.116:8080/helpdesk/public/calificarTicket?valor=2&idTicket=$ticket'><img src='http://192.168.0.116:8080/helpdesk/public/aplicativo/nolike.png' width='60' height='60'/></a>";
-                 }else{
-                    $calificacion = 0;
-                    $calificacion1 = null;
-                    $calificacion2 = null;
-
-                }
-                Mail::send('email/EmailCreacion',
-                        ['Ticket' => $ticket,'Asunto' => $Asunto,'Categoria' => $nameCategoria,'Prioridad' => $namePrioridad,
-                        'Mensaje' => $Descripcion, 'NombreReportante' => $NombreUsuario, 'Telefono' => $TelefonoUsuario,
-                        'Correo' => $CorreUsuario,'AsignadoA' => $nameAsignado,'Estado' => $nameEstado,'Fecha' => $fecha_sistema,'Calificacion' => $calificacion,
-                        'Calificacion1' => $calificacion1,'Calificacion2' => $calificacion2],
-                        function($msj) use($subject,$for,$cco){
-                            $msj->from("soporte@utservisalud.com.co","Mesa de Ayuda Tics - Servisalud QCL");
-                            $msj->subject($subject);
-                            $msj->to($for);
-                            $msj->cc($cco);
-                        });
-                if(count(Mail::failures()) === 0){
-                    $verrors = 'Se creo con éxito el ticket '.$ticket;
-                    if($Administrador === 1){
-                        return redirect('admin/tickets')->with('mensaje', $verrors);
-                    }else{
-                        return redirect('user/tickets')->with('mensaje', $verrors);
-                    }
-                }else{
-                    $verrors = 'Se creo con éxito el ticket '.$ticket.', pero no pudo ser enviado el correo al usuario';
-                    if($Administrador === 1){
-                        return redirect('admin/tickets')->with('precaucion', $verrors);
-                    }else{
-                        return redirect('user/tickets')->with('precaucion', $verrors);
-                    }
-                }
-
+    public function tickets(){
+        $buscarTickets = Tickets::Tickets();
+        $creadoPor = (int)Session::get('IdUsuario');
+        $tickets = array();
+        $cont = 0;
+        date_default_timezone_set('America/Bogota');
+        foreach($buscarTickets as $value){
+            $id_ticket                      = (int)$value->id;
+            $tickets[$cont]['id']           = (int)$value->id;
+            $tickets[$cont]['title']        = $value->title;
+            $tickets[$cont]['description']  = $value->description;
+            $tickets[$cont]['created_at']   = date('d/m/Y h:i A', strtotime($value->created_at));
+            if($value->updated_at){
+                $tickets[$cont]['updated_at']   = date('d/m/Y h:i A', strtotime($value->updated_at));
             }else{
-                $verrors = array();
-                array_push($verrors, 'Hubo un problema al crear el ticket');
-                // return redirect('admin/usuarios')->withErrors(['errors' => $verrors])->withInput();
-                if($Administrador === 1){
-                    return \Redirect::to('admin/tickets')->withErrors(['errors' => $verrors])->withInput();
-                }else{
-                    return \Redirect::to('user/tickets')->withErrors(['errors' => $verrors])->withInput();
-                }
-
+                $tickets[$cont]['updated_at']   = "SIN FECHA DE ACTUALIZACIÓN";
             }
 
 
-        }else{
-
-            if($Administrador === 1){
-                    return \Redirect::to('admin/tickets')->withErrors(['errors' => $verrors])->withInput();
-                }else{
-                    return \Redirect::to('user/tickets')->withErrors(['errors' => $verrors])->withInput();
-                }
-        }
-    }
-
-    public function actualizarTicket()
-    {
-        $data = Input::all();
-        $creadoPor          = (int)Input::get('IdUsuario');
-        $buscarUsuario = Usuarios::BuscarNombre($creadoPor);
-        foreach($buscarUsuario as $value){
-            $Administrador = (int)$value->administrador;
-        }
-        $reglas = array(
-            'id_prioridad_upd'      =>  'required',
-            'id_categoriaupd'       =>  'required',
-            'id_usuarioupd'         =>  'required',
-            'id_estado_upd'         =>  'required',
-            'comentario'            =>  'required'
-        );
-        $validador = Validator::make($data, $reglas);
-        $messages = $validador->messages();
-        foreach ($reglas as $key => $value){
-            $verrors[$key] = $messages->first($key);
-        }
-        if($validador->passes()) {
-
-            $idTicket           = (int)Input::get('idT');
-            $idTipo             = (int)Input::get('id_tipo_upd');
-            $Asunto             = Input::get('asunto_upd');
-            $Descripcion        = Input::get('descripcion_upd');
-            $NombreUsuario      = Input::get('nombre_usuario_upd');
-            $TelefonoUsuario    = Input::get('telefono_usuario_upd');
-            $CorreUsuario       = Input::get('correo_usuario_upd');
-            $IdZona             = (int)Input::get('id_zona_upd');
-            $IdSede             = (int)Input::get('id_sede_upd');
-            $IdArea             = (int)Input::get('id_area_upd');
-            $Prioridad          = (int)Input::get('id_prioridad_upd');
-            $Categoria          = (int)Input::get('id_categoriaupd');
-            $AsignadoA          = (int)Input::get('id_usuarioupd');
-            $Estado             = (int)Input::get('id_estado_upd');
-            $creadoPor          = (int)Input::get('IdUsuario');
-            $comentario         = Input::get('comentario');
-            $CargoUsuario       = Input::get('cargo_usuario_upd');
-            $NombreJefe         = Input::get('nombre_jefe');
-            $TelefonoJefe       = Input::get('telefono_jefe');
-
-            $nombreCategoria = Tickets::Categoria($Categoria);
-            $nombrePrioridad = Tickets::Prioridad($Prioridad);
-            $nombreEstado       = Tickets::Estado($Estado);
-            $nombreAsignado     = Usuarios::BuscarNombre($AsignadoA);
-
-            foreach($nombreCategoria as $row){
-                $nameCategoria = $row->nombre;
-            }
-            foreach($nombrePrioridad as $row){
-                $namePrioridad = $row->nombre;
-            }
-            foreach($nombreEstado as $row){
-                $nameEstado = $row->name;
-            }
-            foreach($nombreAsignado as $row){
-                $nameAsignado = $row->nombre;
-                $emailAsignado = $row->email;
+            $tickets[$cont]['kind_id']       = (int)$value->kind_id;
+            $idTipoTicket = (int)$value->kind_id;
+            $TipoTicket = Tickets::Tipo($idTipoTicket);
+            foreach($TipoTicket as $row){
+                $tickets[$cont]['tipo_ticket'] = $row->name;
             }
 
-            $actualizarTicket   = Tickets::ActualizarTicket($idTicket,$idTipo,$Asunto,$Descripcion,$NombreUsuario,$TelefonoUsuario,$CorreUsuario,$CargoUsuario,
-                                                $IdZona,$IdSede,$IdArea,$Prioridad,$Categoria,$AsignadoA,$Estado,$creadoPor,$comentario,$NombreJefe,$TelefonoJefe);
-            if($actualizarTicket){
+            $tickets[$cont]['user_id']      = (int)$value->user_id;
+            $tickets[$cont]['asigned_id']   = (int)$value->asigned_id;
+            $tickets[$cont]['session_id']   = (int)$value->session_id;
+            $idAsignador    =  (int)$value->user_id;
+            $idAsignado     =  (int)$value->asigned_id;
 
-                $destinationPath = null;
-                $filename        = null;
-                if (Input::hasFile('evidencia_upd')) {
-                    $files = Input::file('evidencia_upd');
-                    foreach($files as $file){
-                        $destinationPath    = public_path().'/aplicativo/evidencias';
-                        $extension          = $file->getClientOriginalExtension();
-                        $name               = $file->getClientOriginalName();
-                        $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
-                        $filename           = $nombrearchivo.'_Ticket_'.$idTicket.'.'.$extension;
-                        $uploadSuccess      = $file->move($destinationPath, $filename);
-                        $archivofoto        = file_get_contents($uploadSuccess);
-                        $NombreFoto         = $filename;
-                        $actualizarEvidencia = Tickets::Evidencia($idTicket,$NombreFoto);
-                    }
-                }
-
-
-                $fecha_sistema  = date('d-m-Y h:i a');
-                $fechaCreacion  = date('d-m-Y H:i a', strtotime($fecha_sistema));
-
-                $subject = "Actualización del ticket $idTicket Mesa de ayuda";
-                $buscar = strpos($CorreUsuario,';');
-                if($buscar === false){
-                    $for = "$CorreUsuario";
-                }else{
-                    $for = array();
-                    $for = explode(';',$CorreUsuario);
-                }
-                // $for = "$CorreUsuario";
-                $cco = "$emailAsignado";
-                $calificacion = 1;
-                if($Estado === 3){
-                    $calificacion1 = "<a href='http://192.168.0.116:8080/helpdesk/public/calificarTicket?valor=1&idTicket=$idTicket'><img src='http://192.168.0.116:8080/helpdesk/public/aplicativo/like.png' width='60' height='60'/></a>";
-                    $calificacion2 = "<a href='http://192.168.0.116:8080/helpdesk/public/calificarTicket?valor=2&idTicket=$idTicket'><img src='http://192.168.0.116:8080/helpdesk/public/aplicativo/nolike.png' width='60' height='60'/></a>";
-
-                }else{
-                    $calificacion = 0;
-                    $calificacion1 = null;
-                    $calificacion2 = null;
-
-                }
-
-                Mail::send('email/EmailActualizacion',
-                        ['Ticket' => $idTicket,'Asunto' => $Asunto,'Categoria' => $nameCategoria,'Prioridad' => $namePrioridad,
-                        'Mensaje' => $comentario, 'NombreReportante' => $NombreUsuario, 'Telefono' => $TelefonoUsuario,
-                        'Correo' => $CorreUsuario,'AsignadoA' => $nameAsignado,'Estado' => $nameEstado,'Fecha' => $fecha_sistema,'Calificacion' => $calificacion,
-                        'Calificacion1' => $calificacion1,'Calificacion2' => $calificacion2],
-
-                        function($msj) use($subject,$for,$cco){
-                            $msj->from("soporte@utservisalud.com.co","Mesa de Ayuda Tics - Servisalud QCL");
-                            $msj->subject($subject);
-                            $msj->to($for);
-                            $msj->cc($cco);
-                        });
-
-                if(count(Mail::failures()) === 0){
-                    $verrors = 'Se actualizo con éxito el ticket '.$idTicket;
-                    if($Administrador === 1){
-                        return redirect('admin/tickets')->with('mensaje', $verrors);
-                    }else{
-                        return redirect('user/tickets')->with('mensaje', $verrors);
-                    }
-                }else{
-                    $verrors = 'Se actualizo con éxito el ticket '.$idTicket.', pero no pudo ser enviado el correo al usuario';
-                    if($Administrador === 1){
-                        return redirect('admin/tickets')->with('precaucion', $verrors);
-                    }else{
-                        return redirect('user/tickets')->with('precaucion', $verrors);
-                    }
+            $Asignador  = Usuarios::BuscarNombre($idAsignador);
+            $Asignado   = Usuarios::BuscarNombre($idAsignado);
+            if($Asignador){
+                foreach($Asignador as $row){
+                    $tickets[$cont]['asignado_por'] = strtoupper($row->name);
                 }
             }else{
-                $verrors = array();
-                array_push($verrors, 'Hubo un problema al actualizar el ticket');
-                // return redirect('admin/usuarios')->withErrors(['errors' => $verrors])->withInput();
-                if($Administrador === 1){
-                    return \Redirect::to('admin/tickets')->withErrors(['errors' => $verrors])->withInput();
-                }else{
-                    return \Redirect::to('user/tickets')->withErrors(['errors' => $verrors])->withInput();
+                $tickets[$cont]['asignado_por'] = 'SIN NOMBRE';
+            }
+            if($Asignado){
+                foreach($Asignado as $row){
+                    $tickets[$cont]['asignado_a'] = strtoupper($row->name);
                 }
-            }
-        }else{
-            if($Administrador === 1){
-                return \Redirect::to('admin/tickets')->withErrors(['errors' => $verrors])->withInput();
             }else{
-                return \Redirect::to('user/tickets')->withErrors(['errors' => $verrors])->withInput();
+                $tickets[$cont]['asignado_a'] = 'SIN NOMBRE';
             }
-        }
-    }
 
-    public function buscarCategoria()
-    {
-        $data = Input::all();
-        $id   = Input::get('id_categoria');
+
+            $tickets[$cont]['project_id']   = (int)$value->project_id;
+            $idSede = (int)$value->project_id;
+            $BuscarSede = Sedes::BuscarSedeID($idSede);
+            foreach($BuscarSede as $row){
+                $tickets[$cont]['sede'] = strtoupper($row->name);
+            }
+
+            $tickets[$cont]['dependencia']   = (int)$value->dependencia;
+            $dependencia = $value->dependencia;
+            if($dependencia === null){
+                $tickets[$cont]['area'] = "SIN ÁREA/DEPENDENCIA";
+            }else{
+                $tickets[$cont]['area'] = strtoupper($dependencia);
+            }
+
+            $tickets[$cont]['category_id']   = (int)$value->category_id;
+            $IdCategoria    = (int)$value->category_id;
+            $Categoria      =  Roles::BuscarCategoriaID($IdCategoria);
+            foreach($Categoria as $row){
+                $tickets[$cont]['categoria'] = strtoupper($row->name);
+            }
+
+
+            $tickets[$cont]['priority_id']   = (int)$value->priority_id;
+            $IdPrioridad   = (int)$value->priority_id;
+            $Prioridad     =  Tickets::BuscarPrioridadID($IdPrioridad);
+            foreach($Prioridad as $row){
+                $NombrePrioridad = strtoupper($row->name);
+            }
+
+            if($IdPrioridad === 1){
+                $tickets[$cont]['prioridad']    = $NombrePrioridad;
+                $tickets[$cont]['label']        = 'label label-danger';
+            }else if($IdPrioridad === 2){
+                $tickets[$cont]['prioridad']    = $NombrePrioridad;
+                $tickets[$cont]['label']        = 'label label-warning';
+            }else if($IdPrioridad === 3){
+                $tickets[$cont]['prioridad']    = $NombrePrioridad;
+                $tickets[$cont]['label']        = 'label label-success';
+            }else{
+                $NombrePrioridad = 'SIN PRIORIDAD';
+            }
+
+            $tickets[$cont]['status_id']   = (int)$value->status_id;
+            $IdEstado   = (int)$value->status_id;
+            $Estado     =  Tickets::Estado($IdEstado);
+            foreach($Estado as $row){
+                $tickets[$cont]['estado'] = strtoupper($row->name);
+            }
+
+            $tickets[$cont]['name_user']    = strtoupper($value->name_user);
+            $tickets[$cont]['tel_user']     = $value->tel_user;
+            $tickets[$cont]['user_email']   = $value->user_email;
+            $tickets[$cont]['evidencia']    = null;
+            $evidenciaTicket = Tickets::EvidenciaTicket($id_ticket);
+            $contadorEvidencia = count($evidenciaTicket);
+            if($contadorEvidencia > 0){
+                $contE = 1;
+                foreach($evidenciaTicket as $row){
+                    $tickets[$cont]['evidencia'] .= "<a href='../assets/dist/img/evidencias/".$row->nombre_evidencia."' target='_blank'>Anexo Ticket  $id_ticket No.".$contE."</a><p>";
+                    $contE++;
+                }
+            }else{
+                $tickets[$cont]['evidencia'] = null;
+            }
+
+            $historialTicket = Tickets::HistorialTicket($id_ticket);
+            $contadorHistorial = count($historialTicket);
+            $tickets[$cont]['historial'] = null;
+            if($contadorHistorial > 0){
+                foreach($historialTicket as $row){
+                    $tickets[$cont]['historial'] .= "- ".$row->observacion." (".$row->user_id." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
+                }
+            }else{
+                $tickets[$cont]['historial'] = null;
+            }
+            $tickets[$cont]['id_create_user']   = (int)$value->id_create_user;
+            $tickets[$cont]['h_asigned_id']     = (int)$value->h_asigned_id;
+            $idAsignadoh = (int)$value->h_asigned_id;
+            $AsignadoH   = Usuarios::BuscarNombre($idAsignadoh);
+            foreach($AsignadoH as $row){
+                $tickets[$cont]['asignado_h'] = strtoupper($row->name);
+            }
+
+            $cont++;
+        }
+
+        $Categoria  = Roles::ListarCategorias();
+        $NombreCategoria = array();
+        $NombreCategoria[''] = 'Seleccione: ';
+        foreach ($Categoria as $row){
+            $NombreCategoria[$row->id] = $row->name;
+        }
+
+        $Prioridad  = Tickets::ListarPrioridad();
+        $NombrePrioridad = array();
+        $NombrePrioridad[''] = 'Seleccione: ';
+        foreach ($Prioridad as $row){
+            $NombrePrioridad[$row->id] = $row->name;
+        }
+
         $NombreUsuario = array();
-        $buscarUsuario = Usuarios::BuscarXCategoria($id);
-        $NombreUsuario[0] = 'Seleccione: ';
-        foreach ($buscarUsuario as $row){
-            $NombreUsuario[$row->id] = $row->name;
-        }
-        return \Response::json(array('valido'=>'true','Usuario'=>$NombreUsuario));
+        $NombreUsuario[''] = 'Seleccione: ';
 
-    }
-
-    public function buscarCategoriaRepo()
-    {
-
-        $data = Input::all();
-        $id   = Input::get('id_categoria');
-        $NombreUsuario = array();
-        $buscarUsuario = Usuarios::BuscarXCategoria($id);
-        $NombreUsuario[0] = 'Seleccione: ';
-        foreach ($buscarUsuario as $row){
-            $NombreUsuario[$row->id] = $row->nombre;
-        }
-        return \Response::json(array('valido'=>'true','Usuario'=>$NombreUsuario));
-
-    }
-
-    public function buscarCategoriaUPD()
-    {
-
-        $data = Input::all();
-        $id   = Input::get('id_categoria');
-        $NombreUsuario = array();
-        $buscarUsuario = Usuarios::BuscarXCategoria($id);
-        $NombreUsuario[0] = 'Seleccione: ';
-        foreach ($buscarUsuario as $row){
-            $NombreUsuario[$row->id] = $row->nombre;
-        }
-        return \Response::json(array('valido'=>'true','Usuario'=>$NombreUsuario));
-
-    }
-
-    public function buscarZona()
-    {
-
-        $data = Input::all();
-        $id   = Input::get('id_zona');
         $NombreSede = array();
-        $buscarSede = Usuarios::BuscarXZona($id);
-        $NombreSede[0] = 'Seleccione: ';
-        foreach ($buscarSede as $row){
-            $NombreSede[$row->id] = $row->nombre;
-        }
-        return \Response::json(array('valido'=>'true','Sedes'=>$NombreSede));
+        $NombreSede[''] = 'Seleccione: ';
 
+        $Sedes  = Tickets::Sedes();
+
+        foreach ($Sedes as $row){
+            $NombreSede[$row->id] = $row->name;
+        }
+
+        $Tipo  = Tickets::ListarTipo();
+        $NombreTipo = array();
+        $NombreTipo[0] = 'Seleccione: ';
+        foreach ($Tipo as $row){
+            $NombreTipo[$row->id] = $row->name;
+        }
+
+        $Estado  = Tickets::ListarEstado();
+        $NombreEstado = array();
+        $NombreEstado[0] = 'Seleccione: ';
+        foreach ($Estado as $row){
+            $NombreEstado[$row->id] = $row->name;
+        }
+
+        $EstadoUpd  = Tickets::ListarEstadoUpd();
+        $NombreEstadoUpd = array();
+        $NombreEstadoUpd[0] = 'Seleccione: ';
+        foreach ($EstadoUpd as $row){
+            $NombreEstadoUpd[$row->id] = $row->name;
+        }
+
+        $EstadoA  = Tickets::ListarEstadoA();
+        $NombreEstadoA = array();
+        $NombreEstadoA[0] = 'Seleccione: ';
+        foreach ($EstadoA as $row){
+            $NombreEstadoA[$row->id] = $row->name;
+        }
+
+        Tickets::UpdateNotificacion($creadoPor);
+        $valorCero = 0;
+        $valorNull = null;
+        Session::put('Notificaciones',$valorCero);
+        Session::put('Notificacion',$valorNull);
+        return view('tickets.tickets',['Tickets' => $tickets,'NombreCategoria' => $NombreCategoria,
+                                    'NombreUsuario' => $NombreUsuario,'NombrePrioridad' => $NombrePrioridad,'NombreEstado' => $NombreEstado,'NombreEstadoUpd' => $NombreEstadoUpd,
+                                    'NombreSede' => $NombreSede,'CorreoUsuario' => null,'NombreTipo' => $NombreTipo,
+                                    'Usuario' => null,'Descripcion' => null,'TelefonoUsuario' => null,'Evidencia' => null,'Asunto' => null,'Comentario' => null,
+                                    'NombreEstadoA' => $NombreEstadoA,'NombreCargo' => null,
+                                    'Dependencia' => null]);
     }
 
-    public function buscarSede()
-    {
+    public function ticketsUsuario(){
+        $buscarTicketsU = Tickets::ListarTicketsUsuario();
+        $ticketsUsuario = array();
+        $cont = 0;
+        date_default_timezone_set('America/Bogota');
+        foreach($buscarTicketsU as $value){
+            $ticketsUsuario[$cont]['id']                = $value->id;
+            $ticketsUsuario[$cont]['nombres']           = strtoupper($value->nombres);
+            $ticketsUsuario[$cont]['identificacion']    = $value->identificacion;
+            $ticketsUsuario[$cont]['cargo']             = $value->cargo;
 
-        $data = Input::all();
-        $id   = Input::get('id_sede');
-        $NombreArea = array();
-        $buscarArea = Usuarios::BuscarXSede($id);
-        $NombreArea[0] = 'Seleccione: ';
-        foreach ($buscarArea as $row){
-            $NombreArea[$row->id] = $row->nombre;
+            $ticketsUsuario[$cont]['id_sede']           = $value->id_sede;
+            $idSede = (int)$value->id_sede;
+            $BuscarSede = Sedes::BuscarSedeID($idSede);
+            foreach($BuscarSede as $row){
+                $ticketsUsuario[$cont]['nombre_sede']   = strtoupper($row->name);
+            }
+
+            $ticketsUsuario[$cont]['area']              = $value->area;
+            $ticketsUsuario[$cont]['jefe']              = $value->jefe;
+            $ticketsUsuario[$cont]['fecha_ingreso']     = date('d/m/Y', strtotime($value->fecha_ingreso));
+            $ticketsUsuario[$cont]['email']             = $value->email;
+            $ticketsUsuario[$cont]['new_cargo']         = $value->new_cargo;
+            $ticketsUsuario[$cont]['funcionario_rem']   = $value->funcionario_rem;
+            $ticketsUsuario[$cont]['correo_fun']        = $value->correo_fun;
+            $ticketsUsuario[$cont]['new_email']         = $value->new_email;
+            $ticketsUsuario[$cont]['celular']           = $value->celular;
+            $ticketsUsuario[$cont]['datos']             = $value->datos;
+            $ticketsUsuario[$cont]['minutos']           = $value->minutos;
+            $ticketsUsuario[$cont]['equipo']            = $value->equipo;
+            $ticketsUsuario[$cont]['extension']         = $value->extension;
+            $ticketsUsuario[$cont]['app85']             = $value->app85;
+            $ticketsUsuario[$cont]['dinamica']          = $value->dinamica;
+            $ticketsUsuario[$cont]['other_app']         = $value->other_app;
+            $ticketsUsuario[$cont]['carpeta']           = $value->carpeta;
+            $ticketsUsuario[$cont]['vpn']               = $value->vpn;
+            $ticketsUsuario[$cont]['internet']          = $value->internet;
+            $ticketsUsuario[$cont]['cap85']             = $value->cap85;
+            $ticketsUsuario[$cont]['capdinamica']       = $value->capdinamica;
+
+            $ticketsUsuario[$cont]['prioridad']         = (int)$value->prioridad;
+            $IdPrioridad                                = (int)$value->prioridad;
+            $Prioridad                                  =  Tickets::BuscarPrioridadID($IdPrioridad);
+            foreach($Prioridad as $row){
+                $NombrePrioridad                        = strtoupper($row->name);
+            }
+            if($IdPrioridad === 1){
+                $ticketsUsuario[$cont]['nombre_prioridad']     = $NombrePrioridad;
+                $ticketsUsuario[$cont]['label']         = 'label label-danger';
+            }else if($IdPrioridad === 2){
+                $ticketsUsuario[$cont]['nombre_prioridad']     = $NombrePrioridad;
+                $ticketsUsuario[$cont]['label']         = 'label label-warning';
+            }else if($IdPrioridad === 3){
+                $ticketsUsuario[$cont]['nombre_prioridad']     = $NombrePrioridad;
+                $ticketsUsuario[$cont]['label']         = 'label label-success';
+            }else{
+                $ticketsUsuario[$cont]['nombre_prioridad']     = 'SIN PRIORIDAD';
+                $ticketsUsuario[$cont]['label']         = 'label label-general';
+            }
+
+            $ticketsUsuario[$cont]['estado']            = (int)$value->estado;
+            $IdEstado   = (int)$value->estado;
+            $Estado     =  Tickets::Estado($IdEstado);
+            foreach($Estado as $row){
+                $ticketsUsuario[$cont]['nombre_estado'] = strtoupper($row->name);
+            }
+
+            $ticketsUsuario[$cont]['estado_rc']         = $value->estado_rc;
+            $ticketsUsuario[$cont]['estado_app']        = $value->estado_app;
+            $ticketsUsuario[$cont]['estado_it']         = $value->estado_it;
+            $EstadoRc       = (int)$value->estado_rc;
+            $EstadoApp      = (int)$value->estado_app;
+            $EstadoIt       = (int)$value->estado_it;
+            if($EstadoRc === 1){
+                $ticketsUsuario[$cont]['estadorc']      = 'CREADO';
+            }else{
+                $ticketsUsuario[$cont]['estadorc']      = 'NO CREADO';
+            }
+            if($EstadoApp === 1){
+                $ticketsUsuario[$cont]['estadoapp']     = 'CREADO';
+            }else{
+                $ticketsUsuario[$cont]['estadoapp']     = 'NO CREADO';
+            }
+            if($EstadoIt === 1){
+                $ticketsUsuario[$cont]['estadoit']      = 'CREADO';
+            }else{
+                $ticketsUsuario[$cont]['estadoit']      = 'NO CREADO';
+            }
+
+            $ticketsUsuario[$cont]['id_user']           = $value->id_user;
+            $ticketsUsuario[$cont]['observaciones']     = $value->observaciones;
+            $ticketsUsuario[$cont]['user_dominio']      = $value->user_dominio;
+
+            $cont++;
         }
-        return \Response::json(array('valido'=>'true','Areas'=>$NombreArea));
 
+        $Prioridad  = Tickets::ListarPrioridadA();
+        $NombrePrioridad = array();
+        $NombrePrioridad[''] = 'Seleccione: ';
+        foreach ($Prioridad as $row){
+            $NombrePrioridad[$row->id] = $row->name;
+        }
+
+        $EstadoA  = Tickets::ListarEstadoA();
+        $NombreEstadoA = array();
+        $NombreEstadoA[0] = 'Seleccione: ';
+        foreach ($EstadoA as $row){
+            $NombreEstadoA[$row->id] = $row->name;
+        }
+
+        $Opciones       = array();
+        $Opciones['']   = 'Seleccione: ';
+        $Opciones[1]    = 'SI';
+        $Opciones[0]    = 'NO';
+
+        $NombreEquipo       = array();
+        $NombreEquipo[0]   = 'Seleccione: ';
+        $Equipo             = Inventario::ListarEquipoUsuarioC();
+        foreach ($Equipo as $row){
+            $NombreEquipo[$row->id] = $row->name;
+        }
+
+        $NombreSede = array();
+        $NombreSede[''] = 'Seleccione: ';
+        $Sedes  = Sedes::Sedes();
+        foreach ($Sedes as $row){
+            $NombreSede[$row->id] = $row->name;
+        }
+
+        $Acceso       = array();
+        $Acceso['']   = 'Seleccione: ';
+        $Acceso[1]    = 'Básico';
+        $Acceso[2]    = 'Medio';
+        $Acceso[3]    = 'VIP';
+        $Acceso[4]    = 'Bloqueo';
+        $Acceso[0]    = 'NO';
+
+        return view('tickets.ticketsUsuario',['Opciones' => $Opciones,'Prioridad' => $NombrePrioridad,'Estado' => $NombreEstadoA,
+                                              'TicketUsuario' => $ticketsUsuario,'NombresCompletos' => null,'Identificacion' =>null,
+                                              'Cargo' => null,'Sede' => $NombreSede,'Area' => null,'Jefe' => null,'FechaIngreso' => null,
+                                              'CorreoSolicitante' => null,'Funcionario' => null,'CorreoFuncionario' => null,'Equipo' => $NombreEquipo,
+                                              'Aplicativo' => null,'Carpeta' => null,'Acceso' => $Acceso,'Observaciones' => null]);
     }
-
-
 
     public function reporteTickets(){
         $Categoria  = Usuarios::Categoria();
         $NombreCategoria = array();
         $NombreCategoria[''] = 'Seleccione: ';
         foreach ($Categoria as $row){
-            $NombreCategoria[$row->id] = $row->nombre;
+            $NombreCategoria[$row->id] = $row->name;
         }
         $Tipo  = Tickets::ListarTipo();
         $NombreTipo = array();
         $NombreTipo[''] = 'Seleccione: ';
         foreach ($Tipo as $row){
-            $NombreTipo[$row->id] = $row->nombre;
+            $NombreTipo[$row->id] = $row->name;
         }
         $Prioridad  = Tickets::ListarPrioridad();
         $NombrePrioridad = array();
         $NombrePrioridad[''] = 'Seleccione: ';
         foreach ($Prioridad as $row){
-            $NombrePrioridad[$row->id] = $row->nombre;
-        }
-        $Zonas  = Sedes::Zonas();
-        $NombreZona = array();
-        $NombreZona[''] = 'Seleccione: ';
-        foreach ($Zonas as $row){
-            $NombreZona[$row->id] = $row->nombre;
+            $NombrePrioridad[$row->id] = $row->name;
         }
 
         $NombreUsuario = array();
         $NombreUsuario[''] = 'Seleccione: ';
         $Usuarios = Usuarios::ListarUsuarios();
         foreach ($Usuarios as $row){
-            $NombreUsuario[$row->id] = $row->nombre;
+            $NombreUsuario[$row->id] = $row->name;
         }
         $NombreSede = array();
         $NombreSede[''] = 'Seleccione: ';
@@ -461,15 +396,7 @@ class TicketsController extends Controller
         $NombreSedes = array();
         $NombreSedes[''] = 'Seleccione: ';
         foreach ($Sedes as $row){
-            $NombreSedes[$row->id] = $row->nombre;
-        }
-        $NombreArea = array();
-        $NombreArea[''] = 'Seleccione: ';
-        $Areas  = Sedes::Areas();
-        $NombreAreas = array();
-        $NombreAreas[''] = 'Seleccione: ';
-        foreach ($Areas as $row){
-            $NombreAreas[$row->id] = $row->nombre;
+            $NombreSedes[$row->id] = $row->name;
         }
 
         $Estado  = Tickets::ListarEstadoUpd();
@@ -479,15 +406,9 @@ class TicketsController extends Controller
             $NombreEstado[$row->id] = $row->name;
         }
 
-        $Zonas = Sedes::Zonas();
-        $NombreZona = array();
-        $NombreZona[''] = 'Seleccione: ';
-        foreach ($Zonas as $row){
-            $NombreZona[$row->id] = $row->nombre;
-        }
         return view('tickets.reporte',['Tipo' => $NombreTipo,'Estado' => $NombreEstado,'Categoria' => $NombreCategoria,
-                                        'Usuario' => $NombreUsuario,'Prioridad' => $NombrePrioridad,'Zona' => $NombreZona,
-                                        'Sede' => $NombreSedes, 'Area' =>$NombreAreas,'FechaInicio' => null,'FechaFin' => null]);
+                                        'Usuario' => $NombreUsuario,'Prioridad' => $NombrePrioridad,
+                                        'Sede' => $NombreSedes, 'FechaInicio' => null,'FechaFin' => null]);
     }
 
     public function consultarTickets(){

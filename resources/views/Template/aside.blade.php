@@ -86,7 +86,7 @@
                     <ul class="treeview-menu">
                         <li><a href="usuarios"><i class="fa fa-user"></i> Usuarios</a></li>
                         <li><a href="roles"><i class="fa fa-user-secret"></i> Roles Y Categoria</a></li>
-                        <li><a href="sedes"><i class="fa fa-map"></i> Ubicación</a></li>
+                        <li><a href="sedes"><i class="fa fa-map"></i> Sedes</a></li>
                     </ul>
                 </li>
             @endif

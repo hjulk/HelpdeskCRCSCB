@@ -436,7 +436,7 @@ class UsuariosController extends Controller
         $Contrasena = Input::get('password');
         $RPassword  = Input::get('repeat_password');
         $idUsuario  = Session::get('IdUsuario');
-
+        $creadoPor  = (int)\Session::get('IdUsuario');
         $infoUsario = Usuarios::BuscarNombre($idUsuario);
         foreach($infoUsario as $valor){
             $nombreUsuario = $valor->nombre;
@@ -449,7 +449,7 @@ class UsuariosController extends Controller
             $filename        = null;
             if (Input::hasFile('profile_pic')) {
                 $file            = Input::file('profile_pic');
-                $destinationPath = public_path().'/aplicativo/profile_pics';
+                $destinationPath = public_path().'/assets/dist/img/profiles';
                 $extension       = $file->getClientOriginalExtension();
                 $nombrearchivo   = str_replace(".", "_", $userName);
                 $filename        = $nombrearchivo.'.'.$extension;
@@ -461,7 +461,7 @@ class UsuariosController extends Controller
             $NombreFoto     = $filename;
             $Password     = hash('sha512', $Contrasena);
 
-            $updateProfile = Usuarios::ActualizarProfile($Password,$idUsuario,$NombreFoto);
+            $updateProfile = Usuarios::ActualizarProfile($Password,$idUsuario,$NombreFoto,$creadoPor);
 
             if($updateProfile){
                 $verrors = 'Se actualizo con exito la contraseña';
@@ -479,183 +479,6 @@ class UsuariosController extends Controller
         }
 
 
-    }
-
-    public function controlCambios()
-    {
-        $id_user  = Session::get('IdUsuario');
-        $Impacto = ControlCambios::ListarImpacto();
-        $NombreImpacto = array();
-        $NombreImpacto[''] = 'Seleccione: ';
-        foreach ($Impacto as $row){
-            $NombreImpacto[$row->id] = $row->nombre;
-        }
-
-        $Ambiente = ControlCambios::ListarAmbiente();
-        $NombreAmbiente = array();
-        $NombreAmbiente[''] = 'Seleccione: ';
-        foreach ($Ambiente as $row){
-            $NombreAmbiente[$row->id] = $row->nombre;
-        }
-
-        $Plataforma = ControlCambios::ListarPlataforma();
-        $NombrePlataforma = array();
-        $NombrePlataforma[''] = 'Seleccione: ';
-        foreach ($Plataforma as $row){
-            $NombrePlataforma[$row->id] = $row->nombre;
-        }
-
-        $Estado  = Tickets::ListarEstado();
-        $NombreEstado = array();
-        $NombreEstado[0] = 'Seleccione: ';
-        foreach ($Estado as $row){
-            $NombreEstado[$row->id] = $row->name;
-        }
-
-        $EstadoUPD  = Tickets::ListarEstadoUpd();
-        $NombreEstadoUpd = array();
-        $NombreEstadoUpd[0] = 'Seleccione: ';
-        foreach ($EstadoUPD as $row){
-            $NombreEstadoUpd[$row->id] = $row->name;
-        }
-        $NombreEscalamiento = array();
-        $NombreEscalamiento[0] = 'Seleccione: ';
-        $NombreEscalamiento[1] = 'Sí';
-        $NombreEscalamiento[2] = 'No';
-
-        $Usuario = array();
-        $Usuario[''] = 'Seleccione: ';
-
-        $Categoria  = Usuarios::Categoria();
-        $NombreCategoria = array();
-        $NombreCategoria[''] = 'Seleccione: ';
-        foreach ($Categoria as $row){
-            $NombreCategoria[$row->id] = $row->nombre;
-        }
-
-        $buscarCambios = ControlCambios::ListarSolicitudesUser($id_user);
-        $Solicitudes = array();
-        $cont = 0;
-        foreach($buscarCambios as $value){
-            $id_solicitud = $value->id;
-            $Solicitudes[$cont]['id'] = $value->id;
-            $Solicitudes[$cont]['id_impacto'] = $value->id_impacto;
-            $Solicitudes[$cont]['id_plataforma'] = $value->id_plataforma;
-            $Solicitudes[$cont]['id_ambiente'] = $value->id_ambiente;
-            $Solicitudes[$cont]['id_categoria'] = $value->id_categoria;
-            $Solicitudes[$cont]['id_estado'] = $value->id_estado;
-            $Solicitudes[$cont]['asignado_a'] = $value->asignado_a;
-            $Solicitudes[$cont]['creado_por'] = $value->creado_por;
-            $Solicitudes[$cont]['actualizado_por'] = $value->actualizado_por;
-            $Solicitudes[$cont]['descripcion'] = $value->descripcion;
-            $Solicitudes[$cont]['escalamiento'] = $value->escalamiento;
-            $Solicitudes[$cont]['creado'] = date('d/m/Y h:i A', strtotime($value->creado));
-            if($value->actualizado){
-                $Solicitudes[$cont]['actualizado'] = date('d/m/Y h:i A', strtotime($value->actualizado));
-            }else{
-                $Solicitudes[$cont]['actualizado'] = 'SIN ACTUALIZACIÓN';
-            }
-            $Solicitudes[$cont]['nombre_solicitante'] = $value->nombre_solicitante;
-            $Solicitudes[$cont]['correo_solicitante'] = $value->correo_solicitante;
-            $Solicitudes[$cont]['telefono_solicitante'] = $value->telefono_solicitante;
-            $id_impacto = (int)$value->id_impacto;
-            $nombreImpacto = ControlCambios::IdImpacto($id_impacto);
-            foreach($nombreImpacto as $valor){
-                $Solicitudes[$cont]['impacto'] = $valor->nombre;
-            }
-            switch($id_impacto){
-                Case 1: $Solicitudes[$cont]['label'] = 'label label-danger';
-                        break;
-                Case 2: $Solicitudes[$cont]['label'] = 'label label-warning';
-                        break;
-                Case 3: $Solicitudes[$cont]['label'] = 'label label-success';
-                        break;
-            }
-            $id_plataforma = $value->id_plataforma;
-            $nombrePlataforma = ControlCambios::IdPlataforma($id_plataforma);
-            foreach($nombrePlataforma as $valor){
-                $Solicitudes[$cont]['plataforma'] = $valor->nombre;
-            }
-            $id_ambiente = $value->id_ambiente;
-            $nombreAmbiente = ControlCambios::IdAmbiente($id_ambiente);
-            foreach($nombreAmbiente as $valor){
-                $Solicitudes[$cont]['ambiente'] = $valor->nombre;
-            }
-            if($value->fecha_publicacion){
-                $Solicitudes[$cont]['fecha_publicacion'] = date('Y-m-d H:i', strtotime($value->fecha_publicacion));
-                $Solicitudes[$cont]['publicacion'] = date('d/m/Y h:i A', strtotime($value->fecha_publicacion));
-            }else{
-                $Solicitudes[$cont]['fecha_publicacion'] = '';
-                $Solicitudes[$cont]['publicacion'] = 'SIN FECHA ESTIMADA';
-            }
-            $Solicitudes[$cont]['creado_por'] = $value->creado_por;
-            $id_userc = $value->creado_por;
-            $buscarUsuario = Usuarios::BuscarNombre($id_userc);
-            foreach($buscarUsuario as $valor){
-                $Solicitudes[$cont]['creado_por'] = $valor->nombre;
-            }
-            $Solicitudes[$cont]['asignado_a'] = $value->asignado_a;
-            $id_usera = $value->asignado_a;
-            $buscarUsuario = Usuarios::BuscarNombre($id_usera);
-            foreach($buscarUsuario as $valor){
-                $Solicitudes[$cont]['asignado_a'] = $valor->nombre;
-            }
-            $id_categoria = $value->id_categoria;
-            $nombreCategoria = Tickets::Categoria($id_categoria);
-            foreach($nombreCategoria as $valor){
-                $Solicitudes[$cont]['categoria'] = $valor->nombre;
-            }
-            $idestado = $value->id_estado;
-            $nombreEstado = Tickets::Estado($idestado);
-            foreach($nombreEstado as $valor){
-                $Solicitudes[$cont]['estado'] = $valor->name;
-            }
-            $Solicitudes[$cont]['evidencias_cambio'] = null;
-            $Solicitudes[$cont]['historial'] = null;
-            $evidenciaCambio = ControlCambios::EvidenciaCambio($id_solicitud);
-            $historialCambio = ControlCambios::HistorialCambio($id_solicitud);
-            $contadorHistorial = count($historialCambio);
-            $contadorEvidencia = count($evidenciaCambio);
-            if($contadorEvidencia > 0){
-                $contE = 1;
-                foreach($evidenciaCambio as $row){
-                    $Solicitudes[$cont]['evidencias_cambio'] .= "<a href='../aplicativo/evidencias_ControlC/".$row->nombre_evidencia."' target='_blank'>Anexo Control de Cambios  $id_solicitud No.".$contE."</a><p>";
-                    $contE++;
-                }
-            }else{
-                $Solicitudes[$cont]['evidencias_cambio'] = null;
-            }
-            if($contadorHistorial > 0){
-                foreach($historialCambio as $row){
-                    $Solicitudes[$cont]['historial'] .= "- ".$row->observacion." (".$row->nombre_usuario." - ".date('d/m/Y h:i a', strtotime($row->creado)).")\n";
-                }
-            }else{
-                $Solicitudes[$cont]['historial'] = null;
-            }
-            $Solicitudes[$cont]['escalamiento'] = $value->escalamiento;
-            $Solicitudes[$cont]['cargo_solicitante'] = $value->cargo_solicitante;
-            $Solicitudes[$cont]['nombre_jefe'] = $value->nombre_jefe;
-            $Solicitudes[$cont]['telefono_jefe'] = $value->telefono_jefe;
-            $cont++;
-        }
-        $Cargo  = Tickets::ListarCargo();
-        $NombreCargo = array();
-        $NombreCargo[0] = 'Seleccione: ';
-        foreach ($Cargo as $row){
-            $NombreCargo[$row->id] = $row->nombre;
-        }
-        $creadoPor = (int)Session::get('IdUsuario');
-        Tickets::UpdateNotificacion($creadoPor);
-        $valorCero = 0;
-        $valorNull = null;
-        Session::put('Cambios',$valorCero);
-        Session::put('Cambio',$valorNull);
-
-        return view('controlcambios.cambios',['NombreImpacto' => $NombreImpacto,'NombreAmbiente' => $NombreAmbiente,'NombrePlataforma' => $NombrePlataforma,
-                                              'FechaPublicacion' => null,'Descripcion' => null,'NombreUsuario' => null,'TelefonoUsuario' => null,
-                                              'CorreoUsuario' => null,'NombreCategoria' => $NombreCategoria,'Usuario' => $Usuario,'NombreEstado' => $NombreEstado,'NombreEstadoUpd' => $NombreEstadoUpd,
-                                              'Solicitudes' => $Solicitudes,'Comentario' => null,'NombreEscalamiento'=>$NombreEscalamiento,'NombreCargo' => null,
-                                              'NombreJefe' => null,'TelefonoJefe' => null]);
     }
 
 

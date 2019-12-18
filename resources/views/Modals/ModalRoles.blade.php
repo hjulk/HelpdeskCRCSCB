@@ -1,7 +1,7 @@
 <div class="modal fade bs-example-modal-lg-udpR" id="modal-roles-upd">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Actualizar Rol</h4>
@@ -9,21 +9,24 @@
 
                 {!! Form::open(['action' => 'Admin\RolesController@actualizarRol', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
                     <div class="modal-body">
-                            <input type="hidden" name="idR" id="mod_idR">
+                        <input type="hidden" name="idR" id="mod_idR">
                         <div class="box-body">
                             <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-4 control-label">Nombre Rol</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" placeholder="Nombre Rol" id="mod_rol" name="rol">
-                                </div>
-                            </div>
-                            <br>
-                                <div class="form-group">
-                                    <label for="inputEmail3" class="col-sm-4 control-label">Activo</label>
-                                    <div class="col-sm-4">
-                                                {!! Form::select('id_activo',$Activo,null,['class'=>'form-control','id'=>'mod_id_activoR']) !!}
+                                <div class="row">
+                                    <label for="inputEmail3" class="col-sm-4 control-label">Nombre Rol</label>
+                                    <div class="col-sm-8">
+                                        {!! Form::text('nombre_rol_upd',$RolName,['class'=>'form-control','id'=>'mod_nombre_rol_upd','placeholder'=>'Nombre Sede']) !!}
                                     </div>
                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label for="inputEmail3" class="col-sm-4 control-label">Activo</label>
+                                    <div class="col-sm-4">
+                                        {!! Form::select('id_activoR',$Activo,null,['class'=>'form-control','id'=>'mod_activoR_upd']) !!}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -38,7 +41,7 @@
     <div class="modal fade bs-example-modal-lg-udpC" id="modal-categorias-upd">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">Actualizar Categoria</h4>
@@ -49,16 +52,19 @@
                                 <input type="hidden" name="idC" id="mod_idC">
                             <div class="box-body">
                                 <div class="form-group">
-                                    <label for="inputEmail3" class="col-sm-4 control-label">Nombre Categoria</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" placeholder="Nombre Categoria" id="mod_categoria" name="categoria">
+                                    <div class="row">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Nombre Categoria</label>
+                                        <div class="col-sm-8">
+                                            {!! Form::text('nombre_categoria_upd',$CategoriaName,['class'=>'form-control','id'=>'mod_nombre_categoria_upd','placeholder'=>'Nombre Sede']) !!}
+                                        </div>
                                     </div>
                                 </div>
-                                <br>
                                 <div class="form-group">
-                                    <label for="inputEmail3" class="col-sm-4 control-label">Activo</label>
-                                    <div class="col-sm-4">
-                                                {!! Form::select('id_activo',$Activo,null,['class'=>'form-control','id'=>'mod_id_activoC']) !!}
+                                    <div class="row">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Activo</label>
+                                        <div class="col-sm-4">
+                                            {!! Form::select('id_activoC',$Activo,null,['class'=>'form-control','id'=>'mod_activoC_upd']) !!}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -74,21 +80,19 @@
         </div>
         <script>
                 function obtener_datos_rol(id) {
-                    var nombre = $("#rol" + id).val();
-                    var activa = $("#id_activo" + id).val();
+                    var nombre = $("#name" + id).val();
+                    var Activo = $("#activoR" + id).val();
 
-                        $("#mod_idR").val(id);
-                        $("#mod_rol").val(nombre);
-                        $("#mod_id_activoR").val(activa);
-
+                    $("#mod_idR").val(id);
+                    $("#mod_nombre_rol_upd").val(nombre);
+                    $("#mod_activoR_upd").val(Activo);
                 }
                 function obtener_datos_categoria(id) {
                     var nombre = $("#categoria" + id).val();
-                    var activa = $("#id_activo" + id).val();
+                    var Activo = $("#activoC" + id).val();
 
-                        $("#mod_idC").val(id);
-                        $("#mod_categoria").val(nombre);
-                        $("#mod_id_activoC").val(activa);
-
+                    $("#mod_idC").val(id);
+                    $("#mod_nombre_categoria_upd").val(nombre);
+                    $("#mod_activoC_upd").val(Activo);
                 }
         </script>

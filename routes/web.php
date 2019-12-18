@@ -25,10 +25,8 @@ Route::group(['middleware' => 'revalidate'], function () {
     // MODULO ADMINISTRACIÓN
 
     Route::group(['prefix' => 'admin','namespace' => 'Admin','middleware' => 'admin'],function(){
-        Route::get('menu','AdministracionController@menu')->name('menu');
         Route::get('sedes','SedesController@sedes')->name('sedes');
         Route::get('roles','RolesController@roles')->name('roles');
-        Route::get('dependencias','AdministracionController@dependencias')->name('dependencias');
         Route::get('usuarios','UsuarioController@index')->name('usuarios');
         Route::post('crearRol','RolesController@crearRol')->name('crearRol');
         Route::post('actualizarRol','RolesController@actualizarRol')->name('actualizarRol');
@@ -40,12 +38,11 @@ Route::group(['middleware' => 'revalidate'], function () {
         Route::post('actualizarUsuarioAdmin','UsuarioController@actualizarUsuarioAdmin')->name('actualizarUsuarioAdmin');
         Route::post('crearSede','SedesController@crearSede')->name('crearSede');
         Route::post('actualizarSede','SedesController@actualizarSede')->name('actualizarSede');
-        Route::get('tickets','AdministracionController@tickets')->name('tickets');
+        Route::get('tickets','TicketsController@tickets')->name('tickets');
         Route::post('reabrirTicket','TicketsController@reabrirTicket')->name('reabrirTicket');
         Route::get('reporteTickets','TicketsController@reporteTickets')->name('reporteTickets');
         Route::post('consultarTicket','TicketsController@consultarTickets')->name('consultarTicket');
-        Route::get('ticketsUsuario','AdministracionController@ticketsUsuario')->name('ticketsUsuario');
-        Route::post('reabrirsolicitud','ControlCambiosController@reabrirsolicitud')->name('reabrirsolicitud');
+        Route::get('ticketsUsuario','TicketsController@ticketsUsuario')->name('ticketsUsuario');
         Route::get('mobile','InventarioController@mobile')->name('mobile');
         Route::get('detalleNovedadM', 'InventarioController@detalleNovedadM')->name('detalleNovedadM');
         Route::get('detalleResponsableM', 'InventarioController@detalleResponsableM')->name('detalleResponsableM');
@@ -64,7 +61,7 @@ Route::group(['middleware' => 'revalidate'], function () {
     // MODULO USUARIOS
 
     Route::group(['prefix' => 'user','namespace' => 'User','middleware' => 'user'],function(){
-        Route::get('tickets','UsuariosController@tickets')->name('tickets');
+        Route::get('tickets','TicketsController@tickets')->name('tickets');
         Route::get('reporteTickets','TicketsUserController@reporteTickets')->name('reporteTickets');
         Route::post('consultarTicket', 'TicketsUserController@consultarTickets')->name('consultarTicket');
         Route::get('profile', 'UsuariosController@profile')->name('profile');

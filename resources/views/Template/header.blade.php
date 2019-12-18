@@ -66,7 +66,7 @@
 
                         <li class="user-footer">
                             <div class="pull-left">
-                                    @if(Session::get('Administracion') === 1)
+                                    @if(Session::get('Rol') === 1)
                                 <a href="usuarios" class="btn btn-default btn-flat">Perfil</a>
                                 @else
                                 <a href="profile" class="btn btn-default btn-flat">Perfil</a>

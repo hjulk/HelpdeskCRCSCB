@@ -21,9 +21,6 @@ Tickets
                 <div class="row">
                     <div class="col-md-12">
                         <button class="btn btn-primary" data-toggle="modal" data-target="#modal-ticket-usuario"><i class="fa fa-plus-circle"></i>&nbsp;Crear Ticket de Creación de Usuario</button>
-                        @if(Session::get('Rol') === 1)
-                            <button class="btn btn-success" data-toggle="modal" data-target="#modal-reabrir-ticket-usuario">Reabrir Ticket</button>
-                        @endif
                         <br>
                         <br>
                     </div>
@@ -45,7 +42,7 @@ Tickets
                                     <th style="text-align: center;">Estado</th>
                                     <th style="text-align: center;">RC</th>
                                     <th style="text-align: center;">IT</th>
-                                    <th style="text-align: center;">Editar</th>
+                                    <th style="text-align: center;">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -59,27 +56,44 @@ Tickets
                                     <td>{{$value['area']}}</td>
                                     <td>{{$value['jefe']}}</td>
                                     <td>{{$value['fecha_ingreso']}}</td>
-                                    <td><span class="{{$value['label']}}" style="font-size:13px;"><b>{{$value['prioridad']}}</b></span></td>
+                                    <td><span class="{{$value['label']}}" style="font-size:13px;"><b>{{$value['nombre_prioridad']}}</b></span></td>
                                     <td>{{$value['nombre_estado']}}</td>
                                     <td>{{$value['estadorc']}}</td>
                                     <td>{{$value['estadoit']}}</td>
-                                    <td><a href="#" class="btn btn-warning" title="Editar" data-toggle="modal" data-target="#modal-ticket-usuario-upd" onclick="obtener_datos_ticket_usuario('{{$value['id']}}');"><i class="glyphicon glyphicon-edit"></i></a></td>
+                                    <td style="text-align: center;"><a href="#" class="btn btn-success" title="Revisar" data-toggle="modal" data-target="#modal-ticket-usuario-upd" onclick="obtener_datos_ticket_usuario('{{$value['id']}}');"><i class="glyphicon glyphicon-search"></i></a></td>
                                     <input type="hidden" value="{{$value['id']}}" id="id{{$value['id']}}">
-                                    {{--  <input type="hidden" value="{{$value['kind_id']}}" id="kind_id{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['category_id']}}" id="category_id{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['project_id']}}" id="project_id{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['priority_id']}}" id="priority_id{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['status_id']}}" id="status_id{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['user_id']}}" id="user_id{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['asigned_id']}}" id="asigned_id{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['title']}}" id="title{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['description']}}" id="description{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['nombres']}}" id="nombres{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['identificacion']}}" id="identificacion{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['cargo']}}" id="cargo{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['id_sede']}}" id="id_sede{{$value['id']}}">
                                     <input type="hidden" value="{{$value['area']}}" id="area{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['evidencia']}}" id="evidencia{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['historial']}}" id="historial{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['name_user']}}" id="name_user{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['user_email']}}" id="user_email{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['tel_user']}}" id="tel_user{{$value['id']}}">  --}}
+                                    <input type="hidden" value="{{$value['jefe']}}" id="jefe{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['fecha_ingreso']}}" id="fecha_ingreso{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['email']}}" id="email{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['new_cargo']}}" id="new_cargo{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['funcionario_rem']}}" id="funcionario_rem{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['correo_fun']}}" id="correo_fun{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['new_email']}}" id="new_email{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['celular']}}" id="celular{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['datos']}}" id="datos{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['minutos']}}" id="minutos{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['equipo']}}" id="equipo{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['extension']}}" id="extension{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['app85']}}" id="app85{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['dinamica']}}" id="dinamica{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['other_app']}}" id="other_app{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['carpeta']}}" id="carpeta{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['vpn']}}" id="vpn{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['internet']}}" id="internet{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['cap85']}}" id="cap85{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['capdinamica']}}" id="capdinamica{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['prioridad']}}" id="prioridad{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['estado']}}" id="estado{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['observaciones']}}" id="observaciones{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['user_dominio']}}" id="user_dominio{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['estadorc']}}" id="estadorc{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['estadoit']}}" id="estadoit{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['estadoapp']}}" id="estadoapp{{$value['id']}}">
                                  </tr>
                                 @endforeach
                             </tbody>

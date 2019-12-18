@@ -298,6 +298,22 @@ class Tickets extends Model
             }
             DB::insert('INSERT INTO historial (id_ticket,observacion,status_id,asigne_id,user_id,created)
                         VALUES (?,?,?,?,?,?)', [$idTicket,$comentario,$Estado,$creadoPor,$nombre_usuario,$fechaActualizacion]);
+            if((int)$Estado === 3){
+                $buscarTicketUsuario = DB::Select("SELECT * FROM ticket WHERE id = $idTicket");
+                foreach($buscarTicketUsuario as $row){
+                    $TicketUsuario = (int)$row->id_create_user;
+                }
+                if($TicketUsuario > 0){
+                    switch((int)$Categoria){
+                        Case 1  :   DB::Update("UPDATE user_create SET estado_app = 1 WHERE id = $TicketUsuario");
+                                    break;
+                        Case 2  :   DB::Update("UPDATE user_create SET estado_it = 1 WHERE id = $TicketUsuario");
+                                    break;
+                        Case 3  :   DB::Update("UPDATE user_create SET estado_rc = 1 WHERE id = $TicketUsuario");
+                                    break;
+                    }
+                }
+            }
         }
 
         return $actualizarTicket;
@@ -635,7 +651,12 @@ class Tickets extends Model
         $Fecha_Ingreso = date('Y-m-d H:i:s', strtotime($FechaIngreso));
         $CrearTicketUsuario = DB::Insert('INSERT INTO user_create (nombres,identificacion,cargo,id_sede,area,jefe,fecha_ingreso,email,new_cargo,funcionario_rem,correo_fun,new_email,celular,datos,minutos,equipo,extension,app85,dinamica,other_app,carpeta,vpn,internet,cap85,capdinamica,prioridad,estado,id_user,observaciones,user_dominio)
                                             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                                            [$Nombres,$identificacion,$Cargo,$Sede,$Area,$Jefe,$Fecha_Ingreso,$CorreoS,$CargoNuevo,$Funcionario,$CorreoFuncionario,$CorreoElectronico,$Celular,$Datos,$Minutos,$EquipoComputo,$ExtensionTel,$App85,$AppDinamica,$OtroAplicativo,$AccesoCarpeta,$Conectividad,$AccesoInternet,$Cap85,$CapDinamica,$Prioridad,$Estado,$creadoPor,$Observaciones,$UsuarioDominio]);
+                                            [$Nombres,$identificacion,$Cargo,$Sede,$Area,$Jefe,$FechaIngreso,$CorreoS,$CargoNuevo,$Funcionario,$CorreoFuncionario,$CorreoElectronico,$Celular,$Datos,$Minutos,$EquipoComputo,$ExtensionTel,$App85,$AppDinamica,$OtroAplicativo,$AccesoCarpeta,$Conectividad,$AccesoInternet,$Cap85,$CapDinamica,$Prioridad,$Estado,$creadoPor,$Observaciones,$UsuarioDominio]);
         return $CrearTicketUsuario;
+    }
+
+    public static function Sedes(){
+        $Sedes = DB::Select("SELECT * FROM project WHERE activo = 1 ORDER BY name");
+        return $Sedes;
     }
 }
