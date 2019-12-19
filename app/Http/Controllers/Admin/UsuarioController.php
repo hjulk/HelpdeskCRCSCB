@@ -15,6 +15,7 @@ use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Admin\Activo;
 use Illuminate\Support\Facades\Session;
 
+
 class UsuarioController extends Controller
 {
     /**
@@ -43,8 +44,8 @@ class UsuarioController extends Controller
             $NombreActivo[$row->id] = $row->name;
         }
 
-        $RolAdmin       = \Session::get('Rol');
-        $CategoriaAdmin = \Session::get('Categoria');
+        $RolAdmin       = Session::get('Rol');
+        $CategoriaAdmin = Session::get('Categoria');
 
         $Usuarios = Usuarios::ListarUsuarios();
         $UsuariosIndex = array();
@@ -90,7 +91,7 @@ class UsuarioController extends Controller
     public function crearUsuario(){
 
         $data = Input::all();
-        $creadoPor          = (int)\Session::get('IdUsuario');
+        $creadoPor          = (int)Session::get('IdUsuario');
         $reglas = array(
             'nombre_usuario'    =>  'required',
             'username'          =>  'required',
@@ -132,7 +133,7 @@ class UsuarioController extends Controller
                 $verrors = array();
                 array_push($verrors, 'El usuario '.$userName.' ya se encuentra creado');
                 // return redirect('admin/usuarios')->withErrors(['errors' => $verrors])->withInput();
-                return \Redirect::to('admin/usuarios')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to('admin/usuarios')->withErrors(['errors' => $verrors])->withInput();
             }else{
                 $crearUsuario = Usuarios::CrearUsuario($nombreUsuario,$userName,$email,$contrasena,$idrol,$idcategoria,$NombreFoto,$creadoPor);
                 if($crearUsuario){
@@ -142,19 +143,19 @@ class UsuarioController extends Controller
                     $verrors = array();
                     array_push($verrors, 'Hubo un problema al crear el usuario');
                     // return redirect('admin/usuarios')->withErrors(['errors' => $verrors])->withInput();
-                    return \Redirect::to('admin/usuarios')->withErrors(['errors' => $verrors])->withInput();
+                    return Redirect::to('admin/usuarios')->withErrors(['errors' => $verrors])->withInput();
                 }
             }
 
         }else{
-            return \Redirect::to('admin/usuarios')->withErrors(['errors' => $verrors])->withInput();
+            return Redirect::to('admin/usuarios')->withErrors(['errors' => $verrors])->withInput();
         }
 
     }
 
     public function actualizarUsuarioAdmin(){
         $data = Input::all();
-        $creadoPor          = (int)\Session::get('IdUsuario');
+        $creadoPor          = (int)Session::get('IdUsuario');
         $reglas = array(
             'nombre_usuario_amd'    =>  'required',
             'username_amd'          =>  'required',
@@ -223,7 +224,7 @@ class UsuarioController extends Controller
 
     public function actualizarUsuario(){
         $data = Input::all();
-        $creadoPor          = (int)\Session::get('IdUsuario');
+        $creadoPor          = (int)Session::get('IdUsuario');
         $reglas = array(
             'nombre_usuario_upd'    =>  'required',
             'username_upd'          =>  'required',

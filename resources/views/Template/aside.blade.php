@@ -30,22 +30,22 @@
                     <ul class="treeview-menu">
                         @if(Session::get('Categoria') === 3)
                             <li class="treeview">
-                                <a href="mobile"><i class="fa fa-comments-o"></i>Comunicaciones
+                                <a href=""><i class="fa fa-comments-o"></i>Comunicaciones
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span></a>
                                 <ul class="treeview-menu">
                                     <li><a href="mobile"><i class="fa fa-mobile"></i>Equipos Moviles</a></li>
-                                    <li><a href="mobile"><i class="fa fa-phone"></i>Lineas Moviles</a></li>
+                                    <li><a href="lineMobile"><i class="fa fa-phone"></i>Lineas Moviles</a></li>
                                 </ul>
                             </li>
                         @endif
                         @if(Session::get('Categoria') === 2)
-                            <li><a href="laptop"><i class="fa fa-desktop"></i> Equipos</a></li>
-                            <li><a href="printers"><i class="fa fa-keyboard-o"></i> Perifericos</a></li>
-                            <li><a href="perifericos"><i class="fa fa-tint"></i> Consumibles</a></li>
-                            <li><a href="perifericos"><i class="fa fa-share-square"></i> Asignaciones</a></li>
-                            <li><a href="perifericos"><i class="fa fa-print"></i> Impresoras</a></li>
+                            <li><a href="desktops"><i class="fa fa-desktop"></i> Equipos</a></li>
+                            <li><a href="periferic"><i class="fa fa-keyboard-o"></i> Perifericos</a></li>
+                            <li><a href="consumible"><i class="fa fa-tint"></i> Consumibles</a></li>
+                            <li><a href="asigneds"><i class="fa fa-share-square"></i> Asignaciones</a></li>
+                            <li><a href="printers"><i class="fa fa-print"></i> Impresoras</a></li>
                         @endif
                     </ul>
                 </li>
@@ -60,20 +60,20 @@
                     </a>
                     <ul class="treeview-menu">
                         <li class="treeview">
-                            <a href="mobile"><i class="fa fa-comments-o"></i>Comunicaciones
+                            <a href=""><i class="fa fa-comments-o"></i>Comunicaciones
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span></a>
                             <ul class="treeview-menu">
                                 <li><a href="mobile"><i class="fa fa-mobile"></i>Equipos Moviles</a></li>
-                                <li><a href="mobile"><i class="fa fa-phone"></i>Lineas Moviles</a></li>
+                                <li><a href="lineMobile"><i class="fa fa-phone"></i>Lineas Moviles</a></li>
                             </ul>
                         </li>
-                        <li><a href="laptop"><i class="fa fa-desktop"></i> Equipos</a></li>
-                        <li><a href="printers"><i class="fa fa-keyboard-o"></i> Perifericos</a></li>
-                        <li><a href="perifericos"><i class="fa fa-tint"></i> Consumibles</a></li>
-                        <li><a href="perifericos"><i class="fa fa-share-square"></i> Asignaciones</a></li>
-                        <li><a href="perifericos"><i class="fa fa-print"></i> Impresoras</a></li>
+                        <li><a href="desktops"><i class="fa fa-desktop"></i> Equipos</a></li>
+                        <li><a href="periferic"><i class="fa fa-keyboard-o"></i> Perifericos</a></li>
+                        <li><a href="consumible"><i class="fa fa-tint"></i> Consumibles</a></li>
+                        <li><a href="asigneds"><i class="fa fa-share-square"></i> Asignaciones</a></li>
+                        <li><a href="printers"><i class="fa fa-print"></i> Impresoras</a></li>
                     </ul>
                 </li>
                 <li class="treeview">

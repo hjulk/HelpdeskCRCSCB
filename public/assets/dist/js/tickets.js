@@ -151,12 +151,11 @@ $(document).ready(function () {
         var Categoria   = $("#id_categoriarepo").val();
         var Creador     = $("#id_creado").val();
         var Asignado    = $("#id_asignado").val();
-        var Zona        = $("#id_zona").val();
         var Sede        = $("#id_sede").val();
-        var Area        = $("#id_area").val();
         var FechaInicio = $("#fechaInicio").val();
         var FechaFin    = $("#fechaFin").val();
         var tipo        = 'post';
+
         $.ajax({
             type: "post",
             url : "consultarTicket",
@@ -164,8 +163,8 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             data : {_method: tipo,id_tipo: Tipo,id_prioridad: Prioridad,id_estado: Estado,
-                    id_categoria: Categoria,id_creado: Creador,id_asignado: Asignado,id_zona: Zona,id_sede: Sede,
-                    id_area: Area,fechaInicio: FechaInicio,fechaFin: FechaFin},
+                    id_categoria: Categoria,id_creado: Creador,id_asignado: Asignado,id_sede: Sede,
+                    fechaInicio: FechaInicio,fechaFin: FechaFin},
             success : function(data){
                 var valido = data['valido'];
                 var errores = data['errors'];
@@ -202,20 +201,18 @@ $(document).ready(function () {
                                     { "data": "id" },
                                     { "data": "created_at" },
                                     { "data": "updated_at" },
-                                    { "data": "id_tipo" },
-                                    { "data": "id_prioridad" },
-                                    { "data": "id_estado" },
-                                    { "data": "creado_por" },
-                                    { "data": "asignado_a" },
-                                    { "data": "titulo" },
-                                    { "data": "nombre_usuario" },
-                                    { "data": "telefono_usuario" },
-                                    { "data": "email_usuario" },
-                                    { "data": "descripcion" },
-                                    { "data": "id_zona" },
-                                    { "data": "id_sede" },
-                                    { "data": "id_area" },
-                                    { "data": "actualizado_por" },
+                                    { "data": "kind_id" },
+                                    { "data": "priority_id" },
+                                    { "data": "status_id" },
+                                    { "data": "user_id" },
+                                    { "data": "asigned_id" },
+                                    { "data": "title" },
+                                    { "data": "name_user" },
+                                    { "data": "tel_user" },
+                                    { "data": "user_email" },
+                                    { "data": "description" },
+                                    { "data": "project_id" },
+                                    { "data": "asigned_id" },
                                     { "data": "historial" }
                                 ],
                         dom: 'Bfrtip',

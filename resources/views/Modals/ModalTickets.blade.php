@@ -82,7 +82,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-primary">Crear Ticket</button>
+                <button type="submit" class="btn btn-success">Crear Ticket</button>
             </div>
             {!!  Form::close() !!}
 

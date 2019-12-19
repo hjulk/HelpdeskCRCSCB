@@ -12,6 +12,7 @@ use App\Models\Admin\Usuarios;
 use Monolog\Handler\ZendMonitorHandler;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Admin\Activo;
+use Illuminate\Support\Facades\Redirect;
 
 class SedesController extends Controller
 {
@@ -66,7 +67,7 @@ class SedesController extends Controller
             if($consultarSede){
                 $verrors = array();
                 array_push($verrors, 'Nombre de la sede ya se encuentra creada');
-                return \Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withInput();
             }else{
 
                 $InsertarSede = Sedes::CrearSede($Sede,$Descripcion);
@@ -77,12 +78,12 @@ class SedesController extends Controller
                     $verrors = array();
                     array_push($verrors, 'Hubo un problema al crear la sede');
                     // return redirect('admin/sedes')->withErrors(['errors' => $verrors]);
-                    return \Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withInput();
+                    return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withInput();
                 }
             }
         }else{
             // return redirect('admin/sedes')->withErrors(['errors' => $verrors]);
-            return \Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withInput();
+            return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withInput();
         }
     }
 

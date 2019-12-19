@@ -93,20 +93,18 @@ class TicketsController extends Controller
             $IdPrioridad   = (int)$value->priority_id;
             $Prioridad     =  Tickets::BuscarPrioridadID($IdPrioridad);
             foreach($Prioridad as $row){
-                $NombrePrioridad = strtoupper($row->name);
-            }
-
-            if($IdPrioridad === 1){
-                $tickets[$cont]['prioridad']    = $NombrePrioridad;
-                $tickets[$cont]['label']        = 'label label-danger';
-            }else if($IdPrioridad === 2){
-                $tickets[$cont]['prioridad']    = $NombrePrioridad;
-                $tickets[$cont]['label']        = 'label label-warning';
-            }else if($IdPrioridad === 3){
-                $tickets[$cont]['prioridad']    = $NombrePrioridad;
-                $tickets[$cont]['label']        = 'label label-success';
-            }else{
-                $NombrePrioridad = 'SIN PRIORIDAD';
+                if($IdPrioridad === 1){
+                    $tickets[$cont]['prioridad']    = strtoupper($row->name);
+                    $tickets[$cont]['label']        = 'label label-danger';
+                }else if($IdPrioridad === 2){
+                    $tickets[$cont]['prioridad']    = strtoupper($row->name);
+                    $tickets[$cont]['label']        = 'label label-warning';
+                }else if($IdPrioridad === 3){
+                    $tickets[$cont]['prioridad']    = strtoupper($row->name);
+                    $tickets[$cont]['label']        = 'label label-success';
+                }else{
+                    $tickets[$cont]['prioridad'] = 'SIN PRIORIDAD';
+                }
             }
 
             $tickets[$cont]['status_id']   = (int)$value->status_id;
@@ -429,12 +427,10 @@ class TicketsController extends Controller
             $idUsuarioA     = Input::get('id_asignado');
             $idPrioridad    = Input::get('id_prioridad');
             $idEstado       = Input::get('id_estado');
-            $idZona         = Input::get('id_zona');
             $idSede         = Input::get('id_sede');
-            $idArea         = Input::get('id_area');
             $finicio        = Input::get('fechaInicio');
             $ffin           = Input::get('fechaFin');
-            $consultaReporte = Tickets::Reporte($idTipo,$idCategoria,$idUsuarioC,$idUsuarioA,$idPrioridad,$idEstado,$idZona,$idSede,$idArea,$finicio,$ffin);
+            $consultaReporte = Tickets::Reporte($idTipo,$idCategoria,$idUsuarioC,$idUsuarioA,$idPrioridad,$idEstado,$idSede,$finicio,$ffin);
 
             $resultado = json_decode(json_encode($consultaReporte), true);
             foreach($resultado as &$value) {
@@ -444,72 +440,57 @@ class TicketsController extends Controller
                 }else{
                     $value['updated_at'] = 'SIN ACTUALIZACIÓN';
                 }
-                $id_tipo = $value['id_tipo'];
+                $id_tipo = $value['kind_id'];
                 $nombreTipo = Tickets::Tipo($id_tipo);
                 foreach($nombreTipo as $valor){
-                    $value['id_tipo'] = $valor->nombre;
+                    $value['kind_id'] = $valor->name;
                 }
-                $id_categoria = $value['id_categoria'];
+                $id_categoria = $value['category_id'];
                 $nombreCategoria = Tickets::Categoria($id_categoria);
                 foreach($nombreCategoria as $valor){
-                    $value['id_categoria'] = $valor->nombre;
+                    $value['category_id'] = $valor->name;
                 }
-                $id_zona = $value['id_zona'];
-                $nombreZonaS = Sedes::BuscarZonaID($id_zona);
-                foreach($nombreZonaS as $valor){
-                    $value['id_zona'] = $valor->nombre;
-                }
-                $id_sede = $value['id_sede'];
+                $id_sede = $value['project_id'];
                 $nombreSedeS = Sedes::BuscarSedeID($id_sede);
                 foreach($nombreSedeS as $valor){
-                    $value['id_sede'] = $valor->nombre;
+                    $value['project_id'] = $valor->name;
                 }
-                $id_area = $value['id_area'];
-                $nombreAreaS = Sedes::BuscarAreaID($id_area);
-                foreach($nombreAreaS as $valor){
-                    $value['id_area'] = $valor->nombre;
-                }
-                $id_prioridad = $value['id_prioridad'];
+                $id_prioridad = $value['priority_id'];
                 $nombrePrioridad = Tickets::Prioridad($id_prioridad);
                 foreach($nombrePrioridad as $valor){
                     switch($id_prioridad){
-                        Case 1: $value['id_prioridad'] = "<span class='label label-danger' style='font-size:13px;'><b></b>".$valor->nombre."</span>";
+                        Case 1: $value['priority_id'] = "<span class='label label-danger' style='font-size:13px;'><b></b>".$valor->name."</span>";
                                 break;
-                        Case 2: $value['id_prioridad'] = "<span class='label label-warning' style='font-size:13px;'><b></b>".$valor->nombre."</span>";
+                        Case 2: $value['priority_id'] = "<span class='label label-warning' style='font-size:13px;'><b></b>".$valor->name."</span>";
                                 break;
-                        Case 3: $value['id_prioridad'] = "<span class='label label-success' style='font-size:13px;'><b></b>".$valor->nombre."</span>";
+                        Case 3: $value['priority_id'] = "<span class='label label-success' style='font-size:13px;'><b></b>".$valor->name."</span>";
                                 break;
                     }
 
                 }
-                $id_estado = $value['id_estado'];
+                $id_estado = $value['status_id'];
                 $nombreEstado = Tickets::Estado($id_estado);
                 foreach($nombreEstado as $valor){
-                    $value['id_estado'] = $valor->name;
+                    $value['status_id'] = $valor->name;
                 }
-                $creado = $value['creado_por'];
+                $creado = $value['user_id'];
                 $buscarUsuario = Usuarios::BuscarNombre($creado);
                 foreach($buscarUsuario as $valor){
-                    $value['creado_por'] = $valor->nombre;
+                    $value['user_id'] = $valor->name;
                 }
-                $asignado = $value['asignado_a'];
+                $asignado = $value['asigned_id'];
                 $buscarUsuario = Usuarios::BuscarNombre($asignado);
                 foreach($buscarUsuario as $valor){
-                    $value['asignado_a'] = $valor->nombre;
+                    $value['asigned_id'] = $valor->name;
                 }
-                $actualizado = $value['actualizado_por'];
-                $buscarUsuario = Usuarios::BuscarNombre($actualizado);
-                foreach($buscarUsuario as $valor){
-                    $value['actualizado_por'] = $valor->nombre;
-                }
-                $value['nombre_usuario'] = strtoupper($value['nombre_usuario']);
+                $value['name_user'] = strtoupper($value['name_user']);
                 $id_ticket = $value['id'];
                 $value['historial'] = null;
                 $historialTicket = Tickets::HistorialTicket($id_ticket);
                 $contadorHistorial = count($historialTicket);
                 if($contadorHistorial > 0){
                     foreach($historialTicket as $row){
-                        $value['historial'] .= "- ".$row->observacion." (".$row->nombre_usuario." - ".date('d/m/Y h:i a', strtotime($row->creado)).")\n";
+                        $value['historial'] .= "- ".$row->observacion." (".$row->user_id." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
                     }
                 }else{
                     $value['historial'] = null;

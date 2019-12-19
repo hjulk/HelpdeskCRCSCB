@@ -30,19 +30,19 @@ Tickets
                         <table id="ticketsUsuario" class="display responsive hover" style="width: 100%;">
                             <thead style="background: linear-gradient(60deg,rgba(51,101,155,1),rgba(66,132,206,1));color: #ECF0F1;">
                                 <tr>
-                                    <th style="text-align: center;">Nro</th>
-                                    <th style="text-align: center;">Nombre Usuario</th>
-                                    <th style="text-align: center;">Nro. Identificación</th>
-                                    <th style="text-align: center;">Cargo</th>
-                                    <th style="text-align: center;">Sede</th>
-                                    <th style="text-align: center;">Área</th>
-                                    <th style="text-align: center;">Jefe Inmediato</th>
-                                    <th style="text-align: center;">Fecha Ingreso</th>
-                                    <th style="text-align: center;">Prioridad</th>
-                                    <th style="text-align: center;">Estado</th>
-                                    <th style="text-align: center;">RC</th>
-                                    <th style="text-align: center;">IT</th>
-                                    <th style="text-align: center;">Acciones</th>
+                                    <th style="text-align: center;font-size: 13px;">Nro</th>
+                                    <th style="text-align: center;font-size: 13px;">Nombre Usuario</th>
+                                    <th style="text-align: center;font-size: 13px;">Nro. Identificación</th>
+                                    <th style="text-align: center;font-size: 13px;">Cargo</th>
+                                    <th style="text-align: center;font-size: 13px;">Sede</th>
+                                    <th style="text-align: center;font-size: 13px;">Área</th>
+                                    <th style="text-align: center;font-size: 13px;">Jefe Inmediato</th>
+                                    <th style="text-align: center;font-size: 13px;">Fecha Ingreso</th>
+                                    <th style="text-align: center;font-size: 13px;">Prioridad</th>
+                                    <th style="text-align: center;font-size: 13px;">Estado</th>
+                                    <th style="text-align: center;font-size: 13px;">RC</th>
+                                    <th style="text-align: center;font-size: 13px;">IT</th>
+                                    <th style="text-align: center;font-size: 13px;">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -135,13 +135,8 @@ Tickets
                 autoclose: true,
                 language: 'es',
                 todayBtn: true,
-                format: 'dd/mm/yyyy'
-            });
-            $('#fechaIngreso').datepicker({
-                autoclose: true,
-                language: 'es',
-                todayBtn: true,
-                format: 'dd/mm/yyyy'
+                format: 'dd/mm/yyyy',
+                orientation: 'bottom auto'
             });
         });
 </script>

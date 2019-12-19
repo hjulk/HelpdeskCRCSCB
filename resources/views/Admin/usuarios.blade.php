@@ -29,7 +29,7 @@ Usuarios
                             <b>Usuario desde</b> <a class="pull-right">{!! Session::get('FechaCreacion') !!}</a>
                         </li>
                         <li class="list-group-item">
-                            <b>Categoría</b> <a class="pull-right">{!! Session::get('NombreCategoria') !!}</a>
+                            <b>Área</b> <a class="pull-right">{!! Session::get('NombreCategoria') !!}</a>
                         </li>
                         <li class="list-group-item">
                             <b>Rol</b> <a class="pull-right">{!! Session::get('NombreRol') !!}</a>

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use App\Models\Admin\Sedes;
 use App\Models\Helpdesk\Tickets;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use App\Models\HelpDesk\Inventario;
 use App\Models\Admin\Usuarios;
 use Illuminate\Mail\Mailable;
@@ -14,13 +14,14 @@ use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Illuminate\Support\Facades\Redirect;
 
 class TicketsController extends Controller
 {
 
     public function crearTicket(){
         $data = Input::all();
-        $creadoPor          = (int)\Session::get('IdUsuario');
+        $creadoPor          = (int)Session::get('IdUsuario');
         $buscarUsuario = Usuarios::BuscarNombre($creadoPor);
         foreach($buscarUsuario as $value){
             $Administrador = (int)$value->rol_id;
@@ -60,7 +61,7 @@ class TicketsController extends Controller
             $Categoria          = (int)Input::get('id_categoria');
             $AsignadoA          = (int)Input::get('id_usuario');
             $Estado             = (int)Input::get('id_estado');
-            $creadoPor          = (int)\Session::get('IdUsuario');
+            $creadoPor          = (int)Session::get('IdUsuario');
 
             $nombreCategoria    = Tickets::Categoria($Categoria);
             $nombrePrioridad    = Tickets::Prioridad($Prioridad);
@@ -167,16 +168,16 @@ class TicketsController extends Controller
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el ticket');
-                return \Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
             }
         }else{
-            return \Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
+            return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
         }
     }
 
     public function actualizarTicket(){
         $data = Input::all();
-        $creadoPor          = (int)\Session::get('IdUsuario');
+        $creadoPor          = (int)Session::get('IdUsuario');
         $buscarUsuario = Usuarios::BuscarNombre($creadoPor);
         foreach($buscarUsuario as $value){
             $Administrador = (int)$value->rol_id;
@@ -210,7 +211,7 @@ class TicketsController extends Controller
             $Categoria          = (int)Input::get('id_categoriaupd');
             $AsignadoA          = (int)Input::get('id_usuarioupd');
             $Estado             = (int)Input::get('id_estado_upd');
-            $creadoPor          = (int)\Session::get('IdUsuario');
+            $creadoPor          = (int)Session::get('IdUsuario');
             $comentario         = Input::get('comentario');
 
             $nombreCategoria    = Tickets::Categoria($Categoria);
@@ -312,10 +313,10 @@ class TicketsController extends Controller
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al actualizar el ticket');
-                return \Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
             }
         }else{
-            return \Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
+            return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
         }
     }
 
@@ -492,7 +493,7 @@ class TicketsController extends Controller
             }
 
             $aResultado = json_encode($resultado);
-            \Session::put('results', $aResultado);
+            Session::put('results', $aResultado);
             if(empty($consultaReporte)){
                 $verrors = array();
                 array_push($verrors, 'No hay datos que mostrar');
@@ -515,7 +516,7 @@ class TicketsController extends Controller
 
     public function crearTicketUsuario(){
         $data           = Input::all();
-        $creadoPor      = (int)\Session::get('IdUsuario');
+        $creadoPor      = (int)Session::get('IdUsuario');
         $buscarUsuario  = Usuarios::BuscarNombre($creadoPor);
         foreach($buscarUsuario as $value){
             $Administrador = (int)$value->rol_id;
@@ -945,10 +946,10 @@ class TicketsController extends Controller
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el ticket');
-                return \Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
             }
         }else{
-            return \Redirect::to($url.'/ticketsUsuario')->withErrors(['errors' => $verrors])->withInput();
+            return Redirect::to($url.'/ticketsUsuario')->withErrors(['errors' => $verrors])->withInput();
         }
     }
 

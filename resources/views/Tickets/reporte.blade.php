@@ -110,9 +110,7 @@ Reporte Tickets
                                 <th>Telefono Reportante</th>
                                 <th>Correo Reportante</th>
                                 <th>Descripcion</th>
-                                <th>Zona</th>
                                 <th>Sede</th>
-                                <th>Area</th>
                                 <th>Actualizado Por</th>
                                 <th>Historial Ticket</th>
                             </tr>
@@ -153,13 +151,15 @@ Reporte Tickets
                 isRTL: false,
                 autoclose: true,
                 language: 'es',
-                format: 'yyyy-mm-dd'
+                format: 'yyyy-mm-dd',
+                orientation: 'bottom auto'
             });
             $('#fechaInicio').datepicker({
                 isRTL: false,
                 autoclose:true,
                 language: 'es',
-                format: 'yyyy-mm-dd'
+                format: 'yyyy-mm-dd',
+                orientation: 'bottom auto'
             });
         });
         function categoriaFuncRepo() {

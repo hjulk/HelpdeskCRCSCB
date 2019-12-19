@@ -448,12 +448,12 @@ class Tickets extends Model
         return $historial;
     }
 
-    public static function Reporte($idTipo,$idCategoria,$idUsuarioC,$idUsuarioA,$idPrioridad,$idEstado,$idZona,$idSede,$idArea,$finicio,$ffin){
+    public static function Reporte($idTipo,$idCategoria,$idUsuarioC,$idUsuarioA,$idPrioridad,$idEstado,$idSede,$finicio,$ffin){
         $fechaInicio    = date('Y-m-d H:i', strtotime($finicio));
         $fechaFin       = date('Y-m-d H:i', strtotime($ffin));
         // dd($fechaInicio);
         if (!empty($idTipo)) {
-            $tipo   = 'id_tipo';
+            $tipo   = 'kind_id';
             $vtipo  = $idTipo;
         }
         else{
@@ -469,7 +469,7 @@ class Tickets extends Model
             $vcategoria  = '1';
         }
         if (!empty($idUsuarioC)) {
-            $usuarioC   = 'creado_por';
+            $usuarioC   = 'user_id';
             $vusuarioC  = $idUsuarioC;
         }
         else{
@@ -485,7 +485,7 @@ class Tickets extends Model
             $vusuarioA  = '1';
         }
         if (!empty($idPrioridad)) {
-            $prioridad   = 'id_prioridad';
+            $prioridad   = 'priority_id';
             $vprioridad  = $idPrioridad;
         }
         else{
@@ -500,29 +500,13 @@ class Tickets extends Model
             $estado   = '1';
             $vestado  = '1';
         }
-        if (!empty($idZona)) {
-            $zona   = 'id_zona';
-            $vzona  = $idZona;
-        }
-        else{
-            $zona   = '1';
-            $vzona  = '1';
-        }
         if (!empty($idSede)) {
-            $sede   = 'id_sede';
+            $sede   = 'project_id';
             $vsede  = $idSede;
         }
         else{
             $sede   = '1';
             $vsede  = '1';
-        }
-        if (!empty($idArea)) {
-            $area   = 'id_area';
-            $varea  = $idArea;
-        }
-        else{
-            $area   = '1';
-            $varea  = '1';
         }
         $reporteTicket = DB::Select("SELECT * FROM ticket
                                 WHERE created_at BETWEEN '$fechaInicio' AND '$fechaFin'
@@ -532,9 +516,7 @@ class Tickets extends Model
                                 AND $usuarioA = $vusuarioA
                                 AND $prioridad = $vprioridad
                                 AND $estado = $vestado
-                                AND $zona = $vzona
-                                AND $sede = $vsede
-                                AND $area = $varea");
+                                AND $sede = $vsede");
 
         return $reporteTicket;
     }

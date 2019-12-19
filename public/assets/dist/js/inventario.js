@@ -9,7 +9,7 @@ $(document).ready(function () {
         ordering    : true,
         info        : true,
         autoWidth   : true,
-        order: [[ 2, "asc" ]],
+        order: [[ 0, "desc" ]],
         language: {
             processing: "Procesando...",
             search: "Buscar:",
@@ -38,7 +38,20 @@ $(document).ready(function () {
                 selected: "seleccionado"
             }
         },
-
+        dom: 'Bfrtip',
+                        buttons: [
+                            {
+                                extend: 'collection',
+                                text: 'Exportar',
+                                buttons: [
+                                    'copy',
+                                    'excel',
+                                    'csv',
+                                    {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'A4'},
+                                    'print'
+                                ]
+                            }
+                        ]
 
     });
 

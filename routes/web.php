@@ -44,11 +44,14 @@ Route::group(['middleware' => 'revalidate'], function () {
         Route::post('consultarTicket','TicketsController@consultarTickets')->name('consultarTicket');
         Route::get('ticketsUsuario','TicketsController@ticketsUsuario')->name('ticketsUsuario');
         Route::get('mobile','InventarioController@mobile')->name('mobile');
+        Route::get('lineMobile','InventarioController@lineMobile')->name('lineMobile');
         Route::get('detalleNovedadM', 'InventarioController@detalleNovedadM')->name('detalleNovedadM');
         Route::get('detalleResponsableM', 'InventarioController@detalleResponsableM')->name('detalleResponsableM');
-        Route::get('laptop','InventarioController@laptop')->name('laptop');
+        Route::get('desktops','InventarioController@desktops')->name('desktops');
         Route::get('printers','InventarioController@printers')->name('printers');
-        Route::get('perifericos','InventarioController@perifericos')->name('perifericos');
+        Route::get('periferic','InventarioController@periferic')->name('periferic');
+        Route::get('asigneds','InventarioController@asigneds')->name('asigneds');
+        Route::get('consumible','InventarioController@consumible')->name('consumible');
 
         Route::get('/logout', function() {
             Auth::logout();
@@ -103,12 +106,9 @@ Route::group(['middleware' => 'revalidate'], function () {
 
     // MODULO INVENTARIOS
 
-    Route::post('asignacionMovil', 'InventarioController@asignacionMovil')->name('asignacionMovil');
-    Route::post('actualizacionMovil', 'InventarioController@actualizacionMovil')->name('actualizacionMovil');
-    Route::post('asignacionResponsableMovil', 'InventarioController@asignacionResponsableMovil')->name('asignacionResponsableMovil');
-    Route::post('actualizarResponsableMovil', 'InventarioController@actualizarResponsableMovil')->name('actualizarResponsableMovil');
-    Route::post('agregarNovedadMovil', 'InventarioController@agregarNovedadMovil')->name('agregarNovedadMovil');
-    Route::post('actualizarNovedadMobile', 'InventarioController@actualizarNovedadMobile')->name('actualizarNovedadMobile');
-    Route::get('desactivarResponsable', 'InventarioController@desctivarResponsableMovil')->name('desactivarResponsable');
+    Route::post('asignacionEquipoMovil', 'InventarioController@asignacionEquipoMovil')->name('asignacionEquipoMovil');
+    Route::post('actualizacionEquipoMovil', 'InventarioController@actualizacionEquipoMovil')->name('actualizacionEquipoMovil');
+
+
 
 });

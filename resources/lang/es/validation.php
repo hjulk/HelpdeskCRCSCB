@@ -115,7 +115,11 @@ return array(
         'correoS'               =>  'Correo electrónico del usuario',
         'cargo_nuevo'           =>  'Cargo Nuevo',
         'estado'                =>  'Estado',
-        'prioridad'             =>  'Prioridad'
-
+        'prioridad'             =>  'Prioridad',
+        'tipo_equipo'           =>  'Tipo de Equipo',
+        'fecha_adquision'       =>  'Fecha de Adquisición',
+        'Serial'                =>  'Serial',
+        'linea_movil'           =>  'Numero de Linea Movil',
+        'nombre_asignado'       =>  'Nombre del Asignado / Responsable'
     ),
 );

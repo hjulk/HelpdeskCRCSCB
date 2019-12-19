@@ -19,7 +19,7 @@ Dahsboard
             <div class="box-body">
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="info-box bg-aqua">
+                        <div class="info-box bg-blue">
                             <span class="info-box-icon"><i class="fa fa-spinner fa-pulse"></i></span>
                             <div class="info-box-content">
                                 <a data-toggle="modal" href="#modal-desarrollo">

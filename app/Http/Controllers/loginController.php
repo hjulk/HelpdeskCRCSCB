@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\User\UsuariosController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Admin\Usuarios;
 use App\Models\HelpDesk\Tickets;
 use App\Models\User\ControlCambios;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class loginController extends Controller
 {
@@ -89,7 +90,7 @@ class loginController extends Controller
                         $fotoMenu   = "<img src='../assets/dist/img/profiles/$profile_pic' class='user-image' alt='User Image'>";
                         $fotoPerfilM = "<img src='../assets/dist/img/profiles/$profile_pic' class='img-circle' alt='User Image'>";
                         $fotoMenuM   = "<img src='../assets/dist/img/profiles/$profile_pic' class='user-image' alt='User Image'>";
-                        $fotoUser   = "<img src='../assets/dist/img/profiles/$profile_pic' class='profile-user-img img-responsive img-circle' alt='User profile picture' style='width: 35%;'>";
+                        $fotoUser   = "<img src='../assets/dist/img/profiles/$profile_pic' class='profile-user-img img-responsive img-circle' alt='User profile picture' style='width: 40%;border-radius: 40% !important;'>";
 
                         $notificaciones = Tickets::Notificaciones($IdUsuario);
                         $contadorNotificacion = count($notificaciones);
@@ -110,28 +111,28 @@ class loginController extends Controller
                             $listarNotificaciones = null;
                         }
 
-                        \Session::put('IdUsuario', $IdUsuario);
-                        \Session::put('NombreUsuario', $nombreUsuario);
-                        \Session::put('UserName', $userName);
-                        \Session::put('Rol', $idRol);
-                        \Session::put('Sede', $idSede);
-                        \Session::put('Email', $emailUsuario);
-                        \Session::put('Activo', $estado);
-                        \Session::put('NombreSede', $NombreSede);
-                        \Session::put('NombreCategoria', $NombreCategoria);
-                        \Session::put('NombreRol', $NombreRol);
-                        \Session::put('Categoria', $idCategoria);
-                        \Session::put('ProfilePicMenu', $fotoMenu);
-                        \Session::put('ProfilePic', $fotoPerfil);
-                        \Session::put('ProfilePicMenuM', $fotoMenuM);
-                        \Session::put('ProfilePicM', $fotoPerfilM);
-                        \Session::put('ProfileUser', $fotoUser);
-                        \Session::put('FechaCreacion', $fechaCreacion);
-                        \Session::put('Notificaciones', $contadorNotificacion);
-                        \Session::put('Notificacion', $listarNotificaciones);
-                        \Session::save();
+                        Session::put('IdUsuario', $IdUsuario);
+                        Session::put('NombreUsuario', $nombreUsuario);
+                        Session::put('UserName', $userName);
+                        Session::put('Rol', $idRol);
+                        Session::put('Sede', $idSede);
+                        Session::put('Email', $emailUsuario);
+                        Session::put('Activo', $estado);
+                        Session::put('NombreSede', $NombreSede);
+                        Session::put('NombreCategoria', $NombreCategoria);
+                        Session::put('NombreRol', $NombreRol);
+                        Session::put('Categoria', $idCategoria);
+                        Session::put('ProfilePicMenu', $fotoMenu);
+                        Session::put('ProfilePic', $fotoPerfil);
+                        Session::put('ProfilePicMenuM', $fotoMenuM);
+                        Session::put('ProfilePicM', $fotoPerfilM);
+                        Session::put('ProfileUser', $fotoUser);
+                        Session::put('FechaCreacion', $fechaCreacion);
+                        Session::put('Notificaciones', $contadorNotificacion);
+                        Session::put('Notificacion', $listarNotificaciones);
+                        Session::save();
                         // return \Response::json(['valido'=>'true','rol'=>$rol]);
-                        $usuario = \Session::get('NombreUsuario');
+                        $usuario = Session::get('NombreUsuario');
                         if(($idRol === 1)){
                             return redirect()->route('admin/dashboard');
                         }elseif($idRol === 6){
