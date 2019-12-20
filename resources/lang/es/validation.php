@@ -101,6 +101,7 @@ return array(
         'id_usuarioupd'         =>  'Responsable',
         'id_estado'             =>  'Estado',
         'id_estadoupd'          =>  'Estado',
+        'id_estado_upd'         =>  'Estado',
         'comentario'            =>  'Comentario / Observación del Ticket',
         'evidencia'             =>  'Evidencia',
         'fechaInicio'           =>  'Fecha Inicio',
@@ -120,6 +121,14 @@ return array(
         'fecha_adquision'       =>  'Fecha de Adquisición',
         'Serial'                =>  'Serial',
         'linea_movil'           =>  'Numero de Linea Movil',
-        'nombre_asignado'       =>  'Nombre del Asignado / Responsable'
+        'nombre_asignado'       =>  'Nombre del Asignado / Responsable',
+        'tipo_equipo_upd'       =>  'Tipo Equipo',
+        'fecha_adquision_upd'   =>  'Fecha Adquisiciónb',
+        'serial_upd'            =>  'Serial',
+        'marca_upd'             =>  'Marca',
+        'modelo_upd'            =>  'Modelo',
+        'imei_upd'              =>  'IMEI',
+        'capacidad_upd'         =>  'Capacidad',
+        'estado_upd'            =>  'Estado'
     ),
 );

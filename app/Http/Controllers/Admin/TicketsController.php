@@ -123,7 +123,7 @@ class TicketsController extends Controller
             if($contadorEvidencia > 0){
                 $contE = 1;
                 foreach($evidenciaTicket as $row){
-                    $tickets[$cont]['evidencia'] .= "<a href='../assets/dist/img/evidencias/".$row->nombre_evidencia."' target='_blank'>Anexo Ticket  $id_ticket No.".$contE."</a><p>";
+                    $tickets[$cont]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias/".$row->nombre_evidencia."' target='_blank' class='btn btn-info'><i class='fa fa-file-archive-o'></i>&nbsp;Anexo Ticket  $id_ticket Nro. ".$contE."</a></p>";
                     $contE++;
                 }
             }else{

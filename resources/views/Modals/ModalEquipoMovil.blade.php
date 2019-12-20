@@ -129,6 +129,7 @@
                         <div class="col-md-3">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Nro. Linea</label>
                             {!! Form::Select('linea_movil_upd',$LineaMovilUpd,null,['class'=>'form-control','id'=>'mod_linea_movil_upd']) !!}
+                            {!! Form::checkbox('desvincular',null,null,['id'=>'desvincular']) !!}&nbsp;Desvincular Linea
                         </div>
                     </div>
                 </div>

@@ -110,7 +110,13 @@ class TicketsController extends Controller
                     }
                 }
 
-
+                $BuscarInfoUsuario = Usuarios::BuscarNombre($AsignadoA);
+                foreach($BuscarInfoUsuario as $row){
+                    $NombreAsignado = $row->name;
+                }
+                $nombreCreador = Session::get('NombreUsuario');
+                $Comentario = "Creación de Ticket y asignado a $NombreAsignado";
+                Tickets::HistorialCreacion($ticket,$Comentario,$Estado,$creadoPor,$nombreCreador);
                 $fecha_sistema  = date('d-m-Y h:i a');
                 $fechaCreacion  = date('d-m-Y h:i a', strtotime($fecha_sistema));
 

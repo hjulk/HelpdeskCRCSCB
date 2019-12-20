@@ -258,6 +258,15 @@ class Tickets extends Model
         return $crearTicket;
     }
 
+    public static function HistorialCreacion($ticket,$Comentario,$Estado,$creadoPor,$nombreCreador){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema  = date('Y-m-d H:i');
+        $fechaCreacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
+        DB::Insert('INSERT INTO historial (id_ticket,observacion,status_id,asigne_id,user_id,created)
+                    VALUES (?,?,?,?,?,?)',
+                    [$ticket,$Comentario,$Estado,$creadoPor,$nombreCreador,$fechaCreacion]);
+    }
+
     public static function CrearTicketAsignado($idTicket,$Asunto,$Descripcion,$creadoPor,$AsignadoA){
         date_default_timezone_set('America/Bogota');
         $fecha_sistema  = date('Y-m-d H:i');

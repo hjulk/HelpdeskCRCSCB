@@ -29,16 +29,8 @@
                     </a>
                     <ul class="treeview-menu">
                         @if(Session::get('Categoria') === 3)
-                            <li class="treeview">
-                                <a href=""><i class="fa fa-comments-o"></i>Comunicaciones
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-left pull-right"></i>
-                                </span></a>
-                                <ul class="treeview-menu">
-                                    <li><a href="mobile"><i class="fa fa-mobile"></i>Equipos Moviles</a></li>
-                                    <li><a href="lineMobile"><i class="fa fa-phone"></i>Lineas Moviles</a></li>
-                                </ul>
-                            </li>
+                            <li><a href="mobile"><i class="fa fa-mobile"></i>Equipos Moviles</a></li>
+                            <li><a href="lineMobile"><i class="fa fa-phone"></i>Lineas Moviles</a></li>
                         @endif
                         @if(Session::get('Categoria') === 2)
                             <li><a href="desktops"><i class="fa fa-desktop"></i> Equipos</a></li>

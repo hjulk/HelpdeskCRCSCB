@@ -69,11 +69,10 @@
                                 </div>
 
                                 <div class="text-center p-t-12">
-                                    <span class="txt1">
-                                        Olvide mi
-                                    </span>
                                     <a class="txt2" href="#" data-toggle="modal" data-target="#modal-rcontrasena">
-                                        Contraseña
+                                    <span class="txt1">
+                                        Olvide mi Contraseña
+                                    </span>
                                     </a>
                                 </div>
                             </fieldset>

@@ -59,6 +59,11 @@ class Inventario extends Model
         return $ListadoTipoEquipoMovil;
     }
 
+    public static function BuscarInfoEquipoMovil($Serial){
+        $BuscarInfoEquipoMovil = DB::Select("SELECT * FROM equipo_movil WHERE serial LIKE '%$Serial%'");
+        return $BuscarInfoEquipoMovil;
+    }
+
     public static function RegistrarEquipoMovil($TipoEquipo,$FechaAdquisicion,$Serial,$Marca,$Modelo,$IMEI,$Capacidad,$LineaMovil,$Area,$NombreAsignado,$EstadoEquipo,$creadoPor){
         date_default_timezone_set('America/Bogota');
         $fecha_sistema  = date('Y-m-d H:i');
@@ -68,9 +73,46 @@ class Inventario extends Model
                                             [$TipoEquipo,$FechaAdquisicion,$Serial,$Marca,$Modelo,$IMEI,$Capacidad,$NombreAsignado,$Area,$LineaMovil,$EstadoEquipo,$fechaCreacion,$creadoPor]);
 
         if($RegistrarEquipoMovil){
-            DB::Update("UPDATE linea SET estado_equipo = 2 WHERE id = $LineaMovil");
+            if($LineaMovil){
+                DB::Update("UPDATE linea SET estado_equipo = 2 WHERE id = $LineaMovil");
+            }
+
         }
         return $RegistrarEquipoMovil;
+    }
+
+    public static function ActualizarEquipoMovil($TipoEquipo,$FechaAdquisicion,$Serial,$Marca,$Modelo,$IMEI,$Capacidad,$LineaMovil,$Area,$NombreAsignado,$EstadoEquipo,$creadoPor,$idEquipoMovil,$Desvincular){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaActualizacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+        if($Desvincular === 1){
+            $IdLineaMovil = 0;
+            DB::Update("UPDATE linea UPDATE linea SET estado_equipo = 1 WHERE id = $LineaMovil");
+        }else{
+            $IdLineaMovil = $LineaMovil;
+        }
+        if($LineaMovil){
+            if(($EstadoEquipo === 3) ||  ($EstadoEquipo === 4)){
+                $IdLineaMovil = 0;
+                DB::Update("UPDATE linea UPDATE linea SET estado_equipo = 1 WHERE id = $LineaMovil");
+            }
+        }
+        $ActualizarEquipoMovil = DB::Update("UPDATE equipo_movil SET
+                                                tipo_equipo     = $TipoEquipo,
+                                                fecha_ingreso   = '$FechaAdquisicion',
+                                                serial          = '$Serial',
+                                                marca           = '$Marca',
+                                                modelo          = '$Modelo',
+                                                IMEI            = '$IMEI',
+                                                capacidad       = '$Capacidad',
+                                                usuario         = '$NombreAsignado',
+                                                area            = '$Area',
+                                                linea           = $IdLineaMovil,
+                                                estado_equipo   = $EstadoEquipo,
+                                                update_at       = '$fechaActualizacion',
+                                                user_id         = $creadoPor
+                                                WHERE id = $idEquipoMovil");
+        return $ActualizarEquipoMovil;
     }
 
     public static function BuscarLastEquipoMovil($creadoPor){
@@ -81,6 +123,15 @@ class Inventario extends Model
     public static function EvidenciaEM($idEquipoMovil,$NombreFoto){
         $Evidencia = DB::Insert('INSERT INTO evidencia_inventario (nombre,id_equipo_movil) VALUES (?, ?)', [$NombreFoto,$idEquipoMovil]);
         return $Evidencia;
+    }
+
+    public static function HistorialEM($idEquipoMovil,$Comentario,$EstadoEquipo,$creadoPor){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaCreacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+        DB::insert('INSERT INTO historial_inventario (id_movil,comentario,status_id,user_id,created)
+                    VALUES (?,?,?,?,?)',
+                    [$idEquipoMovil,$Comentario,$EstadoEquipo,$creadoPor,$fechaCreacion]);
     }
 
     // LINEA MOVIL
@@ -98,6 +149,41 @@ class Inventario extends Model
     public static function ListadoLineaMovilUpd(){
         $ListadoLineaMovil = DB::Select("SELECT * FROM linea ORDER BY nro_linea");
         return $ListadoLineaMovil;
+    }
+
+    public static function LineMobileStock(){
+        $Stock = DB::Select("SELECT COUNT(*) AS total FROM linea WHERE estado_equipo = 1");
+        return $Stock;
+    }
+
+    public static function LineMobileAsigned(){
+        $Asigned = DB::Select("SELECT COUNT(*) AS total FROM linea WHERE estado_equipo = 2");
+        return $Asigned;
+    }
+
+    public static function LineMobileMaintenance(){
+        $Maintenance = DB::Select("SELECT COUNT(*) AS total FROM linea WHERE estado_equipo = 3");
+        return $Maintenance;
+    }
+
+    public static function LineMobileObsolete(){
+        $Obsolete = DB::Select("SELECT COUNT(*) AS total FROM linea WHERE estado_equipo = 4");
+        return $Obsolete;
+    }
+
+    public static function ListarLineasMoviles(){
+        $ListarEquiposMoviles = DB::Select("SELECT * FROM linea");
+        return $ListarEquiposMoviles;
+    }
+
+    public static function EvidenciaLineaM($IdLineaMovil){
+        $EvidenciaEquipoM = DB::Select("SELECT * FROM evidencia_inventario WHERE id_linea = $IdLineaMovil");
+        return $EvidenciaEquipoM;
+    }
+
+    public static function ProveedorLM(){
+        $ListarProveedores = DB::Select("SELECT * FROM proveedor_linea");
+        return $ListarProveedores;
     }
 
     // EQUIPOS
@@ -123,9 +209,22 @@ class Inventario extends Model
         date_default_timezone_set('America/Bogota');
         $fecha_sistema  = date('Y-m-d H:i');
         $fechaCreacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
-        DB::Insert('INSERT INTO asignados (tipo_equipo,id_movil,area,nombre_usuario,estado_asignado,created_at,user_id,id_ticket)
-                    VALUES (?,?,?,?,?,?,?,?)',
-                    [$TipoEquipo,$idEquipoMovil,$Area,$NombreAsignado,$EstadoEquipo,$fechaCreacion,$creadoPor,0]);
+        $BuscarAsignado = DB::Select("SELECT * FROM asignados WHERE nombre_usuario LIKE '%$NombreAsignado%' AND id IS NOT NULL");
+        foreach($BuscarAsignado as $row){
+            $IdAsignado = (int)$row->id;
+        }
+        $TotalBusqueda  = (int)count($BuscarAsignado);
+        if($TotalBusqueda === 0){
+            DB::Insert('INSERT INTO asignados (tipo_equipo,id_movil,area,nombre_usuario,estado_asignado,created_at,user_id,id_ticket)
+                        VALUES (?,?,?,?,?,?,?,?)',
+                        [$TipoEquipo,$idEquipoMovil,$Area,$NombreAsignado,$EstadoEquipo,$fechaCreacion,$creadoPor,0]);
+        }else{
+            if((int)$EstadoEquipo === 1){
+                DB::Update("UPDATE asignados SET id_movil = 1,update_at = '$fechaCreacion' WHERE id = $IdAsignado");
+            }else{
+                DB::Update("UPDATE asignados SET id_movil = $idEquipoMovil, estado_asignado = $EstadoEquipo, update_at = '$fechaCreacion' WHERE id = $IdAsignado");
+            }
+        }
     }
 
     // IMPRESORAS

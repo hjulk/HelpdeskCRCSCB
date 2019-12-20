@@ -108,7 +108,8 @@ Route::group(['middleware' => 'revalidate'], function () {
 
     Route::post('asignacionEquipoMovil', 'InventarioController@asignacionEquipoMovil')->name('asignacionEquipoMovil');
     Route::post('actualizacionEquipoMovil', 'InventarioController@actualizacionEquipoMovil')->name('actualizacionEquipoMovil');
-
+    Route::post('asignacionLineaMovil', 'InventarioController@asignacionLineaMovil')->name('asignacionLineaMovil');
+    Route::post('actualizacionLineaMovil', 'InventarioController@actualizacionLineaMovil')->name('actualizacionLineaMovil');
 
 
 });

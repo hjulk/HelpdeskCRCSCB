@@ -33,7 +33,7 @@ class InventarioController extends Controller
         $contEM = 0;
         foreach($ListarEquiposMoviles as $value){
             $IdEquipoMovil                              = (int)$value->id;
-            $EquiposMoviles[$contEM]['id']              = $value->id;
+            $EquiposMoviles[$contEM]['id']              = (int)$value->id;
             $EquiposMoviles[$contEM]['tipo_equipo']     = $value->tipo_equipo;
             $EquiposMoviles[$contEM]['fecha_ingreso']   = date('d/m/Y h:i A', strtotime($value->fecha_ingreso));
             $EquiposMoviles[$contEM]['serial']          = $value->serial;
@@ -55,9 +55,13 @@ class InventarioController extends Controller
             }
 
             $IdLinea        = (int)$value->linea;
-            $NroLinea       = Inventario::BuscarNroLinea($IdLinea);
-            foreach($NroLinea as $row){
-                $EquiposMoviles[$contEM]['nro_linea']  = $row->nro_linea;
+            if($IdLinea){
+                $NroLinea       = Inventario::BuscarNroLinea($IdLinea);
+                foreach($NroLinea as $row){
+                    $EquiposMoviles[$contEM]['nro_linea']  = $row->nro_linea;
+                }
+            }else{
+                $EquiposMoviles[$contEM]['nro_linea']  = 'SIN Nro. LINEA';
             }
 
             $IdEstadoEquipo = (int)$value->estado_equipo;
@@ -85,7 +89,7 @@ class InventarioController extends Controller
             if($contadorEvidencia > 0){
                 $contE = 1;
                 foreach($evidenciaTicket as $row){
-                    $EquiposMoviles[$contEM]['evidencia'] .= "<a href='../assets/dist/img/evidencias_inventario/".$row->nombre."' target='_blank'>Anexo Ticket  $IdEquipoMovil No.".$contE."</a><p>";
+                    $EquiposMoviles[$contEM]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-file-archive-o'></i>&nbsp; Anexo Equipo Movil  $IdEquipoMovil Nro. ".$contE."</a></p>";
                     $contE++;
                 }
             }else{
@@ -127,6 +131,112 @@ class InventarioController extends Controller
                                         'EquiposMoviles' => $EquiposMoviles,'TipoEquipo' => $TipoEquipo,'LineaMovil' => $LineaMovil,'EstadoEquipo' => $EstadoEquipo,
                                         'FechaAdquisicion' => null,'Serial' => null,'Marca' => null,'Modelo' => null,'IMEI' => null,'Capacidad' => null,'Area' => null,
                                         'NombreAsignado' => null,'LineaMovilUpd' => $LineaMovilUpd]);
+    }
+
+    public function lineMobile(){
+        $LineasStock = Inventario::LineMobileStock();
+        foreach($LineasStock as $row){
+            $TotalStock = (int)$row->total;
+        }
+        $LineasAsignados = Inventario::LineMobileAsigned();
+        foreach($LineasAsignados as $row){
+            $TotalAsignados = (int)$row->total;
+        }
+        $LineasMantenimiento = Inventario::LineMobileMaintenance();
+        foreach($LineasMantenimiento as $row){
+            $TotalMantenimiento = (int)$row->total;
+        }
+        $LineasObsoletos = Inventario::LineMobileObsolete();
+        foreach($LineasObsoletos as $row){
+            $TotalObsoletos = (int)$row->total;
+        }
+
+        $ListarLineasMoviles = Inventario::ListarLineasMoviles();
+        $LineasMoviles = array();
+        $contLM = 0;
+        foreach($ListarLineasMoviles as $value){
+            $IdLineaMovil                               = (int)$value->id;
+            $LineasMoviles[$contLM]['id']               = (int)$value->id;
+            $LineasMoviles[$contLM]['nro_linea']        = $value->nro_linea;
+            $LineasMoviles[$contLM]['activo']           = (int)$value->activo;
+            $LineasMoviles[$contLM]['proveedor']        = $value->proveedor;
+            $LineasMoviles[$contLM]['plan']             = $value->plan;
+            $LineasMoviles[$contLM]['serial']           = $value->serial;
+            $LineasMoviles[$contLM]['fecha_ingreso']    = date('d/m/Y h:i A', strtotime($value->fecha_ingreso));
+            $LineasMoviles[$contLM]['pto_cargo']        = $value->pto_cargo;
+            $LineasMoviles[$contLM]['cc']               = $value->cc;
+            $LineasMoviles[$contLM]['area']             = $value->area;
+            $LineasMoviles[$contLM]['personal']         = $value->personal;
+            $LineasMoviles[$contLM]['estado_equipo']    = $value->estado_equipo;
+            $LineasMoviles[$contLM]['created_at']       = date('d/m/Y h:i A', strtotime($value->created_at));
+            $LineasMoviles[$contLM]['user_id']          = $value->user_id;
+
+            $IdActivo = (int)$value->activo;
+            if($IdActivo === 1){
+                $LineasMoviles[$contLM]['estado_activo']= 'Sí';
+            }else{
+                $LineasMoviles[$contLM]['estado_activo']= 'No';
+            }
+
+            $IdEstadoEquipo = (int)$value->estado_equipo;
+            $EstadoEquipo   = Inventario::EstadoEquipoId($IdEstadoEquipo);
+            foreach($EstadoEquipo as $row){
+                switch($IdEstadoEquipo){
+                    Case 1  :   $LineasMoviles[$contLM]['estado']  = $row->name;
+                                $LineasMoviles[$contLM]['label']   = 'label label-primary';
+                                break;
+                    Case 2  :   $LineasMoviles[$contLM]['estado']  = $row->name;
+                                $LineasMoviles[$contLM]['label']   = 'label label-success';
+                                break;
+                    Case 3  :   $LineasMoviles[$contLM]['estado']  = $row->name;
+                                $LineasMoviles[$contLM]['label']   = 'label label-danger';
+                                break;
+                    Case 4  :   $LineasMoviles[$contLM]['estado']  = $row->name;
+                                $LineasMoviles[$contLM]['label']   = 'label label-warning';
+                                break;
+                }
+            }
+
+            $LineasMoviles[$contLM]['evidencia']    = null;
+            $evidenciaTicket = Inventario::EvidenciaLineaM($IdLineaMovil);
+            $contadorEvidencia = count($evidenciaTicket);
+            if($contadorEvidencia > 0){
+                $contE = 1;
+                foreach($evidenciaTicket as $row){
+                    $LineasMoviles[$contLM]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-file-archive-o'></i>&nbsp; Anexo Linea Movil  $IdLineaMovil Nro. ".$contE."</a></p>";
+                    $contE++;
+                }
+            }else{
+                $LineasMoviles[$contLM]['evidencia'] = null;
+            }
+
+            $contLM++;
+        }
+
+        $Activo     = array();
+        $Activo[''] = 'Seleccione: ';
+        $Activo[1]  = 'Si';
+        $Activo[0]  = 'No';
+
+        $ListarProveedores = Inventario::ProveedorLM();
+        $Proveedores  = array();
+        $Proveedores[''] = 'Seleccione: ';
+        foreach ($ListarProveedores as $row){
+            $Proveedores[$row->id] = $row->name;
+        }
+
+        $ListarEstadoLinea = Inventario::ListarEstadoEquipos();
+        $EstadoLinea  = array();
+        $EstadoLinea[''] = 'Seleccione: ';
+        foreach ($ListarEstadoLinea as $row){
+            $EstadoLinea[$row->id] = $row->name;
+        }
+
+
+        return view('Inventario.LineMobile',['Stock' => $TotalStock,'Asignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos,
+                                            'LineasMoviles' => $LineasMoviles,'Activo' => $Activo,'Proveedores' => $Proveedores,'EstadoLinea' => $EstadoLinea,
+                                            'FechaAdquisicion' => null,'Serial' => null,'NroLinea' => null,'Plan' => null,'PtoCargo' => null,'CC' => null,'Area' => null,
+                                            'Personal' => null]);
     }
 
     public function detalleNovedadM(){
