@@ -146,7 +146,14 @@ Equipos Móviles
                 autoclose: true,
                 language: 'es',
                 todayBtn: true,
-                format: 'dd/mm/yyyy',
+                format: 'yyyy-m-d',
+                orientation: 'bottom auto'
+            });
+            $('#mod_fecha_adquision_upd').datepicker({
+                autoclose: true,
+                language: 'es',
+                todayBtn: true,
+                format: 'yyyy-m-d',
                 orientation: 'bottom auto'
             });
         });

@@ -24,7 +24,7 @@
                         </div>
                         <div class="col-md-3">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Marca</label>
-                            {!! Form::text('marca',$Marca,['class'=>'form-control','id'=>'plan','placeholder'=>'Marca Equipo']) !!}
+                            {!! Form::text('marca',$Marca,['class'=>'form-control','id'=>'marca','placeholder'=>'Marca Equipo']) !!}
                         </div>
                     </div>
                 </div>

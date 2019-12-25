@@ -181,9 +181,43 @@ class Inventario extends Model
         return $EvidenciaEquipoM;
     }
 
+    public static function EvidenciaLM($idEquipoMovil,$NombreFoto){
+        $Evidencia = DB::Insert('INSERT INTO evidencia_inventario (nombre,id_linea) VALUES (?,?)', [$NombreFoto,$idEquipoMovil]);
+        return $Evidencia;
+    }
+
     public static function ProveedorLM(){
         $ListarProveedores = DB::Select("SELECT * FROM proveedor_linea");
         return $ListarProveedores;
+    }
+
+    public static function BuscarInfoLineaMovil($Serial){
+        $BuscarInfoEquipoMovil = DB::Select("SELECT * FROM linea WHERE serial LIKE '%$Serial%'");
+        return $BuscarInfoEquipoMovil;
+    }
+
+    public static function RegistrarLineaMovil($NroLinea,$FechaAdquisicion,$Serial,$Activo,$Proveedor,$Plan,$PtoCargo,$Cc,$Area,$Personal,$Estado,$creadoPor){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaCreacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+        $RegistrarLineaMovil = DB::insert('INSERT INTO linea (nro_linea,activo,proveedor,plan,serial,fecha_ingreso,pto_cargo,cc,area,personal,estado_equipo,created_at,user_id)
+                                            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                                            [$NroLinea,$Activo,$Proveedor,$Plan,$Serial,$FechaAdquisicion,$PtoCargo,$Cc,$Area,$Personal,$Estado,$fechaCreacion,$creadoPor]);
+        return $RegistrarLineaMovil;
+    }
+
+    public static function BuscarLastLineaMovil($creadoPor){
+        $buscarUltimo = DB::Select("SELECT max(id) as id FROM linea WHERE user_id = $creadoPor");
+        return $buscarUltimo;
+    }
+
+    public static function HistorialLM($idEquipoMovil,$Comentario,$EstadoEquipo,$creadoPor){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaCreacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+        DB::insert('INSERT INTO historial_inventario (id_linea,comentario,status_id,user_id,created)
+                    VALUES (?,?,?,?,?)',
+                    [$idEquipoMovil,$Comentario,$EstadoEquipo,$creadoPor,$fechaCreacion]);
     }
 
     // EQUIPOS
@@ -223,6 +257,28 @@ class Inventario extends Model
                 DB::Update("UPDATE asignados SET id_movil = 1,update_at = '$fechaCreacion' WHERE id = $IdAsignado");
             }else{
                 DB::Update("UPDATE asignados SET id_movil = $idEquipoMovil, estado_asignado = $EstadoEquipo, update_at = '$fechaCreacion' WHERE id = $IdAsignado");
+            }
+        }
+    }
+
+    public static function RegistrarAsignadoLM($idEquipoMovil,$Area,$NombreAsignado,$EstadoEquipo,$creadoPor){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema  = date('Y-m-d H:i');
+        $fechaCreacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
+        $BuscarAsignado = DB::Select("SELECT * FROM asignados WHERE nombre_usuario LIKE '%$NombreAsignado%' AND id IS NOT NULL");
+        foreach($BuscarAsignado as $row){
+            $IdAsignado = (int)$row->id;
+        }
+        $TotalBusqueda  = (int)count($BuscarAsignado);
+        if($TotalBusqueda === 0){
+            DB::Insert('INSERT INTO asignados (id_linea,area,nombre_usuario,estado_asignado,created_at,user_id,id_ticket)
+                        VALUES (?,?,?,?,?,?,?)',
+                        [$idEquipoMovil,$Area,$NombreAsignado,$EstadoEquipo,$fechaCreacion,$creadoPor,0]);
+        }else{
+            if((int)$EstadoEquipo === 1){
+                DB::Update("UPDATE asignados SET id_linea = 1,update_at = '$fechaCreacion' WHERE id = $IdAsignado");
+            }else{
+                DB::Update("UPDATE asignados SET id_linea = $idEquipoMovil, estado_asignado = $EstadoEquipo, update_at = '$fechaCreacion' WHERE id = $IdAsignado");
             }
         }
     }

@@ -35,7 +35,7 @@ class InventarioController extends Controller
             $IdEquipoMovil                              = (int)$value->id;
             $EquiposMoviles[$contEM]['id']              = (int)$value->id;
             $EquiposMoviles[$contEM]['tipo_equipo']     = $value->tipo_equipo;
-            $EquiposMoviles[$contEM]['fecha_ingreso']   = date('d/m/Y h:i A', strtotime($value->fecha_ingreso));
+            $EquiposMoviles[$contEM]['fecha_ingreso']   = date('d/m/Y', strtotime($value->fecha_ingreso));
             $EquiposMoviles[$contEM]['serial']          = $value->serial;
             $EquiposMoviles[$contEM]['marca']           = $value->marca;
             $EquiposMoviles[$contEM]['modelo']          = $value->modelo;
@@ -115,7 +115,7 @@ class InventarioController extends Controller
 
         $ListadoLineaMovilUpd = Inventario::ListadoLineaMovilUpd();
         $LineaMovilUpd  = array();
-        $LineaMLineaMovilUpdovil[''] = 'Seleccione: ';
+        $LineaMovilUpd[''] = 'Seleccione: ';
         foreach ($ListadoLineaMovilUpd as $row){
             $LineaMovilUpd[$row->id] = $row->nro_linea;
         }
@@ -162,7 +162,7 @@ class InventarioController extends Controller
             $LineasMoviles[$contLM]['proveedor']        = $value->proveedor;
             $LineasMoviles[$contLM]['plan']             = $value->plan;
             $LineasMoviles[$contLM]['serial']           = $value->serial;
-            $LineasMoviles[$contLM]['fecha_ingreso']    = date('d/m/Y h:i A', strtotime($value->fecha_ingreso));
+            $LineasMoviles[$contLM]['fecha_ingreso']    = date('d/m/Y', strtotime($value->fecha_ingreso));
             $LineasMoviles[$contLM]['pto_cargo']        = $value->pto_cargo;
             $LineasMoviles[$contLM]['cc']               = $value->cc;
             $LineasMoviles[$contLM]['area']             = $value->area;
