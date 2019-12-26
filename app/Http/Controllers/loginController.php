@@ -98,7 +98,7 @@ class loginController extends Controller
                             $listarNotificaciones = array();
                         $contN = 0;
                         foreach($notificaciones as $noti){
-                            $UserCreador = $noti->creado_por;
+                            $UserCreador = $noti->usuario1;
                             $usuarios = Usuarios::BuscarNombre($UserCreador);
                             foreach($usuarios as $user){
                                 $UsuarioN = $user->name;

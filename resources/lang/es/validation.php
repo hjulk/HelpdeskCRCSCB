@@ -102,7 +102,7 @@ return array(
         'id_estado'             =>  'Estado',
         'id_estadoupd'          =>  'Estado',
         'id_estado_upd'         =>  'Estado',
-        'comentario'            =>  'Comentario / Observación del Ticket',
+        'comentario'            =>  'Comentario / Observación',
         'evidencia'             =>  'Evidencia',
         'fechaInicio'           =>  'Fecha Inicio',
         'fechaFin'              =>  'Fecha Final',

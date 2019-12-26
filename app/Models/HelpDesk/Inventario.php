@@ -92,12 +92,17 @@ class Inventario extends Model
             $IdLineaMovil = $LineaMovil;
         }
         if($LineaMovil){
-            if(($EstadoEquipo === 3) ||  ($EstadoEquipo === 4)){
+            if(($EstadoEquipo === 3) || ($EstadoEquipo === 4) || ($EstadoEquipo === 1)){
                 $IdLineaMovil = 0;
-                DB::Update("UPDATE linea SET estado_equipo = 1 WHERE id = $LineaMovil");
+                DB::Update("UPDATE linea SET estado_equipo = 1,cc = null,personal = null,area = null WHERE id = $LineaMovil");
                 DB::Update("UPDATE asignados SET id_linea = null,update_at = '$fechaActualizacion' WHERE id_linea = $LineaMovil");
                 DB::Update("UPDATE asignados SET id_movil = null,update_at = '$fechaActualizacion' WHERE id_movil = $idEquipoMovil");
+
             }
+        }
+        if(($EstadoEquipo === 3) || ($EstadoEquipo === 4) || ($EstadoEquipo === 1)){
+            $NombreAsignado = null;
+            $Area = null;
         }
         $ActualizarEquipoMovil = DB::Update("UPDATE equipo_movil SET
                                                 tipo_equipo     = $TipoEquipo,
@@ -217,9 +222,11 @@ class Inventario extends Model
         date_default_timezone_set('America/Bogota');
         $fecha_sistema      = date('Y-m-d H:i');
         $fechaActualizacion = date('Y-m-d H:i', strtotime($fecha_sistema));
-        if(($Estado === 3) ||  ($Estado === 4)){
-            $IdLineaMovil = 0;
+        if(($Estado === 3) || ($Estado === 4) || ($Estado === 1)){
             DB::Update("UPDATE asignados SET id_linea = null,update_at = '$fechaActualizacion' WHERE id_linea = $IdLineaMovil");
+            $Area = null;
+            $Cc = null;
+            $Personal = null;
         }
         $ActualizarLineaMovil = DB::Update("UPDATE linea SET
                                                 nro_linea       = '$NroLinea',
@@ -348,9 +355,38 @@ class Inventario extends Model
         $fechaCreacion = date('Y-m-d H:i', strtotime($fecha_sistema));
         DB::insert('INSERT INTO historial_inventario (id_equipo,comentario,status_id,user_id,created)
                     VALUES (?,?,?,?,?)',
-                    [$idEquipoMovil,$Comentario,$EstadoEquipo,$creadoPor,$fechaCreacion]);
+                    [$idEquipo,$Comentario,$EstadoEquipo,$creadoPor,$fechaCreacion]);
     }
 
+    public static function ActualizarEquipo($TipoEquipo,$TipoIngreso,$EmpresaRenting,$FechaAdquisicion,$Serial,$Marca,$Procesador,$VelProcesador,$DiscoDuro,$MemoriaRam,$EstadoEquipo,$creadoPor,$IdEquipo){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaActualizacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+        if(($EstadoEquipo === 3) || ($EstadoEquipo === 4) || ($EstadoEquipo === 1)){
+            DB::Update("UPDATE asignados SET id_equipo = null,update_at = '$fechaActualizacion' WHERE id_equipo = $IdEquipo");
+        }
+        if(($TipoIngreso === 3) || ($TipoIngreso === 4) || ($TipoIngreso === 2)){
+            $EmpRenting = 'SIN EMPRESA';
+        }else{
+            $EmpRenting = $EmpresaRenting;
+        }
+        $ActualizarEquipo = DB::Update("UPDATE equipo SET
+                                        tipo_equipo = $TipoEquipo,
+                                        tipo_ingreso = $TipoIngreso,
+                                        emp_renting = '$EmpRenting',
+                                        fecha_ingreso = '$FechaAdquisicion',
+                                        serial = '$Serial',
+                                        marca = '$Marca',
+                                        procesador = '$Procesador',
+                                        vel_procesador = '$VelProcesador',
+                                        disco_duro = '$DiscoDuro',
+                                        memoria_ram = '$MemoriaRam',
+                                        estado_equipo = $EstadoEquipo,
+                                        updated_at = '$fechaActualizacion',
+                                        actualziado_por = $creadoPor
+                                        WHERE id = $IdEquipo");
+        return $ActualizarEquipo;
+    }
     // PERIFERICOS
 
 
@@ -373,7 +409,7 @@ class Inventario extends Model
                         [$TipoEquipo,$idEquipoMovil,$Area,$NombreAsignado,$EstadoEquipo,$fechaCreacion,$creadoPor,0]);
         }else{
             if((int)$EstadoEquipo === 1){
-                DB::Update("UPDATE asignados SET id_movil = 1,update_at = '$fechaCreacion' WHERE id = $IdAsignado");
+                DB::Update("UPDATE asignados SET id_movil = null,update_at = '$fechaCreacion' WHERE id = $IdAsignado");
             }else{
                 DB::Update("UPDATE asignados SET id_movil = $idEquipoMovil, estado_asignado = $EstadoEquipo, update_at = '$fechaCreacion' WHERE id = $IdAsignado");
             }
@@ -395,7 +431,7 @@ class Inventario extends Model
                         [$idEquipoMovil,$Area,$NombreAsignado,$EstadoEquipo,$fechaCreacion,$creadoPor,0]);
         }else{
             if((int)$EstadoEquipo === 1){
-                DB::Update("UPDATE asignados SET id_linea = 1,update_at = '$fechaCreacion' WHERE id = $IdAsignado");
+                DB::Update("UPDATE asignados SET id_linea = null,update_at = '$fechaCreacion' WHERE id = $IdAsignado");
             }else{
                 DB::Update("UPDATE asignados SET id_linea = $idEquipoMovil, estado_asignado = $EstadoEquipo, update_at = '$fechaCreacion' WHERE id = $IdAsignado");
             }
