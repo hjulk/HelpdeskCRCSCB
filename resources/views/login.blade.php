@@ -4,7 +4,7 @@
     <title>HelpDesk CRSCB</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link type="image/x-icon" rel="icon" href="{{asset("assets/Login/img/logo.png")}}">
+    <link type="image/x-icon" rel="icon" href="{{asset("assets/dist/img/helpdesk.png")}}">
     <meta name="keywords" content="Slide Login Form template Responsive, Login form web template, Flat Pricing tables, Flat Drop downs Sign up Web Templates, Flat Web Templates, Login sign up Responsive web template, SmartPhone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
         <script>
             addEventListener("load", function () {

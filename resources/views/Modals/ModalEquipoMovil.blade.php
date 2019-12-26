@@ -65,6 +65,7 @@
                         <div class="col-md-3">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Evidencia</label>
                             <input type="file" id="evidencia[]" name="evidencia[]" class="form-control" multiple>
+                            <div align="right"><small class="text-muted" style="font-size: 63%;">Tamaño maximo permitido (5MB), si se supera este tamaño, su archivo no será cargado.</small> <span id="cntDescripHechos" align="right"> </span></div>
                         </div>
                     </div>
                 </div>
@@ -150,6 +151,7 @@
                         <div class="col-md-3">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Evidencia</label>
                             <input type="file" id="mod_evidencia_upd[]" name="evidencia_upd[]" class="form-control" multiple>
+                            <div align="right"><small class="text-muted" style="font-size: 63%;">Tamaño maximo permitido (5MB), si se supera este tamaño, su archivo no será cargado.</small> <span id="cntDescripHechos" align="right"> </span></div>
                         </div>
                     </div>
                 </div>

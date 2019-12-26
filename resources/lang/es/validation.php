@@ -144,6 +144,9 @@ return array(
         'cc'                    =>  'Nro de Cédula',
         'cc_upd'                =>  'Nro de Cédula',
         'personal'              =>  'Nombre Responsable',
-        'personal_upd'          =>  'Nombre Responsable'
+        'personal_upd'          =>  'Nombre Responsable',
+        'tipo_ingreso'          =>  'Tipo de Ingreso',
+        'tipo_ingreso_upd'      =>  'Tipo de Ingreso'
+
     ),
 );

@@ -94,7 +94,9 @@ class Inventario extends Model
         if($LineaMovil){
             if(($EstadoEquipo === 3) ||  ($EstadoEquipo === 4)){
                 $IdLineaMovil = 0;
-                DB::Update("UPDATE linea UPDATE linea SET estado_equipo = 1 WHERE id = $LineaMovil");
+                DB::Update("UPDATE linea SET estado_equipo = 1 WHERE id = $LineaMovil");
+                DB::Update("UPDATE asignados SET id_linea = null,update_at = '$fechaActualizacion' WHERE id_linea = $LineaMovil");
+                DB::Update("UPDATE asignados SET id_movil = null,update_at = '$fechaActualizacion' WHERE id_movil = $idEquipoMovil");
             }
         }
         $ActualizarEquipoMovil = DB::Update("UPDATE equipo_movil SET
@@ -206,6 +208,34 @@ class Inventario extends Model
         return $RegistrarLineaMovil;
     }
 
+    public static function ActualizarLineaMovil($NroLinea,$FechaAdquisicion,$Serial,$Activo,$Proveedor,$Plan,$PtoCargo,$Cc,$Area,$Personal,$Estado,$creadoPor,$IdLineaMovil){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaActualizacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+        if(($Estado === 3) ||  ($Estado === 4)){
+            $IdLineaMovil = 0;
+            DB::Update("UPDATE asignados SET id_linea = null,update_at = '$fechaActualizacion' WHERE id_linea = $IdLineaMovil");
+        }
+        $ActualizarLineaMovil = DB::Update("UPDATE linea SET
+                                                nro_linea       = '$NroLinea',
+                                                fecha_ingreso   = '$FechaAdquisicion',
+                                                serial          = '$Serial',
+                                                activo          = $Activo,
+                                                serial          = '$Serial',
+                                                proveedor       = '$Proveedor',
+                                                plan            = '$Plan',
+                                                pto_cargo       = '$PtoCargo',
+                                                area            = '$Area',
+                                                cc              = '$Cc',
+                                                personal        = '$Personal',
+                                                estado_equipo   = $Estado,
+                                                updated_at       = '$fechaActualizacion',
+                                                actualizado_por = $creadoPor
+                                                WHERE id = $IdLineaMovil");
+        return $ActualizarLineaMovil;
+
+    }
+
     public static function BuscarLastLineaMovil($creadoPor){
         $buscarUltimo = DB::Select("SELECT max(id) as id FROM linea WHERE user_id = $creadoPor");
         return $buscarUltimo;
@@ -230,6 +260,50 @@ class Inventario extends Model
     public static function BuscarEquipoId($IdTipoEquipo){
         $BuscarEquipoId = DB::Select("SELECT * FROM tipo_equipo WHERE id = $IdTipoEquipo");
         return $BuscarEquipoId;
+    }
+
+    public static function EquipoStock(){
+        $Stock = DB::Select("SELECT COUNT(*) AS total FROM equipo WHERE estado_equipo = 1");
+        return $Stock;
+    }
+
+    public static function EquipoAsigned(){
+        $Asigned = DB::Select("SELECT COUNT(*) AS total FROM equipo WHERE estado_equipo = 2");
+        return $Asigned;
+    }
+
+    public static function EquipoMaintenance(){
+        $Maintenance = DB::Select("SELECT COUNT(*) AS total FROM equipo WHERE estado_equipo = 3");
+        return $Maintenance;
+    }
+
+    public static function EquipoObsolete(){
+        $Obsolete = DB::Select("SELECT COUNT(*) AS total FROM equipo WHERE estado_equipo = 4");
+        return $Obsolete;
+    }
+
+    public static function ListarEquipos(){
+        $ListarEquiposMoviles = DB::Select("SELECT * FROM equipo");
+        return $ListarEquiposMoviles;
+    }
+
+    public static function BuscarTipoIngresoId($IdTipoIngreso){
+        $BuscarTipoIngresoId = DB::Select("SELECT * FROM adquisision WHERE id = $IdTipoIngreso");
+        return $BuscarTipoIngresoId;
+    }
+
+    public static function EvidenciaEquipo($IdEquipo){
+        $EvidenciaEquipo = DB::Select("SELECT * FROM evidencia_inventario WHERE id_equipo = $IdEquipo");
+        return $EvidenciaEquipo;
+    }
+
+    public static function ListarTipoIngreso(){
+        $ListarTipoIngreso = DB::Select("SELECT * FROM adquisision");
+        return $ListarTipoIngreso;
+    }
+
+    public static function IngresarEquipo($TipoEquipo,$TipoIngreso,$EmpresaRenting,$FechaAdquisicion,$Serial,$Marca,$Procesador,$VelProcesador,$DiscoDuro,$MemoriaRam,$EstadoEquipo){
+
     }
 
     // PERIFERICOS

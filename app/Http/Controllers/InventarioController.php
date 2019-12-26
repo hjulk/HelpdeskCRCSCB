@@ -314,8 +314,87 @@ class InventarioController extends Controller
             $Personal           = Input::get('personal_upd');
             $Estado             = Input::get('estado_upd');
             $IdLineaMovil       = Input::get('idLM');
+
+            $ActualizacionLineaMovil = Inventario::ActualizarLineaMovil($NroLinea,$FechaAdquisicion,$Serial,$Activo,$Proveedor,$Plan,$PtoCargo,$Cc,$Area,$Personal,$Estado,$creadoPor,$IdLineaMovil);
+
+            if($ActualizacionLineaMovil){
+
+                Inventario::RegistrarAsignadoLM($IdLineaMovil,$Area,$Personal,$Estado,$creadoPor);
+
+                $destinationPath = null;
+                $filename        = null;
+                if (Input::hasFile('evidencia_upd')) {
+                    $files = Input::file('evidencia_upd');
+                    foreach($files as $file){
+                        $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario';
+                        $extension          = $file->getClientOriginalExtension();
+                        $name               = $file->getClientOriginalName();
+                        $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
+                        $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
+                        $filename           = $nombrearchivo.'_Linea Movil_'.$IdLineaMovil.'.'.$extension;
+                        $uploadSuccess      = $file->move($destinationPath, $filename);
+                        $archivofoto        = file_get_contents($uploadSuccess);
+                        $NombreFoto         = $filename;
+                        $actualizarEvidencia = Inventario::EvidenciaLM($IdLineaMovil,$NombreFoto);
+                    }
+                }
+                $verrors = 'Se actualizo con éxito la linea movil '.$NroLinea;
+                return redirect($url.'/lineMobile')->with('mensaje', $verrors);
+            }else{
+                $verrors = array();
+                array_push($verrors, 'Hubo un problema al actualizar la linea movil');
+                return Redirect::to($url.'/lineMobile')->withErrors(['errors' => $verrors])->withInput();
+            }
+
         }else{
             return Redirect::to($url.'/lineMobile')->withErrors(['errors' => $verrors])->withInput();
         }
+    }
+
+    public function ingresoEquipo(){
+        $data           = Input::all();
+        $creadoPor      = (int)Session::get('IdUsuario');
+        $buscarUsuario  = Usuarios::BuscarNombre($creadoPor);
+        foreach($buscarUsuario as $value){
+            $Administrador = (int)$value->rol_id;
+        }
+        $url = InventarioController::BuscarURL($Administrador);
+        $reglas = array(
+            'tipo_equipo'       =>  'required',
+            'tipo_ingreso'      =>  'required',
+            'fecha_adquision'   =>  'required',
+            'serial'            =>  'required',
+            'marca'             =>  'required'
+        );
+        $validador = Validator::make($data, $reglas);
+        $messages = $validador->messages();
+        foreach ($reglas as $key => $value){
+            $verrors[$key] = $messages->first($key);
+        }
+        if($validador->passes()) {
+            $TipoEquipo = Input::get('tipo_equipo');
+            $TipoIngreso = Input::get('tipo_ingreso');
+            if(Input::get('emp_renting')){
+                $EmpresaRenting = Input::get('emp_renting');
+            }else{
+                $EmpresaRenting = 'SIN EMPRESA';
+            }
+            $FechaAdquisicion   = date('Y-m-d H:i:s', strtotime(Input::get('fecha_adquision')));
+            $Serial = Input::get('serial');
+            $Marca = Input::get('marca');
+            $Procesador = Input::get('procesador');
+            $VelProcesador = Input::get('vel_procesador');
+            $DiscoDuro = Input::get('disco_duro');
+            $MemoriaRam = Input::get('memoria_ram');
+            $EstadoEquipo = Input::get('estado');
+
+            $IngresarEquipo = Inventario::IngresarEquipo($TipoEquipo,$TipoIngreso,$EmpresaRenting,$FechaAdquisicion,$Serial,$Marca,$Procesador,$VelProcesador,$DiscoDuro,$MemoriaRam,$EstadoEquipo);
+        }else{
+            return Redirect::to($url.'/desktops')->withErrors(['errors' => $verrors])->withInput();
+        }
+    }
+
+    public function actualizacionEquipo(){
+
     }
 }

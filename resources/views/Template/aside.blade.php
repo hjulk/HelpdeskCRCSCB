@@ -68,6 +68,12 @@
                         <li><a href="printers"><i class="fa fa-print"></i> Impresoras</a></li>
                     </ul>
                 </li>
+                <li>
+                    <a href="calificaciones"><i class="fa fa-check"></i> <span>Calificaciones</span></a>
+                </li>
+                <li>
+                    <a href="turnos"><i class="fa fa-calendar-o"></i> <span>Turnos</span></a>
+                </li>
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-gear"></i> <span>Administración</span>

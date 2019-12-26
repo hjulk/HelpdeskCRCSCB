@@ -239,56 +239,116 @@ class InventarioController extends Controller
                                             'Personal' => null]);
     }
 
-    public function detalleNovedadM(){
+    public function desktops(){
 
-        $Linea = Input::get('linea');
-
-        $BuscarInfoNumLinea = Inventario::BuscarInfoNumLinea($Linea);
-        foreach($BuscarInfoNumLinea as $value){
-            $IdLinea = $value->id;
+        $LineasStock = Inventario::EquipoStock();
+        foreach($LineasStock as $row){
+            $TotalStock = (int)$row->total;
+        }
+        $LineasAsignados = Inventario::EquipoAsigned();
+        foreach($LineasAsignados as $row){
+            $TotalAsignados = (int)$row->total;
+        }
+        $LineasMantenimiento = Inventario::EquipoMaintenance();
+        foreach($LineasMantenimiento as $row){
+            $TotalMantenimiento = (int)$row->total;
+        }
+        $LineasObsoletos = Inventario::EquipoObsolete();
+        foreach($LineasObsoletos as $row){
+            $TotalObsoletos = (int)$row->total;
         }
 
-        $ListarNovedadMobile = Inventario::ListarNovedadMobileId($IdLinea);
+        $ListarEquipos = Inventario::ListarEquipos();
+        $Equipos = array();
+        $contD = 0;
+        foreach($ListarEquipos as $value){
+            $IdEquipo                           = (int)$value->id;
+            $Equipos[$contD]['id']              = (int)$value->id;
 
-        $Novedades = array();
-        $contNM = 0;
-
-        foreach($ListarNovedadMobile as $row){
-            $Novedades[$contNM]['id_novedad']   = $row->id_novedad;
-            $Novedades[$contNM]['year']         = $row->year;
-            $Novedades[$contNM]['mes']          = $row->mes;
-            $Novedades[$contNM]['valor_mes']    = $row->valor_mes;
-            $Novedades[$contNM]['valormes']     = '$'.$row->valor_mes;
-            $Novedades[$contNM]['novedad_mes']  = $row->novedad_mes;
-            $Novedades[$contNM]['linea']        = $Linea;
-            $yearNovedad = $row->year;
-            $monthNovedad = $row->mes;
-            $buscarYear = Inventario::ListarYearId($yearNovedad);
-            foreach($buscarYear as $values){
-                $Novedades[$contNM]['yearName'] = $values->year;
+            $Equipos[$contD]['tipo_equipo']     = (int)$value->tipo_equipo;
+            $IdTipoEquipo                       = (int)$value->tipo_equipo;
+            $TipoEquipo                         = Inventario::BuscarEquipoId($IdTipoEquipo);
+            foreach($TipoEquipo as $row){
+                $Equipos[$contD]['tipoEquipo']  = $row->name;
             }
-            $buscarMonth = Inventario::ListarMonthId($monthNovedad);
-            foreach($buscarMonth as $values){
-                $Novedades[$contNM]['mesName'] = $values->month;
+
+            $Equipos[$contD]['tipo_ingreso']    = (int)$value->tipo_ingreso;
+            $IdTipoIngreso                      = (int)$value->tipo_ingreso;
+            $TipoIngreso                        = Inventario::BuscarTipoIngresoId($IdTipoIngreso);
+            foreach($TipoIngreso as $row){
+                $Equipos[$contD]['tipoIngreso'] = $row->name;
             }
-            $contNM++;
+
+            $Equipos[$contD]['emp_renting']     = strtoupper($value->emp_renting);
+            $Equipos[$contD]['fecha_ingreso']   = date('d/m/Y', strtotime($value->fecha_ingreso));
+            $Equipos[$contD]['serial']          = $value->serial;
+            $Equipos[$contD]['marca']           = strtoupper($value->marca);
+            $Equipos[$contD]['procesador']      = $value->procesador;
+            $Equipos[$contD]['vel_procesador']  = $value->vel_procesador;
+            $Equipos[$contD]['disco_duro']      = $value->disco_duro;
+            $Equipos[$contD]['memoria_ram']     = $value->memoria_ram;
+
+            $Equipos[$contD]['estado_equipo']   = (int)$value->estado_equipo;
+            $IdEstadoEquipo = (int)$value->estado_equipo;
+            $EstadoEquipo   = Inventario::EstadoEquipoId($IdEstadoEquipo);
+            foreach($EstadoEquipo as $row){
+                switch($IdEstadoEquipo){
+                    Case 1  :   $Equipos[$contD]['estado']  = $row->name;
+                                $Equipos[$contD]['label']   = 'label label-primary';
+                                break;
+                    Case 2  :   $Equipos[$contD]['estado']  = $row->name;
+                                $Equipos[$contD]['label']   = 'label label-success';
+                                break;
+                    Case 3  :   $Equipos[$contD]['estado']  = $row->name;
+                                $Equipos[$contD]['label']   = 'label label-danger';
+                                break;
+                    Case 4  :   $Equipos[$contD]['estado']  = $row->name;
+                                $Equipos[$contD]['label']   = 'label label-warning';
+                                break;
+                }
+            }
+
+            $Equipos[$contD]['evidencia']    = null;
+            $evidenciaTicket = Inventario::EvidenciaEquipo($IdEquipo);
+            $contadorEvidencia = count($evidenciaTicket);
+            if($contadorEvidencia > 0){
+                $contE = 1;
+                foreach($evidenciaTicket as $row){
+                    $Equipos[$contD]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-file-archive-o'></i>&nbsp; Anexo Linea Movil  $IdEquipo Nro. ".$contE."</a></p>";
+                    $contE++;
+                }
+            }else{
+                $Equipos[$contD]['evidencia'] = null;
+            }
+
+            $contD++;
         }
 
-        $SearchYear = Inventario::ListarYear();
-        $ListYear = array();
-        $ListYear[''] = 'Seleccione: ';
-        foreach($SearchYear as $row){
-            $ListYear[$row->id] = $row->year;
-        }
-        $SearchMonth = Inventario::ListarMonth();
-        $ListMonth = array();
-        $ListMonth[''] = 'Seleccione: ';
-        foreach($SearchMonth as $row){
-            $ListMonth[$row->id] = $row->month;
+        $ListaTipoEquipo = Inventario::ListarEquipoUsuarioC();
+        $TipoEquipo  = array();
+        $TipoEquipo[''] = 'Seleccione: ';
+        foreach ($ListaTipoEquipo as $row){
+            $TipoEquipo[$row->id] = $row->name;
         }
 
-        return view('Inventario.DetalleNovedadM',['Novedades' => $Novedades,'ListYear' => $ListYear,'ListMonth' => $ListMonth,
-                                                    'Linea' => $Linea,'Valor' => null,'Novedad' => null,'IdLinea' => $IdLinea]);
+        $ListaTipoIngreso = Inventario::ListarTipoIngreso();
+        $TipoIngreso  = array();
+        $TipoIngreso[''] = 'Seleccione: ';
+        foreach ($ListaTipoIngreso as $row){
+            $TipoIngreso[$row->id] = $row->name;
+        }
+
+        $ListarEstado = Inventario::ListarEstadoEquipos();
+        $EstadoEquipo  = array();
+        $EstadoEquipo[''] = 'Seleccione: ';
+        foreach ($ListarEstado as $row){
+            $EstadoEquipo[$row->id] = $row->name;
+        }
+
+        return view('Inventario.Desktops',['Stock' => $TotalStock,'Asignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos,
+                                            'Equipos' => $Equipos,'TipoEquipo' => $TipoEquipo,'TipoIngreso' => $TipoIngreso,'EstadoEquipo' =>$EstadoEquipo,
+                                            'Renting' => null,'FechaAdquisicion' => null,'Serial' => null,'Procesador' => null,'Marca' => null,'VelProcesador' => null,
+                                            'DiscoDuro' => null,'MemoriaRam' => null]);
     }
 
 

@@ -7,7 +7,7 @@
                     <h4 class="modal-title">Actualizar Ticket</h4>
                 </div>
 
-                {!! Form::open(['url' => 'actualizarTicket', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+                {!! Form::open(['url' => 'actualizarTicket', 'method' => 'post', 'enctype' => 'multipart/form-data','id'=>'upd']) !!}
                 <div class="modal-body">
                     <input type="hidden" name="idT" id="mod_idT">
                     <div class="box-body">
@@ -88,6 +88,7 @@
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Evidencia</label>
                                     <input type="file" id="evidencia_upd[]" name="evidencia_upd[]" class="form-control" multiple>
+                                    <div align="right"><small class="text-muted" style="font-size: 63%;">Tamaño maximo permitido (5MB), si se supera este tamaño, su archivo no será cargado.</small> <span id="cntDescripHechos" align="right"> </span></div>
                                 </div>
                             </div>
                         </div>
@@ -105,7 +106,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-primary">Actualizar Ticket</button>
+                    <button type="submit" class="btn btn-primary" id="update_data" >Actualizar Ticket</button>
                 </div>
                 {!!  Form::close() !!}
 

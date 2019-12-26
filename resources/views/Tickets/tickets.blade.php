@@ -114,7 +114,28 @@ Tickets
             @endforeach
         @endif
     </script>
+    {{-- <script>
+        $("#upd").submit(function (event) {
 
+            var opcion = confirm("¿Esta de acuerdo con actualizar el ticket con la información suministrada?");
+            if (opcion === true) {
+                $('#update_data').attr("disabled", true);
+                var tipo = 'post';
+                $.ajax({
+                    type: "post",
+                    url: "{{route('actualizarTicket')}}",
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (datos) {
 
+                        location.reload();
+                    }
+                });
+            }
+            event.preventDefault();
+        });
+    </script> --}}
 
 @endsection
