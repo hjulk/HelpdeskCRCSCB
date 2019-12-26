@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 Use App\Models\HelpDesk\Inventario;
 Use App\Models\Admin\Sedes;
+Use App\Models\Admin\Usuarios;
 use Illuminate\Support\Facades\Input;
 
 class InventarioController extends Controller
@@ -94,6 +95,22 @@ class InventarioController extends Controller
                 }
             }else{
                 $EquiposMoviles[$contEM]['evidencia'] = null;
+            }
+
+            $historialEquipoM = Inventario::BuscarHistorialEM($IdEquipoMovil);
+            $contadorHistorial = count($historialEquipoM);
+            $EquiposMoviles[$contEM]['historial'] = null;
+            if($contadorHistorial > 0){
+                foreach($historialEquipoM as $row){
+                    $idUsuario  = $row->user_id;
+                    $BuscarUsuario = Usuarios::BuscarNombre($idUsuario);
+                    foreach($BuscarUsuario as $values){
+                        $NombreUser = $values->name;
+                    }
+                    $EquiposMoviles[$contEM]['historial'] .= "- ".$row->comentario." (".$NombreUser." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
+                }
+            }else{
+                $EquiposMoviles[$contEM]['historial'] = null;
             }
 
             $contEM++;
@@ -210,6 +227,22 @@ class InventarioController extends Controller
                 $LineasMoviles[$contLM]['evidencia'] = null;
             }
 
+            $historialEquipoM = Inventario::BuscarHistorialLM($IdLineaMovil);
+            $contadorHistorial = count($historialEquipoM);
+            $LineasMoviles[$contLM]['historial'] = null;
+            if($contadorHistorial > 0){
+                foreach($historialEquipoM as $row){
+                    $idUsuario  = $row->user_id;
+                    $BuscarUsuario = Usuarios::BuscarNombre($idUsuario);
+                    foreach($BuscarUsuario as $values){
+                        $NombreUser = $values->name;
+                    }
+                    $LineasMoviles[$contLM]['historial'] .= "- ".$row->comentario." (".$NombreUser." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
+                }
+            }else{
+                $LineasMoviles[$contLM]['historial'] = null;
+            }
+
             $contLM++;
         }
 
@@ -319,6 +352,22 @@ class InventarioController extends Controller
                 }
             }else{
                 $Equipos[$contD]['evidencia'] = null;
+            }
+
+            $historialEquipoM = Inventario::BuscarHistorialE($IdEquipo);
+            $contadorHistorial = count($historialEquipoM);
+            $Equipos[$contD]['historial'] = null;
+            if($contadorHistorial > 0){
+                foreach($historialEquipoM as $row){
+                    $idUsuario  = $row->user_id;
+                    $BuscarUsuario = Usuarios::BuscarNombre($idUsuario);
+                    foreach($BuscarUsuario as $values){
+                        $NombreUser = $values->name;
+                    }
+                    $Equipos[$contD]['historial'] .= "- ".$row->comentario." (".$NombreUser." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
+                }
+            }else{
+                $Equipos[$contD]['historial'] = null;
             }
 
             $contD++;

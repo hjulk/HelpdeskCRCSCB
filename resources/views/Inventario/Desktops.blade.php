@@ -104,6 +104,7 @@ Equipos
                                         <input type="hidden" value="{{$value['memoria_ram']}}" id="memoria_ram{{$value['id']}}">
                                         <input type="hidden" value="{{$value['estado_equipo']}}" id="estado_equipo{{$value['id']}}">
                                         <input type="hidden" value="{{$value['evidencia']}}" id="evidencia{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['historial']}}" id="historial{{$value['id']}}">
                                     </tr>
                                 @endforeach
                             </tbody>

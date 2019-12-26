@@ -136,6 +136,11 @@ class Inventario extends Model
                     [$idEquipoMovil,$Comentario,$EstadoEquipo,$creadoPor,$fechaCreacion]);
     }
 
+    public static function BuscarHistorialEM($IdEquipoMovil){
+        $historial = DB::Select("SELECT * FROM historial_inventario WHERE id_movil = $IdEquipoMovil");
+        return $historial;
+    }
+
     // LINEA MOVIL
 
     public static function BuscarNroLinea($IdLinea){
@@ -250,6 +255,11 @@ class Inventario extends Model
                     [$idEquipoMovil,$Comentario,$EstadoEquipo,$creadoPor,$fechaCreacion]);
     }
 
+    public static function BuscarHistorialLM($IdLineaMovil){
+        $historial = DB::Select("SELECT * FROM historial_inventario WHERE id_linea = $IdLineaMovil");
+        return $historial;
+    }
+
     // EQUIPOS
 
     public static function ListarEquipoUsuarioC(){
@@ -302,8 +312,43 @@ class Inventario extends Model
         return $ListarTipoIngreso;
     }
 
-    public static function IngresarEquipo($TipoEquipo,$TipoIngreso,$EmpresaRenting,$FechaAdquisicion,$Serial,$Marca,$Procesador,$VelProcesador,$DiscoDuro,$MemoriaRam,$EstadoEquipo){
+    public static function IngresarEquipo($TipoEquipo,$TipoIngreso,$EmpresaRenting,$FechaAdquisicion,$Serial,$Marca,$Procesador,$VelProcesador,$DiscoDuro,$MemoriaRam,$EstadoEquipo,$creadoPor){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaCreacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+        $IngresarEquipo = DB::Insert('INSERT INTO equipo (tipo_equipo,tipo_ingreso,emp_renting,fecha_ingreso,serial,marca,procesador,vel_procesador,disco_duro,memoria_ram,estado_equipo,user_id,created_at)
+                                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                                        [$TipoEquipo,$TipoIngreso,$EmpresaRenting,$FechaAdquisicion,$Serial,$Marca,$Procesador,$VelProcesador,$DiscoDuro,$MemoriaRam,$EstadoEquipo,$creadoPor,$fechaCreacion]);
+        return $IngresarEquipo;
+    }
 
+    public static function BuscarLastEquipo($creadoPor){
+        $BuscarLastEquipo = DB::Select("SELECT  max(id) as id FROM equipo WHERE user_id = $creadoPor");
+        return $BuscarLastEquipo;
+    }
+
+    public static function BuscarSerialEquipo($Serial){
+        $BuscarSerialEquipo = DB::Select("SELECT * FROM equipo WHERE serial LIKE '%$Serial%'");
+        return $BuscarSerialEquipo;
+    }
+
+    public static function EvidenciaIE($idEquipo,$NombreFoto){
+        $Evidencia = DB::Insert('INSERT INTO evidencia_inventario (nombre,id_equipo) VALUES (?, ?)', [$NombreFoto,$idEquipo]);
+        return $Evidencia;
+    }
+
+    public static function BuscarHistorialE($IdEquipo){
+        $historial = DB::Select("SELECT * FROM historial_inventario WHERE id_equipo = $IdEquipo");
+        return $historial;
+    }
+
+    public static function HistorialE($idEquipo,$Comentario,$EstadoEquipo,$creadoPor){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaCreacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+        DB::insert('INSERT INTO historial_inventario (id_equipo,comentario,status_id,user_id,created)
+                    VALUES (?,?,?,?,?)',
+                    [$idEquipoMovil,$Comentario,$EstadoEquipo,$creadoPor,$fechaCreacion]);
     }
 
     // PERIFERICOS

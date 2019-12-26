@@ -107,6 +107,7 @@ Lineas Móviles
                                         <input type="hidden" value="{{$value['estado_equipo']}}" id="estado_equipo{{$value['id']}}">
                                         <input type="hidden" value="{{$value['user_id']}}" id="user_id{{$value['id']}}">
                                         <input type="hidden" value="{{$value['evidencia']}}" id="evidencia{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['historial']}}" id="historial{{$value['id']}}">
                                     </tr>
                                 @endforeach
                             </tbody>

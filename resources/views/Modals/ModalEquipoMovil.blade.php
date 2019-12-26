@@ -157,6 +157,18 @@
                 </div>
                 <div class="form-group">
                     <div class="row">
+                        <div class="col-md-6">
+                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Descripcion Solicitud</label>
+                            {!! Form::textarea('historial',null,['class'=>'form-control','id'=>'mod_historial','placeholder'=>'Historial del equipo movil','rows'=>'3','readonly']) !!}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Agregar Comentario</label>
+                            {!! Form::textarea('comentario',null,['class'=>'form-control','id'=>'comentario','placeholder'=>'Ingrese el comentario sobre la gestión del equipo movil','rows'=>'3']) !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
                         <div class="col-md-3">
                             <button type="button" id="VerAnexosEM" class="btn btn-success">Ver Anexos</button>
                         </div>
@@ -192,6 +204,7 @@
             var Linea           = $("#linea" + id).val();
             var EstadoEquipo    = $("#estado_equipo" + id).val();
             var Evidencia       = $("#evidencia" + id).val();
+            var Historial       = $("#historial" + id).val();
 
             $("#mod_idEM").val(id);
             $("#mod_tipo_equipo_upd").val(TipoEquipo);
@@ -205,6 +218,7 @@
             $("#mod_area_upd").val(Area);
             $("#mod_nombre_asignado_upd").val(Usuario);
             $("#mod_estado_upd").val(EstadoEquipo);
+            $("#mod_historial").val(Historial);
 
             $("#VerAnexosEM").click(function(){
                 document.getElementById('anexosEM').innerHTML = Evidencia;

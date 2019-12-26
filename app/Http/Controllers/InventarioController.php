@@ -124,7 +124,8 @@ class InventarioController extends Controller
             'modelo_upd'            =>  'required',
             'imei_upd'              =>  'required',
             'capacidad_upd'         =>  'required',
-            'estado_upd'            =>  'required'
+            'estado_upd'            =>  'required',
+            'comentario'            =>  'required'
         );
         $validador = Validator::make($data, $reglas);
         $messages = $validador->messages();
@@ -144,6 +145,7 @@ class InventarioController extends Controller
             $NombreAsignado     = Input::get('nombre_asignado_upd');
             $EstadoEquipo       = Input::get('estado_upd');
             $idEquipoMovil      = Input::get('idEM');
+            $Comentario         = Input::get('comentario');
             if(Input::get('desvincular')){
                 $Desvincular = 1;
             }else{
@@ -174,6 +176,7 @@ class InventarioController extends Controller
                         $actualizarEvidencia = Inventario::EvidenciaEM($idEquipoMovil,$NombreFoto);
                     }
                 }
+                Inventario::HistorialEM($idEquipoMovil,$Comentario,$EstadoEquipo,$creadoPor);
                 $verrors = 'Se actualizo con éxito el equipo movil '.$Marca.' - '.$Modelo;
                 return redirect($url.'/mobile')->with('mensaje', $verrors);
             }else{
@@ -260,7 +263,7 @@ class InventarioController extends Controller
                             $actualizarEvidencia = Inventario::EvidenciaLM($idEquipoMovil,$NombreFoto);
                         }
                     }
-                    $Comentario = 'Creación asignación de linea movil';
+                    $Comentario = 'Creación asignación de linea movil Nro. '.$NroLinea;
                     Inventario::HistorialLM($idEquipoMovil,$Comentario,$Estado,$creadoPor);
                     $verrors = 'Se registro con éxito la linea movil Nro. '.$NroLinea;
                     return redirect($url.'/lineMobile')->with('mensaje', $verrors);
@@ -294,7 +297,8 @@ class InventarioController extends Controller
             'cc_upd'                =>  'required',
             'area_upd'              =>  'required',
             'personal_upd'          =>  'required',
-            'estado_upd'            =>  'required'
+            'estado_upd'            =>  'required',
+            'comentario'            =>  'required'
         );
         $validador = Validator::make($data, $reglas);
         $messages = $validador->messages();
@@ -314,6 +318,7 @@ class InventarioController extends Controller
             $Personal           = Input::get('personal_upd');
             $Estado             = Input::get('estado_upd');
             $IdLineaMovil       = Input::get('idLM');
+            $Comentario         = Input::get('comentario');
 
             $ActualizacionLineaMovil = Inventario::ActualizarLineaMovil($NroLinea,$FechaAdquisicion,$Serial,$Activo,$Proveedor,$Plan,$PtoCargo,$Cc,$Area,$Personal,$Estado,$creadoPor,$IdLineaMovil);
 
@@ -338,6 +343,7 @@ class InventarioController extends Controller
                         $actualizarEvidencia = Inventario::EvidenciaLM($IdLineaMovil,$NombreFoto);
                     }
                 }
+                Inventario::HistorialLM($IdLineaMovil,$Comentario,$Estado,$creadoPor);
                 $verrors = 'Se actualizo con éxito la linea movil '.$NroLinea;
                 return redirect($url.'/lineMobile')->with('mensaje', $verrors);
             }else{
@@ -387,14 +393,80 @@ class InventarioController extends Controller
             $DiscoDuro = Input::get('disco_duro');
             $MemoriaRam = Input::get('memoria_ram');
             $EstadoEquipo = Input::get('estado');
+            $BuscarSerial = Inventario::BuscarSerialEquipo($Serial);
+            $TotalBusqueda    = (int)count($BuscarSerial);
+            if($TotalBusqueda > 0){
+                $verrors = array();
+                array_push($verrors, 'Ya existe un equipo con el serial '.$Serial);
+                return Redirect::to($url.'/desktops')->withErrors(['errors' => $verrors])->withInput();
+            }else{
 
-            $IngresarEquipo = Inventario::IngresarEquipo($TipoEquipo,$TipoIngreso,$EmpresaRenting,$FechaAdquisicion,$Serial,$Marca,$Procesador,$VelProcesador,$DiscoDuro,$MemoriaRam,$EstadoEquipo);
+                $IngresarEquipo = Inventario::IngresarEquipo($TipoEquipo,$TipoIngreso,$EmpresaRenting,$FechaAdquisicion,$Serial,$Marca,$Procesador,$VelProcesador,$DiscoDuro,$MemoriaRam,$EstadoEquipo,$creadoPor);
+                if($IngresarEquipo){
+                    $BuscarUltimo = Inventario::BuscarLastEquipo($creadoPor);
+                    foreach($BuscarUltimo as $row){
+                        $idEquipo = $row->id;
+                    }
+                    $destinationPath = null;
+                    $filename        = null;
+                    if (Input::hasFile('evidencia')) {
+                        $files = Input::file('evidencia');
+                        foreach($files as $file){
+                            $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario';
+                            $extension          = $file->getClientOriginalExtension();
+                            $name               = $file->getClientOriginalName();
+                            $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
+                            $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
+                            $filename           = $nombrearchivo.'_Equipo_'.$idEquipo.'.'.$extension;
+                            $uploadSuccess      = $file->move($destinationPath, $filename);
+                            $archivofoto        = file_get_contents($uploadSuccess);
+                            $NombreFoto         = $filename;
+                            $actualizarEvidencia = Inventario::EvidenciaIE($idEquipo,$NombreFoto);
+                        }
+                    }
+                    $Comentario = 'Creación de equipo Nro. '.$idEquipo.' en el sistema';
+                    Inventario::HistorialE($idEquipo,$Comentario,$EstadoEquipo,$creadoPor);
+                    $verrors = 'Se ingreso satisfactoriamente el equipo No. de Activo '.$idEquipo;
+                    return redirect($url.'/desktops')->with('mensaje', $verrors);
+                }else{
+                    $verrors = array();
+                    array_push($verrors, 'Hubo un problema al ingresar el equipo');
+                    return Redirect::to($url.'/desktops')->withErrors(['errors' => $verrors])->withInput();
+                }
+
+            }
+
         }else{
             return Redirect::to($url.'/desktops')->withErrors(['errors' => $verrors])->withInput();
         }
     }
 
     public function actualizacionEquipo(){
+        $data           = Input::all();
+        $creadoPor      = (int)Session::get('IdUsuario');
+        $buscarUsuario  = Usuarios::BuscarNombre($creadoPor);
+        foreach($buscarUsuario as $value){
+            $Administrador = (int)$value->rol_id;
+        }
+        $url = InventarioController::BuscarURL($Administrador);
+        $reglas = array(
+            'tipo_equipo'       =>  'required',
+            'tipo_ingreso'      =>  'required',
+            'fecha_adquision'   =>  'required',
+            'serial'            =>  'required',
+            'marca'             =>  'required',
+            'comentario'        =>  'required'
+        );
+        $validador = Validator::make($data, $reglas);
+        $messages = $validador->messages();
+        foreach ($reglas as $key => $value){
+            $verrors[$key] = $messages->first($key);
+        }
+        if($validador->passes()) {
 
+        }else{
+            return Redirect::to($url.'/desktops')->withErrors(['errors' => $verrors])->withInput();
+
+        }
     }
 }
