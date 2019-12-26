@@ -62,7 +62,7 @@
                             </ul>
                         </li>
                         <li><a href="desktops"><i class="fa fa-desktop"></i> Equipos</a></li>
-                        <li><a href="periferic"><i class="fa fa-keyboard-o"></i> Perifericos</a></li>
+                        <li><a href="periferic"><i class="fa fa-keyboard-o"></i> Periféricos</a></li>
                         <li><a href="consumible"><i class="fa fa-tint"></i> Consumibles</a></li>
                         <li><a href="asigneds"><i class="fa fa-share-square"></i> Asignaciones</a></li>
                         <li><a href="printers"><i class="fa fa-print"></i> Impresoras</a></li>

@@ -527,7 +527,7 @@ class InventarioController extends Controller
         }
         if($validador->passes()) {
             $TipoEquipo         = Input::get('tipo_equipo_upd');
-            $TipoIngreso        = Input::get('tipo_ingreso');
+            $TipoIngreso        = Input::get('tipo_ingreso_upd');
             if(Input::get('emp_renting_upd')){
                 $EmpresaRenting = Input::get('emp_renting_upd');
             }else{

@@ -400,6 +400,24 @@ class InventarioController extends Controller
                                             'DiscoDuro' => null,'MemoriaRam' => null]);
     }
 
-
+    public function periferic(){
+        $LineasStock = Inventario::PerifericStock();
+        foreach($LineasStock as $row){
+            $TotalStock = (int)$row->total;
+        }
+        $LineasAsignados = Inventario::PerifericAsigned();
+        foreach($LineasAsignados as $row){
+            $TotalAsignados = (int)$row->total;
+        }
+        $LineasMantenimiento = Inventario::PerifericMaintenance();
+        foreach($LineasMantenimiento as $row){
+            $TotalMantenimiento = (int)$row->total;
+        }
+        $LineasObsoletos = Inventario::PerifericObsolete();
+        foreach($LineasObsoletos as $row){
+            $TotalObsoletos = (int)$row->total;
+        }
+        return view('Inventario.Periferic',['Stock' => $TotalStock,'Asignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos]);
+    }
 
 }

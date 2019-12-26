@@ -383,12 +383,30 @@ class Inventario extends Model
                                         memoria_ram = '$MemoriaRam',
                                         estado_equipo = $EstadoEquipo,
                                         updated_at = '$fechaActualizacion',
-                                        actualziado_por = $creadoPor
+                                        actualizado_por = $creadoPor
                                         WHERE id = $IdEquipo");
         return $ActualizarEquipo;
     }
     // PERIFERICOS
+    public static function PerifericStock(){
+        $Stock = DB::Select("SELECT COUNT(*) AS total FROM perifericos WHERE estado_periferico = 1");
+        return $Stock;
+    }
 
+    public static function PerifericAsigned(){
+        $Asigned = DB::Select("SELECT COUNT(*) AS total FROM perifericos WHERE estado_periferico = 2");
+        return $Asigned;
+    }
+
+    public static function PerifericMaintenance(){
+        $Maintenance = DB::Select("SELECT COUNT(*) AS total FROM perifericos WHERE estado_periferico = 3");
+        return $Maintenance;
+    }
+
+    public static function PerifericObsolete(){
+        $Obsolete = DB::Select("SELECT COUNT(*) AS total FROM perifericos WHERE estado_periferico = 4");
+        return $Obsolete;
+    }
 
     // CONSUMIBLES
 
