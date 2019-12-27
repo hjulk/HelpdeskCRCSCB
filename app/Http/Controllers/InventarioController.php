@@ -576,4 +576,12 @@ class InventarioController extends Controller
             return Redirect::to($url.'/desktops')->withErrors(['errors' => $verrors])->withInput();
         }
     }
+
+    public function ingresoPeriferico(){
+
+    }
+
+    public function actualizacionPeriferico(){
+
+    }
 }

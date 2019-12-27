@@ -69,13 +69,13 @@ Periféricos
                             <thead style="background: linear-gradient(60deg,rgba(51,101,155,1),rgba(66,132,206,1));color: #ECF0F1;font-size:12px;text-align: center;">
                                 <tr>
                                     <th style="text-align: center;">NRO. ACTIVO</th>
-                                    <th style="text-align: center;">TIPO EQUIPO</th>
+                                    <th style="text-align: center;">TIPO PERIFERICO</th>
                                     <th style="text-align: center;">TIPO ADQUISICIÓN</th>
                                     <th style="text-align: center;">EMPRESA</th>
                                     <th style="text-align: center;">FECHA ADQUISICIÓN</th>
                                     <th style="text-align: center;">SERIAL</th>
-                                    <th style="text-align: center;">MARCA</th>
-                                    <th style="text-align: center;">ESTADO EQUIPO</th>
+                                    <th style="text-align: center;">PULGADAS</th>
+                                    <th style="text-align: center;">ESTADO PERIFERICO</th>
                                     <th style="text-align: center;">EDITAR</th>
                                 </tr>
                             </thead>
