@@ -152,7 +152,9 @@ return array(
         'fecha_inicio'          =>  'Fecha Inicio',
         'fecha_fin'             =>  'Fecha Final',
         'fecha_inicio_upd'      =>  'Fecha Inicio',
-        'fecha_fin_upd'         =>  'Fecha Final'
+        'fecha_fin_upd'         =>  'Fecha Final',
+        'horario_upd'           =>  'Horario',
+        'disponibilidad_upd'    =>  'Disponibilidad'
 
     ),
 );

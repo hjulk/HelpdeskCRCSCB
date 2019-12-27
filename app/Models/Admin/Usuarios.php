@@ -44,6 +44,7 @@ class Usuarios extends Model
         date_default_timezone_set('America/Bogota');
         $fecha_sistema      = date('Y-m-d H:i');
         $fechaActualizacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+        DB::Update("UPDATE gestion SET activo = $idactivo WHERE id_user = $id");
         if($NombreFoto){
             $actualizarUsuario = DB::Update("UPDATE user SET username       = '$userName',
                                                             name            = '$nombreUsuario',
@@ -76,13 +77,16 @@ class Usuarios extends Model
         date_default_timezone_set('America/Bogota');
         $fecha_sistema      = date('Y-m-d H:i');
         $fechaActualizacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+
+        DB::Update("UPDATE gestion SET activo = $idactivo WHERE id_user = $id");
+
         if($NombreFoto){
             $actualizarUsuario = DB::Update("UPDATE user SET username = '$userName',
                                                             nombre = '$nombreUsuario',
                                                             email = '$email',
                                                             password = '$contrasena',
                                                             profile_pic = '$NombreFoto',
-                                                            activo = $idactivo,
+                                                            is_active = $idactivo,
                                                             id_categoria = $idcategoria,
                                                             id_rol = $idrol,
                                                             updated_at = '$fechaActualizacion'
@@ -93,7 +97,7 @@ class Usuarios extends Model
                                                             nombre = '$nombreUsuario',
                                                             email = '$email',
                                                             password = '$contrasena',
-                                                            activo = $idactivo,
+                                                            is_active = $idactivo,
                                                             id_categoria = $idcategoria,
                                                             id_rol = $idrol,
                                                             updated_at = '$fechaActualizacion'
@@ -106,6 +110,7 @@ class Usuarios extends Model
         date_default_timezone_set('America/Bogota');
         $fecha_sistema      = date('Y-m-d H:i');
         $fechaActualizacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+
         if($NombreFoto){
             $actualizarUsuario = DB::Update("UPDATE user SET username = '$userName',
                                                             name = '$nombreUsuario',
@@ -255,5 +260,17 @@ class Usuarios extends Model
     public static function ListarUsuariosTurno(){
         $ListarHorarios = DB::Select("SELECT * FROM user WHERE rol_id IN (3,4) ORDER BY name ASC");
         return $ListarHorarios;
+    }
+
+    public static function CreacionTurno($Agente,$FechaInicio,$FechaFin,$Sede,$Horario,$Disponibilidad){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaCreacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+
+        $CreacionTurno = DB::insert('INSERT INTO turnos (agente1,fecha_inicial,fecha_final,id_sede,id_horario,disponible,create_at)
+                                        VALUES (?,?,?,?,?,?,?)',
+                                        [$Agente,$FechaInicio,$FechaFin,$Sede,$Horario,$Disponibilidad,$fechaCreacion]);
+
+        return $CreacionTurno;
     }
 }

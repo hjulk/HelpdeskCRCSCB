@@ -362,12 +362,12 @@ class Tickets extends Model
             if($buscarUsuario){
                 $actualizarGestion = DB::Update("UPDATE gestion SET desarrollo = $tDesarrollo,pendientes = $tPendientes,terminados = $tTerminados,cancelados = $tCancelados,category_id = $category_id WHERE id_user = $id_user");
             }else{
-                $ingresarGestion = DB::insert('INSERT INTO gestion (nombre_usuario,desarrollo,pendientes,terminados,cancelados,id_user,category_id)
-                                                VALUES (?,?,?,?,?,?,?)', [$nombre_user,$tDesarrollo,$tPendientes,$tTerminados,$tCancelados,$id_user,$category_id]);
+                $ingresarGestion = DB::insert('INSERT INTO gestion (nombre_usuario,desarrollo,pendientes,terminados,cancelados,id_user,category_id,activo)
+                                                VALUES (?,?,?,?,?,?,?,?)', [$nombre_user,$tDesarrollo,$tPendientes,$tTerminados,$tCancelados,$id_user,$category_id,1]);
             }
 
         }
-        $gestion = DB::Select("SELECT * FROM gestion ORDER BY category_id");
+        $gestion = DB::Select("SELECT * FROM gestion WHERE activo = 1 ORDER BY category_id");
         return $gestion;
     }
 

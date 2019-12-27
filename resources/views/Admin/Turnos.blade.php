@@ -43,25 +43,25 @@ Turnos
                                 </tr>
                             </thead>
                             <tbody>
-                                {{--  @foreach($Turnos as $value)
+                                @foreach($Turnos as $value)
                                 <tr>
                                     <td>{{$value['id']}}</td>
-                                    <td>{{$value['tipo_ticket']}}</td>
-                                    <td>{{$value['title']}}</td>
+                                    <td>{{$value['nombre_agente1']}}</td>
+                                    <td>{{$value['fecha_inicial']}}</td>
+                                    <td>{{$value['fecha_final']}}</td>
+                                    <td>{{$value['horario']}}</td>
                                     <td>{{$value['sede']}}</td>
-                                    <td>{{$value['area']}}</td>
-                                    <td>{{$value['estado']}}</td>
-                                    <td>{{$value['created_at']}}</td>
-                                    <td><a href="#" class="btn btn-warning" title="Editar" data-toggle="modal" data-target="#modal-tickets-upd" onclick="obtener_datos_ticket('{{$value['id']}}');"><i class="glyphicon glyphicon-edit"></i></a></td>
+                                    <td>{{$value['disponible']}}</td>
+                                    <td><a href="#" class="btn btn-warning" title="Editar" data-toggle="modal" data-target="#modal-turnos-upd" onclick="obtener_datos_turno('{{$value['id']}}');"><i class="glyphicon glyphicon-edit"></i></a></td>
                                     <input type="hidden" value="{{$value['id']}}" id="id{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['kind_id']}}" id="kind_id{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['category_id']}}" id="category_id{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['project_id']}}" id="project_id{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['priority_id']}}" id="priority_id{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['status_id']}}" id="status_id{{$value['id']}}">
-                                    <input type="hidden" value="{{$value['user_id']}}" id="user_id{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['agente1']}}" id="agente1{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['fecha_inicial']}}" id="fecha_inicial{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['fecha_final']}}" id="fecha_final{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['id_sede']}}" id="id_sede{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['id_horario']}}" id="id_horario{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['disponible']}}" id="disponible{{$value['id']}}">
                                 </tr>
-                                @endforeach  --}}
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -99,28 +99,28 @@ Turnos
                 autoclose: true,
                 language: 'es',
                 todayBtn: true,
-                format: 'yyyy-m-d',
+                format: 'yyyy-mm-dd',
                 orientation: 'bottom auto'
             });
             $('#mod_fecha_inicio').datepicker({
                 autoclose: true,
                 language: 'es',
                 todayBtn: true,
-                format: 'yyyy-m-d',
+                format: 'yyyy-mm-dd',
                 orientation: 'bottom auto'
             });
             $('#fecha_fin').datepicker({
                 autoclose: true,
                 language: 'es',
                 todayBtn: true,
-                format: 'yyyy-m-d',
+                format: 'yyyy-mm-dd',
                 orientation: 'bottom auto'
             });
             $('#mod_fecha_fin').datepicker({
                 autoclose: true,
                 language: 'es',
                 todayBtn: true,
-                format: 'yyyy-m-d',
+                format: 'yyyy-mm-dd',
                 orientation: 'bottom auto'
             });
         });

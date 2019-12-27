@@ -44,7 +44,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-primary">Crear Rol</button>
+                    <button type="submit" class="btn btn-primary">Crear Turno</button>
                 </div>
             {!!  Form::close() !!}
         </div>
@@ -96,12 +96,31 @@
                         </div>
                     </div>
                     </div>
-                </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-primary">Actualizar Rol</button>
+                    <button type="submit" class="btn btn-primary">Actualizar Turno</button>
                 </div>
             {!!  Form::close() !!}
         </div>
     </div>
 </div>
+
+    <script>
+        function obtener_datos_turno(id) {
+            var Agente          = $("#agente1" + id).val();
+            var FechaInicial    = $("#fecha_inicial" + id).val();
+            var FechaFinal      = $("#fecha_final" + id).val();
+            var Sede            = $("#id_sede" + id).val();
+            var Horario         = $("#id_horario" + id).val();
+            var Disponibilidad  = $("#disponible" + id).val();
+
+            $("#mod_idTu").val(id);
+            $("#mod_agente").val(Agente);
+            $("#mod_fecha_inicio").val(FechaInicial);
+            $("#mod_fecha_fin").val(FechaFinal);
+            $("#mod_sede").val(Sede);
+            $("#mod_horario").val(Horario);
+            $("#mod_disponibilidad").val(Disponibilidad);
+        }
+    </script>

@@ -93,6 +93,7 @@ $(document).ready(function () {
         ordering    : true,
         info        : true,
         autoWidth   : true,
+        order: [[ 0, "desc" ]],
         language: {
             processing: "Procesando...",
             search: "Buscar:",

@@ -477,7 +477,8 @@ Dahsboard
 
             colors:[
                     '#7cb5ec',
-                    '#f7a35c'
+                    '#f7a35c',
+                    'green'
                     ],
             xAxis: {
                 categories: [
@@ -528,6 +529,15 @@ Dahsboard
                     @if($Gestion)
                     @foreach($Gestion as $valor)
                         {{$valor['pendientes']}} {{$valor['separador']}}
+                    @endforeach
+                    @endif
+            ]
+            },{
+                name: 'Terminados',
+                data: [
+                    @if($Gestion)
+                    @foreach($Gestion as $valor)
+                        {{$valor['terminados']}} {{$valor['separador']}}
                     @endforeach
                     @endif
             ]

@@ -147,14 +147,14 @@ Lineas Móviles
                 autoclose: true,
                 language: 'es',
                 todayBtn: true,
-                format: 'yyyy-m-d',
+                format: 'yyyy-mm-dd',
                 orientation: 'bottom auto'
             });
             $('#mod_fecha_adquision').datepicker({
                 autoclose: true,
                 language: 'es',
                 todayBtn: true,
-                format: 'yyyy-m-d',
+                format: 'yyyy-mm-dd',
                 orientation: 'bottom auto'
             });
         });
