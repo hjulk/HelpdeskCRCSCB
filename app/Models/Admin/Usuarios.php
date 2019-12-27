@@ -273,4 +273,22 @@ class Usuarios extends Model
 
         return $CreacionTurno;
     }
+
+    public static function ActualizacionTurno($Agente,$FechaInicio,$FechaFin,$Sede,$Horario,$Disponibilidad,$IdTurno){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaActualizacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+
+        $ActualizacionTurno = DB::Update("UPDATE turnos SET
+                                            agente1         = $Agente,
+                                            fecha_inicial   = '$FechaInicio',
+                                            fecha_final     = '$FechaFin',
+                                            id_sede         = $Sede,
+                                            id_horario      = $Horario,
+                                            disponible      = '$Disponibilidad',
+                                            update_at       = '$fechaActualizacion'
+                                            WHERE id        = $IdTurno");
+
+        return $ActualizacionTurno;
+    }
 }

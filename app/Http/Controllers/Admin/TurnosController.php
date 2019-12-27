@@ -115,10 +115,13 @@ class TurnosController extends Controller
         if($validador->passes()) {
             $Agente         = (int)Input::get('agente');
             $FechaInicio    = date('Y-m-d', strtotime(Input::get('fecha_inicio')));
+            $FechaInicioEmail   = date('d-m-Y', strtotime(Input::get('fecha_inicio')));
             if(Input::get('fecha_fin')){
-                $FechaFin   = date('Y-m-d', strtotime(Input::get('fecha_fin')));
+                $FechaFin   = Input::get('fecha_fin');
+                $FechaFinEmail   = date('d-mY', strtotime(Input::get('fecha_fin')));
             }else{
                 $FechaFin   = 'INDEFINIDO';
+                $FechaFinEmail   = 'INDEFINIDO';
             }
             $Sede           = (int)Input::get('sede');
             $Horario        = (int)Input::get('horario');
@@ -152,7 +155,7 @@ class TurnosController extends Controller
                 $for = "$CorreoAgente";
                 $Correo = 1;
                 Mail::send('email/EmailTurno',
-                        ['NombreAgente' => $NombreAgente,'FechaInicio' => $FechaInicio,'FechaFin' => $FechaFin,
+                        ['NombreAgente' => $NombreAgente,'FechaInicio' => $FechaInicioEmail,'FechaFin' => $FechaFinEmail,
                         'NombreSede' => $NombreSede,'NombreHorario' => $NombreHorario,'NombreDisponible' => $Disponibilidad,
                         'FechaCreacion' => $Creacion,'Correo' => $Correo],
                         function($msj) use($subject,$for){
@@ -201,19 +204,75 @@ class TurnosController extends Controller
             $verrors[$key] = $messages->first($key);
         }
         if($validador->passes()) {
-            $Agente         = Input::get('agente_upd');
-            $FechaInicio    = Input::get('agente');
+            $Agente             = Input::get('agente_upd');
+            $FechaInicio        = date('Y-m-d', strtotime(Input::get('fecha_inicio_upd')));
+            $FechaInicioEmail   = date('d-m-Y', strtotime(Input::get('fecha_inicio_upd')));
             if(Input::get('fecha_fin_upd')){
-                $FechaFin   = Input::get('fecha_fin_upd');
+                $FechaFin       = Input::get('fecha_fin_upd');
+                $FechaFinEmail  = date('d-m-Y', strtotime(Input::get('fecha_fin_upd')));
             }else{
                 $FechaFin   = 'INDEFINIDO';
+                $FechaFinEmail   = 'INDEFINIDO';
             }
             $Sede           = Input::get('sede_upd');
             $Horario        = Input::get('horario_upd');
             $Disponibilidad = Input::get('disponibilidad_upd');
             $IdTurno        = Input::get('idTu');
+
+
+            $ActualizacionTurno = Usuarios::ActualizacionTurno($Agente,$FechaInicio,$FechaFin,$Sede,$Horario,$Disponibilidad,$IdTurno);
+            if($ActualizacionTurno){
+
+                $BuscarNombre = Usuarios::BuscarNombre($Agente);
+                if($BuscarNombre){
+                    foreach($BuscarNombre as $value){
+                        $NombreAgente = $value->name;
+                        $CorreoAgente = $value->email;
+                    }
+                }else{
+                    $NombreAgente = 'SIN NOMBRE';
+                    $CorreoAgente = 'sosporte.sistemas@cruzrojabogota.org.co';
+                }
+                $BuscarSede = Sedes::BuscarSedeID($Sede);
+                foreach($BuscarSede as $value){
+                    $NombreSede = $value->name;
+                }
+                $BuscarHorario = Usuarios::BuscarHorarioID($Horario);
+                foreach($BuscarHorario as $value){
+                    $NombreHorario = $value->name;
+                }
+                date_default_timezone_set('America/Bogota');
+                $fecha_sistema      = date('Y-m-d H:i');
+                $Creacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+
+                $subject = "Actualización turno Mesa de ayuda";
+                $for = "$CorreoAgente";
+                $Correo = 2;
+                Mail::send('email/EmailTurno',
+                        ['NombreAgente' => $NombreAgente,'FechaInicio' => $FechaInicioEmail,'FechaFin' => $FechaFinEmail,
+                        'NombreSede' => $NombreSede,'NombreHorario' => $NombreHorario,'NombreDisponible' => $Disponibilidad,
+                        'FechaCreacion' => $Creacion,'Correo' => $Correo],
+                        function($msj) use($subject,$for){
+                            $msj->from("soporte.sistemas@cruzrojabogota.org.co","Mesa de Ayuda - Tics");
+                            $msj->subject($subject);
+                            $msj->to($for);
+
+                        });
+
+                if(count(Mail::failures()) === 0){
+                    $verrors = 'Se actualizo con éxito el turno para '.$NombreAgente;
+                    return redirect($url.'/turnos')->with('mensaje', $verrors);
+                }else{
+                    $verrors = 'Se actualizo con éxito el turno para '.$NombreAgente.', pero no pudo ser enviado el correo al usuario';
+                    return redirect($url.'/turnos')->with('precaucion', $verrors);
+                }
+            }else{
+                $verrors = array();
+                array_push($verrors, 'Hubo un problema al actualizar el turno');
+                return Redirect::to($url.'/turnos')->withErrors(['errors' => $verrors])->withInput();
+            }
         }else{
-            return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
+            return Redirect::to($url.'/turnos')->withErrors(['errors' => $verrors])->withInput();
         }
     }
 

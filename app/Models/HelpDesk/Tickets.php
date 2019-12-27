@@ -12,7 +12,7 @@ class Tickets extends Model
     public $timestamps = false;
 
     public static function Tickets(){
-        $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2,3)");
+        $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2)");
         return $tickets;
     }
 
