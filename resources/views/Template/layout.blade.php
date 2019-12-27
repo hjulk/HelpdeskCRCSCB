@@ -32,6 +32,7 @@
         <link rel="stylesheet" href="{{asset("assets/DataTables/AutoFill/css/autofill.dataTables.min.css")}}">
         <link rel="stylesheet" href="{{asset("assets/DataTables/RowReorder/css/rowReorder.dataTables.min.css")}}">
         <link rel="stylesheet" href="{{asset("assets/DataTables/RowReorder/css/rowReorder.bootstrap.min.css")}}">
+
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400&display=swap" rel="stylesheet">
 
         @yield("styles")
@@ -84,6 +85,13 @@
         <script src="{{asset("assets/bower_components/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js")}}"></script>
         <script src="{{asset("assets/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.es.min.js")}}"></script>
         <script src="{{asset("assets/bower_components/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.es.js")}}"></script>
+        <script src="{{asset("assets/Highcharts/code/modules/exporting.js")}}" type="text/javascript"></script>
+        <script src="{{asset("assets/Highcharts/code/highcharts.js")}}" type="text/javascript"></script>
+        <script src="{{asset("assets/Highcharts/code/highcharts-more.js")}}" type="text/javascript"></script>
+        <script src="{{asset("assets/Highcharts/code/highcharts.js")}}" type="text/javascript"></script>
+        <script src="{{asset("assets/Highcharts/code/highcharts-3d.js")}}" type="text/javascript"></script>
+        <script src="{{asset("assets/Highcharts/code/modules/exporting.js")}}" type="text/javascript"></script>
+        <script src="{{asset("assets/Highcharts/code/modules/export-data.js")}}" type="text/javascript"></script>
         @yield("scripts")
 
     </body>

@@ -7,7 +7,7 @@ Tickets
 @section('contenido')
 
 <section class="content-header">
-    <h1>Tickets</h1>
+    <h1><i class="fa fa-ticket"></i>&nbsp;Tickets</h1>
     <ol class="breadcrumb">
         <li><a href="dashboard"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li>Tickets</a></li>

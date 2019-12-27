@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1" class="col-sm-5 control-label">Descripcion Solicitud</label>
+                        <label for="exampleInputEmail1" class="col-sm-12 control-label">Descripcion Solicitud</label>
                         {!! Form::textarea('description',$Descripcion,['class'=>'form-control','id'=>'description','placeholder'=>'Ingrese la descripción de la solicitud','rows'=>'3','required']) !!}
                     </div>
                     <div class="form-group">

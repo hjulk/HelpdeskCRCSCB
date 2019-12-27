@@ -232,4 +232,28 @@ class Usuarios extends Model
         return $BuscarUsuario;
     }
 
+    public static function ListarTurnos(){
+        $ListarTurnos = DB::Select("SELECT * FROM turnos");
+        return $ListarTurnos;
+    }
+
+    public static function BuscarHorarioID($IdHorario){
+        $BuscarHorarioID = DB::Select("SELECT * FROM horario WHERE id = $IdHorario");
+        return $BuscarHorarioID;
+    }
+
+    public static function ListarHorarios(){
+        $ListarHorarios = DB::Select("SELECT * FROM horario");
+        return $ListarHorarios;
+    }
+
+    public static function ListarSedesTurno(){
+        $ListarHorarios = DB::Select("SELECT * FROM project WHERE id IN (1,2,3) ORDER BY name ASC");
+        return $ListarHorarios;
+    }
+
+    public static function ListarUsuariosTurno(){
+        $ListarHorarios = DB::Select("SELECT * FROM user WHERE rol_id IN (3,4) ORDER BY name ASC");
+        return $ListarHorarios;
+    }
 }

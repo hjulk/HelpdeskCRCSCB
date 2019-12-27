@@ -136,13 +136,7 @@ Dahsboard
 
     <script asyn src="https://livegap.com/charts/js/webfont.js"></script>
     <script src="https://livegap.com/charts/js/Chart.min.js"></script>
-    <script src="{{asset("assets/Highcharts/code/modules/exporting.js")}}" type="text/javascript"></script>
-    <script src="{{asset("assets/Highcharts/code/highcharts.js")}}" type="text/javascript"></script>
-    <script src="{{asset("assets/Highcharts/code/highcharts-more.js")}}" type="text/javascript"></script>
-    <script src="{{asset("assets/Highcharts/code/highcharts.js")}}" type="text/javascript"></script>
-    <script src="{{asset("assets/Highcharts/code/highcharts-3d.js")}}" type="text/javascript"></script>
-    <script src="{{asset("assets/Highcharts/code/modules/exporting.js")}}" type="text/javascript"></script>
-    <script src="{{asset("assets/Highcharts/code/modules/export-data.js")}}" type="text/javascript"></script>
+
     <script src="{{asset("assets/dist/js/dashboard.js")}}"></script>
     <script>
 
@@ -654,7 +648,7 @@ Dahsboard
                 name: 'Valoraciones',
                 colorByPoint: true,
                 data: [
-                    ['Muy Insatisfecho', {{ $MuySatisfecho }}],
+                    ['Muy Insatisfecho', {{ $MuyInsatisfecho }}],
                     ['Insatisfecho', {{ $Insatisfecho }}],
                     ['Neutral', {{ $Neutral }}],
                     ['Satisfecho', {{ $Satisfecho }}],
@@ -699,7 +693,7 @@ Dahsboard
                 name: 'Porcentaje',
                 colorByPoint: true,
                 data: [
-                    ['Muy Insatisfecho', {{ $PMuySatisfecho }}],
+                    ['Muy Insatisfecho', {{ $PMuyInsatisfecho }}],
                     ['Insatisfecho', {{ $PInsatisfecho }}],
                     ['Neutral', {{ $PNeutral }}],
                     ['Satisfecho', {{ $PSatisfecho }}],

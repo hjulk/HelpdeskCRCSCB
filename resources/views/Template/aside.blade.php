@@ -71,9 +71,11 @@
                 <li>
                     <a href="calificaciones"><i class="fa fa-check"></i> <span>Calificaciones</span></a>
                 </li>
+            @endif
                 <li>
                     <a href="turnos"><i class="fa fa-calendar-o"></i> <span>Turnos</span></a>
                 </li>
+            @if(Session::get('Rol') === 1)
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-gear"></i> <span>Administración</span>

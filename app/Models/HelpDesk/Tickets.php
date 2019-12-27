@@ -650,4 +650,14 @@ class Tickets extends Model
         $Sedes = DB::Select("SELECT * FROM project WHERE activo = 1 ORDER BY name");
         return $Sedes;
     }
+
+    public static function ListarCalificaciones(){
+        $Calificaciones = DB::Select("SELECT * FROM calificacion");
+        return $Calificaciones;
+    }
+
+    public static function ListarTipoCalificaciones($idCalificacion){
+        $Calificaciones = DB::Select("SELECT * FROM tipo_calificacion WHERE id = $idCalificacion");
+        return $Calificaciones;
+    }
 }

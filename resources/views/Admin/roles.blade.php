@@ -105,7 +105,7 @@ Roles
                                     <tr>
                                         <td>{{$categoria['id']}}</td>
                                         <td>{{$categoria['name']}}</td>
-                                        <td>{{$rol['activo']}}</td>
+                                        <td>{{$categoria['activo']}}</td>
                                         <td style="text-align: center;"><a href="#" class="btn btn-warning" title="Editar" onclick="obtener_datos_categoria('{{$categoria['id']}}');" data-toggle="modal" data-target=".bs-example-modal-lg-udpC"><i class="glyphicon glyphicon-edit"></i></a></td>
                                         <input type="hidden" value="{{$categoria['id']}}" id="id{{$categoria['id']}}">
                                         <input type="hidden" value="{{$categoria['name']}}" id="categoria{{$categoria['id']}}">

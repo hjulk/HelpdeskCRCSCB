@@ -146,7 +146,13 @@ return array(
         'personal'              =>  'Nombre Responsable',
         'personal_upd'          =>  'Nombre Responsable',
         'tipo_ingreso'          =>  'Tipo de Ingreso',
-        'tipo_ingreso_upd'      =>  'Tipo de Ingreso'
+        'tipo_ingreso_upd'      =>  'Tipo de Ingreso',
+        'agente'                =>  'Nombre Agente Mesa de Ayuda',
+        'agente_upd'            =>  'Nombre Agente Mesa de Ayuda',
+        'fecha_inicio'          =>  'Fecha Inicio',
+        'fecha_fin'             =>  'Fecha Final',
+        'fecha_inicio_upd'      =>  'Fecha Inicio',
+        'fecha_fin_upd'         =>  'Fecha Final'
 
     ),
 );

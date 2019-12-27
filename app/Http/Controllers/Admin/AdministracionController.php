@@ -12,17 +12,6 @@ use Illuminate\Support\Facades\Session;
 
 class AdministracionController extends Controller
 {
-
-    public function index()
-    {
-        return view('admin.index');
-    }
-
-    public function inicio()
-    {
-        return view('user.index');
-    }
-
     public function dashboard()
     {
         setlocale(LC_ALL, 'es_CO');
@@ -252,5 +241,90 @@ class AdministracionController extends Controller
                                    'PNeutral' => $PNeutral,'PSatisfecho' => $PSatisfecho,'PMuySatisfecho' => $PMuySatisfecho]);
 
     }
+
+    public function calificaciones(){
+        $BuscarMInsatisfecho     = Tickets::BuscarMInsatisfecho();
+        foreach($BuscarMInsatisfecho as $valor){
+            $MuyInsatisfecho = $valor->total;
+        }
+        $BuscarInsatisfecho     = Tickets::BuscarInsatisfecho();
+        foreach($BuscarInsatisfecho as $valor){
+            $Insatisfecho = $valor->total;
+        }
+        $BuscarNeutral     = Tickets::BuscarNeutral();
+        foreach($BuscarNeutral as $valor){
+            $Neutral = $valor->total;
+        }
+        $BuscarSatisfecho     = Tickets::BuscarSatisfecho();
+        foreach($BuscarSatisfecho as $valor){
+            $Satisfecho = $valor->total;
+        }
+        $BuscarMSatisfecho     = Tickets::BuscarMSatisfecho();
+        foreach($BuscarMSatisfecho as $valor){
+            $MuySatisfecho = $valor->total;
+        }
+
+        $buscarGestionCalificacion      = Tickets::buscarGestionCalificacion();
+        $buscarGestionTotalCalificacion = Tickets::buscarGestionTotalCalificacion();
+        foreach($buscarGestionTotalCalificacion as $row){
+            $totalGestionCalificacion = (int)$row->total;
+        }
+        if($totalGestionCalificacion > 0){
+            $GestionC = array();
+            $contadorGestionC = count($buscarGestionCalificacion);
+            $contGC = 0;
+            foreach($buscarGestionCalificacion as $consulta){
+                    $GestionC[$contGC]['nombre']      = $consulta->nombre;
+                    $GestionC[$contGC]['total']       = $consulta->total;
+                    $GestionC[$contGC]['porcentaje']  = $consulta->porcentaje;
+                    $GestionC[$contGC]['color']       = $consulta->color;
+                    if($contGC >= ($contadorGestionC-1)){
+                        $GestionC[$contGC]['separador']= '';
+                    }else{
+                        $GestionC[$contGC]['separador']= ',';
+                    }
+                    $contGC++;
+            }
+        }else{
+            $GestionC = null;
+        }
+        $Calificaciones = Tickets::ListarCalificaciones();
+        $ListarCalificaciones = array();
+        $cont = 0;
+        foreach($Calificaciones as $value){
+            $ListarCalificaciones[$cont]['id']              = (int)$value->id;
+            $ListarCalificaciones[$cont]['ticket']          = (int)$value->ticket;
+            $IdTicket                                       = (int)$value->ticket;
+            $BuscarInfoTicket                               = Tickets::BuscarTicket($IdTicket);
+            foreach($BuscarInfoTicket as $row){
+                $ListarCalificaciones[$cont]['usuario']     = $row->name_user;
+                $IdAsignado                                 = $row->asigned_id;
+                $ListarCalificaciones[$cont]['titulo']      = $row->title;
+                $ListarCalificaciones[$cont]['descripcion'] = $row->description;
+            }
+            $Puntuacion                                     = (int)$value->puntuacion;
+            $buscarTipoCalificacion                         = Tickets::ListarTipoCalificaciones($Puntuacion);
+            foreach($buscarTipoCalificacion as $row){
+                $ListarCalificaciones[$cont]['puntuacion']  = $row->name;
+            }
+            $BuscarInfoUsuario                              = Usuarios::BuscarNombre($IdAsignado);
+            if($BuscarInfoUsuario){
+                foreach($BuscarInfoUsuario as $row){
+                    $ListarCalificaciones[$cont]['agente']  = $row->name;
+                }
+            }else{
+                $ListarCalificaciones[$cont]['agente']      = 'Agente Mesa de Ayuda';
+            }
+            $ListarCalificaciones[$cont]['ip_client']       = $value->ip_client;
+            $ListarCalificaciones[$cont]['user_name']       = $value->user_name;
+            $ListarCalificaciones[$cont]['update_at']       = date('d/m/Y h:i A', strtotime($value->update_at));
+            $cont++;
+        }
+        return view('admin.Calificaciones',['Gestion' => $GestionC,'MuyInsatisfecho' => $MuyInsatisfecho,'Insatisfecho' => $Insatisfecho,
+                                            'Neutral' => $Neutral,'Satisfecho' => $Satisfecho,'MuySatisfecho' => $MuySatisfecho,
+                                            'Calificaciones' => $ListarCalificaciones]);
+    }
+
+
 
 }

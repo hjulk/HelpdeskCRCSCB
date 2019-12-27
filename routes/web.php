@@ -52,6 +52,10 @@ Route::group(['middleware' => 'revalidate'], function () {
         Route::get('periferic','InventarioController@periferic')->name('periferic');
         Route::get('asigneds','InventarioController@asigneds')->name('asigneds');
         Route::get('consumible','InventarioController@consumible')->name('consumible');
+        Route::get('calificaciones','AdministracionController@calificaciones')->name('calificaciones');
+        Route::get('turnos','TurnosController@turnos')->name('turnos');
+        Route::post('crearTurno','TurnosController@crearTurno')->name('crearTurno');
+        Route::post('actualizarTurno','TurnosController@actualizarTurno')->name('actualizarTurno');
 
         Route::get('/logout', function() {
             Auth::logout();
