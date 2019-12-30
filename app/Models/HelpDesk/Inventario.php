@@ -95,8 +95,8 @@ class Inventario extends Model
             if(($EstadoEquipo === 3) || ($EstadoEquipo === 4) || ($EstadoEquipo === 1)){
                 $IdLineaMovil = 0;
                 DB::Update("UPDATE linea SET estado_equipo = 1,cc = null,personal = null,area = null WHERE id = $LineaMovil");
-                DB::Update("UPDATE asignados SET id_linea = null,update_at = '$fechaActualizacion' WHERE id_linea = $LineaMovil");
-                DB::Update("UPDATE asignados SET id_movil = null,update_at = '$fechaActualizacion' WHERE id_movil = $idEquipoMovil");
+                DB::Update("UPDATE asignados SET id_linea = null,estado_asignado = $EstadoEquipo,update_at = '$fechaActualizacion' WHERE id_linea = $LineaMovil");
+                DB::Update("UPDATE asignados SET id_movil = null,estado_asignado = $EstadoEquipo,update_at = '$fechaActualizacion' WHERE id_movil = $idEquipoMovil");
 
             }
         }
@@ -223,7 +223,7 @@ class Inventario extends Model
         $fecha_sistema      = date('Y-m-d H:i');
         $fechaActualizacion = date('Y-m-d H:i', strtotime($fecha_sistema));
         if(($Estado === 3) || ($Estado === 4) || ($Estado === 1)){
-            DB::Update("UPDATE asignados SET id_linea = null,update_at = '$fechaActualizacion' WHERE id_linea = $IdLineaMovil");
+            DB::Update("UPDATE asignados SET id_linea = null,estado_asignado = $Estado,update_at = '$fechaActualizacion' WHERE id_linea = $IdLineaMovil");
             $Area = null;
             $Cc = null;
             $Personal = null;
@@ -363,7 +363,7 @@ class Inventario extends Model
         $fecha_sistema      = date('Y-m-d H:i');
         $fechaActualizacion = date('Y-m-d H:i', strtotime($fecha_sistema));
         if(($EstadoEquipo === 3) || ($EstadoEquipo === 4) || ($EstadoEquipo === 1)){
-            DB::Update("UPDATE asignados SET id_equipo = null,update_at = '$fechaActualizacion' WHERE id_equipo = $IdEquipo");
+            DB::Update("UPDATE asignados SET id_equipo = null,estado_asignado = $EstadoEquipo,update_at = '$fechaActualizacion' WHERE id_equipo = $IdEquipo");
         }
         if(($TipoIngreso === 3) || ($TipoIngreso === 4) || ($TipoIngreso === 2)){
             $EmpRenting = 'SIN EMPRESA';
@@ -513,7 +513,7 @@ class Inventario extends Model
                                 foreach($BuscarPeriferico as $row){
                                     $IdTPeriferico = $row->id;
                                 }
-                                DB::Update("UPDATE asignados SET id_pantalla = null,update_at = '$fechaActualizacion' WHERE id_pantalla = $IdTPeriferico");
+                                DB::Update("UPDATE asignados SET id_pantalla = null,estado_asignado = $Estado,update_at = '$fechaActualizacion' WHERE id_pantalla = $IdTPeriferico");
                             }
                             break;
                 Case 2 :    $BuscarPeriferico = DB::Select("SELECT * FROM mouse WHERE id_periferico = $IdPeriferico");
@@ -521,7 +521,7 @@ class Inventario extends Model
                                 foreach($BuscarPeriferico as $row){
                                     $IdTPeriferico = $row->id;
                                 }
-                                DB::Update("UPDATE asignados SET id_mouse = null,update_at = '$fechaActualizacion' WHERE id_mouse = $IdTPeriferico");
+                                DB::Update("UPDATE asignados SET id_mouse = null,estado_asignado = $Estado,update_at = '$fechaActualizacion' WHERE id_mouse = $IdTPeriferico");
                             }
                             break;
                 Case 3 :    $BuscarPeriferico = DB::Select("SELECT * FROM teclado WHERE id_periferico = $IdPeriferico");
@@ -529,7 +529,7 @@ class Inventario extends Model
                                 foreach($BuscarPeriferico as $row){
                                     $IdTPeriferico = $row->id;
                                 }
-                                DB::Update("UPDATE asignados SET id_teclado = null,update_at = '$fechaActualizacion' WHERE id_teclado = $IdTPeriferico");
+                                DB::Update("UPDATE asignados SET id_teclado = null,estado_asignado = $Estado,update_at = '$fechaActualizacion' WHERE id_teclado = $IdTPeriferico");
                             }
                             break;
                 Case 4 :    $BuscarPeriferico = DB::Select("SELECT * FROM guaya WHERE id_periferico = $IdPeriferico");
@@ -537,7 +537,7 @@ class Inventario extends Model
                                 foreach($BuscarPeriferico as $row){
                                     $IdTPeriferico = $row->id;
                                 }
-                                DB::Update("UPDATE asignados SET id_guaya = null,update_at = '$fechaActualizacion' WHERE id_guaya = $IdTPeriferico");
+                                DB::Update("UPDATE asignados SET id_guaya = null,estado_asignado = $Estado,update_at = '$fechaActualizacion' WHERE id_guaya = $IdTPeriferico");
                             }
                             break;
                 Case 5 :    $BuscarPeriferico = DB::Select("SELECT * FROM cargador WHERE id_periferico = $IdPeriferico");
@@ -545,7 +545,7 @@ class Inventario extends Model
                                 foreach($BuscarPeriferico as $row){
                                     $IdTPeriferico = $row->id;
                                 }
-                                DB::Update("UPDATE asignados SET id_cargador = null,update_at = '$fechaActualizacion' WHERE id_cargador = $IdTPeriferico");
+                                DB::Update("UPDATE asignados SET id_cargador = null,estado_asignado = $Estado,update_at = '$fechaActualizacion' WHERE id_cargador = $IdTPeriferico");
                             }
                             break;
             }
@@ -570,6 +570,11 @@ class Inventario extends Model
         return $ActualizarPeriferico;
     }
 
+    public static function BuscarLastConsumible($creadoPor){
+        $BuscarLastEquipo = DB::Select("SELECT max(id) as id FROM consumible WHERE user_id = $creadoPor");
+        return $BuscarLastEquipo;
+    }
+
     // CONSUMIBLES
     public static function ConsumibleStock(){
         $Stock = DB::Select("SELECT COUNT(*) AS total FROM consumible WHERE estado_consumible = 1");
@@ -589,6 +594,89 @@ class Inventario extends Model
     public static function ConsumibleObsolete(){
         $Obsolete = DB::Select("SELECT COUNT(*) AS total FROM consumible WHERE estado_consumible = 4");
         return $Obsolete;
+    }
+
+    public static function ListarConsumibles(){
+        $ListarConsumibles = DB::Select("SELECT * FROM consumible");
+        return $ListarConsumibles;
+    }
+
+    public static function ListarConsumiblesID($idConsumible){
+        $ListarConsumibles = DB::Select("SELECT * FROM consumible WHERE id = $idConsumible");
+        return $ListarConsumibles;
+    }
+
+    public static function ListarTipoConsumible(){
+        $ListarConsumibles = DB::Select("SELECT * FROM tipo_consumible");
+        return $ListarConsumibles;
+    }
+
+    public static function ListarTipoConsumibleID($IdTipoConsumible){
+        $ListarConsumibles = DB::Select("SELECT * FROM tipo_consumible WHERE id = $IdTipoConsumible");
+        return $ListarConsumibles;
+    }
+
+    public static function BuscarHistorialC($idConsumible){
+        $historial = DB::Select("SELECT * FROM historial_inventario WHERE id_consumible = $idConsumible");
+        return $historial;
+    }
+
+    public static function EvidenciaConsumible($idConsumible){
+        $EvidenciaEquipo = DB::Select("SELECT * FROM evidencia_inventario WHERE id_consumible = $idConsumible");
+        return $EvidenciaEquipo;
+    }
+
+    public static function CrearConsumible($TipoConsumible,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Modelo,$CompaRef,$CompaMod,$Estado,$creadoPor){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaCreacion      = date('Y-m-d H:i', strtotime($fecha_sistema));
+        $CrearConsumible    = DB::insert('INSERT INTO consumible (tipo_consumible,tipo_ingreso,emp_renting,fecha_ingreso,serial,marca,modelo,compa_ref,compa_mod,estado_consumible,created_at,user_id)
+                                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
+                                        [$TipoConsumible,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Modelo,$CompaRef,$CompaMod,$Estado,$fechaCreacion,$creadoPor]);
+        return $CrearConsumible;
+    }
+
+    public static function HistorialC($idConsumible,$Comentario,$Estado,$creadoPor){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaCreacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+        DB::insert('INSERT INTO historial_inventario (id_consumible,comentario,status_id,user_id,created)
+                    VALUES (?,?,?,?,?)',
+                    [$idConsumible,$Comentario,$Estado,$creadoPor,$fechaCreacion]);
+    }
+
+    public static function EvidenciaIC($IdConsumible,$NombreFoto){
+        $Evidencia = DB::Insert('INSERT INTO evidencia_inventario (nombre,id_consumible) VALUES (?,?)', [$NombreFoto,$IdConsumible]);
+        return $Evidencia;
+    }
+
+    public static function ActualizarConsumible($TipoConsumible,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Modelo,$CompaRef,$CompaMod,$Estado,$creadoPor,$IdConsumible){
+        if(($TipoIngreso === 3) || ($TipoIngreso === 4) || ($TipoIngreso === 2)){
+            $EmpRenting = 'SIN EMPRESA';
+        }else{
+            $EmpRenting = $EmpresaRent;
+        }
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaActualizacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+        // if(($Estado === 3) || ($Estado === 4) || ($Estado === 1)){
+        //     DB::Update("UPDATE asignados SET id_consumible = null,update_at = '$fechaActualizacion' WHERE id_consumible = $IdConsumible");
+        // }
+        $ActualizarConsumible = DB::Update("UPDATE consumible SET
+                                            tipo_consumible = $TipoConsumible,
+                                            tipo_ingreso = $TipoIngreso,
+                                            emp_renting = '$EmpRenting',
+                                            fecha_ingreso = '$FechaAdquisicion',
+                                            serial = '$Serial',
+                                            marca = '$Marca',
+                                            modelo = '$Modelo',
+                                            compa_ref = '$CompaRef',
+                                            compa_mod = '$CompaMod',
+                                            estado_consumible = $Estado,
+                                            updated_at = '$fechaActualizacion',
+                                            actualizado_por = $creadoPor
+                                            WHERE id = $IdConsumible");
+        return $ActualizarConsumible;
     }
 
     // ASIGNACIONES

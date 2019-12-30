@@ -68,44 +68,48 @@ Consumibles
                         <table id="equipos" class="display responsive hover" style="width: 100%;">
                             <thead style="background: linear-gradient(60deg,rgba(51,101,155,1),rgba(66,132,206,1));color: #ECF0F1;font-size:12px;text-align: center;">
                                 <tr>
-                                    <th style="text-align: center;">NRO. ACTIVO</th>
-                                    <th style="text-align: center;">TIPO PERIFERICO</th>
+                                    <th style="text-align: center;">Nro. Activo</th>
+                                    <th style="text-align: center;">TIPO CONSUMIBLE</th>
                                     <th style="text-align: center;">TIPO ADQUISICIÓN</th>
                                     <th style="text-align: center;">EMPRESA</th>
                                     <th style="text-align: center;">FECHA ADQUISICIÓN</th>
-                                    <th style="text-align: center;">SERIAL</th>
-                                    <th style="text-align: center;">MARCA</th>
-                                    <th style="text-align: center;">PULGADAS</th>
-                                    <th style="text-align: center;">ESTADO PERIFERICO</th>
+                                    <th style="text-align: center;">SERIAL </th>
+                                    <th style="text-align: center;">MARCA </th>
+                                    <th style="text-align: center;">COM. REFERENCIA </th>
+                                    <th style="text-align: center;">COM. MODELO </th>
+                                    <th style="text-align: center;">ESTADO CONSUMIBLE </th>
                                     <th style="text-align: center;">EDITAR</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {{--  @foreach($Perifericos as $value)
+                                @foreach($Consumibles as $value)
                                     <tr>
                                         <td>{{$value['id']}}</td>
-                                        <td>{{$value['tipoPeriferico']}}</td>
+                                        <td>{{$value['tipoConsumible']}}</td>
                                         <td>{{$value['tipoIngreso']}}</td>
                                         <td>{{$value['emp_renting']}}</td>
                                         <td>{{$value['fecha_ingreso']}}</td>
                                         <td style="text-align: center;">{{$value['serial']}}</td>
                                         <td>{{$value['marca']}}</td>
-                                        <td>{{$value['tamano']}}</td>
+                                        <td>{{$value['compa_ref']}}</td>
+                                        <td>{{$value['compa_mod']}}</td>
                                         <td style="text-align: center;"><span class="{{$value['label']}}" style="font-size:13px;"><b>{{$value['estado']}}</b></span></td>
-                                        <td style="text-align: center;"><a href="#" class="btn btn-warning" title="Editar" data-toggle="modal" data-target="#modal-cambios-periferico" onclick="obtener_datos_periferico('{{$value['id']}}');"><i class="fa fa-edit"></i></a></td>
+                                        <td style="text-align: center;"><a href="#" class="btn btn-warning" title="Editar" data-toggle="modal" data-target="#modal-cambios-consumible" onclick="obtener_datos_consumible('{{$value['id']}}');"><i class="fa fa-edit"></i></a></td>
                                         <input type="hidden" value="{{$value['id']}}" id="id{{$value['id']}}">
-                                        <input type="hidden" value="{{$value['tipo_periferico']}}" id="tipo_periferico{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['tipo_consumible']}}" id="tipo_consumible{{$value['id']}}">
                                         <input type="hidden" value="{{$value['tipo_ingreso']}}" id="tipo_ingreso{{$value['id']}}">
                                         <input type="hidden" value="{{$value['emp_renting']}}" id="emp_renting{{$value['id']}}">
                                         <input type="hidden" value="{{$value['fecha_ingreso']}}" id="fecha_ingreso{{$value['id']}}">
                                         <input type="hidden" value="{{$value['serial']}}" id="serial{{$value['id']}}">
                                         <input type="hidden" value="{{$value['marca']}}" id="marca{{$value['id']}}">
-                                        <input type="hidden" value="{{$value['tamano']}}" id="tamano{{$value['id']}}">
-                                        <input type="hidden" value="{{$value['estado_periferico']}}" id="estado_periferico{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['modelo']}}" id="modelo{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['compa_ref']}}" id="compa_ref{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['compa_mod']}}" id="compa_mod{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['estado_consumible']}}" id="estado_consumible{{$value['id']}}">
                                         <input type="hidden" value="{{$value['evidencia']}}" id="evidencia{{$value['id']}}">
                                         <input type="hidden" value="{{$value['historial']}}" id="historial{{$value['id']}}">
                                     </tr>
-                                @endforeach  --}}
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -114,7 +118,7 @@ Consumibles
         </div>
     </div>
 </section>
-{{--  @include('Modals.ModalConsumibles')  --}}
+@include('Modals.ModalConsumibles')
 @endsection
 @section('scripts')
     <script src="{{asset("assets/dist/js/inventario.js")}}"></script>

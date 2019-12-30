@@ -137,12 +137,7 @@ class InventarioController extends Controller
             $LineaMovilUpd[$row->id] = $row->nro_linea;
         }
 
-        $ListarEstadoEquipos = Inventario::ListarEstadoEquipos();
-        $EstadoEquipo  = array();
-        $EstadoEquipo[''] = 'Seleccione: ';
-        foreach ($ListarEstadoEquipos as $row){
-            $EstadoEquipo[$row->id] = $row->name;
-        }
+        $EstadoEquipo   = InventarioController::TipoEstado();
 
         return view('Inventario.Mobile',['Stock' => $TotalStock,'Asignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos,
                                         'EquiposMoviles' => $EquiposMoviles,'TipoEquipo' => $TipoEquipo,'LineaMovil' => $LineaMovil,'EstadoEquipo' => $EstadoEquipo,
@@ -258,14 +253,7 @@ class InventarioController extends Controller
             $Proveedores[$row->id] = $row->name;
         }
 
-        $ListarEstadoLinea = Inventario::ListarEstadoEquipos();
-        $EstadoLinea  = array();
-        $EstadoLinea[''] = 'Seleccione: ';
-        foreach ($ListarEstadoLinea as $row){
-            $EstadoLinea[$row->id] = $row->name;
-        }
-
-
+        $EstadoLinea   = InventarioController::TipoEstado();
         return view('Inventario.LineMobile',['Stock' => $TotalStock,'Asignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos,
                                             'LineasMoviles' => $LineasMoviles,'Activo' => $Activo,'Proveedores' => $Proveedores,'EstadoLinea' => $EstadoLinea,
                                             'FechaAdquisicion' => null,'Serial' => null,'NroLinea' => null,'Plan' => null,'PtoCargo' => null,'CC' => null,'Area' => null,
@@ -380,19 +368,8 @@ class InventarioController extends Controller
             $TipoEquipo[$row->id] = $row->name;
         }
 
-        $ListaTipoIngreso = Inventario::ListarTipoIngreso();
-        $TipoIngreso  = array();
-        $TipoIngreso[''] = 'Seleccione: ';
-        foreach ($ListaTipoIngreso as $row){
-            $TipoIngreso[$row->id] = $row->name;
-        }
-
-        $ListarEstado = Inventario::ListarEstadoEquipos();
-        $EstadoEquipo  = array();
-        $EstadoEquipo[''] = 'Seleccione: ';
-        foreach ($ListarEstado as $row){
-            $EstadoEquipo[$row->id] = $row->name;
-        }
+        $TipoIngreso    = InventarioController::TipoIngreso();
+        $EstadoEquipo   = InventarioController::TipoEstado();
 
         return view('Inventario.Desktops',['Stock' => $TotalStock,'Asignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos,
                                             'Equipos' => $Equipos,'TipoEquipo' => $TipoEquipo,'TipoIngreso' => $TipoIngreso,'EstadoEquipo' =>$EstadoEquipo,
@@ -441,7 +418,11 @@ class InventarioController extends Controller
             $Perifericos[$cont]['fecha_ingreso']    = date('d/m/Y', strtotime($value->fecha_ingreso));
             $Perifericos[$cont]['serial']           = $value->serial;
             $Perifericos[$cont]['marca']            = $value->marca;
-            $Perifericos[$cont]['tamano']           = $value->tamano;
+            if($value->tamano){
+                $Perifericos[$cont]['tamano']       = $value->tamano;
+            }else{
+                $Perifericos[$cont]['tamano']       = 'SIN INFORMACIÓN';
+            }
             $Perifericos[$cont]['estado_periferico']= (int)$value->estado_periferico;
             $IdEstadoEquipo = (int)$value->estado_periferico;
             $EstadoEquipo   = Inventario::EstadoEquipoId($IdEstadoEquipo);
@@ -513,19 +494,8 @@ class InventarioController extends Controller
             $TipoPeriferico[$row->id] = $row->name;
         }
 
-        $ListaTipoIngreso = Inventario::ListarTipoIngreso();
-        $TipoIngreso  = array();
-        $TipoIngreso[''] = 'Seleccione: ';
-        foreach ($ListaTipoIngreso as $row){
-            $TipoIngreso[$row->id] = $row->name;
-        }
-
-        $ListarEstado = Inventario::ListarEstadoEquipos();
-        $EstadoEquipo  = array();
-        $EstadoEquipo[''] = 'Seleccione: ';
-        foreach ($ListarEstado as $row){
-            $EstadoEquipo[$row->id] = $row->name;
-        }
+        $TipoIngreso    = InventarioController::TipoIngreso();
+        $EstadoEquipo   = InventarioController::TipoEstado();
         return view('Inventario.Periferic',['Stock' => $TotalStock,'Asignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos,
                                             'Perifericos' => $Perifericos,'TipoPeriferico' => $TipoPeriferico,'TipoIngreso' => $TipoIngreso,'EstadoEquipo' =>$EstadoEquipo,
                                             'Renting' => null,'FechaAdquisicion' => null,'Serial' => null,'Marca' => null,'Tamano' => null]);
@@ -548,7 +518,113 @@ class InventarioController extends Controller
         foreach($LineasObsoletos as $row){
             $TotalObsoletos = (int)$row->total;
         }
-        return view('Inventario.Consumible',['Stock' => $TotalStock,'Asignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos]);
+
+        $ListarTipoConsumible = Inventario::ListarTipoConsumible();
+        $TipoConsumible  = array();
+        $TipoConsumible[''] = 'Seleccione: ';
+        foreach ($ListarTipoConsumible as $row){
+            $TipoConsumible[$row->id] = $row->name;
+        }
+
+        $ListarConsumibles = Inventario::ListarConsumibles();
+        $Consumibles = array();
+        $cont = 0;
+        foreach($ListarConsumibles as $value){
+            $IdConsumible                               = $value->id;
+            $Consumibles[$cont]['id']                   = $value->id;
+            $Consumibles[$cont]['tipo_consumible']      = $value->tipo_consumible;
+            $IdTipoConsumible                           = $value->tipo_consumible;
+            $listTipoConsumible = Inventario::ListarTipoConsumibleID($IdTipoConsumible);
+            foreach($listTipoConsumible as $row){
+                $Consumibles[$cont]['tipoConsumible']   = $row->name;
+            }
+            $Consumibles[$cont]['tipo_ingreso']         = (int)$value->tipo_ingreso;
+            $IdTipoIngreso                              = (int)$value->tipo_ingreso;
+            $ListTipoIngreso                                = Inventario::BuscarTipoIngresoId($IdTipoIngreso);
+            foreach($ListTipoIngreso as $row){
+                $Consumibles[$cont]['tipoIngreso']      = $row->name;
+            }
+            $Consumibles[$cont]['emp_renting']          = $value->emp_renting;
+            $Consumibles[$cont]['fecha_ingreso']        = date('d/m/Y', strtotime($value->fecha_ingreso));
+            $Consumibles[$cont]['serial']               = $value->serial;
+            $Consumibles[$cont]['marca']                = $value->marca;
+            $Consumibles[$cont]['modelo']               = $value->modelo;
+            $Consumibles[$cont]['compa_ref']            = $value->compa_ref;
+            $Consumibles[$cont]['compa_mod']            = $value->compa_mod;
+            $Consumibles[$cont]['estado_consumible']    = (int)$value->estado_consumible;
+            $IdEstadoEquipo = (int)$value->estado_consumible;
+            $EstadoEquipo   = Inventario::EstadoEquipoId($IdEstadoEquipo);
+            foreach($EstadoEquipo as $row){
+                switch($IdEstadoEquipo){
+                    Case 1  :   $Consumibles[$cont]['estado']  = $row->name;
+                                $Consumibles[$cont]['label']   = 'label label-primary';
+                                break;
+                    Case 2  :   $Consumibles[$cont]['estado']  = $row->name;
+                                $Consumibles[$cont]['label']   = 'label label-success';
+                                break;
+                    Case 3  :   $Consumibles[$cont]['estado']  = $row->name;
+                                $Consumibles[$cont]['label']   = 'label label-danger';
+                                break;
+                    Case 4  :   $Consumibles[$cont]['estado']  = $row->name;
+                                $Consumibles[$cont]['label']   = 'label label-warning';
+                                break;
+                }
+            }
+            $Consumibles[$cont]['evidencia']    = null;
+            $evidenciaTicket = Inventario::EvidenciaConsumible($IdConsumible);
+            $contadorEvidencia = count($evidenciaTicket);
+            if($contadorEvidencia > 0){
+                $contE = 1;
+                foreach($evidenciaTicket as $row){
+                    $Consumibles[$cont]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/consumibles/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-file-archive-o'></i>&nbsp; Anexo Consumible $IdConsumible Nro. ".$contE."</a></p>";
+                    $contE++;
+                }
+            }else{
+                $Consumibles[$cont]['evidencia'] = null;
+            }
+            $historialEquipoM = Inventario::BuscarHistorialC($IdConsumible);
+            $contadorHistorial = count($historialEquipoM);
+            $Consumibles[$cont]['historial'] = null;
+            if($contadorHistorial > 0){
+                foreach($historialEquipoM as $row){
+                    $idUsuario  = $row->user_id;
+                    $BuscarUsuario = Usuarios::BuscarNombre($idUsuario);
+                    foreach($BuscarUsuario as $values){
+                        $NombreUser = $values->name;
+                    }
+                    $Consumibles[$cont]['historial'] .= "- ".$row->comentario." (".$NombreUser." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
+                }
+            }else{
+                $Consumibles[$cont]['historial'] = null;
+            }
+            $cont++;
+        }
+
+        $TipoIngreso    = InventarioController::TipoIngreso();
+        $EstadoEquipo   = InventarioController::TipoEstado();
+        return view('Inventario.Consumible',['Stock' => $TotalStock,'Asignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos,
+                                             'TipoConsumible' => $TipoConsumible,'TipoIngreso' => $TipoIngreso,'Estado' => $EstadoEquipo,'Consumibles' => $Consumibles,
+                                             'Renting' => null,'FechaAdquisicion' => null,'Serial' => null,'Marca' => null,'CompaRef' => null,'CompaMod' => null,'Modelo' => null]);
+    }
+
+    public function TipoIngreso(){
+        $ListaTipoIngreso = Inventario::ListarTipoIngreso();
+        $TipoIngreso  = array();
+        $TipoIngreso[''] = 'Seleccione: ';
+        foreach ($ListaTipoIngreso as $row){
+            $TipoIngreso[$row->id] = $row->name;
+        }
+        return $TipoIngreso;
+    }
+
+    public function TipoEstado(){
+        $ListarEstado = Inventario::ListarEstadoEquipos();
+        $EstadoEquipo  = array();
+        $EstadoEquipo[''] = 'Seleccione: ';
+        foreach ($ListarEstado as $row){
+            $EstadoEquipo[$row->id] = $row->name;
+        }
+        return $EstadoEquipo;
     }
 
 }

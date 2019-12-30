@@ -64,7 +64,6 @@
                 <button type="submit" class="btn btn-success">Crear Ingreso</button>
             </div>
             {!!  Form::close() !!}
-
         </div>
     </div>
 </div>

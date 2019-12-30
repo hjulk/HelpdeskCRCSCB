@@ -14,15 +14,15 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="tickets"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                    <li><a href="ticketsUsuario"><i class="fa fa-user-plus"></i> Creación Usuarios</a></li>
-                    <li><a href="reporteTickets"><i class="fa fa-list"></i> Reportes</a></li>
+                    <li><a href="tickets"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+                    <li><a href="ticketsUsuario"><i class="fa fa-user-plus"></i>Creación Usuarios</a></li>
+                    <li><a href="reporteTickets"><i class="fa fa-list"></i>Reportes</a></li>
                 </ul>
             </li>
             @if((Session::get('Categoria') === 3) || (Session::get('Categoria') === 2))
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-archive"></i> <span>Inventario</span>
+                        <i class="fa fa-archive"></i><span>Inventario</span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
@@ -33,11 +33,11 @@
                             <li><a href="lineMobile"><i class="fa fa-phone"></i>Lineas Moviles</a></li>
                         @endif
                         @if(Session::get('Categoria') === 2)
-                            <li><a href="desktops"><i class="fa fa-desktop"></i> Equipos</a></li>
-                            <li><a href="periferic"><i class="fa fa-keyboard-o"></i> Perifericos</a></li>
-                            <li><a href="consumible"><i class="fa fa-tint"></i> Consumibles</a></li>
-                            <li><a href="asigneds"><i class="fa fa-share-square"></i> Asignaciones</a></li>
-                            <li><a href="printers"><i class="fa fa-print"></i> Impresoras</a></li>
+                            <li><a href="desktops"><i class="fa fa-desktop"></i>Equipos</a></li>
+                            <li><a href="periferic"><i class="fa fa-keyboard-o"></i>Perifericos</a></li>
+                            <li><a href="consumible"><i class="fa fa-tint"></i>Consumibles</a></li>
+                            <li><a href="printers"><i class="fa fa-print"></i>Impresoras</a></li>
+                            <li><a href="asigneds"><i class="fa fa-share-square"></i>Asignaciones</a></li>
                         @endif
                     </ul>
                 </li>
@@ -45,7 +45,7 @@
             @if(Session::get('Rol') === 1)
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-archive"></i> <span>Inventario</span>
+                        <i class="fa fa-archive"></i><span>Inventario</span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
@@ -61,19 +61,19 @@
                                 <li><a href="lineMobile"><i class="fa fa-phone"></i>Lineas Moviles</a></li>
                             </ul>
                         </li>
-                        <li><a href="desktops"><i class="fa fa-desktop"></i> Equipos</a></li>
-                        <li><a href="periferic"><i class="fa fa-keyboard-o"></i> Periféricos</a></li>
-                        <li><a href="consumible"><i class="fa fa-tint"></i> Consumibles</a></li>
-                        <li><a href="asigneds"><i class="fa fa-share-square"></i> Asignaciones</a></li>
-                        <li><a href="printers"><i class="fa fa-print"></i> Impresoras</a></li>
+                        <li><a href="desktops"><i class="fa fa-desktop"></i>Equipos</a></li>
+                        <li><a href="periferic"><i class="fa fa-keyboard-o"></i>Periféricos</a></li>
+                        <li><a href="consumible"><i class="fa fa-tint"></i>Consumibles</a></li>
+                        <li><a href="printers"><i class="fa fa-print"></i>Impresoras</a></li>
+                        <li><a href="asigneds"><i class="fa fa-share-square"></i>Asignaciones</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="calificaciones"><i class="fa fa-check"></i> <span>Calificaciones</span></a>
+                    <a href="calificaciones"><i class="fa fa-check"></i><span>Calificaciones</span></a>
                 </li>
             @endif
                 <li>
-                    <a href="turnos"><i class="fa fa-calendar-o"></i> <span>Turnos</span></a>
+                    <a href="turnos"><i class="fa fa-calendar-o"></i><span>Turnos</span></a>
                 </li>
             @if(Session::get('Rol') === 1)
                 <li class="treeview">
@@ -84,9 +84,9 @@
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="usuarios"><i class="fa fa-user"></i> Usuarios</a></li>
-                        <li><a href="roles"><i class="fa fa-user-secret"></i> Roles Y Categoria</a></li>
-                        <li><a href="sedes"><i class="fa fa-map"></i> Sedes</a></li>
+                        <li><a href="usuarios"><i class="fa fa-user"></i>Usuarios</a></li>
+                        <li><a href="roles"><i class="fa fa-user-secret"></i>Roles Y Categoria</a></li>
+                        <li><a href="sedes"><i class="fa fa-map"></i>Sedes</a></li>
                     </ul>
                 </li>
             @endif

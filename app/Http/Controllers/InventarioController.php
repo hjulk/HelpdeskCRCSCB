@@ -755,8 +755,144 @@ class InventarioController extends Controller
     }
 
     public function ingresarConsumible(){
+        $data           = Input::all();
+        $creadoPor      = (int)Session::get('IdUsuario');
+        $buscarUsuario  = Usuarios::BuscarNombre($creadoPor);
+        foreach($buscarUsuario as $value){
+            $Administrador = (int)$value->rol_id;
+        }
+        $url = InventarioController::BuscarURL($Administrador);
+        $reglas = array(
+            'tipo_consumible'   =>  'required',
+            'tipo_ingreso'      =>  'required',
+            'fecha_adquision'   =>  'required',
+            'serial'            =>  'required',
+            'marca'             =>  'required'
+        );
+        $validador = Validator::make($data, $reglas);
+        $messages = $validador->messages();
+        foreach ($reglas as $key => $value){
+            $verrors[$key] = $messages->first($key);
+        }
+        if($validador->passes()) {
+            $TipoConsumible     = (int)Input::get('tipo_consumible');
+            $TipoIngreso        = (int)Input::get('tipo_ingreso');
+            if(Input::get('emp_renting')){
+                $EmpresaRent    = Input::get('emp_renting');
+            }else{
+                $EmpresaRent    = 'SIN EMPRESA';
+            }
+            $FechaAdquisicion   = date('Y-m-d H:i:s', strtotime(Input::get('fecha_adquision')));
+            $Serial             = Input::get('serial');
+            $Marca              = Input::get('marca');
+            $Modelo             = Input::get('modelo');
+            $CompaRef           = Input::get('compa_ref');
+            $CompaMod           = Input::get('compa_ref');
+            $Estado             = (int)Input::get('estado');
+
+            $CrearConsumible = Inventario::CrearConsumible($TipoConsumible,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Modelo,$CompaRef,$CompaMod,$Estado,$creadoPor);
+            if($CrearConsumible){
+                $BuscarUltimo = Inventario::BuscarLastConsumible($creadoPor);
+                foreach($BuscarUltimo as $row){
+                    $idConsumible = $row->id;
+                }
+                $destinationPath = null;
+                $filename        = null;
+                if (Input::hasFile('evidencia')) {
+                    $files = Input::file('evidencia');
+                    foreach($files as $file){
+                        $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario/consumibles/';
+                        $extension          = $file->getClientOriginalExtension();
+                        $name               = $file->getClientOriginalName();
+                        $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
+                        $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
+                        $filename           = 'Evidencia Consumible No. '.$idConsumible.'.'.$extension;
+                        $uploadSuccess      = $file->move($destinationPath, $filename);
+                        $archivofoto        = file_get_contents($uploadSuccess);
+                        $NombreFoto         = $filename;
+                        $actualizarEvidencia = Inventario::EvidenciaIC($idConsumible,$NombreFoto);
+                    }
+                }
+                $Comentario = 'Ingreso de Consumible Nro. '.$idConsumible.' en el sistema';
+                Inventario::HistorialC($idConsumible,$Comentario,$Estado,$creadoPor);
+                $verrors = 'Se ingreso satisfactoriamente el consumible No. de Activo '.$idConsumible;
+                return redirect($url.'/consumible')->with('mensaje', $verrors);
+            }else{
+                $verrors = array();
+                array_push($verrors, 'Hubo un problema al crear el Consumible');
+                return Redirect::to($url.'/consumible')->withErrors(['errors' => $verrors])->withInput();
+            }
+        }else{
+            return Redirect::to($url.'/consumible')->withErrors(['errors' => $verrors])->withInput();
+        }
     }
 
     public function actualizarConsumible(){
+        $data           = Input::all();
+        $creadoPor      = (int)Session::get('IdUsuario');
+        $buscarUsuario  = Usuarios::BuscarNombre($creadoPor);
+        foreach($buscarUsuario as $value){
+            $Administrador = (int)$value->rol_id;
+        }
+        $url = InventarioController::BuscarURL($Administrador);
+        $reglas = array(
+            'tipo_consumible_upd'   =>  'required',
+            'tipo_ingreso_upd'      =>  'required',
+            'fecha_adquision_upd'   =>  'required',
+            'serial_upd'            =>  'required',
+            'marca_upd'             =>  'required'
+        );
+        $validador = Validator::make($data, $reglas);
+        $messages = $validador->messages();
+        foreach ($reglas as $key => $value){
+            $verrors[$key] = $messages->first($key);
+        }
+        if($validador->passes()) {
+            $TipoConsumible         = (int)Input::get('tipo_consumible_upd');
+            $TipoIngreso            = (int)Input::get('tipo_ingreso_upd');
+            if(Input::get('emp_renting_upd')){
+                $EmpresaRent        = Input::get('emp_renting_upd');
+            }else{
+                $EmpresaRent        = 'SIN EMPRESA';
+            }
+            $FechaAdquisicion       = date('Y-m-d H:i:s', strtotime(Input::get('fecha_adquision_upd')));
+            $Serial                 = Input::get('serial_upd');
+            $Marca                  = Input::get('marca_upd');
+            $Modelo                 = Input::get('modelo_upd');
+            $CompaRef               = Input::get('compa_ref_upd');
+            $CompaMod               = Input::get('compa_ref_upd');
+            $Estado                 = (int)Input::get('estado_upd');
+            $Comentario             = Input::get('comentario');
+            $IdConsumible           = (int)Input::get('idC');
+            $ActualizarConsumible   = Inventario::ActualizarConsumible($TipoConsumible,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Modelo,$CompaRef,$CompaMod,$Estado,$creadoPor,$IdConsumible);
+            if($ActualizarConsumible){
+                $destinationPath = null;
+                $filename        = null;
+                if (Input::hasFile('evidencia')) {
+                    $files = Input::file('evidencia');
+                    foreach($files as $file){
+                        $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario/consumibles/';
+                        $extension          = $file->getClientOriginalExtension();
+                        $name               = $file->getClientOriginalName();
+                        $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
+                        $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
+                        $filename           = 'Evidencia Consumible No. '.$IdConsumible.'.'.$extension;
+                        $uploadSuccess      = $file->move($destinationPath, $filename);
+                        $archivofoto        = file_get_contents($uploadSuccess);
+                        $NombreFoto         = $filename;
+                        $actualizarEvidencia = Inventario::EvidenciaIC($IdConsumible,$NombreFoto);
+                    }
+                }
+                Inventario::HistorialC($IdConsumible,$Comentario,$Estado,$creadoPor);
+                $verrors = 'Se actualizo satisfactoriamente el consumible No. de Activo '.$IdConsumible;
+                return redirect($url.'/consumible')->with('mensaje', $verrors);
+            }else{
+                $verrors = array();
+                array_push($verrors, 'Hubo un problema al actualizar el Consumible');
+                return Redirect::to($url.'/consumible')->withErrors(['errors' => $verrors])->withInput();
+            }
+        }else{
+            return Redirect::to($url.'/consumible')->withErrors(['errors' => $verrors])->withInput();
+        }
     }
 }

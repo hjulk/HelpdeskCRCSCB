@@ -158,7 +158,12 @@ return array(
         'tipo_periferico'       =>  'Tipo de Periferico',
         'tipo_periferico_upd'   =>  'Tipo de Periferico',
         'tamano'                =>  'Tamaño',
-        'tamano_upd'            =>  'Tamaño'
-
+        'tamano_upd'            =>  'Tamaño',
+        'tipo_consumible'       =>  'Tipo de Consumible',
+        'tipo_consumible_upd'   =>  'Tipo de Consumible',
+        'compa_ref'             =>  'Compatibilidad Referencia',
+        'compa_ref_upd'         =>  'Compatibilidad Referencia',
+        'compa_mod'             =>  'Compatibilidad Modelo',
+        'compa_ref_upd'         =>  'Compatibilidad Modelo'
     ),
 );
