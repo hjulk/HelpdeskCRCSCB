@@ -154,7 +154,11 @@ return array(
         'fecha_inicio_upd'      =>  'Fecha Inicio',
         'fecha_fin_upd'         =>  'Fecha Final',
         'horario_upd'           =>  'Horario',
-        'disponibilidad_upd'    =>  'Disponibilidad'
+        'disponibilidad_upd'    =>  'Disponibilidad',
+        'tipo_periferico'       =>  'Tipo de Periferico',
+        'tipo_periferico_upd'   =>  'Tipo de Periferico',
+        'tamano'                =>  'Tamaño',
+        'tamano_upd'            =>  'Tamaño'
 
     ),
 );

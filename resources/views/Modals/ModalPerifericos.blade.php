@@ -1,18 +1,18 @@
-<div class="modal fade bd-example-modal-xl" id="modal-equipos" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-xl" id="modal-perifericos" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title modal-title-primary">Crear Ingreso de Equipo</h4>
+                <h4 class="modal-title modal-title-primary">Crear Ingreso de Periferico</h4>
             </div>
-            {!! Form::open(['url' => 'ingresoEquipo', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['url' => 'ingresoPeriferico', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-3">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Tipo Equipo</label>
-                            {!! Form::Select('tipo_equipo',$TipoEquipo,null,['class'=>'form-control','id'=>'tipo_equipo','required']) !!}
+                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Tipo Periferico</label>
+                            {!! Form::Select('tipo_periferico',$TipoPeriferico,null,['class'=>'form-control','id'=>'tipo_periferico','required']) !!}
                         </div>
                         <div class="col-md-3">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Tipo Adquisisión</label>
@@ -39,29 +39,18 @@
                             {!! Form::text('marca',$Marca,['class'=>'form-control','id'=>'marca','placeholder'=>'Marca','required']) !!}
                         </div>
                         <div class="col-md-3">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Procesador</label>
-                            {!! Form::text('procesador',$Procesador,['class'=>'form-control','id'=>'procesador','placeholder'=>'Intel / AMD']) !!}
+                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Tamaño Pulgadas</label>
+                            {!! Form::text('tamano',$Tamano,['class'=>'form-control','id'=>'tamano','placeholder'=>'Tamaño en Pulgadas']) !!}
                         </div>
                         <div class="col-md-3">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Velocidad Procesador</label>
-                            {!! Form::text('vel_procesador',$VelProcesador,['class'=>'form-control','id'=>'vel_procesador','placeholder'=>'X.XGhz']) !!}
+                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Estado Periferico</label>
+                            {!! Form::select('estado',$EstadoEquipo,null,['class'=>'form-control','id'=>'estado']) !!}
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-md-2">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Disco Duro</label>
-                            {!! Form::text('disco_duro',$DiscoDuro,['class'=>'form-control','id'=>'disco_duro','placeholder'=>'GB / TB']) !!}
-                        </div>
-                        <div class="col-md-2">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Memoria RAM</label>
-                            {!! Form::text('memoria_ram',$MemoriaRam,['class'=>'form-control','id'=>'memoria_ram','placeholder'=>'GB']) !!}
-                        </div>
-                        <div class="col-md-3">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Estado Equipo</label>
-                            {!! Form::select('estado',$EstadoEquipo,null,['class'=>'form-control','id'=>'estado']) !!}
-                        </div>
+
                         <div class="col-md-5">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Evidencia</label>
                             <input type="file" id="evidencia[]" name="evidencia[]" class="form-control" multiple>
@@ -82,22 +71,22 @@
 
 {{-- ACTUALIZACION --}}
 
-<div class="modal fade bd-example-modal-xl" id="modal-cambios-equipo" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-xl" id="modal-cambios-periferico" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title modal-title-primary">Actualizar Ingreso de Equipo</h4>
+                <h4 class="modal-title modal-title-primary">Actualizar Ingreso de Periferico</h4>
             </div>
-            {!! Form::open(['url' => 'actualizacionEquipo', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['url' => 'actualizacionPeriferico', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
             <div class="modal-body">
-                <input type="hidden" name="idE" id="mod_idE">
+                <input type="hidden" name="idP" id="mod_idP">
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-3">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Tipo Equipo</label>
-                            {!! Form::Select('tipo_equipo_upd',$TipoEquipo,null,['class'=>'form-control','id'=>'mod_tipo_equipo','required']) !!}
+                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Tipo Periferico</label>
+                            {!! Form::Select('tipo_periferico_upd',$TipoPeriferico,null,['class'=>'form-control','id'=>'mod_tipo_periferico','required']) !!}
                         </div>
                         <div class="col-md-3">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Tipo Adquisisión</label>
@@ -124,33 +113,12 @@
                             {!! Form::text('marca_upd',$Marca,['class'=>'form-control','id'=>'mod_marca','placeholder'=>'Marca','required']) !!}
                         </div>
                         <div class="col-md-3">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Procesador</label>
-                            {!! Form::text('procesador_upd',$Procesador,['class'=>'form-control','id'=>'mod_procesador','placeholder'=>'Intel / AMD']) !!}
+                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Tamaño Pulgadas</label>
+                            {!! Form::text('tamano_upd',$Tamano,['class'=>'form-control','id'=>'mod_tamano','placeholder'=>'Tamaño en Pulgadas']) !!}
                         </div>
                         <div class="col-md-3">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Velocidad Procesador</label>
-                            {!! Form::text('vel_procesador_upd',$VelProcesador,['class'=>'form-control','id'=>'mod_vel_procesador','placeholder'=>'X.XGhz']) !!}
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Disco Duro</label>
-                            {!! Form::text('disco_duro_upd',$DiscoDuro,['class'=>'form-control','id'=>'mod_disco_duro','placeholder'=>'GB / TB']) !!}
-                        </div>
-                        <div class="col-md-2">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Memoria RAM</label>
-                            {!! Form::text('memoria_ram_upd',$MemoriaRam,['class'=>'form-control','id'=>'mod_memoria_ram','placeholder'=>'GB']) !!}
-                        </div>
-                        <div class="col-md-3">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Estado Equipo</label>
+                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Estado Periferico</label>
                             {!! Form::select('estado_upd',$EstadoEquipo,null,['class'=>'form-control','id'=>'mod_estado']) !!}
-                        </div>
-                        <div class="col-md-5">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Evidencia</label>
-                            <input type="file" id="mod_evidencia[]" name="evidencia_upd[]" class="form-control" multiple>
-                            <div align="right"><small class="text-muted" style="font-size: 63%;">Tamaño maximo permitido (5MB), si se supera este tamaño, su archivo no será cargado.</small> <span id="cntDescripHechos" align="right"> </span></div>
                         </div>
                     </div>
                 </div>
@@ -168,62 +136,61 @@
                 </div>
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-md-3">
-                            <button type="button" id="VerAnexosE" class="btn btn-success">Ver Anexos</button>
+                        <div class="col-md-4">
+                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Evidencia</label>
+                            <input type="file" id="mod_evidencia[]" name="evidencia_upd[]" class="form-control" multiple>
+                            <div align="right"><small class="text-muted" style="font-size: 63%;">Tamaño maximo permitido (5MB), si se supera este tamaño, su archivo no será cargado.</small> <span id="cntDescripHechos" align="right"> </span></div>
                         </div>
-                        <div class="col-md-9">
-                            <div id="anexosE"></div>
+                        <div class="col-md-3">
+                            <button type="button" id="VerAnexosP" class="btn btn-success">Ver Anexos</button>
+                        </div>
+                        <div class="col-md-5">
+                            <div id="anexosP"></div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-success">Crear Ingreso</button>
+                <button type="submit" class="btn btn-success">Actualizar Ingreso</button>
             </div>
             {!!  Form::close() !!}
 
         </div>
     </div>
 </div>
-
     <script>
-        function obtener_datos_equipo(id) {
+        function obtener_datos_periferico(id) {
 
-            var TipoEquipo      = $("#tipo_equipo" + id).val();
+            var TipoPeriferico  = $("#tipo_periferico" + id).val();
             var TipoIngreso     = $("#tipo_ingreso" + id).val();
             var EmpRenting      = $("#emp_renting" + id).val();
             var FechaIngreso    = $("#fecha_ingreso" + id).val();
             var Serial          = $("#serial" + id).val();
             var Marca           = $("#marca" + id).val();
-            var Procesador      = $("#procesador" + id).val();
-            var VelProcesador   = $("#vel_procesador" + id).val();
-            var DiscoDuro       = $("#disco_duro" + id).val();
-            var MemoriaRam      = $("#memoria_ram" + id).val();
-            var Estado          = $("#estado_equipo" + id).val();
+            var Tamano          = $("#tamano" + id).val();
+            var Estado          = $("#estado_periferico" + id).val();
             var Evidencia       = $("#evidencia" + id).val();
             var Historial       = $("#historial" + id).val();
 
-            $("#mod_idE").val(id);
-            $("#mod_tipo_equipo").val(TipoEquipo);
+            $("#mod_idP").val(id);
+            $("#mod_tipo_periferico").val(TipoPeriferico);
             $("#mod_tipo_ingreso").val(TipoIngreso);
             $("#mod_emp_renting").val(EmpRenting);
             $("#mod_fecha_adquision").val(FechaIngreso);
             $("#mod_serial").val(Serial);
             $("#mod_marca").val(Marca);
-            $("#mod_procesador").val(Procesador);
-            $("#mod_vel_procesador").val(VelProcesador);
-            $("#mod_disco_duro").val(DiscoDuro);
-            $("#mod_memoria_ram").val(MemoriaRam);
+            $("#mod_tamano").val(Tamano);
             $("#mod_estado").val(Estado);
             $("#mod_evidencia").val(Evidencia);
             $("#mod_historial").val(Historial);
 
-            $("#VerAnexosE").click(function(){
-                document.getElementById('anexosE').innerHTML = Evidencia;
+            $("#VerAnexosP").click(function(){
+                document.getElementById('anexosP').innerHTML = Evidencia;
             });
         }
     </script>
+
     <script>
         function mostrar(id) {
             if (id === '1') {

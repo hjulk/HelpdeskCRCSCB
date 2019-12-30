@@ -408,8 +408,188 @@ class Inventario extends Model
         return $Obsolete;
     }
 
-    // CONSUMIBLES
+    public static function ListarPerifericos(){
+        $ListarPerifericos = DB::Select("SELECT * FROM perifericos");
+        return $ListarPerifericos;
+    }
 
+    public static function ListarPerifericosID($idPeriferico){
+        $ListarPerifericos = DB::Select("SELECT * FROM perifericos WHERE id = $idPeriferico");
+        return $ListarPerifericos;
+    }
+
+    public static function ListarTipoPeriferico(){
+        $ListarPerifericos = DB::Select("SELECT * FROM tipo_periferico");
+        return $ListarPerifericos;
+    }
+
+    public static function ListarTipoPerifericoID($IdTipoPeriferico){
+        $ListarPerifericos = DB::Select("SELECT * FROM tipo_periferico WHERE id = $IdTipoPeriferico");
+        return $ListarPerifericos;
+    }
+
+    public static function EvidenciaPeriferico($idPeriferico){
+        $EvidenciaEquipo = DB::Select("SELECT * FROM evidencia_inventario WHERE id_periferico = $idPeriferico");
+        return $EvidenciaEquipo;
+    }
+
+    public static function BuscarHistorialP($idPeriferico){
+        $historial = DB::Select("SELECT * FROM historial_inventario WHERE id_periferico = $idPeriferico");
+        return $historial;
+    }
+
+    public static function BuscarLastPeriferico($creadoPor){
+        $BuscarLastEquipo = DB::Select("SELECT max(id) as id FROM perifericos WHERE user_id = $creadoPor");
+        return $BuscarLastEquipo;
+    }
+
+    public static function CrearPeriferico($TipoPeriferico,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Tamano,$Estado,$creadoPor){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema  = date('Y-m-d H:i');
+        $fechaCreacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
+        $CrearPeriferico = DB::Insert('INSERT INTO perifericos (tipo_periferico,tipo_ingreso,emp_renting,fecha_ingreso,serial,marca,tamano,estado_periferico,created_at,user_id)
+                                        VALUES (?,?,?,?,?,?,?,?,?,?)',
+                                        [$TipoPeriferico,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Tamano,$Estado,$fechaCreacion,$creadoPor]);
+        return $CrearPeriferico;
+    }
+
+    public static function EvidenciaIP($IdPeriferico,$NombreFoto){
+        $Evidencia = DB::Insert('INSERT INTO evidencia_inventario (nombre,id_periferico) VALUES (?,?)', [$NombreFoto,$IdPeriferico]);
+        return $Evidencia;
+    }
+
+    public static function InsertarPeriferico($TipoPeriferico,$Serial,$Marca,$Tamano,$Estado,$FechaAdquisicion,$idPeriferico){
+        switch($TipoPeriferico){
+            Case 1 :    DB::Insert('INSERT INTO pantalla (marca,serial,tamano_pulgadas,fecha_ingreso,estado_pantalla,id_periferico) VALUES (?,?,?,?,?,?)',
+                                    [$Marca,$Serial,$Tamano,$FechaAdquisicion,$Estado,$idPeriferico]);
+                        break;
+            Case 2 :    DB::Insert('INSERT INTO mouse (marca,serial,fecha_ingreso,estado_mouse,id_periferico) VALUES (?,?,?,?,?)',
+                                    [$Marca,$Serial,$FechaAdquisicion,$Estado,$idPeriferico]);
+                        break;
+            Case 3 :    DB::Insert('INSERT INTO teclado (marca,serial,fecha_ingreso,estado_teclado,id_periferico) VALUES (?,?,?,?,?)',
+                                    [$Marca,$Serial,$FechaAdquisicion,$Estado,$idPeriferico]);
+                        break;
+            Case 4 :    DB::Insert('INSERT INTO guaya (marca,serial,fecha_ingreso,estado_guaya,id_periferico) VALUES (?,?,?,?,?)',
+                                    [$Marca,$Serial,$FechaAdquisicion,$Estado,$idPeriferico]);
+                        break;
+            Case 5 :    DB::Insert('INSERT INTO cargador (marca,serial,fecha_ingreso,estado_cargador,id_periferico) VALUES (?,?,?,?,?)',
+                                    [$Marca,$Serial,$FechaAdquisicion,$Estado,$idPeriferico]);
+                        break;
+        }
+    }
+
+    public static function ActualizarTPeriferico($TipoPeriferico,$Serial,$Marca,$Tamano,$Estado,$FechaAdquisicion,$IdPeriferico){
+        switch($TipoPeriferico){
+            Case 1 :    DB::Update("UPDATE pantalla SET marca = '$Marca',serial = '$Serial',tamano_pulgadas = '$Tamano',fecha_ingreso = '$FechaAdquisicion',estado_pantalla = $Estado WHERE id_periferico = $IdPeriferico");
+                        break;
+            Case 2 :    DB::Update("UPDATE mouse SET marca = '$Marca',serial = '$Serial',fecha_ingreso = '$FechaAdquisicion',estado_mouse = $Estado WHERE id_periferico = $IdPeriferico");
+                        break;
+            Case 3 :    DB::Update("UPDATE teclado SET marca = '$Marca',serial = '$Serial',fecha_ingreso = '$FechaAdquisicion',estado_teclado = $Estado WHERE id_periferico = $IdPeriferico");
+                        break;
+            Case 4 :    DB::Update("UPDATE guaya SET marca = '$Marca',serial = '$Serial',fecha_ingreso = '$FechaAdquisicion',estado_guaya = $Estado WHERE id_periferico = $IdPeriferico");
+                        break;
+            Case 5 :    DB::Update("UPDATE cargador SET marca = '$Marca',serial = '$Serial',fecha_ingreso = '$FechaAdquisicion',estado_cargador = $Estado WHERE id_periferico = $IdPeriferico");
+                        break;
+        }
+    }
+
+    public static function HistorialP($idPeriferico,$Comentario,$Estado,$creadoPor){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaCreacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+        DB::insert('INSERT INTO historial_inventario (id_periferico,comentario,status_id,user_id,created)
+                    VALUES (?,?,?,?,?)',
+                    [$idPeriferico,$Comentario,$Estado,$creadoPor,$fechaCreacion]);
+    }
+
+    public static function ActualizarPeriferico($TipoPeriferico,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Tamano,$Estado,$creadoPor,$IdPeriferico){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaActualizacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+        if(($Estado === 3) || ($Estado === 4) || ($Estado === 1)){
+            switch($TipoPeriferico){
+                Case 1 :    $BuscarPeriferico = DB::Select("SELECT * FROM pantalla WHERE id_periferico = $IdPeriferico");
+                            if($BuscarPeriferico){
+                                foreach($BuscarPeriferico as $row){
+                                    $IdTPeriferico = $row->id;
+                                }
+                                DB::Update("UPDATE asignados SET id_pantalla = null,update_at = '$fechaActualizacion' WHERE id_pantalla = $IdTPeriferico");
+                            }
+                            break;
+                Case 2 :    $BuscarPeriferico = DB::Select("SELECT * FROM mouse WHERE id_periferico = $IdPeriferico");
+                            if($BuscarPeriferico){
+                                foreach($BuscarPeriferico as $row){
+                                    $IdTPeriferico = $row->id;
+                                }
+                                DB::Update("UPDATE asignados SET id_mouse = null,update_at = '$fechaActualizacion' WHERE id_mouse = $IdTPeriferico");
+                            }
+                            break;
+                Case 3 :    $BuscarPeriferico = DB::Select("SELECT * FROM teclado WHERE id_periferico = $IdPeriferico");
+                            if($BuscarPeriferico){
+                                foreach($BuscarPeriferico as $row){
+                                    $IdTPeriferico = $row->id;
+                                }
+                                DB::Update("UPDATE asignados SET id_teclado = null,update_at = '$fechaActualizacion' WHERE id_teclado = $IdTPeriferico");
+                            }
+                            break;
+                Case 4 :    $BuscarPeriferico = DB::Select("SELECT * FROM guaya WHERE id_periferico = $IdPeriferico");
+                            if($BuscarPeriferico){
+                                foreach($BuscarPeriferico as $row){
+                                    $IdTPeriferico = $row->id;
+                                }
+                                DB::Update("UPDATE asignados SET id_guaya = null,update_at = '$fechaActualizacion' WHERE id_guaya = $IdTPeriferico");
+                            }
+                            break;
+                Case 5 :    $BuscarPeriferico = DB::Select("SELECT * FROM cargador WHERE id_periferico = $IdPeriferico");
+                            if($BuscarPeriferico){
+                                foreach($BuscarPeriferico as $row){
+                                    $IdTPeriferico = $row->id;
+                                }
+                                DB::Update("UPDATE asignados SET id_cargador = null,update_at = '$fechaActualizacion' WHERE id_cargador = $IdTPeriferico");
+                            }
+                            break;
+            }
+        }
+        if(($TipoIngreso === 3) || ($TipoIngreso === 4) || ($TipoIngreso === 2)){
+            $EmpRenting = 'SIN EMPRESA';
+        }else{
+            $EmpRenting = $EmpresaRent;
+        }
+        $ActualizarPeriferico    = DB::Update("UPDATE perifericos SET
+                                                        tipo_periferico     = $TipoPeriferico,
+                                                        tipo_ingreso        = $TipoIngreso,
+                                                        emp_renting         = '$EmpRenting',
+                                                        fecha_ingreso       = '$FechaAdquisicion',
+                                                        serial              = '$Serial',
+                                                        marca               = '$Marca',
+                                                        tamano              = '$Tamano',
+                                                        estado_periferico   = $Estado,
+                                                        updated_at          = '$fechaActualizacion',
+                                                        actualizado_por     = $creadoPor
+                                                        WHERE id = $IdPeriferico");
+        return $ActualizarPeriferico;
+    }
+
+    // CONSUMIBLES
+    public static function ConsumibleStock(){
+        $Stock = DB::Select("SELECT COUNT(*) AS total FROM consumible WHERE estado_consumible = 1");
+        return $Stock;
+    }
+
+    public static function ConsumibleAsigned(){
+        $Asigned = DB::Select("SELECT COUNT(*) AS total FROM consumible WHERE estado_consumible = 2");
+        return $Asigned;
+    }
+
+    public static function ConsumibleMaintenance(){
+        $Maintenance = DB::Select("SELECT COUNT(*) AS total FROM consumible WHERE estado_consumible = 3");
+        return $Maintenance;
+    }
+
+    public static function ConsumibleObsolete(){
+        $Obsolete = DB::Select("SELECT COUNT(*) AS total FROM consumible WHERE estado_consumible = 4");
+        return $Obsolete;
+    }
 
     // ASIGNACIONES
     public static function RegistrarAsignadoEM($TipoEquipo,$idEquipoMovil,$Area,$NombreAsignado,$EstadoEquipo,$creadoPor){

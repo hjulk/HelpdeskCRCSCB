@@ -158,7 +158,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Descripcion Solicitud</label>
+                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Historial Equipo Movil</label>
                             {!! Form::textarea('historial',null,['class'=>'form-control','id'=>'mod_historial','placeholder'=>'Historial del equipo movil','rows'=>'3','readonly']) !!}
                         </div>
                         <div class="col-md-6">

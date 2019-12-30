@@ -98,12 +98,12 @@ class InventarioController extends Controller
                     if (Input::hasFile('evidencia')) {
                         $files = Input::file('evidencia');
                         foreach($files as $file){
-                            $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario';
+                            $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario/equipo_movil';
                             $extension          = $file->getClientOriginalExtension();
                             $name               = $file->getClientOriginalName();
                             $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
                             $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
-                            $filename           = $nombrearchivo.'_Equipo Movil_'.$idEquipoMovil.'.'.$extension;
+                            $filename           = 'Evidencia Equipo Movil No. '.$idEquipoMovil.'.'.$extension;
                             $uploadSuccess      = $file->move($destinationPath, $filename);
                             $archivofoto        = file_get_contents($uploadSuccess);
                             $NombreFoto         = $filename;
@@ -199,12 +199,12 @@ class InventarioController extends Controller
                 if (Input::hasFile('evidencia_upd')) {
                     $files = Input::file('evidencia_upd');
                     foreach($files as $file){
-                        $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario';
+                        $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario/equipo_movil';
                         $extension          = $file->getClientOriginalExtension();
                         $name               = $file->getClientOriginalName();
                         $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
                         $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
-                        $filename           = $nombrearchivo.'_Equipo Movil_'.$idEquipoMovil.'.'.$extension;
+                        $filename           = 'Evidencia Equipo Movil No. '.$idEquipoMovil.'.'.$extension;
                         $uploadSuccess      = $file->move($destinationPath, $filename);
                         $archivofoto        = file_get_contents($uploadSuccess);
                         $NombreFoto         = $filename;
@@ -301,12 +301,12 @@ class InventarioController extends Controller
                     if (Input::hasFile('evidencia')) {
                         $files = Input::file('evidencia');
                         foreach($files as $file){
-                            $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario';
+                            $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario/lineas/';
                             $extension          = $file->getClientOriginalExtension();
                             $name               = $file->getClientOriginalName();
                             $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
                             $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
-                            $filename           = $nombrearchivo.'_Linea Movil_'.$idEquipoMovil.'.'.$extension;
+                            $filename           = 'Evidencia Linea No. '.$idEquipoMovil.'.'.$extension;
                             $uploadSuccess      = $file->move($destinationPath, $filename);
                             $archivofoto        = file_get_contents($uploadSuccess);
                             $NombreFoto         = $filename;
@@ -396,12 +396,12 @@ class InventarioController extends Controller
                 if (Input::hasFile('evidencia_upd')) {
                     $files = Input::file('evidencia_upd');
                     foreach($files as $file){
-                        $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario';
+                        $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario/lineas/';
                         $extension          = $file->getClientOriginalExtension();
                         $name               = $file->getClientOriginalName();
                         $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
                         $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
-                        $filename           = $nombrearchivo.'_Linea Movil_'.$IdLineaMovil.'.'.$extension;
+                        $filename           = 'Evidencia Linea No. '.$IdLineaMovil.'.'.$extension;
                         $uploadSuccess      = $file->move($destinationPath, $filename);
                         $archivofoto        = file_get_contents($uploadSuccess);
                         $NombreFoto         = $filename;
@@ -477,12 +477,12 @@ class InventarioController extends Controller
                     if (Input::hasFile('evidencia')) {
                         $files = Input::file('evidencia');
                         foreach($files as $file){
-                            $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario';
+                            $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario/equipos/';
                             $extension          = $file->getClientOriginalExtension();
                             $name               = $file->getClientOriginalName();
                             $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
                             $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
-                            $filename           = $nombrearchivo.'_Equipo_'.$idEquipo.'.'.$extension;
+                            $filename           = 'Evidencia Equipo No. '.$idEquipo.'.'.$extension;
                             $uploadSuccess      = $file->move($destinationPath, $filename);
                             $archivofoto        = file_get_contents($uploadSuccess);
                             $NombreFoto         = $filename;
@@ -552,12 +552,12 @@ class InventarioController extends Controller
                 if (Input::hasFile('evidencia_upd')) {
                     $files = Input::file('evidencia_upd');
                     foreach($files as $file){
-                        $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario';
+                        $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario/equipos/';
                         $extension          = $file->getClientOriginalExtension();
                         $name               = $file->getClientOriginalName();
                         $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
                         $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
-                        $filename           = $nombrearchivo.'_Equipo_'.$IdEquipo.'.'.$extension;
+                        $filename           = 'Evidencia Equipo No. '.$IdEquipo.'.'.$extension;
                         $uploadSuccess      = $file->move($destinationPath, $filename);
                         $archivofoto        = file_get_contents($uploadSuccess);
                         $NombreFoto         = $filename;
@@ -578,10 +578,185 @@ class InventarioController extends Controller
     }
 
     public function ingresoPeriferico(){
+        $data           = Input::all();
+        $creadoPor      = (int)Session::get('IdUsuario');
+        $buscarUsuario  = Usuarios::BuscarNombre($creadoPor);
+        foreach($buscarUsuario as $value){
+            $Administrador = (int)$value->rol_id;
+        }
+        $url = InventarioController::BuscarURL($Administrador);
+        $reglas = array(
+            'tipo_periferico'   =>  'required',
+            'tipo_ingreso'      =>  'required',
+            'fecha_adquision'   =>  'required',
+            'serial'            =>  'required',
+            'marca'             =>  'required'
+        );
+        $validador = Validator::make($data, $reglas);
+        $messages = $validador->messages();
+        foreach ($reglas as $key => $value){
+            $verrors[$key] = $messages->first($key);
+        }
+        if($validador->passes()) {
+            $TipoPeriferico     = (int)Input::get('tipo_periferico');
+            $TipoIngreso        = (int)Input::get('tipo_ingreso');
+            if(Input::get('emp_renting')){
+                $EmpresaRent    = Input::get('emp_renting');
+            }else{
+                $EmpresaRent    = 'SIN EMPRESA';
+            }
+            $FechaAdquisicion   = date('Y-m-d H:i:s', strtotime(Input::get('fecha_adquision')));
+            $Serial             = Input::get('serial');
+            $Marca              = Input::get('marca');
+            $Tamano             = Input::get('tamano');
+            $Estado             = (int)Input::get('estado');
 
+            $CrearPeriferico    = Inventario::CrearPeriferico($TipoPeriferico,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Tamano,$Estado,$creadoPor);
+            if($CrearPeriferico){
+                $BuscarUltimo = Inventario::BuscarLastPeriferico($creadoPor);
+                    foreach($BuscarUltimo as $row){
+                        $idPeriferico = $row->id;
+                    }
+                    switch($TipoPeriferico){
+                        Case 1 :    $Carpeta    = 'pantallas/';
+                                    $evidencia  = 'Pantalla';
+                                    break;
+                        Case 2 :    $Carpeta    = 'mouse/';
+                                    $evidencia  = 'Mouse';
+                                    break;
+                        Case 3 :    $Carpeta    = 'teclados/';
+                                    $evidencia  = 'Teclado';
+                                    break;
+                        Case 4 :    $Carpeta    = 'guaya/';
+                                    $evidencia  = 'Guaya';
+                                    break;
+                        Case 5 :    $Carpeta    = 'cargador/';
+                                    $evidencia  = 'Cargador';
+                                    break;
+                    }
+                    Inventario::InsertarPeriferico($TipoPeriferico,$Serial,$Marca,$Tamano,$Estado,$FechaAdquisicion,$idPeriferico);
+                    $destinationPath = null;
+                    $filename        = null;
+                    if (Input::hasFile('evidencia')) {
+                        $files = Input::file('evidencia');
+                        foreach($files as $file){
+                            $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario/'.$Carpeta;
+                            $extension          = $file->getClientOriginalExtension();
+                            $name               = $file->getClientOriginalName();
+                            $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
+                            $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
+                            $filename           = 'Evidencia '.$evidencia.' No. '.$idPeriferico.'.'.$extension;
+                            $uploadSuccess      = $file->move($destinationPath, $filename);
+                            $archivofoto        = file_get_contents($uploadSuccess);
+                            $NombreFoto         = $filename;
+                            $actualizarEvidencia = Inventario::EvidenciaIP($idPeriferico,$NombreFoto);
+                        }
+                    }
+                    $Comentario = 'Ingreso de '.$evidencia.' Nro. '.$idPeriferico.' en el sistema';
+                    Inventario::HistorialP($idPeriferico,$Comentario,$Estado,$creadoPor);
+                    $verrors = 'Se ingreso satisfactoriamente el/la '.$evidencia.' No. de Activo '.$idPeriferico;
+                    return redirect($url.'/periferic')->with('mensaje', $verrors);
+            }else{
+                $verrors = array();
+                array_push($verrors, 'Hubo un problema al ingresar el/la '.$evidencia);
+                return Redirect::to($url.'/periferic')->withErrors(['errors' => $verrors])->withInput();
+            }
+        }else{
+            return Redirect::to($url.'/periferic')->withErrors(['errors' => $verrors])->withInput();
+        }
     }
 
     public function actualizacionPeriferico(){
+        $data           = Input::all();
+        $creadoPor      = (int)Session::get('IdUsuario');
+        $buscarUsuario  = Usuarios::BuscarNombre($creadoPor);
+        foreach($buscarUsuario as $value){
+            $Administrador = (int)$value->rol_id;
+        }
+        $url = InventarioController::BuscarURL($Administrador);
+        $reglas = array(
+            'tipo_periferico_upd'   =>  'required',
+            'tipo_ingreso_upd'      =>  'required',
+            'fecha_adquision_upd'   =>  'required',
+            'serial_upd'            =>  'required',
+            'marca_upd'             =>  'required'
+        );
+        $validador = Validator::make($data, $reglas);
+        $messages = $validador->messages();
+        foreach ($reglas as $key => $value){
+            $verrors[$key] = $messages->first($key);
+        }
+        if($validador->passes()) {
+            $TipoPeriferico     = (int)Input::get('tipo_periferico_upd');
+            $TipoIngreso        = (int)Input::get('tipo_ingreso_upd');
+            if(Input::get('emp_renting_upd')){
+                $EmpresaRent    = Input::get('emp_renting_upd');
+            }else{
+                $EmpresaRent    = 'SIN EMPRESA';
+            }
+            $FechaAdquisicion   = date('Y-m-d H:i:s', strtotime(Input::get('fecha_adquision_upd')));
+            $Serial             = Input::get('serial_upd');
+            $Marca              = Input::get('marca_upd');
+            $Tamano             = Input::get('tamano_upd');
+            $Estado             = (int)Input::get('estado_upd');
+            $Comentario         = Input::get('comentario');
+            $IdPeriferico       = (int)Input::get('idP');
 
+            $ActualizarPeriferico = Inventario::ActualizarPeriferico($TipoPeriferico,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Tamano,$Estado,$creadoPor,$IdPeriferico);
+
+            if($ActualizarPeriferico){
+                switch($TipoPeriferico){
+                    Case 1 :    $Carpeta    = 'pantallas/';
+                                $evidencia  = 'Pantalla';
+                                break;
+                    Case 2 :    $Carpeta    = 'mouse/';
+                                $evidencia  = 'Mouse';
+                                break;
+                    Case 3 :    $Carpeta    = 'teclados/';
+                                $evidencia  = 'Teclado';
+                                break;
+                    Case 4 :    $Carpeta    = 'guaya/';
+                                $evidencia  = 'Guaya';
+                                break;
+                    Case 5 :    $Carpeta    = 'cargador/';
+                                $evidencia  = 'Cargador';
+                                break;
+                }
+                Inventario::ActualizarTPeriferico($TipoPeriferico,$Serial,$Marca,$Tamano,$Estado,$FechaAdquisicion,$IdPeriferico);
+                $destinationPath = null;
+                $filename        = null;
+                if (Input::hasFile('evidencia_upd')) {
+                    $files = Input::file('evidencia_upd');
+                    foreach($files as $file){
+                        $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario/'.$Carpeta;
+                        $extension          = $file->getClientOriginalExtension();
+                        $name               = $file->getClientOriginalName();
+                        $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
+                        $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
+                        $filename           = 'Evidencia '.$evidencia.' No. '.$IdPeriferico.'.'.$extension;
+                        $uploadSuccess      = $file->move($destinationPath, $filename);
+                        $archivofoto        = file_get_contents($uploadSuccess);
+                        $NombreFoto         = $filename;
+                        $actualizarEvidencia = Inventario::EvidenciaIP($IdPeriferico,$NombreFoto);
+                    }
+                }
+                Inventario::HistorialP($IdPeriferico,$Comentario,$Estado,$creadoPor);
+                $verrors = 'Se actualizo satisfactoriamente el/la '.$evidencia.' No. de Activo '.$IdPeriferico;
+                return redirect($url.'/periferic')->with('mensaje', $verrors);
+            }else{
+                $verrors = array();
+                array_push($verrors, 'Hubo un problema al actualizar el/la '.$evidencia);
+                return Redirect::to($url.'/periferic')->withErrors(['errors' => $verrors])->withInput();
+            }
+
+        }else{
+            return Redirect::to($url.'/periferic')->withErrors(['errors' => $verrors])->withInput();
+        }
+    }
+
+    public function ingresarConsumible(){
+    }
+
+    public function actualizarConsumible(){
     }
 }

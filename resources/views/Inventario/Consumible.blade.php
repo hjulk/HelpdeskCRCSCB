@@ -1,16 +1,16 @@
 @extends("Template.layout")
 
 @section('titulo')
-Periféricos
+Consumibles
 @endsection
 
 @section('contenido')
 
 <section class="content-header">
-    <h1><i class="fa fa-keyboard-o"></i>&nbsp;Periféricos</h1>
+    <h1><i class="fa fa-tint"></i>&nbsp;Consumibles</h1>
     <ol class="breadcrumb">
         <li><a href="dashboard"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li>Periféricos</a></li>
+        <li>Consumibles</a></li>
         <li class="active">Dashboard</li>
     </ol>
 </section>
@@ -58,7 +58,7 @@ Periféricos
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#modal-perifericos"><i class="fa fa-plus-circle"></i>&nbsp;Ingresar Periférico</button>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#modal-consumible"><i class="fa fa-plus-circle"></i>&nbsp;Ingresar Consumible</button>
                         <br>
                         <br>
                     </div>
@@ -81,7 +81,7 @@ Periféricos
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($Perifericos as $value)
+                                {{--  @foreach($Perifericos as $value)
                                     <tr>
                                         <td>{{$value['id']}}</td>
                                         <td>{{$value['tipoPeriferico']}}</td>
@@ -105,7 +105,7 @@ Periféricos
                                         <input type="hidden" value="{{$value['evidencia']}}" id="evidencia{{$value['id']}}">
                                         <input type="hidden" value="{{$value['historial']}}" id="historial{{$value['id']}}">
                                     </tr>
-                                @endforeach
+                                @endforeach  --}}
                             </tbody>
                         </table>
                     </div>
@@ -114,7 +114,7 @@ Periféricos
         </div>
     </div>
 </section>
-@include('Modals.ModalPerifericos')
+{{--  @include('Modals.ModalConsumibles')  --}}
 @endsection
 @section('scripts')
     <script src="{{asset("assets/dist/js/inventario.js")}}"></script>

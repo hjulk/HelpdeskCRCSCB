@@ -90,7 +90,7 @@ class InventarioController extends Controller
             if($contadorEvidencia > 0){
                 $contE = 1;
                 foreach($evidenciaTicket as $row){
-                    $EquiposMoviles[$contEM]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-file-archive-o'></i>&nbsp; Anexo Equipo Movil  $IdEquipoMovil Nro. ".$contE."</a></p>";
+                    $EquiposMoviles[$contEM]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/equipo_movil/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-file-archive-o'></i>&nbsp; Anexo Equipo Movil $IdEquipoMovil Nro. ".$contE."</a></p>";
                     $contE++;
                 }
             }else{
@@ -220,7 +220,7 @@ class InventarioController extends Controller
             if($contadorEvidencia > 0){
                 $contE = 1;
                 foreach($evidenciaTicket as $row){
-                    $LineasMoviles[$contLM]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-file-archive-o'></i>&nbsp; Anexo Linea Movil  $IdLineaMovil Nro. ".$contE."</a></p>";
+                    $LineasMoviles[$contLM]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/lineas/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-file-archive-o'></i>&nbsp; Anexo Linea Movil $IdLineaMovil Nro. ".$contE."</a></p>";
                     $contE++;
                 }
             }else{
@@ -347,7 +347,7 @@ class InventarioController extends Controller
             if($contadorEvidencia > 0){
                 $contE = 1;
                 foreach($evidenciaTicket as $row){
-                    $Equipos[$contD]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-file-archive-o'></i>&nbsp; Anexo Linea Movil  $IdEquipo Nro. ".$contE."</a></p>";
+                    $Equipos[$contD]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/equipos/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-file-archive-o'></i>&nbsp; Anexo Equipo $IdEquipo Nro. ".$contE."</a></p>";
                     $contE++;
                 }
             }else{
@@ -417,7 +417,138 @@ class InventarioController extends Controller
         foreach($LineasObsoletos as $row){
             $TotalObsoletos = (int)$row->total;
         }
-        return view('Inventario.Periferic',['Stock' => $TotalStock,'Asignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos]);
+
+        $ListarPerifericos = Inventario::ListarPerifericos();
+        $Perifericos = array();
+        $cont = 0;
+        foreach($ListarPerifericos as $value){
+
+            $IdPeriferico                           = (int)$value->id;
+            $Perifericos[$cont]['id']               = (int)$value->id;
+            $Perifericos[$cont]['tipo_periferico']  = (int)$value->tipo_periferico;
+            $IdTipoPeriferico                       = (int)$value->tipo_periferico;
+            $TipoPeriferico                         = Inventario::ListarTipoPerifericoID($IdTipoPeriferico);
+            foreach($TipoPeriferico as $row){
+                $Perifericos[$cont]['tipoPeriferico'] = $row->name;
+            }
+            $Perifericos[$cont]['tipo_ingreso']     = (int)$value->tipo_ingreso;
+            $IdTipoIngreso                          = (int)$value->tipo_ingreso;
+            $TipoIngreso                            = Inventario::BuscarTipoIngresoId($IdTipoIngreso);
+            foreach($TipoIngreso as $row){
+                $Perifericos[$cont]['tipoIngreso'] = $row->name;
+            }
+            $Perifericos[$cont]['emp_renting']      = $value->emp_renting;
+            $Perifericos[$cont]['fecha_ingreso']    = date('d/m/Y', strtotime($value->fecha_ingreso));
+            $Perifericos[$cont]['serial']           = $value->serial;
+            $Perifericos[$cont]['marca']            = $value->marca;
+            $Perifericos[$cont]['tamano']           = $value->tamano;
+            $Perifericos[$cont]['estado_periferico']= (int)$value->estado_periferico;
+            $IdEstadoEquipo = (int)$value->estado_periferico;
+            $EstadoEquipo   = Inventario::EstadoEquipoId($IdEstadoEquipo);
+            foreach($EstadoEquipo as $row){
+                switch($IdEstadoEquipo){
+                    Case 1  :   $Perifericos[$cont]['estado']  = $row->name;
+                                $Perifericos[$cont]['label']   = 'label label-primary';
+                                break;
+                    Case 2  :   $Perifericos[$cont]['estado']  = $row->name;
+                                $Perifericos[$cont]['label']   = 'label label-success';
+                                break;
+                    Case 3  :   $Perifericos[$cont]['estado']  = $row->name;
+                                $Perifericos[$cont]['label']   = 'label label-danger';
+                                break;
+                    Case 4  :   $Perifericos[$cont]['estado']  = $row->name;
+                                $Perifericos[$cont]['label']   = 'label label-warning';
+                                break;
+                }
+            }
+
+            $Perifericos[$cont]['evidencia']    = null;
+            $evidenciaTicket = Inventario::EvidenciaPeriferico($IdPeriferico);
+            $contadorEvidencia = count($evidenciaTicket);
+            if($contadorEvidencia > 0){
+                $contE = 1;
+                switch($IdTipoPeriferico){
+                    Case 1 :    $Carpeta = 'pantallas/';
+                                break;
+                    Case 2 :    $Carpeta = 'mouse/';
+                                break;
+                    Case 3 :    $Carpeta = 'teclados/';
+                                break;
+                    Case 4 :    $Carpeta = 'guaya/';
+                                break;
+                    Case 5 :    $Carpeta = 'cargador/';
+                                break;
+                }
+                foreach($evidenciaTicket as $row){
+                    $Perifericos[$cont]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/$Carpeta".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-file-archive-o'></i>&nbsp; Anexo Periferico $IdPeriferico Nro. ".$contE."</a></p>";
+                    $contE++;
+                }
+            }else{
+                $Perifericos[$cont]['evidencia'] = null;
+            }
+
+            $historialEquipoM = Inventario::BuscarHistorialP($IdPeriferico);
+            $contadorHistorial = count($historialEquipoM);
+            $Perifericos[$cont]['historial'] = null;
+            if($contadorHistorial > 0){
+                foreach($historialEquipoM as $row){
+                    $idUsuario  = $row->user_id;
+                    $BuscarUsuario = Usuarios::BuscarNombre($idUsuario);
+                    foreach($BuscarUsuario as $values){
+                        $NombreUser = $values->name;
+                    }
+                    $Perifericos[$cont]['historial'] .= "- ".$row->comentario." (".$NombreUser." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
+                }
+            }else{
+                $Perifericos[$cont]['historial'] = null;
+            }
+
+            $cont++;
+        }
+
+        $ListarTipoPeriferico = Inventario::ListarTipoPeriferico();
+        $TipoPeriferico  = array();
+        $TipoPeriferico[''] = 'Seleccione: ';
+        foreach ($ListarTipoPeriferico as $row){
+            $TipoPeriferico[$row->id] = $row->name;
+        }
+
+        $ListaTipoIngreso = Inventario::ListarTipoIngreso();
+        $TipoIngreso  = array();
+        $TipoIngreso[''] = 'Seleccione: ';
+        foreach ($ListaTipoIngreso as $row){
+            $TipoIngreso[$row->id] = $row->name;
+        }
+
+        $ListarEstado = Inventario::ListarEstadoEquipos();
+        $EstadoEquipo  = array();
+        $EstadoEquipo[''] = 'Seleccione: ';
+        foreach ($ListarEstado as $row){
+            $EstadoEquipo[$row->id] = $row->name;
+        }
+        return view('Inventario.Periferic',['Stock' => $TotalStock,'Asignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos,
+                                            'Perifericos' => $Perifericos,'TipoPeriferico' => $TipoPeriferico,'TipoIngreso' => $TipoIngreso,'EstadoEquipo' =>$EstadoEquipo,
+                                            'Renting' => null,'FechaAdquisicion' => null,'Serial' => null,'Marca' => null,'Tamano' => null]);
+    }
+
+    public function consumible(){
+        $LineasStock = Inventario::ConsumibleStock();
+        foreach($LineasStock as $row){
+            $TotalStock = (int)$row->total;
+        }
+        $LineasAsignados = Inventario::ConsumibleAsigned();
+        foreach($LineasAsignados as $row){
+            $TotalAsignados = (int)$row->total;
+        }
+        $LineasMantenimiento = Inventario::ConsumibleMaintenance();
+        foreach($LineasMantenimiento as $row){
+            $TotalMantenimiento = (int)$row->total;
+        }
+        $LineasObsoletos = Inventario::ConsumibleObsolete();
+        foreach($LineasObsoletos as $row){
+            $TotalObsoletos = (int)$row->total;
+        }
+        return view('Inventario.Consumible',['Stock' => $TotalStock,'Asignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos]);
     }
 
 }
