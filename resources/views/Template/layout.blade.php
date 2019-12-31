@@ -92,6 +92,9 @@
         <script src="{{asset("assets/Highcharts/code/highcharts-3d.js")}}" type="text/javascript"></script>
         <script src="{{asset("assets/Highcharts/code/modules/exporting.js")}}" type="text/javascript"></script>
         <script src="{{asset("assets/Highcharts/code/modules/export-data.js")}}" type="text/javascript"></script>
+        <script src="{{asset("assets/plugins/input-mask/jquery.inputmask.js")}}"></script>
+        <script src="{{asset("assets/plugins/input-mask/jquery.inputmask.date.extensions.js")}}"></script>
+        <script src="{{asset("assets/plugins/input-mask/jquery.inputmask.extensions.js")}}"></script>
         @yield("scripts")
 
     </body>

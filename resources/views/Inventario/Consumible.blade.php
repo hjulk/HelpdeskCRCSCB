@@ -65,7 +65,7 @@ Consumibles
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <table id="equipos" class="display responsive hover" style="width: 100%;">
+                        <table id="consumible" class="display responsive hover" style="width: 100%;">
                             <thead style="background: linear-gradient(60deg,rgba(51,101,155,1),rgba(66,132,206,1));color: #ECF0F1;font-size:12px;text-align: center;">
                                 <tr>
                                     <th style="text-align: center;">Nro. Activo</th>

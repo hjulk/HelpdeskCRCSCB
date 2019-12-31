@@ -164,6 +164,10 @@ return array(
         'compa_ref'             =>  'Compatibilidad Referencia',
         'compa_ref_upd'         =>  'Compatibilidad Referencia',
         'compa_mod'             =>  'Compatibilidad Modelo',
-        'compa_ref_upd'         =>  'Compatibilidad Modelo'
+        'compa_ref_upd'         =>  'Compatibilidad Modelo',
+        'tipo_impresora'        =>  'Tipo de Impresora',
+        'tipo_impresora_upd'    =>  'Tipo de Impresora',
+        'id_consumible'         =>  'Consumible',
+        'id_consumible_upd'     =>  'Consumible'
     ),
 );

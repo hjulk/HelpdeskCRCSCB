@@ -435,7 +435,8 @@ class InventarioController extends Controller
             'tipo_ingreso'      =>  'required',
             'fecha_adquision'   =>  'required',
             'serial'            =>  'required',
-            'marca'             =>  'required'
+            'marca'             =>  'required',
+            'estado'            =>  'required'
         );
         $validador = Validator::make($data, $reglas);
         $messages = $validador->messages();
@@ -518,7 +519,8 @@ class InventarioController extends Controller
             'fecha_adquision_upd'   =>  'required',
             'serial_upd'            =>  'required',
             'marca_upd'             =>  'required',
-            'comentario'            =>  'required'
+            'comentario'            =>  'required',
+            'estado_upd'            =>  'required'
         );
         $validador = Validator::make($data, $reglas);
         $messages = $validador->messages();
@@ -590,7 +592,8 @@ class InventarioController extends Controller
             'tipo_ingreso'      =>  'required',
             'fecha_adquision'   =>  'required',
             'serial'            =>  'required',
-            'marca'             =>  'required'
+            'marca'             =>  'required',
+            'estado'            =>  'required'
         );
         $validador = Validator::make($data, $reglas);
         $messages = $validador->messages();
@@ -610,56 +613,63 @@ class InventarioController extends Controller
             $Marca              = Input::get('marca');
             $Tamano             = Input::get('tamano');
             $Estado             = (int)Input::get('estado');
-
-            $CrearPeriferico    = Inventario::CrearPeriferico($TipoPeriferico,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Tamano,$Estado,$creadoPor);
-            if($CrearPeriferico){
-                $BuscarUltimo = Inventario::BuscarLastPeriferico($creadoPor);
-                    foreach($BuscarUltimo as $row){
-                        $idPeriferico = $row->id;
-                    }
-                    switch($TipoPeriferico){
-                        Case 1 :    $Carpeta    = 'pantallas/';
-                                    $evidencia  = 'Pantalla';
-                                    break;
-                        Case 2 :    $Carpeta    = 'mouse/';
-                                    $evidencia  = 'Mouse';
-                                    break;
-                        Case 3 :    $Carpeta    = 'teclados/';
-                                    $evidencia  = 'Teclado';
-                                    break;
-                        Case 4 :    $Carpeta    = 'guaya/';
-                                    $evidencia  = 'Guaya';
-                                    break;
-                        Case 5 :    $Carpeta    = 'cargador/';
-                                    $evidencia  = 'Cargador';
-                                    break;
-                    }
-                    Inventario::InsertarPeriferico($TipoPeriferico,$Serial,$Marca,$Tamano,$Estado,$FechaAdquisicion,$idPeriferico);
-                    $destinationPath = null;
-                    $filename        = null;
-                    if (Input::hasFile('evidencia')) {
-                        $files = Input::file('evidencia');
-                        foreach($files as $file){
-                            $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario/'.$Carpeta;
-                            $extension          = $file->getClientOriginalExtension();
-                            $name               = $file->getClientOriginalName();
-                            $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
-                            $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
-                            $filename           = 'Evidencia '.$evidencia.' No. '.$idPeriferico.'.'.$extension;
-                            $uploadSuccess      = $file->move($destinationPath, $filename);
-                            $archivofoto        = file_get_contents($uploadSuccess);
-                            $NombreFoto         = $filename;
-                            $actualizarEvidencia = Inventario::EvidenciaIP($idPeriferico,$NombreFoto);
-                        }
-                    }
-                    $Comentario = 'Ingreso de '.$evidencia.' Nro. '.$idPeriferico.' en el sistema';
-                    Inventario::HistorialP($idPeriferico,$Comentario,$Estado,$creadoPor);
-                    $verrors = 'Se ingreso satisfactoriamente el/la '.$evidencia.' No. de Activo '.$idPeriferico;
-                    return redirect($url.'/periferic')->with('mensaje', $verrors);
-            }else{
+            $BuscarSerial       = Inventario::BuscarSerialEquipo($Serial);
+            $TotalBusqueda      = (int)count($BuscarSerial);
+            if($TotalBusqueda > 0){
                 $verrors = array();
-                array_push($verrors, 'Hubo un problema al ingresar el/la '.$evidencia);
+                array_push($verrors, 'Ya existe un periferico con el serial '.$Serial);
                 return Redirect::to($url.'/periferic')->withErrors(['errors' => $verrors])->withInput();
+            }else{
+                $CrearPeriferico    = Inventario::CrearPeriferico($TipoPeriferico,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Tamano,$Estado,$creadoPor);
+                if($CrearPeriferico){
+                    $BuscarUltimo = Inventario::BuscarLastPeriferico($creadoPor);
+                        foreach($BuscarUltimo as $row){
+                            $idPeriferico = $row->id;
+                        }
+                        switch($TipoPeriferico){
+                            Case 1 :    $Carpeta    = 'pantallas/';
+                                        $evidencia  = 'Pantalla';
+                                        break;
+                            Case 2 :    $Carpeta    = 'mouse/';
+                                        $evidencia  = 'Mouse';
+                                        break;
+                            Case 3 :    $Carpeta    = 'teclados/';
+                                        $evidencia  = 'Teclado';
+                                        break;
+                            Case 4 :    $Carpeta    = 'guaya/';
+                                        $evidencia  = 'Guaya';
+                                        break;
+                            Case 5 :    $Carpeta    = 'cargador/';
+                                        $evidencia  = 'Cargador';
+                                        break;
+                        }
+                        Inventario::InsertarPeriferico($TipoPeriferico,$Serial,$Marca,$Tamano,$Estado,$FechaAdquisicion,$idPeriferico);
+                        $destinationPath = null;
+                        $filename        = null;
+                        if (Input::hasFile('evidencia')) {
+                            $files = Input::file('evidencia');
+                            foreach($files as $file){
+                                $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario/'.$Carpeta;
+                                $extension          = $file->getClientOriginalExtension();
+                                $name               = $file->getClientOriginalName();
+                                $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
+                                $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
+                                $filename           = 'Evidencia '.$evidencia.' No. '.$idPeriferico.'.'.$extension;
+                                $uploadSuccess      = $file->move($destinationPath, $filename);
+                                $archivofoto        = file_get_contents($uploadSuccess);
+                                $NombreFoto         = $filename;
+                                $actualizarEvidencia = Inventario::EvidenciaIP($idPeriferico,$NombreFoto);
+                            }
+                        }
+                        $Comentario = 'Ingreso de '.$evidencia.' Nro. '.$idPeriferico.' en el sistema';
+                        Inventario::HistorialP($idPeriferico,$Comentario,$Estado,$creadoPor);
+                        $verrors = 'Se ingreso satisfactoriamente el/la '.$evidencia.' No. de Activo '.$idPeriferico;
+                        return redirect($url.'/periferic')->with('mensaje', $verrors);
+                }else{
+                    $verrors = array();
+                    array_push($verrors, 'Hubo un problema al ingresar el/la '.$evidencia);
+                    return Redirect::to($url.'/periferic')->withErrors(['errors' => $verrors])->withInput();
+                }
             }
         }else{
             return Redirect::to($url.'/periferic')->withErrors(['errors' => $verrors])->withInput();
@@ -679,7 +689,9 @@ class InventarioController extends Controller
             'tipo_ingreso_upd'      =>  'required',
             'fecha_adquision_upd'   =>  'required',
             'serial_upd'            =>  'required',
-            'marca_upd'             =>  'required'
+            'marca_upd'             =>  'required',
+            'estado_upd'            =>  'reduired',
+            'comentario'            =>  'required'
         );
         $validador = Validator::make($data, $reglas);
         $messages = $validador->messages();
@@ -767,7 +779,8 @@ class InventarioController extends Controller
             'tipo_ingreso'      =>  'required',
             'fecha_adquision'   =>  'required',
             'serial'            =>  'required',
-            'marca'             =>  'required'
+            'marca'             =>  'required',
+            'estado'            =>  'required'
         );
         $validador = Validator::make($data, $reglas);
         $messages = $validador->messages();
@@ -789,38 +802,45 @@ class InventarioController extends Controller
             $CompaRef           = Input::get('compa_ref');
             $CompaMod           = Input::get('compa_ref');
             $Estado             = (int)Input::get('estado');
-
-            $CrearConsumible = Inventario::CrearConsumible($TipoConsumible,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Modelo,$CompaRef,$CompaMod,$Estado,$creadoPor);
-            if($CrearConsumible){
-                $BuscarUltimo = Inventario::BuscarLastConsumible($creadoPor);
-                foreach($BuscarUltimo as $row){
-                    $idConsumible = $row->id;
-                }
-                $destinationPath = null;
-                $filename        = null;
-                if (Input::hasFile('evidencia')) {
-                    $files = Input::file('evidencia');
-                    foreach($files as $file){
-                        $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario/consumibles/';
-                        $extension          = $file->getClientOriginalExtension();
-                        $name               = $file->getClientOriginalName();
-                        $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
-                        $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
-                        $filename           = 'Evidencia Consumible No. '.$idConsumible.'.'.$extension;
-                        $uploadSuccess      = $file->move($destinationPath, $filename);
-                        $archivofoto        = file_get_contents($uploadSuccess);
-                        $NombreFoto         = $filename;
-                        $actualizarEvidencia = Inventario::EvidenciaIC($idConsumible,$NombreFoto);
-                    }
-                }
-                $Comentario = 'Ingreso de Consumible Nro. '.$idConsumible.' en el sistema';
-                Inventario::HistorialC($idConsumible,$Comentario,$Estado,$creadoPor);
-                $verrors = 'Se ingreso satisfactoriamente el consumible No. de Activo '.$idConsumible;
-                return redirect($url.'/consumible')->with('mensaje', $verrors);
-            }else{
+            $BuscarSerial       = Inventario::BuscarSerialConsumible($Serial);
+            $TotalBusqueda      = (int)count($BuscarSerial);
+            if($TotalBusqueda > 0){
                 $verrors = array();
-                array_push($verrors, 'Hubo un problema al crear el Consumible');
+                array_push($verrors, 'Ya existe un consumible con el serial '.$Serial);
                 return Redirect::to($url.'/consumible')->withErrors(['errors' => $verrors])->withInput();
+            }else{
+                $CrearConsumible = Inventario::CrearConsumible($TipoConsumible,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Modelo,$CompaRef,$CompaMod,$Estado,$creadoPor);
+                if($CrearConsumible){
+                    $BuscarUltimo = Inventario::BuscarLastConsumible($creadoPor);
+                    foreach($BuscarUltimo as $row){
+                        $idConsumible = $row->id;
+                    }
+                    $destinationPath = null;
+                    $filename        = null;
+                    if (Input::hasFile('evidencia')) {
+                        $files = Input::file('evidencia');
+                        foreach($files as $file){
+                            $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario/consumibles/';
+                            $extension          = $file->getClientOriginalExtension();
+                            $name               = $file->getClientOriginalName();
+                            $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
+                            $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
+                            $filename           = 'Evidencia Consumible No. '.$idConsumible.'.'.$extension;
+                            $uploadSuccess      = $file->move($destinationPath, $filename);
+                            $archivofoto        = file_get_contents($uploadSuccess);
+                            $NombreFoto         = $filename;
+                            $actualizarEvidencia = Inventario::EvidenciaIC($idConsumible,$NombreFoto);
+                        }
+                    }
+                    $Comentario = 'Ingreso de Consumible Nro. '.$idConsumible.' en el sistema';
+                    Inventario::HistorialC($idConsumible,$Comentario,$Estado,$creadoPor);
+                    $verrors = 'Se ingreso satisfactoriamente el consumible No. de Activo '.$idConsumible;
+                    return redirect($url.'/consumible')->with('mensaje', $verrors);
+                }else{
+                    $verrors = array();
+                    array_push($verrors, 'Hubo un problema al crear el Consumible');
+                    return Redirect::to($url.'/consumible')->withErrors(['errors' => $verrors])->withInput();
+                }
             }
         }else{
             return Redirect::to($url.'/consumible')->withErrors(['errors' => $verrors])->withInput();
@@ -840,7 +860,9 @@ class InventarioController extends Controller
             'tipo_ingreso_upd'      =>  'required',
             'fecha_adquision_upd'   =>  'required',
             'serial_upd'            =>  'required',
-            'marca_upd'             =>  'required'
+            'marca_upd'             =>  'required',
+            'estado_upd'            =>  'required',
+            'comentario'            =>  'required'
         );
         $validador = Validator::make($data, $reglas);
         $messages = $validador->messages();
@@ -894,5 +916,89 @@ class InventarioController extends Controller
         }else{
             return Redirect::to($url.'/consumible')->withErrors(['errors' => $verrors])->withInput();
         }
+    }
+
+    public function ingresarImpresora(){
+        $data           = Input::all();
+        $creadoPor      = (int)Session::get('IdUsuario');
+        $buscarUsuario  = Usuarios::BuscarNombre($creadoPor);
+        foreach($buscarUsuario as $value){
+            $Administrador = (int)$value->rol_id;
+        }
+        $url = InventarioController::BuscarURL($Administrador);
+        $reglas = array(
+            'tipo_impresora'    =>  'required',
+            'tipo_ingreso'      =>  'required',
+            'fecha_adquision'   =>  'required',
+            'serial'            =>  'required',
+            'marca'             =>  'required',
+            'estado'            =>  'required'
+        );
+        $validador = Validator::make($data, $reglas);
+        $messages = $validador->messages();
+        foreach ($reglas as $key => $value){
+            $verrors[$key] = $messages->first($key);
+        }
+        if($validador->passes()) {
+            $TipoImpresora      = Input::get('tipo_impresora');
+            $TipoIngreso        = (int)Input::get('tipo_ingreso');
+            if(Input::get('emp_renting')){
+                $EmpresaRent    = Input::get('emp_renting');
+            }else{
+                $EmpresaRent    = 'SIN EMPRESA';
+            }
+            $FechaAdquisicion   = date('Y-m-d H:i:s', strtotime(Input::get('fecha_adquision')));
+            $Serial             = Input::get('serial');
+            $Marca              = Input::get('marca');
+            $Ip                 = Input::get('ip');
+            $IdConsumible       = (int)Input::get('id_consumible');
+            $Estado             = (int)Input::get('estado');
+            $BuscarSerial       = Inventario::BuscarSerialImpresora($Serial);
+            $TotalBusqueda      = (int)count($BuscarSerial);
+            if($TotalBusqueda > 0){
+                $verrors = array();
+                array_push($verrors, 'Ya existe una impresora con el serial '.$Serial);
+                return Redirect::to($url.'/printers')->withErrors(['errors' => $verrors])->withInput();
+            }else{
+                $CrearImpresora = Inventario::CrearImpresora($TipoImpresora,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Ip,$IdConsumible,$Estado,$creadoPor);
+                if($CrearImpresora){
+                    $BuscarUltimo = Inventario::BuscarLastImpresora($creadoPor);
+                    foreach($BuscarUltimo as $row){
+                        $idImpresora = $row->id;
+                    }
+                    $destinationPath = null;
+                    $filename        = null;
+                    if (Input::hasFile('evidencia')) {
+                        $files = Input::file('evidencia');
+                        foreach($files as $file){
+                            $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario/impresoras/';
+                            $extension          = $file->getClientOriginalExtension();
+                            $name               = $file->getClientOriginalName();
+                            $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
+                            $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
+                            $filename           = 'Evidencia Impresora No. '.$idImpresora.'.'.$extension;
+                            $uploadSuccess      = $file->move($destinationPath, $filename);
+                            $archivofoto        = file_get_contents($uploadSuccess);
+                            $NombreFoto         = $filename;
+                            $actualizarEvidencia = Inventario::EvidenciaI($idImpresora,$NombreFoto);
+                        }
+                    }
+                    $Comentario = 'Ingreso de Impresora Nro. '.$idImpresora.' en el sistema';
+                    Inventario::HistorialI($idImpresora,$Comentario,$Estado,$creadoPor);
+                    $verrors = 'Se ingreso satisfactoriamente la impresora No. de Activo '.$idImpresora;
+                    return redirect($url.'/printers')->with('mensaje', $verrors);
+                }else{
+                    $verrors = array();
+                    array_push($verrors, 'Hubo un problema al ingresar la impresora');
+                    return Redirect::to($url.'/printers')->withErrors(['errors' => $verrors])->withInput();
+                }
+            }
+        }else{
+            return Redirect::to($url.'/printers')->withErrors(['errors' => $verrors])->withInput();
+        }
+    }
+
+    public function actualizarImpresora(){
+
     }
 }

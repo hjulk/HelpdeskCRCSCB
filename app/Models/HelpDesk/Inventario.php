@@ -575,6 +575,11 @@ class Inventario extends Model
         return $BuscarLastEquipo;
     }
 
+    public static function BuscarSerialPeriferico($Serial){
+        $BuscarSerialEquipo = DB::Select("SELECT * FROM perifericos WHERE serial LIKE '%$Serial%'");
+        return $BuscarSerialEquipo;
+    }
+
     // CONSUMIBLES
     public static function ConsumibleStock(){
         $Stock = DB::Select("SELECT COUNT(*) AS total FROM consumible WHERE estado_consumible = 1");
@@ -679,6 +684,11 @@ class Inventario extends Model
         return $ActualizarConsumible;
     }
 
+    public static function BuscarSerialConsumible($Serial){
+        $BuscarSerialEquipo = DB::Select("SELECT * FROM consumible WHERE serial LIKE '%$Serial%'");
+        return $BuscarSerialEquipo;
+    }
+
     // ASIGNACIONES
     public static function RegistrarAsignadoEM($TipoEquipo,$idEquipoMovil,$Area,$NombreAsignado,$EstadoEquipo,$creadoPor){
         date_default_timezone_set('America/Bogota');
@@ -725,6 +735,93 @@ class Inventario extends Model
     }
 
     // IMPRESORAS
+    public static function ImpresoraStock(){
+        $Stock = DB::Select("SELECT COUNT(*) AS total FROM impresoras WHERE estado_impresora = 1");
+        return $Stock;
+    }
 
+    public static function ImpresoraAsigned(){
+        $Asigned = DB::Select("SELECT COUNT(*) AS total FROM impresoras WHERE estado_impresora = 2");
+        return $Asigned;
+    }
+
+    public static function ImpresoraMaintenance(){
+        $Maintenance = DB::Select("SELECT COUNT(*) AS total FROM impresoras WHERE estado_impresora = 3");
+        return $Maintenance;
+    }
+
+    public static function ImpresoraObsolete(){
+        $Obsolete = DB::Select("SELECT COUNT(*) AS total FROM impresoras WHERE estado_impresora = 4");
+        return $Obsolete;
+    }
+
+    public static function ListarImpresoras(){
+        $ListarImpresoras = DB::Select("SELECT * FROM impresoras");
+        return $ListarImpresoras;
+    }
+
+    public static function ListarImpresorasID($idImpresora){
+        $ListarImpresoras = DB::Select("SELECT * FROM impresoras WHERE id = $idImpresora");
+        return $ListarImpresoras;
+    }
+
+    public static function ListarTipoImpresora(){
+        $ListarImpresoras = DB::Select("SELECT * FROM tipo_impresora");
+        return $ListarImpresoras;
+    }
+
+    public static function ListarTipoImpresoraID($IdTipoImpresora){
+        $ListarImpresoras = DB::Select("SELECT * FROM tipo_impresora WHERE id = $IdTipoImpresora");
+        return $ListarImpresoras;
+    }
+
+    public static function ListarConsumiblesPrint(){
+        $ListarConsumibles = DB::Select("SELECT * FROM consumible WHERE estado_consumible = 1");
+        return $ListarConsumibles;
+    }
+
+    public static function EvidenciaImpresora($idImpresora){
+        $EvidenciaEquipo = DB::Select("SELECT * FROM evidencia_inventario WHERE id_impresora = $idImpresora");
+        return $EvidenciaEquipo;
+    }
+
+    public static function BuscarHistorialI($idImpresora){
+        $historial = DB::Select("SELECT * FROM historial_inventario WHERE id_impresora = $idImpresora");
+        return $historial;
+    }
+
+    public static function BuscarLastImpresora($creadoPor){
+        $BuscarLastEquipo = DB::Select("SELECT max(id) as id FROM impresoras WHERE user_id = $creadoPor");
+        return $BuscarLastEquipo;
+    }
+
+    public static function CrearImpresora($TipoImpresora,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Ip,$IdConsumible,$Estado,$creadoPor){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema  = date('Y-m-d H:i');
+        $fechaCreacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
+        $CrearImpresora = DB::insert('INSERT INTO impresoras (tipo_impresora,tipo_ingreso,emp_renting,fecha_ingreso,serial,marca,IP,id_consumible,estado_impresora,created_at,user_id)
+                                        VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+                                        [$TipoImpresora,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Ip,$IdConsumible,$Estado,$fechaCreacion,$creadoPor]);
+        return $CrearImpresora;
+    }
+
+    public static function BuscarSerialImpresora($Serial){
+        $BuscarSerialEquipo = DB::Select("SELECT * FROM impresoras WHERE serial LIKE '%$Serial%'");
+        return $BuscarSerialEquipo;
+    }
+
+    public static function HistorialI($idImpresora,$Comentario,$Estado,$creadoPor){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaCreacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+        DB::insert('INSERT INTO historial_inventario (id_impresora,comentario,status_id,user_id,created)
+                    VALUES (?,?,?,?,?)',
+                    [$idImpresora,$Comentario,$Estado,$creadoPor,$fechaCreacion]);
+    }
+
+    public static function EvidenciaI($IdImpresora,$NombreFoto){
+        $Evidencia = DB::Insert('INSERT INTO evidencia_inventario (nombre,id_impresora) VALUES (?,?)', [$NombreFoto,$IdImpresora]);
+        return $Evidencia;
+    }
 
 }

@@ -158,11 +158,11 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Historial Equipo</label>
-                            {!! Form::textarea('historial',null,['class'=>'form-control','id'=>'mod_historial','placeholder'=>'Historial del equipo movil','rows'=>'3','readonly']) !!}
+                            {!! Form::textarea('historial',null,['class'=>'form-control','id'=>'mod_historial','placeholder'=>'Historial del equipo','rows'=>'3','readonly']) !!}
                         </div>
                         <div class="col-md-6">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Agregar Comentario</label>
-                            {!! Form::textarea('comentario',null,['class'=>'form-control','id'=>'comentario','placeholder'=>'Ingrese el comentario sobre la gestión del equipo movil','rows'=>'3']) !!}
+                            {!! Form::textarea('comentario',null,['class'=>'form-control','id'=>'comentario','placeholder'=>'Ingrese el comentario sobre la gestión del equipo','rows'=>'3']) !!}
                         </div>
                     </div>
                 </div>

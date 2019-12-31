@@ -55,7 +55,7 @@
                             {!! Form::text('compa_mod',$CompaMod,['class'=>'form-control','id'=>'compa_mod','placeholder'=>'Comp. de Modelo']) !!}
                         </div>
                         <div class="col-md-3">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Estado Periferico</label>
+                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Estado Consumible</label>
                             {!! Form::select('estado',$Estado,null,['class'=>'form-control','id'=>'estado']) !!}
                         </div>
                         <div class="col-md-6">
@@ -135,7 +135,7 @@
                             {!! Form::text('compa_mod_upd',$CompaMod,['class'=>'form-control','id'=>'mod_compa_mod','placeholder'=>'Comp. de Modelo']) !!}
                         </div>
                         <div class="col-md-3">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Estado Periferico</label>
+                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Estado Consumible</label>
                             {!! Form::select('estado_upd',$Estado,null,['class'=>'form-control','id'=>'mod_estado']) !!}
                         </div>
                         <div class="col-md-6">
@@ -148,12 +148,12 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Historial Equipo</label>
-                            {!! Form::textarea('historial',null,['class'=>'form-control','id'=>'mod_historial','placeholder'=>'Historial del equipo movil','rows'=>'3','readonly']) !!}
+                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Historial Consumible</label>
+                            {!! Form::textarea('historial',null,['class'=>'form-control','id'=>'mod_historial','placeholder'=>'Historial del consumible','rows'=>'3','readonly']) !!}
                         </div>
                         <div class="col-md-6">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Agregar Comentario</label>
-                            {!! Form::textarea('comentario',null,['class'=>'form-control','id'=>'comentario','placeholder'=>'Ingrese el comentario sobre la gestión del equipo movil','rows'=>'3']) !!}
+                            {!! Form::textarea('comentario',null,['class'=>'form-control','id'=>'comentario','placeholder'=>'Ingrese el comentario sobre la gestión del consumible','rows'=>'3']) !!}
                         </div>
                     </div>
                 </div>
@@ -170,7 +170,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-success">Crear Ingreso</button>
+                <button type="submit" class="btn btn-success">Actualizar Ingreso</button>
             </div>
             {!!  Form::close() !!}
         </div>

@@ -90,7 +90,7 @@ class InventarioController extends Controller
             if($contadorEvidencia > 0){
                 $contE = 1;
                 foreach($evidenciaTicket as $row){
-                    $EquiposMoviles[$contEM]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/equipo_movil/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-file-archive-o'></i>&nbsp; Anexo Equipo Movil $IdEquipoMovil Nro. ".$contE."</a></p>";
+                    $EquiposMoviles[$contEM]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/equipo_movil/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-mobile'></i>&nbsp; Anexo Equipo Movil $IdEquipoMovil Nro. ".$contE."</a></p>";
                     $contE++;
                 }
             }else{
@@ -215,7 +215,7 @@ class InventarioController extends Controller
             if($contadorEvidencia > 0){
                 $contE = 1;
                 foreach($evidenciaTicket as $row){
-                    $LineasMoviles[$contLM]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/lineas/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-file-archive-o'></i>&nbsp; Anexo Linea Movil $IdLineaMovil Nro. ".$contE."</a></p>";
+                    $LineasMoviles[$contLM]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/lineas/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-phone'></i>&nbsp; Anexo Linea Movil $IdLineaMovil Nro. ".$contE."</a></p>";
                     $contE++;
                 }
             }else{
@@ -335,7 +335,7 @@ class InventarioController extends Controller
             if($contadorEvidencia > 0){
                 $contE = 1;
                 foreach($evidenciaTicket as $row){
-                    $Equipos[$contD]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/equipos/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-file-archive-o'></i>&nbsp; Anexo Equipo $IdEquipo Nro. ".$contE."</a></p>";
+                    $Equipos[$contD]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/equipos/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-desktop'></i>&nbsp; Anexo Equipo $IdEquipo Nro. ".$contE."</a></p>";
                     $contE++;
                 }
             }else{
@@ -461,7 +461,7 @@ class InventarioController extends Controller
                                 break;
                 }
                 foreach($evidenciaTicket as $row){
-                    $Perifericos[$cont]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/$Carpeta".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-file-archive-o'></i>&nbsp; Anexo Periferico $IdPeriferico Nro. ".$contE."</a></p>";
+                    $Perifericos[$cont]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/$Carpeta".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-keyboard-o'></i>&nbsp; Anexo Periferico $IdPeriferico Nro. ".$contE."</a></p>";
                     $contE++;
                 }
             }else{
@@ -576,7 +576,7 @@ class InventarioController extends Controller
             if($contadorEvidencia > 0){
                 $contE = 1;
                 foreach($evidenciaTicket as $row){
-                    $Consumibles[$cont]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/consumibles/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-file-archive-o'></i>&nbsp; Anexo Consumible $IdConsumible Nro. ".$contE."</a></p>";
+                    $Consumibles[$cont]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/consumibles/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-tint'></i>&nbsp; Anexo Consumible $IdConsumible Nro. ".$contE."</a></p>";
                     $contE++;
                 }
             }else{
@@ -605,6 +605,123 @@ class InventarioController extends Controller
         return view('Inventario.Consumible',['Stock' => $TotalStock,'Asignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos,
                                              'TipoConsumible' => $TipoConsumible,'TipoIngreso' => $TipoIngreso,'Estado' => $EstadoEquipo,'Consumibles' => $Consumibles,
                                              'Renting' => null,'FechaAdquisicion' => null,'Serial' => null,'Marca' => null,'CompaRef' => null,'CompaMod' => null,'Modelo' => null]);
+    }
+
+    public function printers(){
+        $ImpresorasStock = Inventario::ImpresoraStock();
+        foreach($ImpresorasStock as $row){
+            $TotalStock = (int)$row->total;
+        }
+        $ImpresorasAsignados = Inventario::ImpresoraAsigned();
+        foreach($ImpresorasAsignados as $row){
+            $TotalAsignados = (int)$row->total;
+        }
+        $ImpresorasMantenimiento = Inventario::ImpresoraMaintenance();
+        foreach($ImpresorasMantenimiento as $row){
+            $TotalMantenimiento = (int)$row->total;
+        }
+        $ImpresorasObsoletos = Inventario::ImpresoraObsolete();
+        foreach($ImpresorasObsoletos as $row){
+            $TotalObsoletos = (int)$row->total;
+        }
+
+        $ListarTipoImpresora = Inventario::ListarTipoImpresora();
+        $TipoImpresora  = array();
+        $TipoImpresora[''] = 'Seleccione: ';
+        foreach ($ListarTipoImpresora as $row){
+            $TipoImpresora[$row->id] = $row->name;
+        }
+
+        $ListarConsumibles = Inventario::ListarConsumiblesPrint();
+        $Consumible = Array();
+        $Consumible[''] = 'Seleccione: ';
+        foreach($ListarConsumibles as $row){
+            $Consumible[$row->id] = $row->marca.' - '.$row->modelo;
+        }
+
+        $ListarImpresoras = Inventario::ListarImpresoras();
+        $Impresoras = array();
+        $cont = 0;
+        foreach($ListarImpresoras as $value){
+            $IdImpresora                            = (int)$value->id;
+            $Impresoras[$cont]['id']                = (int)$value->id;
+            $Impresoras[$cont]['tipo_impresora']    = $value->tipo_impresora;
+            $IdTipoImpresora                        = $value->tipo_impresora;
+            $BuscarTIpoImpresora                    = Inventario::ListarTipoImpresoraID($IdTipoImpresora);
+            foreach($BuscarTIpoImpresora as $row){
+                $Impresoras[$cont]['tipoImpresora'] = $row->name;
+            }
+            $IdTipoIngreso                          = (int)$value->tipo_ingreso;
+            $Impresoras[$cont]['tipo_ingreso']      = (int)$value->tipo_ingreso;
+            $ListTipoIngreso                        = Inventario::BuscarTipoIngresoId($IdTipoIngreso);
+            foreach($ListTipoIngreso as $row){
+                $Impresoras[$cont]['tipoIngreso']   = $row->name;
+            }
+            $Impresoras[$cont]['emp_renting']       = $value->emp_renting;
+            $Impresoras[$cont]['fecha_ingreso']     = date('d/m/Y', strtotime($value->fecha_ingreso));
+            $Impresoras[$cont]['serial']            = $value->serial;
+            $Impresoras[$cont]['marca']             = $value->marca;
+            $Impresoras[$cont]['ip']                = $value->IP;
+            $Impresoras[$cont]['id_consumible']     = (int)$value->id_consumible;
+            $IdConsumible                           = (int)$value->id_consumible;
+            $BuscarConsumible                       = Inventario::ListarConsumiblesID($IdConsumible);
+            foreach($BuscarConsumible as $row){
+                $Impresoras[$cont]['consumible']    = $row->marca.' - '.$row->modelo;
+            }
+            $Impresoras[$cont]['estado_impresora']  = (int)$value->estado_impresora;
+            $IdEstadoEquipo                         = (int)$value->estado_impresora;
+            $EstadoEquipo                           = Inventario::EstadoEquipoId($IdEstadoEquipo);
+            foreach($EstadoEquipo as $row){
+                switch($IdEstadoEquipo){
+                    Case 1  :   $Impresoras[$cont]['estado']  = $row->name;
+                                $Impresoras[$cont]['label']   = 'label label-primary';
+                                break;
+                    Case 2  :   $Impresoras[$cont]['estado']  = $row->name;
+                                $Impresoras[$cont]['label']   = 'label label-success';
+                                break;
+                    Case 3  :   $Impresoras[$cont]['estado']  = $row->name;
+                                $Impresoras[$cont]['label']   = 'label label-danger';
+                                break;
+                    Case 4  :   $Impresoras[$cont]['estado']  = $row->name;
+                                $Impresoras[$cont]['label']   = 'label label-warning';
+                                break;
+                }
+            }
+            $Impresoras[$cont]['evidencia']         = null;
+            $evidenciaTicket                        = Inventario::EvidenciaImpresora($IdImpresora);
+            $contadorEvidencia = count($evidenciaTicket);
+            if($contadorEvidencia > 0){
+                $contE = 1;
+                foreach($evidenciaTicket as $row){
+                    $Impresoras[$cont]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/impresoras/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-print'></i>&nbsp; Anexo Impresora $IdImpresora Nro. ".$contE."</a></p>";
+                    $contE++;
+                }
+            }else{
+                $Impresoras[$cont]['evidencia'] = null;
+            }
+            $historialEquipoM = Inventario::BuscarHistorialI($IdImpresora);
+            $contadorHistorial = count($historialEquipoM);
+            $Impresoras[$cont]['historial'] = null;
+            if($contadorHistorial > 0){
+                foreach($historialEquipoM as $row){
+                    $idUsuario  = $row->user_id;
+                    $BuscarUsuario = Usuarios::BuscarNombre($idUsuario);
+                    foreach($BuscarUsuario as $values){
+                        $NombreUser = $values->name;
+                    }
+                    $Impresoras[$cont]['historial'] .= "- ".$row->comentario." (".$NombreUser." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
+                }
+            }else{
+                $Impresoras[$cont]['historial'] = null;
+            }
+            $cont++;
+        }
+
+        $TipoIngreso    = InventarioController::TipoIngreso();
+        $Estado   = InventarioController::TipoEstado();
+        return view('Inventario.Printers',['Stock' => $TotalStock,'Asignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos,
+                    'Renting' => null,'FechaAdquisicion' => null,'Serial' => null,'Marca' => null,'Ip' => null,'Consumible' => $Consumible,'TipoImpresora' => $TipoImpresora,
+                    'Estado' => $Estado,'TipoIngreso' => $TipoIngreso,'Impresoras' => $Impresoras]);
     }
 
     public function TipoIngreso(){
