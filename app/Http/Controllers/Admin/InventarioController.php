@@ -875,7 +875,7 @@ class InventarioController extends Controller
                 }
             }
             $Asignados[$cont]['evidencia']         = null;
-            $evidenciaTicket                        = Inventario::EvidenciaImpresora($idAsignado);
+            $evidenciaTicket                       = Inventario::EvidenciaImpresora($idAsignado);
             $contadorEvidencia = count($evidenciaTicket);
             if($contadorEvidencia > 0){
                 $contE = 1;
@@ -884,7 +884,7 @@ class InventarioController extends Controller
                     $contE++;
                 }
             }else{
-                $Asignados[$cont]['evidencia'] = null;
+                $Asignados[$cont]['evidencia']      = null;
             }
             $historialEquipoM = Inventario::BuscarHistorialA($idAsignado);
             $contadorHistorial = count($historialEquipoM);
@@ -899,7 +899,7 @@ class InventarioController extends Controller
                     $Asignados[$cont]['historial'] .= "- ".$row->comentario." (".$NombreUser." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
                 }
             }else{
-                $Asignados[$cont]['historial'] = null;
+                $Asignados[$cont]['historial']      = null;
             }
             $cont++;
         }
