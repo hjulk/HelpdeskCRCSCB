@@ -11,6 +11,26 @@ use Illuminate\Support\Facades\Input;
 
 class InventarioController extends Controller
 {
+    public function TipoIngreso(){
+        $ListaTipoIngreso = Inventario::ListarTipoIngreso();
+        $TipoIngreso  = array();
+        $TipoIngreso[''] = 'Seleccione: ';
+        foreach ($ListaTipoIngreso as $row){
+            $TipoIngreso[$row->id] = $row->name;
+        }
+        return $TipoIngreso;
+    }
+
+    public function TipoEstado(){
+        $ListarEstado = Inventario::ListarEstadoEquipos();
+        $EstadoEquipo  = array();
+        $EstadoEquipo[''] = 'Seleccione: ';
+        foreach ($ListarEstado as $row){
+            $EstadoEquipo[$row->id] = $row->name;
+        }
+        return $EstadoEquipo;
+    }
+
     public function mobile(){
 
         $EquiposStock = Inventario::MobileStock();
@@ -639,6 +659,13 @@ class InventarioController extends Controller
             $Consumible[$row->id] = $row->marca.' - '.$row->modelo;
         }
 
+        $ListarConsumiblesUpd = Inventario::ListarConsumibles();
+        $ConsumibleUpd = Array();
+        $ConsumibleUpd[''] = 'Seleccione: ';
+        foreach($ListarConsumiblesUpd as $row){
+            $ConsumibleUpd[$row->id] = $row->marca.' - '.$row->modelo;
+        }
+
         $ListarImpresoras = Inventario::ListarImpresoras();
         $Impresoras = array();
         $cont = 0;
@@ -721,27 +748,166 @@ class InventarioController extends Controller
         $Estado   = InventarioController::TipoEstado();
         return view('Inventario.Printers',['Stock' => $TotalStock,'Asignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos,
                     'Renting' => null,'FechaAdquisicion' => null,'Serial' => null,'Marca' => null,'Ip' => null,'Consumible' => $Consumible,'TipoImpresora' => $TipoImpresora,
-                    'Estado' => $Estado,'TipoIngreso' => $TipoIngreso,'Impresoras' => $Impresoras]);
+                    'Estado' => $Estado,'TipoIngreso' => $TipoIngreso,'Impresoras' => $Impresoras,'ConsumibleUpd' => $ConsumibleUpd]);
     }
 
-    public function TipoIngreso(){
-        $ListaTipoIngreso = Inventario::ListarTipoIngreso();
-        $TipoIngreso  = array();
-        $TipoIngreso[''] = 'Seleccione: ';
-        foreach ($ListaTipoIngreso as $row){
-            $TipoIngreso[$row->id] = $row->name;
+    public function asigneds(){
+        $LineasStock = Inventario::PerifericStock();
+        foreach($LineasStock as $row){
+            $TotalStock = (int)$row->total;
         }
-        return $TipoIngreso;
+        $LineasAsignados = Inventario::PerifericAsigned();
+        foreach($LineasAsignados as $row){
+            $TotalAsignados = (int)$row->total;
+        }
+        $LineasMantenimiento = Inventario::PerifericMaintenance();
+        foreach($LineasMantenimiento as $row){
+            $TotalMantenimiento = (int)$row->total;
+        }
+        $LineasObsoletos = Inventario::PerifericObsolete();
+        foreach($LineasObsoletos as $row){
+            $TotalObsoletos = (int)$row->total;
+        }
+
+        $ListarAsignados = Inventario::ListarAsignados();
+        $Asignados = array();
+        $cont = 0;
+        foreach($ListarAsignados as $value){
+            $idAsignado                             = $value->id;
+            $Asignados[$cont]['id']                 = $value->id;
+            $Asignados[$cont]['tipo_equipo']        = (int)$value->tipo_equipo;
+            $IdTipoEquipo                           = (int)$value->tipo_equipo;
+            $TipoEquipo                             = Inventario::BuscarEquipoId($IdTipoEquipo);
+            foreach($TipoEquipo as $row){
+                $Asignados[$cont]['tipoEquipo']     = $row->name;
+            }
+            $Asignados[$cont]['id_equipo']          = (int)$value->tipo_equipo;
+            $IdEquipo                               = (int)$value->tipo_equipo;
+            $Equipo                                 = Inventario::BuscarIdEquipo($IdEquipo);
+            foreach($Equipo as $row){
+                $Asignados[$cont]['equipo']         = $row->marca.' / '.$row->serial;
+            }
+            $Asignados[$cont]['id_mouse']           = (int)$value->id_mouse;
+            $IdMouse                                = (int)$value->id_mouse;
+            $Mouse                                  = Inventario::BuscarMouseId($IdMouse);
+            if($Mouse){
+                foreach($Mouse as $row){
+                    $Asignados[$cont]['mouse']      = $row->marca.' / '.$row->serial;
+                }
+            }else{
+                $Asignados[$cont]['mouse']          = 'SIN MOUSE';
+            }
+
+            $Asignados[$cont]['id_pantalla']        = (int)$value->id_pantalla;
+            $IdPantalla                             = (int)$value->id_pantalla;
+            $Pantalla                               = Inventario::BuscarPantallaId($IdPantalla);
+            if($Pantalla){
+                foreach($Pantalla as $row){
+                    $Asignados[$cont]['pantalla']   = $row->marca.' / '.$row->serial;
+                }
+            }else{
+                $Asignados[$cont]['pantalla']       = 'SIN PANTALLA';
+            }
+            $Asignados[$cont]['id_teclado']         = (int)$value->id_teclado;
+            $IdTeclado                              = (int)$value->id_teclado;
+            $Teclado                                = Inventario::BuscarTecladoId($IdTeclado);
+            if($Teclado){
+                foreach($Teclado as $row){
+                    $Asignados[$cont]['teclado']    = $row->marca.' / '.$row->serial;
+                }
+            }else{
+                $Asignados[$cont]['teclado']        = 'SIN PANTALLA';
+            }
+
+            $Asignados[$cont]['id_cargador']        = (int)$value->id_cargador;
+            $IdCargador                             = (int)$value->id_cargador;
+            $Cargador                               = Inventario::BuscarCargadorId($IdCargador);
+            if($Cargador ){
+                foreach($Cargador as $row){
+                    $Asignados[$cont]['cargador']   = $row->marca.' / '.$row->serial;
+                }
+            }else{
+                $Asignados[$cont]['cargador']       = 'SIN CARGADOR';
+            }
+            $Asignados[$cont]['id_guaya']           = (int)$value->id_guaya;
+            $IdGuaya                                = (int)$value->id_guaya;
+            $Guaya                                  = Inventario::BuscarGuayaId($IdGuaya);
+            if($Guaya){
+                foreach($Guaya as $row){
+                    $Asignados[$cont]['guaya']      = $row->marca.' / '.$row->serial;
+                }
+            }else{
+                $Asignados[$cont]['guaya']          = 'SIN GUAYA';
+            }
+            $Asignados[$cont]['tipo_guaya']         = (int)$value->tipo_guaya;
+            $IdTipoGuaya                            = (int)$value->tipo_guaya;
+            $TipoGuaya                              = Inventario::BuscarTipoGuayaId($IdTipoGuaya);
+            foreach($TipoGuaya as $row){
+                $Asignados[$cont]['tipoGuaya']      = $row->name;
+            }
+            $Asignados[$cont]['code_guaya']         = $value->code_guaya;
+            $Asignados[$cont]['sede']               = (int)$value->sede;
+            $Asignados[$cont]['area']               = $value->area;
+            $Asignados[$cont]['nombre_usuario']     = $value->nombre_usuario;
+            $Asignados[$cont]['cargo_usuario']      = $value->cargo_usuario;
+            $Asignados[$cont]['id_usuario']         = $value->id_usuario;
+            $Asignados[$cont]['tel_usuario']        = $value->tel_usuario;
+            $Asignados[$cont]['correo']             = $value->correo;
+            $Asignados[$cont]['id_ticket']          = (int)$value->id_ticket;
+            $Asignados[$cont]['fecha_asignacion']   = date('d/m/Y', strtotime($value->fecha_asignacion));
+            $Asignados[$cont]['estado_asignado']    = (int)$value->estado_asignado;
+            $IdEstadoEquipo                         = (int)$value->estado_asignado;
+            $EstadoEquipo                           = Inventario::EstadoEquipoId($IdEstadoEquipo);
+            foreach($EstadoEquipo as $row){
+                switch($IdEstadoEquipo){
+                    Case 1  :   $Asignados[$cont]['estado']  = $row->name;
+                                $Asignados[$cont]['label']   = 'label label-primary';
+                                break;
+                    Case 2  :   $Asignados[$cont]['estado']  = $row->name;
+                                $Asignados[$cont]['label']   = 'label label-success';
+                                break;
+                    Case 3  :   $Asignados[$cont]['estado']  = $row->name;
+                                $Asignados[$cont]['label']   = 'label label-danger';
+                                break;
+                    Case 4  :   $Asignados[$cont]['estado']  = $row->name;
+                                $Asignados[$cont]['label']   = 'label label-warning';
+                                break;
+                }
+            }
+            $Asignados[$cont]['evidencia']         = null;
+            $evidenciaTicket                        = Inventario::EvidenciaImpresora($idAsignado);
+            $contadorEvidencia = count($evidenciaTicket);
+            if($contadorEvidencia > 0){
+                $contE = 1;
+                foreach($evidenciaTicket as $row){
+                    $Asignados[$cont]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias_inventario/asignados/".$row->nombre."' target='_blank' class='btn btn-info'><i class='fa fa-print'></i>&nbsp; Anexo Asignado $idAsignado Nro. ".$contE."</a></p>";
+                    $contE++;
+                }
+            }else{
+                $Asignados[$cont]['evidencia'] = null;
+            }
+            $historialEquipoM = Inventario::BuscarHistorialA($idAsignado);
+            $contadorHistorial = count($historialEquipoM);
+            $Asignados[$cont]['historial'] = null;
+            if($contadorHistorial > 0){
+                foreach($historialEquipoM as $row){
+                    $idUsuario  = $row->user_id;
+                    $BuscarUsuario = Usuarios::BuscarNombre($idUsuario);
+                    foreach($BuscarUsuario as $values){
+                        $NombreUser = $values->name;
+                    }
+                    $Asignados[$cont]['historial'] .= "- ".$row->comentario." (".$NombreUser." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
+                }
+            }else{
+                $Asignados[$cont]['historial'] = null;
+            }
+            $cont++;
+        }
+        $Estado   = InventarioController::TipoEstado();
+        return view('Inventario.Asignados',['Stock' => $TotalStock,'TAsignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos,
+                                            'Estado' => $Estado,'Asignados' => $Asignados]);
     }
 
-    public function TipoEstado(){
-        $ListarEstado = Inventario::ListarEstadoEquipos();
-        $EstadoEquipo  = array();
-        $EstadoEquipo[''] = 'Seleccione: ';
-        foreach ($ListarEstado as $row){
-            $EstadoEquipo[$row->id] = $row->name;
-        }
-        return $EstadoEquipo;
-    }
+
 
 }

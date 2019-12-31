@@ -999,6 +999,84 @@ class InventarioController extends Controller
     }
 
     public function actualizarImpresora(){
+        $data           = Input::all();
+        $creadoPor      = (int)Session::get('IdUsuario');
+        $buscarUsuario  = Usuarios::BuscarNombre($creadoPor);
+        foreach($buscarUsuario as $value){
+            $Administrador = (int)$value->rol_id;
+        }
+        $url = InventarioController::BuscarURL($Administrador);
+        $reglas = array(
+            'tipo_impresora_upd'    =>  'required',
+            'tipo_ingreso_upd'      =>  'required',
+            'fecha_adquision_upd'   =>  'required',
+            'serial_upd'            =>  'required',
+            'marca_upd'             =>  'required',
+            'estado_upd'            =>  'required',
+            'comentario'            =>  'required'
+        );
+        $validador = Validator::make($data, $reglas);
+        $messages = $validador->messages();
+        foreach ($reglas as $key => $value){
+            $verrors[$key] = $messages->first($key);
+        }
+        if($validador->passes()) {
+            $TipoImpresora      = Input::get('tipo_impresora_upd');
+            $TipoIngreso        = (int)Input::get('tipo_ingreso_upd');
+            if(Input::get('emp_renting_upd')){
+                $EmpresaRent    = Input::get('emp_renting_upd');
+            }else{
+                $EmpresaRent    = 'SIN EMPRESA';
+            }
+            $FechaAdquisicion   = date('Y-m-d H:i:s', strtotime(Input::get('fecha_adquision_upd')));
+            $Serial             = Input::get('serial_upd');
+            $Marca              = Input::get('marca_upd');
+            $Ip                 = Input::get('ip_upd');
+            $IdConsumible       = (int)Input::get('id_consumible_upd');
+            $Estado             = (int)Input::get('estado_upd');
+            $Comentario         = Input::get('comentario');
+            $IdImpresora        = (int)Input::get('idI');
+
+            $ActualizarImpresora = Inventario::ActualizarImpresora($TipoImpresora,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Ip,$IdConsumible,$Estado,$creadoPor,$Comentario,$IdImpresora);
+            if($ActualizarImpresora){
+
+                $destinationPath = null;
+                $filename        = null;
+                if (Input::hasFile('evidencia')) {
+                    $files = Input::file('evidencia');
+                    foreach($files as $file){
+                        $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario/impresoras/';
+                        $extension          = $file->getClientOriginalExtension();
+                        $name               = $file->getClientOriginalName();
+                        $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
+                        $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
+                        $filename           = 'Evidencia Impresora No. '.$IdImpresora.'.'.$extension;
+                        $uploadSuccess      = $file->move($destinationPath, $filename);
+                        $archivofoto        = file_get_contents($uploadSuccess);
+                        $NombreFoto         = $filename;
+                        $actualizarEvidencia = Inventario::EvidenciaI($IdImpresora,$NombreFoto);
+                    }
+                }
+
+                Inventario::HistorialI($IdImpresora,$Comentario,$Estado,$creadoPor);
+                $verrors = 'Se actualizo satisfactoriamente la impresora No. de Activo '.$IdImpresora;
+                return redirect($url.'/printers')->with('mensaje', $verrors);
+            }else{
+                $verrors = array();
+                array_push($verrors, 'Hubo un problema al actualizar la impresora');
+                return Redirect::to($url.'/printers')->withErrors(['errors' => $verrors])->withInput();
+            }
+
+        }else{
+            return Redirect::to($url.'/printers')->withErrors(['errors' => $verrors])->withInput();
+        }
+    }
+
+    public function ingresarAsignacion(){
+
+    }
+
+    public function actualizarAsignacion(){
 
     }
 }

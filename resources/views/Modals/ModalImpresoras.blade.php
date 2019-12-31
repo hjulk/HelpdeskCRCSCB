@@ -83,6 +83,7 @@
             </div>
             {!! Form::open(['url' => 'actualizarImpresora', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
             <div class="modal-body">
+                <input type="hidden" name="idI" id="mod_idI">
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-3">
@@ -119,7 +120,7 @@
                         </div>
                         <div class="col-md-3">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Consumible Actual</label>
-                            {!! Form::Select('id_consumible_upd',$Consumible,null,['class'=>'form-control','id'=>'mod_id_consumible']) !!}
+                            {!! Form::Select('id_consumible_upd',$ConsumibleUpd,null,['class'=>'form-control','id'=>'mod_id_consumible']) !!}
                         </div>
                     </div>
                 </div>
@@ -202,7 +203,7 @@
             var Evidencia       = $("#evidencia" + id).val();
             var Historial       = $("#historial" + id).val();
 
-            $("#mod_idC").val(id);
+            $("#mod_idI").val(id);
             $("#mod_tipo_impresora").val(TipoPeriferico);
             $("#mod_tipo_ingreso").val(TipoIngreso);
             $("#mod_emp_renting").val(EmpRenting);

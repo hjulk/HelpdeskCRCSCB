@@ -279,6 +279,11 @@ class Inventario extends Model
         return $BuscarEquipoId;
     }
 
+    public static function BuscarIdEquipo($IdEquipo){
+        $BuscarEquipoId = DB::Select("SELECT * FROM equipo WHERE id = $IdEquipo");
+        return $BuscarEquipoId;
+    }
+
     public static function EquipoStock(){
         $Stock = DB::Select("SELECT COUNT(*) AS total FROM equipo WHERE estado_equipo = 1");
         return $Stock;
@@ -580,6 +585,36 @@ class Inventario extends Model
         return $BuscarSerialEquipo;
     }
 
+    public static function BuscarMouseId($IdMouse){
+        $BuscarMouse = DB::Select("SELECT * FROM mouse WHERE id = $IdMouse");
+        return $BuscarMouse;
+    }
+
+    public static function BuscarPantallaId($IdPantalla){
+        $BuscarPantalla = DB::Select("SELECT * FROM pantalla WHERE id = $IdPantalla");
+        return $BuscarPantalla;
+    }
+
+    public static function BuscarTecladoId($IdTeclado){
+        $BuscarTeclado = DB::Select("SELECT * FROM teclado WHERE id = $IdTeclado");
+        return $BuscarTeclado;
+    }
+
+    public static function BuscarCargadorId($IdCargador){
+        $BuscarCargador = DB::Select("SELECT * FROM cargador WHERE id = $IdCargador");
+        return $BuscarCargador;
+    }
+
+    public static function BuscarGuayaId($IdGuaya){
+        $BuscarGuaya = DB::Select("SELECT * FROM guaya WHERE id = $IdGuaya");
+        return $BuscarGuaya;
+    }
+
+    public static function BuscarTipoGuayaId($IdTipoGuaya){
+        $BuscarGuaya = DB::Select("SELECT * FROM tipo_guaya WHERE id = $IdTipoGuaya");
+        return $BuscarGuaya;
+    }
+
     // CONSUMIBLES
     public static function ConsumibleStock(){
         $Stock = DB::Select("SELECT COUNT(*) AS total FROM consumible WHERE estado_consumible = 1");
@@ -734,6 +769,21 @@ class Inventario extends Model
         }
     }
 
+    public static function ListarAsignados(){
+        $ListarAsignados = DB::Select("SELECT * FROM asignados WHERE id_linea is null AND id_movil is null");
+        return $ListarAsignados;
+    }
+
+    public static function EvidenciaAsignado($idAsignado){
+        $EvidenciaEquipo = DB::Select("SELECT * FROM evidencia_inventario WHERE id_asignado = $idAsignado");
+        return $EvidenciaEquipo;
+    }
+
+    public static function BuscarHistorialA($idAsignado){
+        $historial = DB::Select("SELECT * FROM historial_inventario WHERE id_asignado = $idAsignado");
+        return $historial;
+    }
+
     // IMPRESORAS
     public static function ImpresoraStock(){
         $Stock = DB::Select("SELECT COUNT(*) AS total FROM impresoras WHERE estado_impresora = 1");
@@ -802,6 +852,7 @@ class Inventario extends Model
         $CrearImpresora = DB::insert('INSERT INTO impresoras (tipo_impresora,tipo_ingreso,emp_renting,fecha_ingreso,serial,marca,IP,id_consumible,estado_impresora,created_at,user_id)
                                         VALUES (?,?,?,?,?,?,?,?,?,?,?)',
                                         [$TipoImpresora,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Ip,$IdConsumible,$Estado,$fechaCreacion,$creadoPor]);
+        DB::update("UPDATE consumible SET estado_consumible = 2 WHERE ID = $IdConsumible");
         return $CrearImpresora;
     }
 
@@ -822,6 +873,43 @@ class Inventario extends Model
     public static function EvidenciaI($IdImpresora,$NombreFoto){
         $Evidencia = DB::Insert('INSERT INTO evidencia_inventario (nombre,id_impresora) VALUES (?,?)', [$NombreFoto,$IdImpresora]);
         return $Evidencia;
+    }
+
+    public static function ActualizarImpresora($TipoImpresora,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Ip,$IdConsumible,$Estado,$creadoPor,$Comentario,$IdImpresora){
+        if(($TipoIngreso === 3) || ($TipoIngreso === 4) || ($TipoIngreso === 2)){
+            $EmpRenting = 'SIN EMPRESA';
+            $BuscarConsumible = DB::Select("SELECT * FROM impresoras WHERE id_consumible = $IdConsumible");
+            if($BuscarConsumible){
+                DB::update("UPDATE consumible SET estado_consumible = 1 WHERE ID = $IdConsumible");
+            }else{
+                $BuscarConsumible = DB::Select("SELECT * FROM impresoras WHERE id = $IdImpresora");
+                foreach($BuscarConsumible as $row){
+                    $consumible = (int)$row->id_consumible;
+                    DB::update("UPDATE consumible SET estado_consumible = 1 WHERE ID = $consumible");
+                }
+                DB::update("UPDATE consumible SET estado_consumible = 2 WHERE ID = $IdConsumible");
+            }
+
+        }else{
+            $EmpRenting = $EmpresaRent;
+        }
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaActualizacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+        $ActualizarImpresora = DB::Update("UPDATE impresoras SET
+                                            tipo_impresora = $TipoImpresora,
+                                            tipo_ingreso = $TipoIngreso,
+                                            emp_renting = '$EmpRenting',
+                                            fecha_ingreso = '$FechaAdquisicion',
+                                            serial = '$Serial',
+                                            marca = '$Marca',
+                                            IP = '$Ip',
+                                            id_consumible = $IdConsumible,
+                                            estado_impresora = $Estado,
+                                            updated_at = '$fechaActualizacion ',
+                                            actualizado_por = $creadoPor
+                                            WHERE id = $IdImpresora");
+        return $ActualizarImpresora;
     }
 
 }
