@@ -274,8 +274,23 @@ class Inventario extends Model
         return $ListarEquipo;
     }
 
+    public static function ListarTipoEquipos(){
+        $ListarEquipo = DB::Select("SELECT * FROM tipo_equipo");
+        return $ListarEquipo;
+    }
+
     public static function BuscarEquipoId($IdTipoEquipo){
         $BuscarEquipoId = DB::Select("SELECT * FROM tipo_equipo WHERE id = $IdTipoEquipo");
+        return $BuscarEquipoId;
+    }
+
+    public static function ListarMarcaActivo(){
+        $Stock = DB::Select("SELECT * FROM equipo WHERE estado_equipo = 1");
+        return $Stock;
+    }
+
+    public static function BuscarXTipoEquipo($id){
+        $BuscarEquipoId = DB::Select("SELECT * FROM equipo WHERE tipo_equipo = $id AND estado_equipo = 1");
         return $BuscarEquipoId;
     }
 
@@ -615,6 +630,31 @@ class Inventario extends Model
         return $BuscarGuaya;
     }
 
+    public static function ListarMouseActivo(){
+        $ListarMouse = DB::Select("SELECT * FROM perifericos WHERE tipo_periferico = 2 AND estado_periferico = 1");
+        return $ListarMouse;
+    }
+
+    public static function ListarPantallaActivo(){
+        $ListarPantalla = DB::Select("SELECT * FROM perifericos WHERE tipo_periferico = 1 AND estado_periferico = 1");
+        return $ListarPantalla;
+    }
+
+    public static function ListarTecladoActivo(){
+        $ListarTeclado = DB::Select("SELECT * FROM perifericos WHERE tipo_periferico = 3 AND estado_periferico = 1");
+        return $ListarTeclado;
+    }
+
+    public static function ListarCargadorActivo(){
+        $ListarCargador = DB::Select("SELECT * FROM perifericos WHERE tipo_periferico = 5 AND estado_periferico = 1");
+        return $ListarCargador;
+    }
+
+    public static function ListarGuayaActivo(){
+        $ListarGuaya = DB::Select("SELECT * FROM perifericos WHERE tipo_periferico = 4 AND estado_periferico = 1");
+        return $ListarGuaya;
+    }
+
     // CONSUMIBLES
     public static function ConsumibleStock(){
         $Stock = DB::Select("SELECT COUNT(*) AS total FROM consumible WHERE estado_consumible = 1");
@@ -783,6 +823,7 @@ class Inventario extends Model
         $historial = DB::Select("SELECT * FROM historial_inventario WHERE id_asignado = $idAsignado");
         return $historial;
     }
+
 
     // IMPRESORAS
     public static function ImpresoraStock(){

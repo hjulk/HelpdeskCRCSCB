@@ -182,8 +182,8 @@ $(document).ready(function () {
             processing: "Procesando...",
             search: "Buscar:",
             lengthMenu: "Mostrar _MENU_ registros.",
-            info: "Mostrando equipos del _START_ al _END_ de un total de _TOTAL_ equipos",
-            infoEmpty: "Mostrando equipos del 0 al 0 de 0 equipos",
+            info: "Mostrando consumibles del _START_ al _END_ de un total de _TOTAL_ consumibles",
+            infoEmpty: "Mostrando consumibles del 0 al 0 de 0 consumibles",
             infoFiltered: "(filtrado de un total de _MAX_ registros)",
             infoPostFix: "",
             loadingRecords: "Cargando...",
@@ -238,8 +238,8 @@ $(document).ready(function () {
             processing: "Procesando...",
             search: "Buscar:",
             lengthMenu: "Mostrar _MENU_ registros.",
-            info: "Mostrando equipos del _START_ al _END_ de un total de _TOTAL_ equipos",
-            infoEmpty: "Mostrando equipos del 0 al 0 de 0 equipos",
+            info: "Mostrando perifericos del _START_ al _END_ de un total de _TOTAL_ perifericos",
+            infoEmpty: "Mostrando perifericos del 0 al 0 de 0 perifericos",
             infoFiltered: "(filtrado de un total de _MAX_ registros)",
             infoPostFix: "",
             loadingRecords: "Cargando...",
@@ -294,8 +294,8 @@ $(document).ready(function () {
             processing: "Procesando...",
             search: "Buscar:",
             lengthMenu: "Mostrar _MENU_ registros.",
-            info: "Mostrando equipos del _START_ al _END_ de un total de _TOTAL_ equipos",
-            infoEmpty: "Mostrando equipos del 0 al 0 de 0 equipos",
+            info: "Mostrando impresoras del _START_ al _END_ de un total de _TOTAL_ impresoras",
+            infoEmpty: "Mostrando impresoras del 0 al 0 de 0 impresoras",
             infoFiltered: "(filtrado de un total de _MAX_ registros)",
             infoPostFix: "",
             loadingRecords: "Cargando...",
@@ -390,5 +390,31 @@ $(document).ready(function () {
                         ]
 
     });
+
+    function equipoFunc() {
+        var selectBox = document.getElementById("tipo_equipo");
+        var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+        var tipo = 'post';
+        var select = document.getElementById("marca_serial");
+
+        $.ajax({
+            url: "{{route('buscarEquipo')}}",
+            type: "get",
+            data: {_method: tipo, tipo_equipo: selectedValue},
+            success: function (data) {
+                var vValido = data['valido'];
+
+                if (vValido === 'true') {
+                    var ListUsuario = data['Equipo'];
+                    select.options.length = 0;
+                    for (index in ListUsuario) {
+                        select.options[select.options.length] = new Option(ListUsuario[index], index);
+                    }
+
+                }
+
+            }
+        });
+    }
 
 });

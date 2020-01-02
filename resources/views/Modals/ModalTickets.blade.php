@@ -124,7 +124,7 @@
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-4 control-label">Asignado</label>
                             <div class="col-md-5">
-                                    {!! Form::select('id_usuarioT',$NombreUsuario,null,['class'=>'form-control','id'=>'id_usuarioT']) !!}
+                                {!! Form::select('id_usuarioT',$NombreUsuario,null,['class'=>'form-control','id'=>'id_usuarioT']) !!}
                             </div>
                         </div>
                         <div class="form-group">

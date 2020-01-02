@@ -1072,6 +1072,18 @@ class InventarioController extends Controller
         }
     }
 
+    public function buscarEquipo(){
+        $data               = Input::all();
+        $id                 = (int)Input::get('tipo_equipo');
+        $MarcaSerial        = array();
+        $buscarUsuario      = Inventario::BuscarXTipoEquipo($id);
+        $MarcaSerial[0]     = 'Seleccione: ';
+        foreach ($buscarUsuario as $row){
+            $MarcaSerial[$row->id] = $row->marca.' - '.$row->serial;
+        }
+        return \Response::json(array('valido'=>'true','Equipo'=>$MarcaSerial));
+    }
+
     public function ingresarAsignacion(){
 
     }

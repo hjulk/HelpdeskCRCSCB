@@ -1,4 +1,4 @@
-<div class="modal fade bd-example-modal-xl" id="modal-consumible" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-xl" id="modal-asignados" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">
@@ -216,19 +216,15 @@
         function mostrar(id) {
             if (id === '1') {
                 $("#renting").show();
-                {{-- document.getElementById("emp_renting").required = true; --}}
             }else{
                 $("#renting").hide();
-                {{-- document.getElementById("emp_renting").required = false; --}}
             }
         }
         function mostrarUpd(id) {
             if (id === '1') {
                 $("#renting_upd").show();
-                {{-- document.getElementById("mod_emp_renting").required = true; --}}
             }else{
                 $("#renting_upd").hide();
-                {{-- document.getElementById("mod_emp_renting").required = false; --}}
             }
         }
     </script>

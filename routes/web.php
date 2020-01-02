@@ -124,5 +124,6 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::post('actualizarImpresora', 'InventarioController@actualizarImpresora')->name('actualizarImpresora');
     Route::post('ingresarAsignacion', 'InventarioController@ingresarAsignacion')->name('ingresarAsignacion');
     Route::post('actualizarAsignacion', 'InventarioController@actualizarAsignacion')->name('actualizarAsignacion');
+    Route::get('buscarEquipo', 'InventarioController@buscarEquipo')->name('buscarEquipo');
 
 });

@@ -458,8 +458,8 @@ class Tickets extends Model
     }
 
     public static function Reporte($idTipo,$idCategoria,$idUsuarioC,$idUsuarioA,$idPrioridad,$idEstado,$idSede,$finicio,$ffin){
-        $fechaInicio    = date('Y-m-d H:i', strtotime($finicio));
-        $fechaFin       = date('Y-m-d H:i', strtotime($ffin));
+        $fechaInicio    = date('Y-m-d', strtotime($finicio));
+        $fechaFin       = date('Y-m-d', strtotime($ffin));
         // dd($fechaInicio);
         if (!empty($idTipo)) {
             $tipo   = 'kind_id';
@@ -517,8 +517,13 @@ class Tickets extends Model
             $sede   = '1';
             $vsede  = '1';
         }
+        if($finicio === $ffin){
+            $fecha = "WHERE created_at LIKE '%$finicio%'";
+        }else{
+            $fecha = "WHERE created_at BETWEEN '$fechaInicio 00:00:00' AND '$fechaFin 23:59:59'";
+        }
         $reporteTicket = DB::Select("SELECT * FROM ticket
-                                WHERE created_at BETWEEN '$fechaInicio' AND '$fechaFin'
+                                $fecha
                                 AND $tipo = $vtipo
                                 AND $categoria = $vcategoria
                                 AND $usuarioC = $vusuarioC
@@ -526,7 +531,6 @@ class Tickets extends Model
                                 AND $prioridad = $vprioridad
                                 AND $estado = $vestado
                                 AND $sede = $vsede");
-
         return $reporteTicket;
     }
 

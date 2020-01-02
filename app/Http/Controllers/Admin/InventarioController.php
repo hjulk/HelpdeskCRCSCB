@@ -904,8 +904,62 @@ class InventarioController extends Controller
             $cont++;
         }
         $Estado   = InventarioController::TipoEstado();
+        $ListarEquipos = Inventario::ListarTipoEquipos();
+        $Equipos  = array();
+        $Equipos[''] = 'Seleccione: ';
+        foreach ($ListarEquipos as $row){
+            $Equipos[$row->id] = $row->name;
+        }
+        $ListarMouse = Inventario::ListarMouseActivo();
+        $Mouse  = array();
+        $Mouse[''] = 'Seleccione: ';
+        foreach ($ListarMouse as $row){
+            $Mouse[$row->id] = $row->marca.' - '.$row->serial;
+        }
+        $ListarPantalla = Inventario::ListarPantallaActivo();
+        $Pantalla  = array();
+        $Pantalla[''] = 'Seleccione: ';
+        foreach ($ListarPantalla as $row){
+            $Pantalla[$row->id] = $row->marca.' - '.$row->serial;
+        }
+        $ListarTeclado = Inventario::ListarTecladoActivo();
+        $Teclado  = array();
+        $Teclado[''] = 'Seleccione: ';
+        foreach ($ListarTeclado as $row){
+            $Teclado[$row->id] = $row->marca.' - '.$row->serial;
+        }
+        $ListarCargador = Inventario::ListarCargadorActivo();
+        $Cargador  = array();
+        $Cargador[''] = 'Seleccione: ';
+        foreach ($ListarCargador as $row){
+            $Cargador[$row->id] = $row->marca.' - '.$row->serial;
+        }
+        $ListarGuaya = Inventario::ListarGuayaActivo();
+        $Guaya  = array();
+        $Guaya[''] = 'Seleccione: ';
+        foreach ($ListarGuaya as $row){
+            $Guaya[$row->id] = $row->marca.' - '.$row->serial;
+        }
+        $NombreSede = array();
+        $NombreSede[''] = 'Seleccione: ';
+        $Sedes  = Sedes::Sedes();
+        foreach ($Sedes as $row){
+            $NombreSede[$row->id] = $row->name;
+        }
+        $ListarMarca = Inventario::ListarMarcaActivo();
+        $Marca  = array();
+        $Marca[''] = 'Seleccione: ';
+        // foreach ($ListarMarca as $row){
+        //     $Marca[$row->id] = $row->marca.' - '.$row->serial;
+        // }
+        $Opcion  = array();
+        $Opcion[''] = 'Seleccione: ';
+        $Opcion[1] = 'Sí';
+        $Opcion[0] = 'No';
         return view('Inventario.Asignados',['Stock' => $TotalStock,'TAsignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos,
-                                            'Estado' => $Estado,'Asignados' => $Asignados]);
+                                            'Estado' => $Estado,'Asignados' => $Asignados,'Equipos' => $Equipos,'Mouse' => $Mouse,'Pantalla' => $Pantalla,'Teclado' => $Teclado,
+                                            'Cargador' => $Cargador,'Guaya' => $Guaya,'Sede' => $NombreSede,'Area' => null,'NombreAsignado' => null,'Cargo' => null,'Cedula' => null,
+                                            'Telefono' => null,'Correo' => null,'Ticket' => null,'FechaAsignacion' => null,'Marca' => $Marca,'Opcion' => $Opcion]);
     }
 
 

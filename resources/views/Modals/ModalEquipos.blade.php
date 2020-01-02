@@ -228,19 +228,15 @@
         function mostrar(id) {
             if (id === '1') {
                 $("#renting").show();
-                {{-- document.getElementById("emp_renting").required = true; --}}
             }else{
                 $("#renting").hide();
-                {{-- document.getElementById("emp_renting").required = false; --}}
             }
         }
         function mostrarUpd(id) {
             if (id === '1') {
                 $("#renting_upd").show();
-                {{-- document.getElementById("mod_emp_renting").required = true; --}}
             }else{
                 $("#renting_upd").hide();
-                {{-- document.getElementById("mod_emp_renting").required = false; --}}
             }
         }
     </script>

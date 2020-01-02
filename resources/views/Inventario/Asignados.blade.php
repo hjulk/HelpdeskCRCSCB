@@ -82,7 +82,7 @@ Asignaciones
                             <tbody>
                                 @foreach($Asignados as $value)
                                     <tr>
-                                        <td>{{$value['id_equipo']}}</td>
+                                        <td style="text-align: center;">{{$value['id_equipo']}}</td>
                                         <td>{{$value['tipoEquipo']}}</td>
                                         <td>{{$value['equipo']}}</td>
                                         <td>{{$value['mouse']}}</td>
@@ -90,19 +90,29 @@ Asignaciones
                                         <td>{{$value['teclado']}}</td>
                                         <td>{{$value['nombre_usuario']}}</td>
                                         <td>{{$value['area']}}</td>
-                                        <td style="text-align: center;"><a href="#" class="btn btn-warning" title="Editar" data-toggle="modal" data-target="#modal-cambios-impresora" onclick="obtener_datos_impresora('{{$value['id']}}');"><i class="fa fa-edit"></i></a></td>
-                                        {{--  <input type="hidden" value="{{$value['id']}}" id="id{{$value['id']}}">
-                                        <input type="hidden" value="{{$value['tipo_impresora']}}" id="tipo_impresora{{$value['id']}}">
-                                        <input type="hidden" value="{{$value['tipo_ingreso']}}" id="tipo_ingreso{{$value['id']}}">
-                                        <input type="hidden" value="{{$value['emp_renting']}}" id="emp_renting{{$value['id']}}">
-                                        <input type="hidden" value="{{$value['fecha_ingreso']}}" id="fecha_ingreso{{$value['id']}}">
-                                        <input type="hidden" value="{{$value['serial']}}" id="serial{{$value['id']}}">
-                                        <input type="hidden" value="{{$value['marca']}}" id="marca{{$value['id']}}">
-                                        <input type="hidden" value="{{$value['ip']}}" id="ip{{$value['id']}}">
-                                        <input type="hidden" value="{{$value['id_consumible']}}" id="id_consumible{{$value['id']}}">
-                                        <input type="hidden" value="{{$value['estado_impresora']}}" id="estado_impresora{{$value['id']}}">
+                                        <td style="text-align: center;"><a href="#" class="btn btn-warning" title="Editar" data-toggle="modal" data-target="#modal-cambios-impresora" onclick="obtener_datos_asignado('{{$value['id']}}');"><i class="fa fa-edit"></i></a></td>
+                                        <input type="hidden" value="{{$value['id']}}" id="id{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['tipo_equipo']}}" id="tipo_equipo{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['id_equipo']}}" id="id_equipo{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['id_mouse']}}" id="id_mouse{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['id_teclado']}}" id="id_teclado{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['id_pantalla']}}" id="id_pantalla{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['id_cargador']}}" id="id_cargador{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['id_guaya']}}" id="id_guaya{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['tipo_guaya']}}" id="tipo_guaya{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['code_guaya']}}" id="code_guaya{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['sede']}}" id="sede{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['area']}}" id="area{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['nombre_usuario']}}" id="nombre_usuario{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['cargo_usuario']}}" id="cargo_usuario{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['id_usuario']}}" id="id_usuario{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['tel_usuario']}}" id="tel_usuario{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['correo']}}" id="correo{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['id_ticket']}}" id="id_ticket{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['fecha_asignacion']}}" id="fecha_asignacion{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['estado_asigando']}}" id="estado_asigando{{$value['id']}}">
                                         <input type="hidden" value="{{$value['evidencia']}}" id="evidencia{{$value['id']}}">
-                                        <input type="hidden" value="{{$value['historial']}}" id="historial{{$value['id']}}">  --}}
+                                        <input type="hidden" value="{{$value['historial']}}" id="historial{{$value['id']}}">
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -113,7 +123,7 @@ Asignaciones
         </div>
     </div>
 </section>
-{{--  @include('Modals.ModalAsignados')  --}}
+@include('Modals.ModalAsignados')
 @endsection
 @section('scripts')
     <script src="{{asset("assets/dist/js/inventario.js")}}"></script>
