@@ -186,9 +186,33 @@ class InventarioController extends Controller
             }else{
                 $Desvincular = 0;
             }
+            $BuscarLineaMovilID = Inventario::BuscarLineaMovilID($LineaMovil,$idEquipoMovil);
+            $countbusqueda = count($BuscarLineaMovilID);
+            $BuscarNroLinea     = Inventario::BuscarNroLinea($LineaMovil);
+            if($countbusqueda > 0){
+                $ActualizarEquipoMovil = Inventario::ActualizarEquipoMovil($TipoEquipo,$FechaAdquisicion,$Serial,$Marca,$Modelo,$IMEI,$Capacidad,
+                                        $LineaMovil,$Area,$NombreAsignado,$EstadoEquipo,$creadoPor,$idEquipoMovil,$Desvincular);
+            }else{
+                if($BuscarNroLinea){
+                    foreach($BuscarNroLinea as $row){
+                        $EstadoLinea = (int)$row->estado_equipo;
+                        $NombreLinea = $row->nro_linea;
+                    }
+                    if($EstadoLinea === 1){
+                        $ActualizarEquipoMovil = Inventario::ActualizarEquipoMovil($TipoEquipo,$FechaAdquisicion,$Serial,$Marca,$Modelo,$IMEI,$Capacidad,
+                                                $LineaMovil,$Area,$NombreAsignado,$EstadoEquipo,$creadoPor,$idEquipoMovil,$Desvincular);
+                    }else{
+                        $verrors = array();
+                        array_push($verrors, 'La linea '.$NombreLinea.' ya se encuentra asignada, por favor escoger otra');
+                        return Redirect::to($url.'/mobile')->withErrors(['errors' => $verrors])->withInput();
+                    }
+                }else{
+                    $verrors = array();
+                    array_push($verrors, 'Hubo un problema al actualizar el equipo movil');
+                    return Redirect::to($url.'/mobile')->withErrors(['errors' => $verrors])->withInput();
+                }
+            }
 
-            $ActualizarEquipoMovil = Inventario::ActualizarEquipoMovil($TipoEquipo,$FechaAdquisicion,$Serial,$Marca,$Modelo,$IMEI,$Capacidad,
-                                                                            $LineaMovil,$Area,$NombreAsignado,$EstadoEquipo,$creadoPor,$idEquipoMovil,$Desvincular);
 
             if($ActualizarEquipoMovil){
 
@@ -1036,8 +1060,30 @@ class InventarioController extends Controller
             $Estado             = (int)Input::get('estado_upd');
             $Comentario         = Input::get('comentario');
             $IdImpresora        = (int)Input::get('idI');
-
-            $ActualizarImpresora = Inventario::ActualizarImpresora($TipoImpresora,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Ip,$IdConsumible,$Estado,$creadoPor,$Comentario,$IdImpresora);
+            $EstadoConsumible   = Inventario::EstadoConsumible($IdConsumible);
+            $BuscarConsumible   = Inventario::BuscarConsumibleID($IdConsumible,$IdImpresora);
+            $countBusqueda      = count($BuscarConsumible);
+            if($countBusqueda > 0){
+                $ActualizarImpresora = Inventario::ActualizarImpresora($TipoImpresora,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Ip,$IdConsumible,$Estado,$creadoPor,$Comentario,$IdImpresora);
+            }else{
+                if($EstadoConsumible){
+                    foreach($EstadoConsumible as $row){
+                        $EstadoConsumible = (int)$row->estado_consumible;
+                        $NombreConsumible = $row->marca.' - '.$row->serial;
+                    }
+                    if($EstadoConsumible === 1){
+                        $ActualizarImpresora = Inventario::ActualizarImpresora($TipoImpresora,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Ip,$IdConsumible,$Estado,$creadoPor,$Comentario,$IdImpresora);
+                    }else{
+                        $verrors = array();
+                        array_push($verrors, 'El consumible '.$NombreConsumible.' ya se encuentra asignado, por favor escoger otro');
+                        return Redirect::to($url.'/printers')->withErrors(['errors' => $verrors])->withInput();
+                    }
+                }else{
+                    $verrors = array();
+                    array_push($verrors, 'Hubo un problema al actualizar la impresora');
+                    return Redirect::to($url.'/printers')->withErrors(['errors' => $verrors])->withInput();
+                }
+            }
             if($ActualizarImpresora){
 
                 $destinationPath = null;
@@ -1085,7 +1131,96 @@ class InventarioController extends Controller
     }
 
     public function ingresarAsignacion(){
+        $data           = Input::all();
+        $creadoPor      = (int)Session::get('IdUsuario');
+        $buscarUsuario  = Usuarios::BuscarNombre($creadoPor);
+        foreach($buscarUsuario as $value){
+            $Administrador = (int)$value->rol_id;
+        }
+        $url = InventarioController::BuscarURL($Administrador);
+        $reglas = array(
+            'tipo_equipo'       =>  'required',
+            'marca_serial'      =>  'required',
+            'nombre_asignado'   =>  'required',
+            'cargo'             =>  'required',
+            'cedula'            =>  'required',
+            'telefono'          =>  'required'
+        );
+        $validador = Validator::make($data, $reglas);
+        $messages = $validador->messages();
+        foreach ($reglas as $key => $value){
+            $verrors[$key] = $messages->first($key);
+        }
+        if($validador->passes()) {
+            $TipoEquipo         = (int)Input::get('tipo_equipo');
+            $IdEquipo           = (int)Input::get('marca_serial');
+            if(Input::get('mouse')){
+                $Mouse          = (int)Input::get('mouse');
+            }else{
+                $Mouse          = null;
+            }
+            if(Input::get('pantalla')){
+                $Pantalla       = (int)Input::get('pantalla');
+            }else{
+                $Pantalla       = null;
+            }
+            if(Input::get('teclado')){
+                $Teclado        = (int)Input::get('teclado');
+            }else{
+                $Teclado        = null;
+            }
+            if(Input::get('cargador')){
+                $Cargador       = (int)Input::get('cargador');
+            }else{
+                $Cargador       = null;
+            }
+            $Opcion             = (int)Input::get('opcion');
+            if($Opcion === 1){
+                $TipoGuaya      = (int)Input::get('tipo_guaya');
+                $IdGuaya        = (int)Input::get('guaya');
+                switch($TipoGuaya){
+                    Case 1: $CodeGuaya = Input::get('code_guaya');
+                            break;
+                    Case 2: $CodeGuaya = null;
+                            break;
+                }
+            }else{
+                $TipoGuaya      = null;
+                $IdGuaya        = null;
+                $CodeGuaya      = null;
+            }
+            $Sede               = (int)Input::get('sede');
+            if(Input::get('area')){
+                $Area           = Input::get('area');
+            }else{
+                $Area           = 'SIN AREA';
+            }
+            $NombreAsignado     = Input::get('nombre_asignado');
+            $Cargo              = Input::get('cargo');
+            $Cedula             = Input::get('cedula');
+            $Telefono           = Input::get('telefono');
+            $Correo             = Input::get('correo');
+            if(Input::get('ticket')){
+                $Ticket         = (int)Input::get('ticket');
+            }else{
+                $Ticket         = 0;
+            }
+            $FechaAsignacion    = date('Y-m-d H:i:s', strtotime(Input::get('fecha_asignacion')));
+            $EstadoAsignado     = (int)Input::get('estado');
 
+            $CrearAsignado = Inventario::IngresarAsignado($TipoEquipo,$IdEquipo,$Mouse,$Pantalla,$Teclado,$Cargador,$TipoGuaya,$IdGuaya,$CodeGuaya,
+                                        $Sede,$Area,$NombreAsignado,$Cargo,$Cedula,$Telefono,$Correo,$Ticket,$FechaAsignacion,$EstadoAsignado,$creadoPor);
+            if($CrearAsignado){
+                $verrors = 'Se creo el asignado';
+                return redirect($url.'/asigneds')->with('mensaje', $verrors);
+            }else{
+                $verrors = array();
+                array_push($verrors, 'Hubo un problema al crear el asignado');
+                return Redirect::to($url.'/asigneds')->withErrors(['errors' => $verrors])->withInput();
+            }
+        }else{
+            return Redirect::to($url.'/asigneds')->withErrors(['errors' => $verrors])->withInput();
+        }
     }
 
     public function actualizarAsignacion(){

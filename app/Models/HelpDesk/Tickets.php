@@ -168,8 +168,8 @@ class Tickets extends Model
 
     }
 
-    public static function GuardarMesUsuario($mesActual,$id_user){
-        $ticketsMes     = DB::Select("SELECT count(*) as total FROM mes_graficas_user WHERE nombre like '%$mesActual%' AND id_user = $id_user");
+    public static function GuardarMesUsuario($mesActual,$id_user,$ActualYear){
+        $ticketsMes     = DB::Select("SELECT count(*) as total FROM mes_graficas_user WHERE mes LIKE '%$mesActual%' AND year = $ActualYear AND id_user = $id_user");
         $Tickets        = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND asigned_id = $id_user");
         $Incidentes     = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND kind_id = 1 AND asigned_id = $id_user AND status_id = 3");
         $Requerimientos = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND kind_id = 2 AND asigned_id = $id_user AND status_id = 3");
@@ -189,7 +189,7 @@ class Tickets extends Model
 
         if($total === 0){
             if($totalTickets > 0){
-                $guardarMes = DB::insert('INSERT INTO mes_graficas_user (nombre,incidentes,requerimientos,id_user) VALUES (?,?,?,?)', [$mesActual,$totalIncidentes,$totalRequerimientos,$id_user]);
+                $guardarMes = DB::insert('INSERT INTO mes_graficas_user (mes,year,incidentes,requerimientos,id_user) VALUES (?,?,?,?)', [$mesActual,$ActualYear,$totalIncidentes,$totalRequerimientos,$id_user]);
                 if($guardarMes){
                     return true;
                 }

@@ -659,11 +659,17 @@ class InventarioController extends Controller
             $Consumible[$row->id] = $row->marca.' - '.$row->modelo;
         }
 
-        $ListarConsumiblesUpd = Inventario::ListarConsumibles();
+        $ListarConsumiblesUpd = Inventario::ListarConsumiblesUpd();
         $ConsumibleUpd = Array();
         $ConsumibleUpd[''] = 'Seleccione: ';
         foreach($ListarConsumiblesUpd as $row){
-            $ConsumibleUpd[$row->id] = $row->marca.' - '.$row->modelo;
+            $EstadoConsumible = (int)$row->estado_consumible;
+            if($EstadoConsumible === 1){
+                $estadoC = 'Disponible';
+            }else{
+                $estadoC = 'Asignado';
+            }
+            $ConsumibleUpd[$row->id] = $row->marca.' - '.$row->modelo.' / '.$estadoC;
         }
 
         $ListarImpresoras = Inventario::ListarImpresoras();
@@ -781,12 +787,17 @@ class InventarioController extends Controller
             foreach($TipoEquipo as $row){
                 $Asignados[$cont]['tipoEquipo']     = $row->name;
             }
-            $Asignados[$cont]['id_equipo']          = (int)$value->tipo_equipo;
-            $IdEquipo                               = (int)$value->tipo_equipo;
+            $Asignados[$cont]['id_equipo']          = (int)$value->id_equipo;
+            $IdEquipo                               = (int)$value->id_equipo;
             $Equipo                                 = Inventario::BuscarIdEquipo($IdEquipo);
-            foreach($Equipo as $row){
-                $Asignados[$cont]['equipo']         = $row->marca.' / '.$row->serial;
+            if($Equipo){
+                foreach($Equipo as $row){
+                    $Asignados[$cont]['equipo']     = $row->marca.' / '.$row->serial;
+                }
+            }else{
+                $Asignados[$cont]['equipo']         = 'SIN EQUIPO';
             }
+
             $Asignados[$cont]['id_mouse']           = (int)$value->id_mouse;
             $IdMouse                                = (int)$value->id_mouse;
             $Mouse                                  = Inventario::BuscarMouseId($IdMouse);
@@ -836,8 +847,10 @@ class InventarioController extends Controller
                 foreach($Guaya as $row){
                     $Asignados[$cont]['guaya']      = $row->marca.' / '.$row->serial;
                 }
+                $Asignados[$cont]['opcion']         = '1';
             }else{
                 $Asignados[$cont]['guaya']          = 'SIN GUAYA';
+                $Asignados[$cont]['opcion']         = '0';
             }
             $Asignados[$cont]['tipo_guaya']         = (int)$value->tipo_guaya;
             $IdTipoGuaya                            = (int)$value->tipo_guaya;
@@ -904,7 +917,7 @@ class InventarioController extends Controller
             $cont++;
         }
         $Estado   = InventarioController::TipoEstado();
-        $ListarEquipos = Inventario::ListarTipoEquipos();
+        $ListarEquipos = Inventario::ListarEquipoUsuarioC();
         $Equipos  = array();
         $Equipos[''] = 'Seleccione: ';
         foreach ($ListarEquipos as $row){
@@ -916,11 +929,23 @@ class InventarioController extends Controller
         foreach ($ListarMouse as $row){
             $Mouse[$row->id] = $row->marca.' - '.$row->serial;
         }
+        $ListarMouseUpd = Inventario::ListarMouseActivoUpd();
+        $MouseUpd  = array();
+        $MouseUpd[''] = 'Seleccione: ';
+        foreach ($ListarMouseUpd as $row){
+            $MouseUpd[$row->id] = $row->marca.' - '.$row->serial;
+        }
         $ListarPantalla = Inventario::ListarPantallaActivo();
         $Pantalla  = array();
         $Pantalla[''] = 'Seleccione: ';
         foreach ($ListarPantalla as $row){
             $Pantalla[$row->id] = $row->marca.' - '.$row->serial;
+        }
+        $ListarPantallaUpd = Inventario::ListarPantallaActivoUpd();
+        $PantallaUpd  = array();
+        $PantallaUpd[''] = 'Seleccione: ';
+        foreach ($ListarPantallaUpd as $row){
+            $PantallaUpd[$row->id] = $row->marca.' - '.$row->serial;
         }
         $ListarTeclado = Inventario::ListarTecladoActivo();
         $Teclado  = array();
@@ -928,11 +953,23 @@ class InventarioController extends Controller
         foreach ($ListarTeclado as $row){
             $Teclado[$row->id] = $row->marca.' - '.$row->serial;
         }
+        $ListarTecladoUpd = Inventario::ListarTecladoActivoUpd();
+        $TecladoUpd  = array();
+        $TecladoUpd[''] = 'Seleccione: ';
+        foreach ($ListarTecladoUpd as $row){
+            $TecladoUpd[$row->id] = $row->marca.' - '.$row->serial;
+        }
         $ListarCargador = Inventario::ListarCargadorActivo();
         $Cargador  = array();
         $Cargador[''] = 'Seleccione: ';
         foreach ($ListarCargador as $row){
             $Cargador[$row->id] = $row->marca.' - '.$row->serial;
+        }
+        $ListarCargadorUpd = Inventario::ListarCargadorActivoUpd();
+        $CargadorUpd  = array();
+        $CargadorUpd[''] = 'Seleccione: ';
+        foreach ($ListarCargadorUpd as $row){
+            $CargadorUpd[$row->id] = $row->marca.' - '.$row->serial;
         }
         $ListarGuaya = Inventario::ListarGuayaActivo();
         $Guaya  = array();
@@ -940,26 +977,35 @@ class InventarioController extends Controller
         foreach ($ListarGuaya as $row){
             $Guaya[$row->id] = $row->marca.' - '.$row->serial;
         }
+        $ListarGuayaUpd = Inventario::ListarGuayaActivoUpd();
+        $GuayaUpd  = array();
+        $GuayaUpd[''] = 'Seleccione: ';
+        foreach ($ListarGuayaUpd as $row){
+            $GuayaUpd[$row->id] = $row->marca.' - '.$row->serial;
+        }
         $NombreSede = array();
         $NombreSede[''] = 'Seleccione: ';
         $Sedes  = Sedes::Sedes();
         foreach ($Sedes as $row){
             $NombreSede[$row->id] = $row->name;
         }
-        $ListarMarca = Inventario::ListarMarcaActivo();
         $Marca  = array();
         $Marca[''] = 'Seleccione: ';
-        // foreach ($ListarMarca as $row){
-        //     $Marca[$row->id] = $row->marca.' - '.$row->serial;
-        // }
         $Opcion  = array();
         $Opcion[''] = 'Seleccione: ';
         $Opcion[1] = 'Sí';
         $Opcion[0] = 'No';
+        $ListarMarca = Inventario::ListarMarcaActivoUpd();
+        $MarcaUpd  = array();
+        $MarcaUpd[''] = 'Seleccione: ';
+        foreach ($ListarMarca as $row){
+            $MarcaUpd[$row->id] = $row->marca.' - '.$row->serial;
+        }
         return view('Inventario.Asignados',['Stock' => $TotalStock,'TAsignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos,
                                             'Estado' => $Estado,'Asignados' => $Asignados,'Equipos' => $Equipos,'Mouse' => $Mouse,'Pantalla' => $Pantalla,'Teclado' => $Teclado,
                                             'Cargador' => $Cargador,'Guaya' => $Guaya,'Sede' => $NombreSede,'Area' => null,'NombreAsignado' => null,'Cargo' => null,'Cedula' => null,
-                                            'Telefono' => null,'Correo' => null,'Ticket' => null,'FechaAsignacion' => null,'Marca' => $Marca,'Opcion' => $Opcion]);
+                                            'Telefono' => null,'Correo' => null,'Ticket' => null,'FechaAsignacion' => null,'Marca' => $Marca,'Opcion' => $Opcion,'MarcaUpd' => $MarcaUpd,
+                                            'MouseUpd' => $MouseUpd,'PantallaUpd' => $PantallaUpd,'TecladoUpd' => $TecladoUpd,'CargadorUpd' => $CargadorUpd,'GuayaUpd' => $GuayaUpd]);
     }
 
 

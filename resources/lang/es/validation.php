@@ -123,6 +123,7 @@ return array(
         'Serial'                =>  'Serial',
         'linea_movil'           =>  'Numero de Linea Movil',
         'nombre_asignado'       =>  'Nombre del Asignado / Responsable',
+        'nombre_asignado_upd'   =>  'Nombre del Asignado / Responsable',
         'tipo_equipo_upd'       =>  'Tipo Equipo',
         'fecha_adquision_upd'   =>  'Fecha Adquisiciónb',
         'serial_upd'            =>  'Serial',

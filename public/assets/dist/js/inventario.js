@@ -223,7 +223,7 @@ $(document).ready(function () {
 
     });
 
-    $('#periferic').DataTable({
+    $('#preriferic').DataTable({
         columnDefs: [
             { responsivePriority: 1, targets: 0 },
             { responsivePriority: 2, targets: -1 }],
@@ -390,31 +390,5 @@ $(document).ready(function () {
                         ]
 
     });
-
-    function equipoFunc() {
-        var selectBox = document.getElementById("tipo_equipo");
-        var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-        var tipo = 'post';
-        var select = document.getElementById("marca_serial");
-
-        $.ajax({
-            url: "{{route('buscarEquipo')}}",
-            type: "get",
-            data: {_method: tipo, tipo_equipo: selectedValue},
-            success: function (data) {
-                var vValido = data['valido'];
-
-                if (vValido === 'true') {
-                    var ListUsuario = data['Equipo'];
-                    select.options.length = 0;
-                    for (index in ListUsuario) {
-                        select.options[select.options.length] = new Option(ListUsuario[index], index);
-                    }
-
-                }
-
-            }
-        });
-    }
 
 });

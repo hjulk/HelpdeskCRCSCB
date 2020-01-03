@@ -1,4 +1,4 @@
-<div class="modal fade bd-example-modal-xl" id="modal-asignados" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-xl" id="modal-consumible" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">

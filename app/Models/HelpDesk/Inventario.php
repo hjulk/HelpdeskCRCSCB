@@ -146,6 +146,11 @@ class Inventario extends Model
         return $historial;
     }
 
+    public static function BuscarLineaMovilID($LineaMovil,$idEquipoMovil){
+        $BuscarConsumibleID = DB::Select("SELECT * FROM equipo_movil WHERE id = $idEquipoMovil AND linea = $LineaMovil");
+        return $BuscarConsumibleID;
+    }
+
     // LINEA MOVIL
 
     public static function BuscarNroLinea($IdLinea){
@@ -159,7 +164,7 @@ class Inventario extends Model
     }
 
     public static function ListadoLineaMovilUpd(){
-        $ListadoLineaMovil = DB::Select("SELECT * FROM linea ORDER BY nro_linea");
+        $ListadoLineaMovil = DB::Select("SELECT * FROM linea ORDER BY nro_linea AND estado_equipo IN (1,2)");
         return $ListadoLineaMovil;
     }
 
@@ -279,6 +284,8 @@ class Inventario extends Model
         return $ListarEquipo;
     }
 
+
+
     public static function BuscarEquipoId($IdTipoEquipo){
         $BuscarEquipoId = DB::Select("SELECT * FROM tipo_equipo WHERE id = $IdTipoEquipo");
         return $BuscarEquipoId;
@@ -286,6 +293,11 @@ class Inventario extends Model
 
     public static function ListarMarcaActivo(){
         $Stock = DB::Select("SELECT * FROM equipo WHERE estado_equipo = 1");
+        return $Stock;
+    }
+
+    public static function ListarMarcaActivoUpd(){
+        $Stock = DB::Select("SELECT * FROM equipo WHERE estado_equipo IN (1,2)");
         return $Stock;
     }
 
@@ -601,27 +613,27 @@ class Inventario extends Model
     }
 
     public static function BuscarMouseId($IdMouse){
-        $BuscarMouse = DB::Select("SELECT * FROM mouse WHERE id = $IdMouse");
+        $BuscarMouse = DB::Select("SELECT * FROM perifericos WHERE id = $IdMouse");
         return $BuscarMouse;
     }
 
     public static function BuscarPantallaId($IdPantalla){
-        $BuscarPantalla = DB::Select("SELECT * FROM pantalla WHERE id = $IdPantalla");
+        $BuscarPantalla = DB::Select("SELECT * FROM perifericos WHERE id = $IdPantalla");
         return $BuscarPantalla;
     }
 
     public static function BuscarTecladoId($IdTeclado){
-        $BuscarTeclado = DB::Select("SELECT * FROM teclado WHERE id = $IdTeclado");
+        $BuscarTeclado = DB::Select("SELECT * FROM perifericos WHERE id = $IdTeclado");
         return $BuscarTeclado;
     }
 
     public static function BuscarCargadorId($IdCargador){
-        $BuscarCargador = DB::Select("SELECT * FROM cargador WHERE id = $IdCargador");
+        $BuscarCargador = DB::Select("SELECT * FROM perifericos WHERE id = $IdCargador");
         return $BuscarCargador;
     }
 
     public static function BuscarGuayaId($IdGuaya){
-        $BuscarGuaya = DB::Select("SELECT * FROM guaya WHERE id = $IdGuaya");
+        $BuscarGuaya = DB::Select("SELECT * FROM perifericos WHERE id = $IdGuaya");
         return $BuscarGuaya;
     }
 
@@ -635,8 +647,18 @@ class Inventario extends Model
         return $ListarMouse;
     }
 
+    public static function ListarMouseActivoUpd(){
+        $ListarMouse = DB::Select("SELECT * FROM perifericos WHERE tipo_periferico = 2 AND estado_periferico IN (1,2)");
+        return $ListarMouse;
+    }
+
     public static function ListarPantallaActivo(){
         $ListarPantalla = DB::Select("SELECT * FROM perifericos WHERE tipo_periferico = 1 AND estado_periferico = 1");
+        return $ListarPantalla;
+    }
+
+    public static function ListarPantallaActivoUpd(){
+        $ListarPantalla = DB::Select("SELECT * FROM perifericos WHERE tipo_periferico = 1 AND estado_periferico IN (1,2)");
         return $ListarPantalla;
     }
 
@@ -645,13 +667,28 @@ class Inventario extends Model
         return $ListarTeclado;
     }
 
+    public static function ListarTecladoActivoUpd(){
+        $ListarTeclado = DB::Select("SELECT * FROM perifericos WHERE tipo_periferico = 3 AND estado_periferico IN (1,2)");
+        return $ListarTeclado;
+    }
+
     public static function ListarCargadorActivo(){
         $ListarCargador = DB::Select("SELECT * FROM perifericos WHERE tipo_periferico = 5 AND estado_periferico = 1");
         return $ListarCargador;
     }
 
+    public static function ListarCargadorActivoUpd(){
+        $ListarCargador = DB::Select("SELECT * FROM perifericos WHERE tipo_periferico = 5 AND estado_periferico IN (1,2)");
+        return $ListarCargador;
+    }
+
     public static function ListarGuayaActivo(){
         $ListarGuaya = DB::Select("SELECT * FROM perifericos WHERE tipo_periferico = 4 AND estado_periferico = 1");
+        return $ListarGuaya;
+    }
+
+    public static function ListarGuayaActivoUpd(){
+        $ListarGuaya = DB::Select("SELECT * FROM perifericos WHERE tipo_periferico = 4 AND estado_periferico IN (1,2)");
         return $ListarGuaya;
     }
 
@@ -678,6 +715,11 @@ class Inventario extends Model
 
     public static function ListarConsumibles(){
         $ListarConsumibles = DB::Select("SELECT * FROM consumible");
+        return $ListarConsumibles;
+    }
+
+    public static function ListarConsumiblesUpd(){
+        $ListarConsumibles = DB::Select("SELECT * FROM consumible WHERE estado_consumible IN (1,2)");
         return $ListarConsumibles;
     }
 
@@ -764,66 +806,10 @@ class Inventario extends Model
         return $BuscarSerialEquipo;
     }
 
-    // ASIGNACIONES
-    public static function RegistrarAsignadoEM($TipoEquipo,$idEquipoMovil,$Area,$NombreAsignado,$EstadoEquipo,$creadoPor){
-        date_default_timezone_set('America/Bogota');
-        $fecha_sistema  = date('Y-m-d H:i');
-        $fechaCreacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
-        $BuscarAsignado = DB::Select("SELECT * FROM asignados WHERE nombre_usuario LIKE '%$NombreAsignado%' AND id IS NOT NULL");
-        foreach($BuscarAsignado as $row){
-            $IdAsignado = (int)$row->id;
-        }
-        $TotalBusqueda  = (int)count($BuscarAsignado);
-        if($TotalBusqueda === 0){
-            DB::Insert('INSERT INTO asignados (tipo_equipo,id_movil,area,nombre_usuario,estado_asignado,created_at,user_id,id_ticket)
-                        VALUES (?,?,?,?,?,?,?,?)',
-                        [$TipoEquipo,$idEquipoMovil,$Area,$NombreAsignado,$EstadoEquipo,$fechaCreacion,$creadoPor,0]);
-        }else{
-            if((int)$EstadoEquipo === 1){
-                DB::Update("UPDATE asignados SET id_movil = null,update_at = '$fechaCreacion' WHERE id = $IdAsignado");
-            }else{
-                DB::Update("UPDATE asignados SET id_movil = $idEquipoMovil, estado_asignado = $EstadoEquipo, update_at = '$fechaCreacion' WHERE id = $IdAsignado");
-            }
-        }
+    public static function EstadoConsumible($IdConsumible){
+        $EstadoConsumible = DB::Select("SELECT * FROM consumible WHERE id = $IdConsumible");
+        return $EstadoConsumible;
     }
-
-    public static function RegistrarAsignadoLM($idEquipoMovil,$Area,$NombreAsignado,$EstadoEquipo,$creadoPor){
-        date_default_timezone_set('America/Bogota');
-        $fecha_sistema  = date('Y-m-d H:i');
-        $fechaCreacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
-        $BuscarAsignado = DB::Select("SELECT * FROM asignados WHERE nombre_usuario LIKE '%$NombreAsignado%' AND id IS NOT NULL");
-        foreach($BuscarAsignado as $row){
-            $IdAsignado = (int)$row->id;
-        }
-        $TotalBusqueda  = (int)count($BuscarAsignado);
-        if($TotalBusqueda === 0){
-            DB::Insert('INSERT INTO asignados (id_linea,area,nombre_usuario,estado_asignado,created_at,user_id,id_ticket)
-                        VALUES (?,?,?,?,?,?,?)',
-                        [$idEquipoMovil,$Area,$NombreAsignado,$EstadoEquipo,$fechaCreacion,$creadoPor,0]);
-        }else{
-            if((int)$EstadoEquipo === 1){
-                DB::Update("UPDATE asignados SET id_linea = null,update_at = '$fechaCreacion' WHERE id = $IdAsignado");
-            }else{
-                DB::Update("UPDATE asignados SET id_linea = $idEquipoMovil, estado_asignado = $EstadoEquipo, update_at = '$fechaCreacion' WHERE id = $IdAsignado");
-            }
-        }
-    }
-
-    public static function ListarAsignados(){
-        $ListarAsignados = DB::Select("SELECT * FROM asignados WHERE id_linea is null AND id_movil is null");
-        return $ListarAsignados;
-    }
-
-    public static function EvidenciaAsignado($idAsignado){
-        $EvidenciaEquipo = DB::Select("SELECT * FROM evidencia_inventario WHERE id_asignado = $idAsignado");
-        return $EvidenciaEquipo;
-    }
-
-    public static function BuscarHistorialA($idAsignado){
-        $historial = DB::Select("SELECT * FROM historial_inventario WHERE id_asignado = $idAsignado");
-        return $historial;
-    }
-
 
     // IMPRESORAS
     public static function ImpresoraStock(){
@@ -951,6 +937,102 @@ class Inventario extends Model
                                             actualizado_por = $creadoPor
                                             WHERE id = $IdImpresora");
         return $ActualizarImpresora;
+    }
+
+    public static function BuscarConsumibleID($IdConsumible,$IdImpresora){
+        $BuscarConsumibleID = DB::Select("SELECT * FROM impresoras WHERE id = $IdImpresora AND id_consumible = $IdConsumible");
+        return $BuscarConsumibleID;
+    }
+
+    // ASIGNACIONES
+    public static function RegistrarAsignadoEM($TipoEquipo,$idEquipoMovil,$Area,$NombreAsignado,$EstadoEquipo,$creadoPor){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema  = date('Y-m-d H:i');
+        $fechaCreacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
+        $BuscarAsignado = DB::Select("SELECT * FROM asignados WHERE nombre_usuario LIKE '%$NombreAsignado%' AND id IS NOT NULL");
+        foreach($BuscarAsignado as $row){
+            $IdAsignado = (int)$row->id;
+        }
+        $TotalBusqueda  = (int)count($BuscarAsignado);
+        if($TotalBusqueda === 0){
+            DB::Insert('INSERT INTO asignados (tipo_equipo,id_movil,area,nombre_usuario,estado_asignado,created_at,user_id,id_ticket)
+                        VALUES (?,?,?,?,?,?,?,?)',
+                        [$TipoEquipo,$idEquipoMovil,$Area,$NombreAsignado,$EstadoEquipo,$fechaCreacion,$creadoPor,0]);
+        }else{
+            if((int)$EstadoEquipo === 1){
+                DB::Update("UPDATE asignados SET id_movil = null,update_at = '$fechaCreacion' WHERE id = $IdAsignado");
+            }else{
+                DB::Update("UPDATE asignados SET id_movil = $idEquipoMovil, estado_asignado = $EstadoEquipo, update_at = '$fechaCreacion' WHERE id = $IdAsignado");
+            }
+        }
+    }
+
+    public static function RegistrarAsignadoLM($idEquipoMovil,$Area,$NombreAsignado,$EstadoEquipo,$creadoPor){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema  = date('Y-m-d H:i');
+        $fechaCreacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
+        $BuscarAsignado = DB::Select("SELECT * FROM asignados WHERE nombre_usuario LIKE '%$NombreAsignado%' AND id IS NOT NULL");
+        foreach($BuscarAsignado as $row){
+            $IdAsignado = (int)$row->id;
+        }
+        $TotalBusqueda  = (int)count($BuscarAsignado);
+        if($TotalBusqueda === 0){
+            DB::Insert('INSERT INTO asignados (id_linea,area,nombre_usuario,estado_asignado,created_at,user_id,id_ticket)
+                        VALUES (?,?,?,?,?,?,?)',
+                        [$idEquipoMovil,$Area,$NombreAsignado,$EstadoEquipo,$fechaCreacion,$creadoPor,0]);
+        }else{
+            if((int)$EstadoEquipo === 1){
+                DB::Update("UPDATE asignados SET id_linea = null,update_at = '$fechaCreacion' WHERE id = $IdAsignado");
+            }else{
+                DB::Update("UPDATE asignados SET id_linea = $idEquipoMovil, estado_asignado = $EstadoEquipo, update_at = '$fechaCreacion' WHERE id = $IdAsignado");
+            }
+        }
+    }
+
+    public static function ListarAsignados(){
+        $ListarAsignados = DB::Select("SELECT * FROM asignados WHERE tipo_equipo IN (1,2)");
+        return $ListarAsignados;
+    }
+
+    public static function EvidenciaAsignado($idAsignado){
+        $EvidenciaEquipo = DB::Select("SELECT * FROM evidencia_inventario WHERE id_asignado = $idAsignado");
+        return $EvidenciaEquipo;
+    }
+
+    public static function BuscarHistorialA($idAsignado){
+        $historial = DB::Select("SELECT * FROM historial_inventario WHERE id_asignado = $idAsignado");
+        return $historial;
+    }
+
+    public static function IngresarAsignado($TipoEquipo,$IdEquipo,$Mouse,$Pantalla,$Teclado,$Cargador,$TipoGuaya,$IdGuaya,$CodeGuaya,
+                                            $Sede,$Area,$NombreAsignado,$Cargo,$Cedula,$Telefono,$Correo,$Ticket,$FechaAsignacion,$EstadoAsignado,$creadoPor){
+
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema  = date('Y-m-d H:i');
+        $fechaCreacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
+
+        $IngresarAsignado = DB::Insert('INSERT INTO asignados (tipo_equipo,id_equipo,id_mouse,id_pantalla,id_teclado,id_cargador,tipo_guaya,id_guaya,code_guaya,sede,area,nombre_usuario,cargo_usuario,id_usuario,tel_usuario,correo,id_ticket,fecha_asignacion,estado_asignado,created_at,user_id)
+                                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                                        [$TipoEquipo,$IdEquipo,$Mouse,$Pantalla,$Teclado,$Cargador,$TipoGuaya,$IdGuaya,$CodeGuaya,$Sede,$Area,$NombreAsignado,$Cargo,$Cedula,$Telefono,$Correo,$Ticket,$FechaAsignacion,$EstadoAsignado,$fechaCreacion,$creadoPor]);
+        If($IngresarAsignado){
+            DB::Update("UPDATE equipo SET estado_equipo = 2 WHERE id = $IdEquipo");
+            if($Mouse != null){
+                DB::Update("UPDATE mouse SET estado_mouse = 2 WHERE id_periferico = $Mouse");
+            }
+            if($Pantalla != null){
+                DB::Update("UPDATE pantalla SET estado_pantalla = 2 WHERE id_periferico = $Pantalla");
+            }
+            if($Teclado != null){
+                DB::Update("UPDATE teclado SET estado_teclado = 2 WHERE id_periferico = $Teclado");
+            }
+            if($Cargador != null){
+                DB::Update("UPDATE cargador SET estado_cargador = 2 WHERE id_periferico = $Cargador");
+            }
+            if($IdGuaya != null){
+                DB::Update("UPDATE guaya SET estado_guaya = 2 WHERE id_periferico = $IdGuaya");
+            }
+        }
+        return $IngresarAsignado;
     }
 
 }

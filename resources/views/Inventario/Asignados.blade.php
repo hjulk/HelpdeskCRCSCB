@@ -90,7 +90,7 @@ Asignaciones
                                         <td>{{$value['teclado']}}</td>
                                         <td>{{$value['nombre_usuario']}}</td>
                                         <td>{{$value['area']}}</td>
-                                        <td style="text-align: center;"><a href="#" class="btn btn-warning" title="Editar" data-toggle="modal" data-target="#modal-cambios-impresora" onclick="obtener_datos_asignado('{{$value['id']}}');"><i class="fa fa-edit"></i></a></td>
+                                        <td style="text-align: center;"><a href="#" class="btn btn-warning" title="Editar" data-toggle="modal" data-target="#modal-cambios-asignado" onclick="obtener_datos_asignado('{{$value['id']}}');"><i class="fa fa-edit"></i></a></td>
                                         <input type="hidden" value="{{$value['id']}}" id="id{{$value['id']}}">
                                         <input type="hidden" value="{{$value['tipo_equipo']}}" id="tipo_equipo{{$value['id']}}">
                                         <input type="hidden" value="{{$value['id_equipo']}}" id="id_equipo{{$value['id']}}">
@@ -98,6 +98,7 @@ Asignaciones
                                         <input type="hidden" value="{{$value['id_teclado']}}" id="id_teclado{{$value['id']}}">
                                         <input type="hidden" value="{{$value['id_pantalla']}}" id="id_pantalla{{$value['id']}}">
                                         <input type="hidden" value="{{$value['id_cargador']}}" id="id_cargador{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['opcion']}}" id="opcion{{$value['id']}}">
                                         <input type="hidden" value="{{$value['id_guaya']}}" id="id_guaya{{$value['id']}}">
                                         <input type="hidden" value="{{$value['tipo_guaya']}}" id="tipo_guaya{{$value['id']}}">
                                         <input type="hidden" value="{{$value['code_guaya']}}" id="code_guaya{{$value['id']}}">
@@ -110,7 +111,7 @@ Asignaciones
                                         <input type="hidden" value="{{$value['correo']}}" id="correo{{$value['id']}}">
                                         <input type="hidden" value="{{$value['id_ticket']}}" id="id_ticket{{$value['id']}}">
                                         <input type="hidden" value="{{$value['fecha_asignacion']}}" id="fecha_asignacion{{$value['id']}}">
-                                        <input type="hidden" value="{{$value['estado_asigando']}}" id="estado_asigando{{$value['id']}}">
+                                        <input type="hidden" value="{{$value['estado_asignado']}}" id="estado_asignado{{$value['id']}}">
                                         <input type="hidden" value="{{$value['evidencia']}}" id="evidencia{{$value['id']}}">
                                         <input type="hidden" value="{{$value['historial']}}" id="historial{{$value['id']}}">
                                     </tr>
@@ -150,19 +151,17 @@ Asignaciones
             var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
             var time = today.getHours() + ":" + today.getMinutes();
             var dateTime = date+' '+time;
-            $('#fecha_adquision').datepicker({
+            $('#fecha_asignacion').datepicker({
                 autoclose: true,
                 language: 'es',
                 todayBtn: true,
-                format: 'dd-mm-yyyy',
-                orientation: 'bottom auto'
+                format: 'dd-mm-yyyy'
             });
-            $('#mod_fecha_adquision').datepicker({
+            $('#mod_fecha_asignacion').datepicker({
                 autoclose: true,
                 language: 'es',
                 todayBtn: true,
-                format: 'dd-mm-yyyy',
-                orientation: 'bottom auto'
+                format: 'dd-mm-yyyy'
             });
         });
     </script>
