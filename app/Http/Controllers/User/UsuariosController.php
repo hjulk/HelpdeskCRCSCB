@@ -245,7 +245,7 @@ class UsuariosController extends Controller
         $Disponibilidad['DISPONIBILIDAD']   = 'DISPONIBILIDAD';
         $Disponibilidad['MESA DE AYUDA']    = 'MESA DE AYUDA';
 
-        return view('user.Turnos',['Turnos' => $ListarTurnos,'Horario' => $Horario,'Sede' => $Sede,'Agente' => $Agente,
+        return view('Turnos.Turnos',['Turnos' => $ListarTurnos,'Horario' => $Horario,'Sede' => $Sede,'Agente' => $Agente,
                                     'Disponibilidad' => $Disponibilidad]);
     }
 

@@ -81,7 +81,6 @@ Turnos
         @if (session("precaucion"))
             toastr.warning("{{ session("precaucion") }}");
         @endif
-
         @if (count($errors) > 0)
             @foreach($errors -> all() as $error)
                 toastr.error("{{ $error }}");
@@ -99,28 +98,32 @@ Turnos
                 language: 'es',
                 todayBtn: true,
                 format: 'dd-mm-yyyy',
-                orientation: 'bottom auto'
+                orientation: 'bottom auto',
+                startDate: '-0d'
             });
             $('#mod_fecha_inicio').datepicker({
                 autoclose: true,
                 language: 'es',
                 todayBtn: true,
                 format: 'dd-mm-yyyy',
-                orientation: 'bottom auto'
+                orientation: 'bottom auto',
+                startDate: '-0d'
             });
             $('#fecha_fin').datepicker({
                 autoclose: true,
                 language: 'es',
                 todayBtn: true,
                 format: 'dd-mm-yyyy',
-                orientation: 'bottom auto'
+                orientation: 'bottom auto',
+                startDate: '-0d'
             });
             $('#mod_fecha_fin').datepicker({
                 autoclose: true,
                 language: 'es',
                 todayBtn: true,
                 format: 'dd-mm-yyyy',
-                orientation: 'bottom auto'
+                orientation: 'bottom auto',
+                startDate: '-0d'
             });
         });
     </script>
