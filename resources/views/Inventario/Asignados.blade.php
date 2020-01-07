@@ -155,13 +155,15 @@ Asignaciones
                 autoclose: true,
                 language: 'es',
                 todayBtn: true,
-                format: 'dd-mm-yyyy'
+                format: 'dd-mm-yyyy',
+                endDate: '+0d'
             });
             $('#mod_fecha_asignacion').datepicker({
                 autoclose: true,
                 language: 'es',
                 todayBtn: true,
-                format: 'dd-mm-yyyy'
+                format: 'dd-mm-yyyy',
+                endDate: '+0d'
             });
         });
     </script>

@@ -135,8 +135,9 @@ Tickets
                 autoclose: true,
                 language: 'es',
                 todayBtn: true,
-                format: 'dd/mm/yyyy',
-                orientation: 'bottom auto'
+                format: 'dd-mm-yyyy',
+                orientation: 'bottom auto',
+                endDate: '+0d'
             });
         });
 </script>

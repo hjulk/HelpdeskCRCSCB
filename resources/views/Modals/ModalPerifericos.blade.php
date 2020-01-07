@@ -12,7 +12,7 @@
                     <div class="row">
                         <div class="col-md-3">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Tipo Periferico</label>
-                            {!! Form::Select('tipo_periferico',$TipoPeriferico,null,['class'=>'form-control','id'=>'tipo_periferico','required']) !!}
+                            {!! Form::Select('tipo_periferico',$TipoPeriferico,null,['class'=>'form-control','id'=>'tipo_periferico','required','onChange'=>'mostrarT(this.value);']) !!}
                         </div>
                         <div class="col-md-3">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Tipo Adquisisión</label>
@@ -38,7 +38,7 @@
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Marca</label>
                             {!! Form::text('marca',$Marca,['class'=>'form-control','id'=>'marca','placeholder'=>'Marca','required']) !!}
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="tamano" style="display: none;">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Tamaño Pulgadas</label>
                             {!! Form::text('tamano',$Tamano,['class'=>'form-control','id'=>'tamano','placeholder'=>'Tamaño en Pulgadas']) !!}
                         </div>
@@ -85,7 +85,7 @@
                     <div class="row">
                         <div class="col-md-3">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Tipo Periferico</label>
-                            {!! Form::Select('tipo_periferico_upd',$TipoPeriferico,null,['class'=>'form-control','id'=>'mod_tipo_periferico','required']) !!}
+                            {!! Form::Select('tipo_periferico_upd',$TipoPeriferico,null,['class'=>'form-control','id'=>'mod_tipo_periferico','required','onChange'=>'mostrarTUpd(this.value);']) !!}
                         </div>
                         <div class="col-md-3">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Tipo Adquisisión</label>
@@ -111,7 +111,7 @@
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Marca</label>
                             {!! Form::text('marca_upd',$Marca,['class'=>'form-control','id'=>'mod_marca','placeholder'=>'Marca','required']) !!}
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="tamano_upd" style="display: none;">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Tamaño Pulgadas</label>
                             {!! Form::text('tamano_upd',$Tamano,['class'=>'form-control','id'=>'mod_tamano','placeholder'=>'Tamaño en Pulgadas']) !!}
                         </div>
@@ -203,6 +203,23 @@
                 $("#renting_upd").show();
             }else{
                 $("#renting_upd").hide();
+            }
+        }
+    </script>
+
+    <script>
+        function mostrarT(id) {
+            if (id === '1') {
+                $("#tamano").show();
+            }else{
+                $("#tamano").hide();
+            }
+        }
+        function mostrarTUpd(id) {
+            if (id === '1') {
+                $("#tamano_upd").show();
+            }else{
+                $("#tamano_upd").hide();
             }
         }
     </script>

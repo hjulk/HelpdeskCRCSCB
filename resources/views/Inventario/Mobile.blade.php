@@ -148,14 +148,16 @@ Equipos Móviles
                 language: 'es',
                 todayBtn: true,
                 format: 'dd-mm-yyyy',
-                orientation: 'bottom auto'
+                orientation: 'bottom auto',
+                endDate: '+0d'
             });
             $('#mod_fecha_adquision_upd').datepicker({
                 autoclose: true,
                 language: 'es',
                 todayBtn: true,
                 format: 'dd-mm-yyyy',
-                orientation: 'bottom auto'
+                orientation: 'bottom auto',
+                endDate: '+0d'
             });
         });
 </script>

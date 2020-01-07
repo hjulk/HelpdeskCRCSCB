@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tickets extends Model
 {
+
+
     protected $table = "ticket";
     public $timestamps = false;
 
@@ -21,22 +23,16 @@ class Tickets extends Model
         return $ticketsU;
     }
 
-    public static function TicketsUsuario($id_user,$IdRolUSer){
-        $categoria = DB::SELECT("SELECT * FROM USER WHERE ID = $id_user");
-        foreach($categoria as $valor){
-            $category_id = $valor->category_id;
-        }
+    public static function TicketsUsuario($id_user,$IdRolUSer,$IdCategoriaUSer){
         if($IdRolUSer === 2){
-            if(($category_id === 1) || ($category_id === 2)){
-                $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND finalizado = 0 AND category_id IN (1,2,5)");
+            if($IdCategoriaUSer === 4){
+                $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2)");
             }else{
-                $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND finalizado = 0 AND asigned_id = $id_user");
+                $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND category_id = $IdCategoriaUSer");
             }
         }else{
-            $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND finalizado = 0 AND asigned_id = $id_user");
+            $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND asigned_id = $id_user");
         }
-
-
         return $tickets;
     }
 
@@ -90,7 +86,16 @@ class Tickets extends Model
         return $desarrollo;
     }
     public static function EnDesarrolloUsuario($id_user){
-        $desarrollo = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 2 AND asignado_id = $id_user");
+        $buscarUsuario  = Usuarios::BuscarNombre($id_user);
+        foreach($buscarUsuario as $value){
+            $Categoria = (int)$value->category_id;
+            $Rol = (int)$value->rol_id;
+        }
+        if($Rol === 2){
+            $desarrollo = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 2 AND category_id = $Categoria");
+        }else{
+            $desarrollo = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 2 AND asignado_id = $id_user AND category_id = $Categoria");
+        }
         return $desarrollo;
     }
 
@@ -99,7 +104,16 @@ class Tickets extends Model
         return $pendientes;
     }
     public static function PendientesUsuario($id_user){
-        $pendientes = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 1 AND asignado_id = $id_user");
+        $buscarUsuario  = Usuarios::BuscarNombre($id_user);
+        foreach($buscarUsuario as $value){
+            $Categoria = (int)$value->category_id;
+            $Rol = (int)$value->rol_id;
+        }
+        if($Rol === 2){
+            $pendientes = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 1 AND category_id = $Categoria");
+        }else{
+            $pendientes = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 1 AND asignado_id = $id_user AND category_id = $Categoria");
+        }
         return $pendientes;
     }
 
@@ -108,7 +122,16 @@ class Tickets extends Model
         return $terminados;
     }
     public static function TerminadosUsuario($id_user){
-        $terminados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 3 AND asignado_id = $id_user");
+        $buscarUsuario  = Usuarios::BuscarNombre($id_user);
+        foreach($buscarUsuario as $value){
+            $Categoria = (int)$value->category_id;
+            $Rol = (int)$value->rol_id;
+        }
+        if($Rol === 2){
+            $terminados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 3 AND category_id = $Categoria");
+        }else{
+            $terminados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 3 AND asignado_id = $id_user AND category_id = $Categoria");
+        }
         return $terminados;
     }
 
@@ -117,7 +140,16 @@ class Tickets extends Model
         return $cancelados;
     }
     public static function CanceladosUsuario($id_user){
-        $cancelados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 4 AND asignado_id = $id_user");
+        $buscarUsuario  = Usuarios::BuscarNombre($id_user);
+        foreach($buscarUsuario as $value){
+            $Categoria = (int)$value->category_id;
+            $Rol = (int)$value->rol_id;
+        }
+        if($Rol === 2){
+            $cancelados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 4 AND category_id = $Categoria");
+        }else{
+            $cancelados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 4 AND asignado_id = $id_user AND category_id = $Categoria");
+        }
         return $cancelados;
     }
 
@@ -189,7 +221,7 @@ class Tickets extends Model
 
         if($total === 0){
             if($totalTickets > 0){
-                $guardarMes = DB::insert('INSERT INTO mes_graficas_user (mes,year,incidentes,requerimientos,id_user) VALUES (?,?,?,?)', [$mesActual,$ActualYear,$totalIncidentes,$totalRequerimientos,$id_user]);
+                $guardarMes = DB::insert('INSERT INTO mes_graficas_user (mes,year,incidentes,requerimientos,id_user) VALUES (?,?,?,?,?)', [$mesActual,$ActualYear,$totalIncidentes,$totalRequerimientos,$id_user]);
                 if($guardarMes){
                     return true;
                 }
@@ -198,7 +230,7 @@ class Tickets extends Model
             }
 
         }else{
-            $guardarMes = DB::Update("UPDATE mes_graficas_user SET incidentes = $totalIncidentes,requerimientos = $totalRequerimientos where NOMBRE like '%$mesActual%' AND id_user = $id_user");
+            $guardarMes = DB::Update("UPDATE mes_graficas_user SET incidentes = $totalIncidentes,requerimientos = $totalRequerimientos where mes like '%$mesActual%' AND id_user = $id_user");
             if($guardarMes){
                 return true;
             }
@@ -301,6 +333,16 @@ class Tickets extends Model
                                         WHERE id = $idTicket");
 
         if($actualizarTicket){
+            $BuscarAsignado = DB::Select("SELECT * FROM ticket WHERE id = $idTicket");
+            foreach($BuscarAsignado as $row){
+                $AsignadoLast = (int)$row->asigned_id;
+            }
+            if($AsignadoLast != $AsignadoA){
+                DB::Insert('INSERT INTO notificaciones (usuario1,usuario2,leido,fecha)
+                    VALUES (?,?,?,?)',
+                    [$creadoPor,$AsignadoA,0,$fechaActualizacion]);
+            }
+
             $buscarUsuario = Usuarios::BuscarNombre($creadoPor);
             foreach($buscarUsuario as $row){
                 $nombre_usuario = $row->name;

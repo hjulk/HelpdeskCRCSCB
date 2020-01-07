@@ -97,7 +97,8 @@ class Inventario extends Model
                 DB::Update("UPDATE linea SET estado_equipo = 1,cc = null,personal = null,area = null WHERE id = $LineaMovil");
                 DB::Update("UPDATE asignados SET id_linea = null,estado_asignado = $EstadoEquipo,update_at = '$fechaActualizacion' WHERE id_linea = $LineaMovil");
                 DB::Update("UPDATE asignados SET id_movil = null,estado_asignado = $EstadoEquipo,update_at = '$fechaActualizacion' WHERE id_movil = $idEquipoMovil");
-
+            }else{
+                DB::Update("UPDATE linea SET estado_equipo = 2 WHERE id = $LineaMovil");
             }
         }
         if(($EstadoEquipo === 3) || ($EstadoEquipo === 4) || ($EstadoEquipo === 1)){
@@ -1018,21 +1019,96 @@ class Inventario extends Model
             DB::Update("UPDATE equipo SET estado_equipo = 2 WHERE id = $IdEquipo");
             if($Mouse != null){
                 DB::Update("UPDATE mouse SET estado_mouse = 2 WHERE id_periferico = $Mouse");
+                DB::Update("UPDATE perifericos SET estado_periferico = 2 WHERE id = $Mouse");
             }
             if($Pantalla != null){
                 DB::Update("UPDATE pantalla SET estado_pantalla = 2 WHERE id_periferico = $Pantalla");
+                DB::Update("UPDATE perifericos SET estado_periferico = 2 WHERE id = $Pantalla");
             }
             if($Teclado != null){
                 DB::Update("UPDATE teclado SET estado_teclado = 2 WHERE id_periferico = $Teclado");
+                DB::Update("UPDATE perifericos SET estado_periferico = 2 WHERE id = $Teclado");
             }
             if($Cargador != null){
                 DB::Update("UPDATE cargador SET estado_cargador = 2 WHERE id_periferico = $Cargador");
+                DB::Update("UPDATE perifericos SET estado_periferico = 2 WHERE id = $Cargador");
             }
             if($IdGuaya != null){
                 DB::Update("UPDATE guaya SET estado_guaya = 2 WHERE id_periferico = $IdGuaya");
+                DB::Update("UPDATE perifericos SET estado_periferico = 2 WHERE id = $IdGuaya");
             }
         }
         return $IngresarAsignado;
+    }
+
+    public static function BuscarLastAsignado($creadoPor){
+        $buscarUltimo = DB::Select("SELECT max(id) as id FROM asignados WHERE user_id = $creadoPor");
+        return $buscarUltimo;
+    }
+
+    public static function HistorialA($idAsignado,$Comentario,$Estado,$creadoPor){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaCreacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+        DB::insert('INSERT INTO historial_inventario (id_asignado,comentario,status_id,user_id,created)
+                    VALUES (?,?,?,?,?)',
+                    [$idAsignado,$Comentario,$Estado,$creadoPor,$fechaCreacion]);
+    }
+
+    public static function ActualizarAsignado($TipoEquipo,$IdEquipo,$Mouse,$Pantalla,$Teclado,$Cargador,$TipoGuaya,$IdGuaya,$CodeGuaya,$Sede,$Area,
+                            $NombreAsignado,$Cargo,$Cedula,$Telefono,$Correo,$Ticket,$FechaAsignacion,$EstadoAsignado,$creadoPor,$IdAsignado){
+
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema          = date('Y-m-d H:i');
+        $fechaActualizacion     = date('Y-m-d H:i', strtotime($fecha_sistema));
+
+        $ActualizarAsignacion = DB::Update("UPDATE asignados SET
+                                            tipo_equipo = $TipoEquipo,
+                                            id_equipo = $IdEquipo,
+                                            id_mouse = $Mouse,
+                                            id_pantalla = $Pantalla,
+                                            id_teclado = $Teclado,
+                                            id_cargador = $Cargador,
+                                            tipo_guaya = $TipoGuaya,
+                                            id_guaya = $IdGuaya,
+                                            code_guaya = '$CodeGuaya',
+                                            sede = $Sede,
+                                            area = '$Area',
+                                            nombre_usuario = '$NombreAsignado',
+                                            cargo_usuario = '$Cargo',
+                                            id_usuario = '$Cedula',
+                                            tel_usuario = '$Telefono',
+                                            correo = '$Correo',
+                                            id_ticket = $Ticket,
+                                            fecha_asignacion = '$FechaAsignacion',
+                                            estado_asignado = $EstadoAsignado,
+                                            update_at = '$fechaActualizacion',
+                                            actualizado_por = $creadoPor
+                                            WHERE id = $IdAsignado");
+        If($ActualizarAsignacion){
+            DB::Update("UPDATE equipo SET estado_equipo = $EstadoAsignado WHERE id = $IdEquipo");
+            if($Mouse != null){
+                DB::Update("UPDATE mouse SET estado_mouse = $EstadoAsignado WHERE id_periferico = $Mouse");
+                DB::Update("UPDATE perifericos SET estado_periferico = $EstadoAsignado WHERE id = $Mouse");
+            }
+            if($Pantalla != null){
+                DB::Update("UPDATE pantalla SET estado_pantalla = $EstadoAsignado WHERE id_periferico = $Pantalla");
+                DB::Update("UPDATE perifericos SET estado_periferico = $EstadoAsignado WHERE id = $Pantalla");
+            }
+            if($Teclado != null){
+                DB::Update("UPDATE teclado SET estado_teclado = $EstadoAsignado WHERE id_periferico = $Teclado");
+                DB::Update("UPDATE perifericos SET estado_periferico = $EstadoAsignado WHERE id = $Teclado");
+            }
+            if($Cargador != null){
+                DB::Update("UPDATE cargador SET estado_cargador = $EstadoAsignado WHERE id_periferico = $Cargador");
+                DB::Update("UPDATE perifericos SET estado_periferico = $EstadoAsignado WHERE id = $Cargador");
+            }
+            if($IdGuaya != null){
+                DB::Update("UPDATE guaya SET estado_guaya = $EstadoAsignado WHERE id_periferico = $IdGuaya");
+                DB::Update("UPDATE perifericos SET estado_periferico = $EstadoAsignado WHERE id = $IdGuaya");
+            }
+        }
+        return $ActualizarAsignacion;
     }
 
 }

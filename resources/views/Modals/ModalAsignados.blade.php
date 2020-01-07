@@ -135,7 +135,7 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title modal-title-primary">Asignar Equipo</h4>
             </div>
-            {!! Form::open(['url' => 'ingresarAsignacion', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['url' => 'actualizarAsignacion', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
             <div class="modal-body">
                 <input type="hidden" name="idA" id="mod_idA">
                 <legend class="subtitle2" style="color: rgba(162, 27, 37, 1);">DATOS QUIPO</legend>
@@ -270,7 +270,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-success">Crear Asignación</button>
+                <button type="submit" class="btn btn-success">Actualizar Asignación</button>
             </div>
             {!!  Form::close() !!}
         </div>

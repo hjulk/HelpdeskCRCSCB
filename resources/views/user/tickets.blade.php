@@ -1,4 +1,4 @@
-@extends("theme.$theme.layout")
+@extends("Template.layout")
 
 @section('titulo')
 Tickets
@@ -48,5 +48,5 @@ Tickets
             </div>
 
 </section>
-    <script src="{{asset("assets/$theme/dist/js/tickets.js")}}"></script>
+    <script src="{{asset("assets/dist/js/tickets.js")}}"></script>
 @endsection

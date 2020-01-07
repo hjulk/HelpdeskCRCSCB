@@ -51,7 +51,7 @@ Tickets
                                 </tr>
                             </thead>
                             <tbody>
-                                 @foreach($Tickets as $value)
+                                @foreach($Tickets as $value)
                                 <tr>
                                     <td>{{$value['id']}}</td>
                                     <td>{{$value['tipo_ticket']}}</td>

@@ -1154,22 +1154,22 @@ class InventarioController extends Controller
         if($validador->passes()) {
             $TipoEquipo         = (int)Input::get('tipo_equipo');
             $IdEquipo           = (int)Input::get('marca_serial');
-            if(Input::get('mouse')){
+            if(Input::get('mouse') != ''){
                 $Mouse          = (int)Input::get('mouse');
             }else{
                 $Mouse          = null;
             }
-            if(Input::get('pantalla')){
+            if(Input::get('pantalla') != ''){
                 $Pantalla       = (int)Input::get('pantalla');
             }else{
                 $Pantalla       = null;
             }
-            if(Input::get('teclado')){
+            if(Input::get('teclado') != ''){
                 $Teclado        = (int)Input::get('teclado');
             }else{
                 $Teclado        = null;
             }
-            if(Input::get('cargador')){
+            if(Input::get('cargador') != ''){
                 $Cargador       = (int)Input::get('cargador');
             }else{
                 $Cargador       = null;
@@ -1211,7 +1211,31 @@ class InventarioController extends Controller
             $CrearAsignado = Inventario::IngresarAsignado($TipoEquipo,$IdEquipo,$Mouse,$Pantalla,$Teclado,$Cargador,$TipoGuaya,$IdGuaya,$CodeGuaya,
                                         $Sede,$Area,$NombreAsignado,$Cargo,$Cedula,$Telefono,$Correo,$Ticket,$FechaAsignacion,$EstadoAsignado,$creadoPor);
             if($CrearAsignado){
-                $verrors = 'Se creo el asignado';
+
+                $BuscarUltimo = Inventario::BuscarLastAsignado($creadoPor);
+                foreach($BuscarUltimo as $row){
+                    $IdAsignado = $row->id;
+                }
+                $destinationPath = null;
+                $filename        = null;
+                if (Input::hasFile('evidencia')) {
+                    $files = Input::file('evidencia');
+                    foreach($files as $file){
+                        $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario/actas_entrega/';
+                        $extension          = $file->getClientOriginalExtension();
+                        $name               = $file->getClientOriginalName();
+                        $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
+                        $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
+                        $filename           = 'Evidencia Asignacion No. '.$IdAsignado.'.'.$extension;
+                        $uploadSuccess      = $file->move($destinationPath, $filename);
+                        $archivofoto        = file_get_contents($uploadSuccess);
+                        $NombreFoto         = $filename;
+                        $actualizarEvidencia = Inventario::EvidenciaI($IdAsignado,$NombreFoto);
+                    }
+                }
+                $Comentario = 'Creación de asignación Nro. '.$IdAsignado.' en el sistema';
+                Inventario::HistorialA($IdAsignado,$Comentario,$EstadoAsignado,$creadoPor);
+                $verrors = 'Se creo el registro de asignación Nro. '.$IdAsignado;
                 return redirect($url.'/asigneds')->with('mensaje', $verrors);
             }else{
                 $verrors = array();
@@ -1224,6 +1248,116 @@ class InventarioController extends Controller
     }
 
     public function actualizarAsignacion(){
+        $data           = Input::all();
+        $creadoPor      = (int)Session::get('IdUsuario');
+        $buscarUsuario  = Usuarios::BuscarNombre($creadoPor);
+        foreach($buscarUsuario as $value){
+            $Administrador = (int)$value->rol_id;
+        }
+        $url = InventarioController::BuscarURL($Administrador);
+        $reglas = array(
+            'tipo_equipo_upd'       =>  'required',
+            'marca_serial_upd'      =>  'required',
+            'nombre_asignado_upd'   =>  'required',
+            'cargo_upd'             =>  'required',
+            'cedula_upd'            =>  'required',
+            'telefono_upd'          =>  'required'
+        );
+        $validador = Validator::make($data, $reglas);
+        $messages = $validador->messages();
+        foreach ($reglas as $key => $value){
+            $verrors[$key] = $messages->first($key);
+        }
+        if($validador->passes()) {
+            $TipoEquipo         = (int)Input::get('tipo_equipo_upd');
+            $IdEquipo           = (int)Input::get('marca_serial_upd');
+            if(Input::get('mouse_upd') != ''){
+                $Mouse          = (int)Input::get('mouse_upd');
+            }else{
+                $Mouse          = 'null';
+            }
+            if(Input::get('pantalla_upd') != ''){
+                $Pantalla       = (int)Input::get('pantalla_upd');
+            }else{
+                $Pantalla       = 'null';
+            }
+            if(Input::get('teclado_upd') != ''){
+                $Teclado        = (int)Input::get('teclado_upd');
+            }else{
+                $Teclado        = 'null';
+            }
+            if(Input::get('cargador_upd') != ''){
+                $Cargador       = (int)Input::get('cargador_upd');
+            }else{
+                $Cargador       = 'null';
+            }
+            $Opcion             = (int)Input::get('opcion_upd');
+            if($Opcion === 1){
+                $TipoGuaya      = (int)Input::get('tipo_guaya_upd');
+                $IdGuaya        = (int)Input::get('guaya_upd');
+                switch($TipoGuaya){
+                    Case 1: $CodeGuaya = Input::get('code_guaya_upd');
+                            break;
+                    Case 2: $CodeGuaya = null;
+                            break;
+                }
+            }else{
+                $TipoGuaya      = 'null';
+                $IdGuaya        = 'null';
+                $CodeGuaya      = null;
+            }
+            $Sede               = (int)Input::get('sede_upd');
+            if(Input::get('area_upd')){
+                $Area           = Input::get('area_upd');
+            }else{
+                $Area           = 'SIN AREA';
+            }
+            $NombreAsignado     = Input::get('nombre_asignado_upd');
+            $Cargo              = Input::get('cargo_upd');
+            $Cedula             = Input::get('cedula_upd');
+            $Telefono           = Input::get('telefono_upd');
+            $Correo             = Input::get('correo_upd');
+            if(Input::get('ticket_upd')){
+                $Ticket         = (int)Input::get('ticket_upd');
+            }else{
+                $Ticket         = 0;
+            }
+            $FechaAsignacion    = date('Y-m-d H:i:s', strtotime(Input::get('fecha_asignacion_upd')));
+            $EstadoAsignado     = (int)Input::get('estado_upd');
+            $Comentario         = Input::get('comentario');
+            $IdAsignado         = (int)Input::get('idA');
 
+            $ActualizarAsignado = Inventario::ActualizarAsignado($TipoEquipo,$IdEquipo,$Mouse,$Pantalla,$Teclado,$Cargador,$TipoGuaya,$IdGuaya,$CodeGuaya,
+                                    $Sede,$Area,$NombreAsignado,$Cargo,$Cedula,$Telefono,$Correo,$Ticket,$FechaAsignacion,$EstadoAsignado,$creadoPor,$IdAsignado);
+            if($ActualizarAsignado){
+                $destinationPath = null;
+                $filename        = null;
+                if (Input::hasFile('evidencia_upd')) {
+                    $files = Input::file('evidencia_upd');
+                    foreach($files as $file){
+                        $destinationPath    = public_path().'/assets/dist/img/evidencias_inventario/actas_entrega/';
+                        $extension          = $file->getClientOriginalExtension();
+                        $name               = $file->getClientOriginalName();
+                        $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
+                        $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
+                        $filename           = 'Evidencia Asignacion No. '.$IdAsignado.'.'.$extension;
+                        $uploadSuccess      = $file->move($destinationPath, $filename);
+                        $archivofoto        = file_get_contents($uploadSuccess);
+                        $NombreFoto         = $filename;
+                        $actualizarEvidencia = Inventario::EvidenciaI($IdAsignado,$NombreFoto);
+                    }
+                }
+
+                Inventario::HistorialA($IdAsignado,$Comentario,$EstadoAsignado,$creadoPor);
+                $verrors = 'Se actualizó el registro de asignación Nro. '.$IdAsignado;
+                return redirect($url.'/asigneds')->with('mensaje', $verrors);
+            }else{
+                $verrors = array();
+                array_push($verrors, 'Hubo un problema al actualizar el asignado');
+                return Redirect::to($url.'/asigneds')->withErrors(['errors' => $verrors])->withInput();
+            }
+        }else{
+            return Redirect::to($url.'/asigneds')->withErrors(['errors' => $verrors])->withInput();
+        }
     }
 }

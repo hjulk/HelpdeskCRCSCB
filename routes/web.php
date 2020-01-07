@@ -68,18 +68,22 @@ Route::group(['middleware' => 'revalidate'], function () {
     // MODULO USUARIOS
 
     Route::group(['prefix' => 'user','namespace' => 'User','middleware' => 'user'],function(){
-        Route::get('tickets','TicketsController@tickets')->name('tickets');
+        Route::get('tickets','TicketsUserController@tickets')->name('tickets');
+        Route::get('ticketsUsuario','TicketsUserController@ticketsUsuario')->name('ticketsUsuario');
         Route::get('reporteTickets','TicketsUserController@reporteTickets')->name('reporteTickets');
         Route::post('consultarTicket', 'TicketsUserController@consultarTickets')->name('consultarTicket');
         Route::get('profile', 'UsuariosController@profile')->name('profile');
         Route::post('actualizarUsuario', 'UsuariosController@actualizarUsuario')->name('actualizarUsuario');
-        Route::get('controlCambios','UsuariosController@controlCambios')->name('controlCambios');
-        Route::get('reporteCambios','ControlCambiosController@reporteCambios')->name('reporteCambios');
-        Route::post('consultarCambios','ControlCambiosController@consultarCambios')->name('consultarCambios');
         Route::get('mobile','InventarioController@mobile')->name('mobile');
-        Route::get('laptop','InventarioController@laptop')->name('laptop');
+        Route::get('lineMobile','InventarioController@lineMobile')->name('lineMobile');
+        Route::get('detalleNovedadM', 'InventarioController@detalleNovedadM')->name('detalleNovedadM');
+        Route::get('detalleResponsableM', 'InventarioController@detalleResponsableM')->name('detalleResponsableM');
+        Route::get('desktops','InventarioController@desktops')->name('desktops');
         Route::get('printers','InventarioController@printers')->name('printers');
-        Route::get('perifericos','InventarioController@perifericos')->name('perifericos');
+        Route::get('periferic','InventarioController@periferic')->name('periferic');
+        Route::get('asigneds','InventarioController@asigneds')->name('asigneds');
+        Route::get('consumible','InventarioController@consumible')->name('consumible');
+        Route::get('turnos','UsuariosController@turnos')->name('turnos');
         Route::get('/logout', function() {
             Auth::logout();
             Session::flush();

@@ -207,10 +207,12 @@ class Usuarios extends Model
     }
 
     public static function ActualizarProfile($Password,$idUsuario,$NombreFoto,$creadoPor){
-        $fecha_sistema      = date('Y-m-d H:i');
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema  = date('Y-m-d H:i');
+        $fechaActualizacion  = date('Y-m-d H:i', strtotime($fecha_sistema));
         $updateProfile = DB::Update("UPDATE user SET password = '$Password',
                                             profile_pic = '$NombreFoto',
-                                            updated_at = '$fecha_sistema',
+                                            updated_at = '$fechaActualizacion',
                                             actualizado_por = $creadoPor
                                             WHERE id = $idUsuario");
         return $updateProfile;

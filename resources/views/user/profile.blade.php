@@ -1,4 +1,4 @@
-@extends("theme.$theme.layout")
+@extends("Template.layout")
 
 @section('titulo')
 Profile
@@ -32,15 +32,6 @@ Profile
                             </li>
                             <li class="list-group-item">
                                 <b>Categoría</b> <a class="pull-right">{!! Session::get('NombreCategoria') !!}</a>
-                            </li>
-                            <li class="list-group-item">
-                                <b>Área</b> <a class="pull-right">{!! Session::get('NombreArea') !!}</a>
-                            </li>
-                            <li class="list-group-item">
-                                <b>Sede</b> <a class="pull-right">{!! Session::get('NombreSede') !!}</a>
-                            </li>
-                            <li class="list-group-item">
-                                <b>Zona</b> <a class="pull-right">{!! Session::get('NombreZona') !!}</a>
                             </li>
                         </ul>
                     </div>
@@ -99,7 +90,7 @@ Profile
 
 @section('scripts')
 
-    <script src="{{asset("assets/$theme/dist/js/usuarios.js")}}"></script>
+    <script src="{{asset("assets/dist/js/usuarios.js")}}"></script>
     <script>
         @if (session("mensaje"))
             toastr.success("{{ session("mensaje") }}");
@@ -111,34 +102,7 @@ Profile
             @endforeach
         @endif
     </script>
-    <script>
-        function zonaFunc() {
-            var selectBox = document.getElementById("id_zona");
-            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-            var tipo = 'post';
-            var select = document.getElementById("id_sede");
 
-            $.ajax({
-                url: "{{route('buscarZona')}}",
-                type: "get",
-                data: {_method: tipo, id_zona: selectedValue},
-                success: function (data) {
-                    var vValido = data['valido'];
-
-                    if (vValido === 'true') {
-                        var ListSedes = data['Sedes'];
-                        select.options.length = 0;
-                        for (index in ListSedes) {
-                            select.options[select.options.length] = new Option(ListSedes[index], index);
-                        }
-
-                    }
-
-                }
-            });
-        }
-
-    </script>
 
 
 @endsection
