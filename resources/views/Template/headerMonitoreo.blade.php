@@ -1,8 +1,8 @@
 <header class="main-header">
 
-        <nav class="navbar navbar-static-top">
+        <nav class="navbar navbar-static-top" style="background-color: rgb(162, 27, 37) !important;">
                 <div class="navbar navbar-header">
-                        <a href="dashboardMonitoreo" class="navbar-brand"><b><i class="fa fa-dashboard"></i>&nbsp;&nbsp;Mesa de Ayuda TIC´S</b></a>
+                        <a href="dashboardMonitoreo" class="navbar-brand" style="background-color: rgb(162, 27, 37) !important;"><b><i class="fa fa-dashboard"></i>&nbsp;&nbsp;Help Desk TIC´S</b></a>
 
                 </div>
             <div class="navbar-custom-menu">
@@ -14,9 +14,9 @@
                                 {!! Session::get('ProfilePicMenuM') !!}
                                  <span class="hidden-xs">{!! Session::get('NombreUsuario') !!}</span>
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" style="background-color: rgb(162, 27, 37) !important;">
                             <!-- User image -->
-                            <li class="user-header">
+                            <li class="user-header" style="background-color: rgb(162, 27, 37) !important;">
                                 {{--  <img src="{{asset("assets/dist/img/{!! Session::get('ProfilePicM') !!}")}}" class="img-circle" alt="User Image">  --}}
                                 {!! Session::get('ProfilePicM') !!}
                                      <p>
@@ -26,7 +26,7 @@
                                 </p>
                             </li>
 
-                            <li class="user-footer">
+                            <li class="user-footer" style="background-color: rgb(162, 27, 37) !important;">
                                 <div class="pull-right">
                                     <a href="logout" class="btn btn-default btn-flat">Cerrar Sesión</a>
                                 </div>

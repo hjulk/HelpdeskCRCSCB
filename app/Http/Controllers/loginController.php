@@ -88,8 +88,8 @@ class loginController extends Controller
 
                         $fotoPerfil = "<img src='../assets/dist/img/profiles/$profile_pic' class='img-circle' alt='User Image'>";
                         $fotoMenu   = "<img src='../assets/dist/img/profiles/$profile_pic' class='user-image' alt='User Image'>";
-                        $fotoPerfilM = "<img src='../assets/dist/img/profiles/$profile_pic' class='img-circle' alt='User Image'>";
-                        $fotoMenuM   = "<img src='../assets/dist/img/profiles/$profile_pic' class='user-image' alt='User Image'>";
+                        $fotoPerfilM = "<img src='./assets/dist/img/profiles/$profile_pic' class='img-circle' alt='User Image'>";
+                        $fotoMenuM   = "<img src='./assets/dist/img/profiles/$profile_pic' class='user-image' alt='User Image'>";
                         $fotoUser   = "<img src='../assets/dist/img/profiles/$profile_pic' class='profile-user-img img-responsive img-circle' alt='User profile picture' style='width: 40%;border-radius: 40% !important;'>";
 
                         $notificaciones = Tickets::Notificaciones($IdUsuario);
@@ -338,14 +338,55 @@ class loginController extends Controller
             $AplicacionesT = $valor->total;
         }
 
-        $Desarrollo     = Tickets::Desarrollo();
-        foreach($Desarrollo as $valor){
-            $DesarrolloT = $valor->total;
-        }
-
         $Soporte     = Tickets::Soporte();
         foreach($Soporte as $valor){
             $SoporteT = $valor->total;
+        }
+
+        $Servinte     = Tickets::Servinte();
+        foreach($Servinte as $valor){
+            $ServinteT = $valor->total;
+        }
+
+        $BuscarMInsatisfecho     = Tickets::BuscarMInsatisfecho();
+        foreach($BuscarMInsatisfecho as $valor){
+            $MuyInsatisfecho = $valor->total;
+        }
+        $BuscarInsatisfecho     = Tickets::BuscarInsatisfecho();
+        foreach($BuscarInsatisfecho as $valor){
+            $Insatisfecho = $valor->total;
+        }
+        $BuscarNeutral     = Tickets::BuscarNeutral();
+        foreach($BuscarNeutral as $valor){
+            $Neutral = $valor->total;
+        }
+        $BuscarSatisfecho     = Tickets::BuscarSatisfecho();
+        foreach($BuscarSatisfecho as $valor){
+            $Satisfecho = $valor->total;
+        }
+        $BuscarMSatisfecho     = Tickets::BuscarMSatisfecho();
+        foreach($BuscarMSatisfecho as $valor){
+            $MuySatisfecho = $valor->total;
+        }
+        $PorcentajeMInsatisfecho     = Tickets::PorcentajeMInsatisfecho();
+        foreach($PorcentajeMInsatisfecho as $valor){
+            $PMuyInsatisfecho = $valor->porcentaje;
+        }
+        $PorcentajeInsatisfecho     = Tickets::PorcentajeInsatisfecho();
+        foreach($PorcentajeInsatisfecho as $valor){
+            $PInsatisfecho = $valor->porcentaje;
+        }
+        $PorcentajeNeutral     = Tickets::PorcentajeNeutral();
+        foreach($PorcentajeNeutral as $valor){
+            $PNeutral = $valor->porcentaje;
+        }
+        $PorcentajeSatisfecho     = Tickets::PorcentajeSatisfecho();
+        foreach($PorcentajeSatisfecho as $valor){
+            $PSatisfecho = $valor->porcentaje;
+        }
+        $PorcentajeMSatisfecho     = Tickets::PorcentajeMSatisfecho();
+        foreach($PorcentajeMSatisfecho as $valor){
+            $PMuySatisfecho = $valor->porcentaje;
         }
 
         setlocale(LC_ALL, 'es_ES');
@@ -353,18 +394,30 @@ class loginController extends Controller
         // $mesActual  = date('M - y', strtotime($fechaActual));
         $mesCreacion = date('M', strtotime($fechaActual));
         $anio = date('y', strtotime($fechaActual));
+        $year = date('Y', strtotime($fechaActual));
         $meses_ES = array("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic");
         $meses_EN = array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
         $nombreMes = str_replace($meses_EN, $meses_ES, $mesCreacion);
 
-        $mesActual              = $nombreMes.' - '.$anio;
-        $guardarMes             = Tickets::GuardarMes($mesActual);
+        $mesActual              = $nombreMes;
+        $YearActual             = (int)$anio;
+        $guardarMes             = Tickets::GuardarMes($mesActual,$anio);
 
-        $buscarGestion          = Tickets::buscarGestion();
-        $buscarGestionTotal     = Tickets::buscarGestionTotal();
+        $buscarGestion                  = Tickets::buscarGestion();
+        $buscarGestionTotal             = Tickets::buscarGestionTotal();
+        $buscarGestionSede              = Tickets::buscarGestionSede();
+        $buscarGestionTotalSede         = Tickets::buscarGestionTotalSede();
+        $buscarGestionCalificacion      = Tickets::buscarGestionCalificacion();
+        $buscarGestionTotalCalificacion = Tickets::buscarGestionTotalCalificacion();
 
         foreach($buscarGestionTotal as $row){
             $totalGestion = (int)$row->total;
+        }
+        foreach($buscarGestionTotalSede as $row){
+            $totalGestionSede = (int)$row->total;
+        }
+        foreach($buscarGestionTotalCalificacion as $row){
+            $totalGestionCalificacion = (int)$row->total;
         }
 
         $resultado_consulta = array();
@@ -375,13 +428,27 @@ class loginController extends Controller
             $contadorGestion = count($buscarGestion);
             $contG = 0;
             foreach($buscarGestion as $consulta){
-                    $resultado_gestion[$contG]['nombre']= $consulta->nombre_usuario;
-                    $resultado_gestion[$contG]['desarrollo']= $consulta->desarrollo;
-                    $resultado_gestion[$contG]['pendientes']= $consulta->pendientes;
-                    $resultado_gestion[$contG]['terminados']= $consulta->terminados;
-                    $resultado_gestion[$contG]['cancelados']= $consulta->cancelados;
+                    $categoria = (int)$consulta->category_id;
+                    switch($categoria){
+                        Case 1  :   $color = '#8B103E';
+                                    break;
+                        Case 2  :   $color = '#FE9129';
+                                    break;
+                        Case 3  :   $color = '#64D9A8';
+                                    break;
+                        Case 4  :   $color = '#33B2E3';
+                                    break;
+                        default :   $color = '#000000';
+                                    break;
+                    }
+                    $resultado_gestion[$contG]['nombre']        = $consulta->nombre_usuario;
+                    $resultado_gestion[$contG]['color']         = $color;
+                    $resultado_gestion[$contG]['desarrollo']    = $consulta->desarrollo;
+                    $resultado_gestion[$contG]['pendientes']    = $consulta->pendientes;
+                    $resultado_gestion[$contG]['terminados']    = $consulta->terminados;
+                    $resultado_gestion[$contG]['cancelados']    = $consulta->cancelados;
 
-                    if($cont >= ($contadorGestion-1)){
+                    if($contG >= ($contadorGestion-1)){
                         $resultado_gestion[$contG]['separador']= '';
                     }else{
                         $resultado_gestion[$contG]['separador']= ',';
@@ -391,17 +458,55 @@ class loginController extends Controller
         }else{
             $resultado_gestion = null;
         }
+        if($totalGestionSede > 0){
+            $resultado_gestionS = array();
+            $contadorGestionS = count($buscarGestionSede);
+            $contGS = 0;
+            foreach($buscarGestionSede as $consulta){
+                    $resultado_gestionS[$contGS]['nombre']= $consulta->nombre_sede;
+                    $resultado_gestionS[$contGS]['incidentes']= $consulta->incidentes;
+                    $resultado_gestionS[$contGS]['requerimientos']= $consulta->requerimientos;
 
+                    if($contGS >= ($contadorGestionS-1)){
+                        $resultado_gestionS[$contGS]['separador']= '';
+                    }else{
+                        $resultado_gestionS[$contGS]['separador']= ',';
+                    }
+                    $contGS++;
+            }
+        }else{
+            $resultado_gestionS = null;
+        }
+        if($totalGestionCalificacion > 0){
+            $resultado_gestionC = array();
+            $contadorGestionC = count($buscarGestionCalificacion);
+            $contGC = 0;
+            foreach($buscarGestionCalificacion as $consulta){
+                    $resultado_gestionC[$contGC]['nombre']      = $consulta->nombre;
+                    $resultado_gestionC[$contGC]['total']       = $consulta->total;
+                    $resultado_gestionC[$contGC]['porcentaje']  = $consulta->porcentaje;
+                    $resultado_gestionC[$contGC]['color']       = $consulta->color;
+                    if($contGC >= ($contadorGestionC-1)){
+                        $resultado_gestionC[$contGC]['separador']= '';
+                    }else{
+                        $resultado_gestionC[$contGC]['separador']= ',';
+                    }
+                    $contGC++;
+            }
+        }else{
+            $resultado_gestionC = null;
+        }
+        $buscarMes = Tickets::BuscarMes($anio);
         if($guardarMes === false){
             $resultado_consulta = null;
         }else{
-            $buscarMes = Tickets::BuscarMes();
+            // $buscarMes = Tickets::BuscarMes();
             $contadorMes = count($buscarMes);
 
             foreach($buscarMes as $consulta){
-                    $resultado_consulta[$cont]['nombre']= $consulta->nombre;
-                    $resultado_consulta[$cont]['incidentes']= $consulta->incidentes;
-                    $resultado_consulta[$cont]['requerimientos']= $consulta->requerimientos;
+                    $resultado_consulta[$cont]['nombre']            = $consulta->mes.' - '.$consulta->year;
+                    $resultado_consulta[$cont]['incidentes']        = $consulta->incidentes;
+                    $resultado_consulta[$cont]['requerimientos']    = $consulta->requerimientos;
 
                     if($cont >= ($contadorMes-1)){
                         $resultado_consulta[$cont]['separador']= '';
@@ -416,9 +521,12 @@ class loginController extends Controller
         return view('indexMonitoreo',['EnDesarrollo' => $desarrolloT,'Pendientes' => $pendientesT,
                                    'Terminados' => $terminadosT,'Cancelados' => $canceladosT,
                                    'MesGraficas' => $resultado_consulta,'Infraestructura' => $InfraestructuraT,
-                                   'Redes' => $RedesT,'Aplicaciones' => $AplicacionesT,
-                                   'Desarrollo' => $DesarrolloT,'Soporte' => $SoporteT,
-                                   'Gestion' => $resultado_gestion]);
+                                   'Redes' => $RedesT,'Aplicaciones' => $AplicacionesT,'ServinteT' => $ServinteT,
+                                   'Soporte' => $SoporteT,'Gestion' => $resultado_gestion,'GestionS' => $resultado_gestionS,
+                                   'GestionC' => $resultado_gestionC,'MuyInsatisfecho' => $MuyInsatisfecho,'Insatisfecho' => $Insatisfecho,
+                                   'Neutral' => $Neutral,'Satisfecho' => $Satisfecho,'MuySatisfecho' => $MuySatisfecho,
+                                   'PMuyInsatisfecho' => $PMuyInsatisfecho,'PInsatisfecho' => $PInsatisfecho,
+                                   'PNeutral' => $PNeutral,'PSatisfecho' => $PSatisfecho,'PMuySatisfecho' => $PMuySatisfecho]);
 
     }
 
