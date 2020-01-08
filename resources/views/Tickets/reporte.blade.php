@@ -87,9 +87,15 @@ Reporte Tickets
         </div>
     </div>
 
-
+    <div class="row" id="loading-indicator" style="display:none">
+        <div class="col-md-12" style="text-align-last: center;">
+            <h3>Cargando</h3><img src="../assets/dist/img/loader.gif" style="width:35%;">
+        </div>
+    </div>
+    
 <div class="row" id="panelResultado" hidden>
         <div class="col-md-12">
+
                 <div class="box box-success">
                         <div class="box-body">
                                 <div class="row">

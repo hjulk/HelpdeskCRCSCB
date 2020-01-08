@@ -180,10 +180,10 @@ $(document).ready(function () {
                     id_categoria: Categoria,id_creado: Creador,id_asignado: Asignado,id_sede: Sede,
                     fechaInicio: FechaInicio,fechaFin: FechaFin},
             success : function(data){
+
                 var valido = data['valido'];
                 var errores = data['errors'];
                 if(valido === 'true'){
-
                     var Resultado = jQuery.parseJSON(data['results']);
                     $('#panelResultado').show();
                     $('#reporte').DataTable().destroy();
@@ -210,6 +210,7 @@ $(document).ready(function () {
                         ordering    : true,
                         info        : true,
                         autoWidth   : true,
+                        processing  : true,
                         order: [[ 0, "desc" ]],
                         columns: [
                                     { "data": "id" },
@@ -279,12 +280,19 @@ $(document).ready(function () {
                         }
                     });
                     $('#panelResultado').hide();
+                    $('#progreso').hide();
                 }
             },
-
+    
             });
         });
-
+        $(document).ajaxSend(function(event, request, settings) {
+            $('#loading-indicator').show();
+          });
+          
+          $(document).ajaxComplete(function(event, request, settings) {
+            $('#loading-indicator').hide();
+          });
     function changeFunc() {
         var selectBox = document.getElementById("id_categoria");
         var selectedValue = selectBox.options[selectBox.selectedIndex].value;
