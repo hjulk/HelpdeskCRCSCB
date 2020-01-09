@@ -31,7 +31,12 @@ class Tickets extends Model
                 $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND category_id = $IdCategoriaUSer");
             }
         }else{
-            $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND asigned_id = $id_user");
+            if($IdCategoriaUSer === 4){
+                $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND asigned_id = $id_user");
+            }else{
+                $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND category_id = $IdCategoriaUSer");
+            }
+
         }
         return $tickets;
     }
