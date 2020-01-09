@@ -22,9 +22,9 @@ class UserMiddleware
         if($idUsuario){
             $Usuario = Usuarios::BuscarNombre($idUsuario);
             foreach($Usuario as $value){
-                $rol = $value->rol_id;
+                $rol = (int)$value->rol_id;
             }
-            if (($rol === 2) && ($rol != 3) && ($rol != 4))
+            if(($rol === 2) || ($rol === 3) || ($rol === 4))
                 return $next($request);
             if($rol === 6)
                 return redirect('dashboardMonitoreo');

@@ -64,6 +64,7 @@ class UsuariosController extends Controller
         $nombreMes = str_replace($meses_EN, $meses_ES, $mesCreacion);
 
         $mesActual = $nombreMes;
+        Tickets::GuardarMesUsuarioUpd($creadoPor);
         $guardarMes = Tickets::GuardarMesUsuario($mesActual,$creadoPor,$anio);
         $buscarGestion  = Tickets::buscarGestion();
         $buscarGestionTotal  = Tickets::buscarGestionTotalUsuario($creadoPor);
@@ -83,7 +84,7 @@ class UsuariosController extends Controller
                     $resultado_gestion[$contG]['terminados']= $consulta->terminados;
                     $resultado_gestion[$contG]['cancelados']= $consulta->cancelados;
 
-                    if($cont >= ($contadorGestion-1)){
+                    if($contG >= ($contadorGestion-1)){
                         $resultado_gestion[$contG]['separador']= '';
                     }else{
                         $resultado_gestion[$contG]['separador']= ',';
@@ -93,16 +94,17 @@ class UsuariosController extends Controller
         }else{
             $resultado_gestion = null;
         }
+        $buscarMes = Tickets::BuscarMesUsuario($anio,$creadoPor);
         if($guardarMes === false){
             $resultado_consulta = null;
         }else{
-            $buscarMes = Tickets::BuscarMesUsuario($creadoPor);
+            // $buscarMes = Tickets::BuscarMesUsuario($anio);
             $contadorMes = count($buscarMes);
 
             foreach($buscarMes as $consulta){
-                    $resultado_consulta[$cont]['nombre']= $consulta->mes.' - '.$consulta->year;
-                    $resultado_consulta[$cont]['incidentes']= $consulta->incidentes;
-                    $resultado_consulta[$cont]['requerimientos']= $consulta->requerimientos;
+                    $resultado_consulta[$cont]['nombre']            = $consulta->mes.' - '.$consulta->year;
+                    $resultado_consulta[$cont]['incidentes']        = $consulta->incidentes;
+                    $resultado_consulta[$cont]['requerimientos']    = $consulta->requerimientos;
 
                     if($cont >= ($contadorMes-1)){
                         $resultado_consulta[$cont]['separador']= '';

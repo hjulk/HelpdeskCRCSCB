@@ -94,7 +94,7 @@ class Tickets extends Model
         if($Rol === 2){
             $desarrollo = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 2 AND category_id = $Categoria");
         }else{
-            $desarrollo = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 2 AND asignado_id = $id_user AND category_id = $Categoria");
+            $desarrollo = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 2 AND asigned_id = $id_user AND category_id = $Categoria");
         }
         return $desarrollo;
     }
@@ -112,7 +112,7 @@ class Tickets extends Model
         if($Rol === 2){
             $pendientes = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 1 AND category_id = $Categoria");
         }else{
-            $pendientes = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 1 AND asignado_id = $id_user AND category_id = $Categoria");
+            $pendientes = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 1 AND asigned_id = $id_user AND category_id = $Categoria");
         }
         return $pendientes;
     }
@@ -130,7 +130,7 @@ class Tickets extends Model
         if($Rol === 2){
             $terminados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 3 AND category_id = $Categoria");
         }else{
-            $terminados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 3 AND asignado_id = $id_user AND category_id = $Categoria");
+            $terminados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 3 AND asigned_id = $id_user AND category_id = $Categoria");
         }
         return $terminados;
     }
@@ -148,7 +148,7 @@ class Tickets extends Model
         if($Rol === 2){
             $cancelados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 4 AND category_id = $Categoria");
         }else{
-            $cancelados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 4 AND asignado_id = $id_user AND category_id = $Categoria");
+            $cancelados = DB::Select("SELECT count(*) as total FROM ticket WHERE status_id = 4 AND asigned_id = $id_user AND category_id = $Categoria");
         }
         return $cancelados;
     }
@@ -200,11 +200,145 @@ class Tickets extends Model
 
     }
 
+    public static function GuardarMesUsuarioUPd($id_user){
+        $cont = 1;
+
+        while($cont <= 12){
+
+            switch($cont){
+
+                Case 1 :    $Mes    ='Ene';
+                            $Year1  = 18;
+                            $Year2  = 19;
+                            $Mes18  = '2018-01-01';
+                            $Mes19  = '2019-01-01';
+                            break;
+                Case 2 :    $Mes    ='Feb';
+                            $Year1  = 18;
+                            $Year2  = 19;
+                            $Mes18  = '2018-02-01';
+                            $Mes19  = '2019-02-01';
+                            break;
+                Case 3 :    $Mes    ='Mar';
+                            $Year1  = 18;
+                            $Year2  = 19;
+                            $Mes18  = '2018-03-01';
+                            $Mes19  = '2019-03-01';
+                            break;
+                Case 4 :    $Mes    ='Abr';
+                            $Year1  = 18;
+                            $Year2  = 19;
+                            $Mes18  = '2018-04-01';
+                            $Mes19  = '2019-04-01';
+                            break;
+
+                Case 5 :    $Mes    ='May';
+                            $Year1  = 18;
+                            $Year2  = 19;
+                            $Mes18  = '2018-05-01';
+                            $Mes19  = '2019-05-01';
+                            break;
+
+                Case 6 :    $Mes    ='Jun';
+                            $Year1  = 18;
+                            $Year2  = 19;
+                            $Mes18  = '2018-06-01';
+                            $Mes19  = '2019-06-01';
+                            break;
+                Case 7 :    $Mes    ='Jul';
+                            $Year1  = 18;
+                            $Year2  = 19;
+                            $Mes18  = '2018-07-01';
+                            $Mes19  = '2019-07-01';
+                            break;
+
+                Case 8 :    $Mes    ='Ago';
+                            $Year1  = 18;
+                            $Year2  = 19;
+                            $Mes18  = '2018-08-01';
+                            $Mes19  = '2019-08-01';
+                            break;
+                Case 9 :    $Mes    ='Sep';
+                            $Year1  = 18;
+                            $Year2  = 19;
+                            $Mes18  = '2018-09-01';
+                            $Mes19  = '2019-09-01';
+                            break;
+                Case 10:    $Mes    ='Oct';
+                            $Year1  = 18;
+                            $Year2  = 19;
+                            $Mes18  = '2018-10-01';
+                            $Mes19  = '2019-10-01';
+                            break;
+                Case 11:    $Mes    ='Nov';
+                            $Year1  = 18;
+                            $Year2  = 19;
+                            $Mes18  = '2018-11-01';
+                            $Mes19  = '2019-11-01';
+                            break;
+                Case 12:    $Mes    ='Dic';
+                            $Year1  = 18;
+                            $Year2  = 19;
+                            $Mes18  = '2018-12-01';
+                            $Mes19  = '2019-12-01';
+                            break;
+            }
+
+            $ticketsMes18     = DB::Select("SELECT count(*) as total FROM mes_graficas_user WHERE mes LIKE '%$Mes%' AND year = $Year1 AND id_user = $id_user");
+            $Tickets18        = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH('$Mes18') AND YEAR(created_at)=YEAR('$Mes18') AND asigned_id = $id_user");
+            $Incidentes18     = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH('$Mes18') AND YEAR(created_at)=YEAR('$Mes18') AND kind_id = 1 AND asigned_id = $id_user AND status_id = 3");
+            $Requerimientos18 = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH('$Mes18') AND YEAR(created_at)=YEAR('$Mes18') AND kind_id = 2 AND asigned_id = $id_user AND status_id = 3");
+            $ticketsMes19     = DB::Select("SELECT count(*) as total FROM mes_graficas_user WHERE mes LIKE '%$Mes%' AND year = $Year2 AND id_user = $id_user");
+            $Tickets19        = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH('$Mes19') AND YEAR(created_at)=YEAR('$Mes19') AND asigned_id = $id_user");
+            $Incidentes19     = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH('$Mes19') AND YEAR(created_at)=YEAR('$Mes19') AND kind_id = 1 AND asigned_id = $id_user AND status_id = 3");
+            $Requerimientos19 = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH('$Mes19') AND YEAR(created_at)=YEAR('$Mes19') AND kind_id = 2 AND asigned_id = $id_user AND status_id = 3");
+
+            foreach($ticketsMes18 as $value){
+                $total18 = $value->total;
+            }
+            foreach($Incidentes18 as $value){
+                $totalIncidentes18 = $value->total;
+            }
+            foreach($Tickets18 as $value){
+                $totalTickets18 = $value->total;
+            }
+            foreach($Requerimientos18 as $value){
+                $totalRequerimientos18 = $value->total;
+            }
+            foreach($ticketsMes19 as $value){
+                $total19 = $value->total;
+            }
+            foreach($Incidentes19 as $value){
+                $totalIncidentes19 = $value->total;
+            }
+            foreach($Tickets19 as $value){
+                $totalTickets19 = $value->total;
+            }
+            foreach($Requerimientos19 as $value){
+                $totalRequerimientos19 = $value->total;
+            }
+
+            if($total18 === 0){
+                DB::insert('INSERT INTO mes_graficas_user (mes,year,incidentes,requerimientos,id_user) VALUES (?,?,?,?,?)', [$Mes,$Year1,$totalIncidentes18,$totalRequerimientos18,$id_user]);
+            }else{
+                DB::Update("UPDATE mes_graficas_user SET incidentes = $totalIncidentes18,requerimientos = $totalRequerimientos18 where mes like '%$Mes%' AND year = $Year1 AND id_user = $id_user");
+            }
+            if($total19 === 0){
+                DB::insert('INSERT INTO mes_graficas_user (mes,year,incidentes,requerimientos,id_user) VALUES (?,?,?,?,?)', [$Mes,$Year2,$totalIncidentes19,$totalRequerimientos19,$id_user]);
+            }else{
+                DB::Update("UPDATE mes_graficas_user SET incidentes = $totalIncidentes19,requerimientos = $totalRequerimientos19 where mes like '%$Mes%' AND year = $Year2 AND id_user = $id_user");
+            }
+
+            $cont++;
+        }
+    }
+
     public static function GuardarMesUsuario($mesActual,$id_user,$ActualYear){
+
         $ticketsMes     = DB::Select("SELECT count(*) as total FROM mes_graficas_user WHERE mes LIKE '%$mesActual%' AND year = $ActualYear AND id_user = $id_user");
-        $Tickets        = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND asigned_id = $id_user");
-        $Incidentes     = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND kind_id = 1 AND asigned_id = $id_user AND status_id = 3");
-        $Requerimientos = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND kind_id = 2 AND asigned_id = $id_user AND status_id = 3");
+        $Tickets        = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND YEAR(created_at)=YEAR(CURDATE()) AND asigned_id = $id_user");
+        $Incidentes     = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND YEAR(created_at)=YEAR(CURDATE()) AND kind_id = 1 AND asigned_id = $id_user AND status_id = 3");
+        $Requerimientos = DB::Select("SELECT count(*) as total FROM ticket WHERE MONTH(created_at)=MONTH(CURDATE()) AND YEAR(created_at)=YEAR(CURDATE()) AND kind_id = 2 AND asigned_id = $id_user AND status_id = 3");
 
         foreach($ticketsMes as $value){
             $total = $value->total;
@@ -242,8 +376,8 @@ class Tickets extends Model
         $ticketsMes = DB::Select("SELECT * FROM mes_graficas WHERE year = $ActualYear");
         return $ticketsMes;
     }
-    public static function BuscarMesUsuario($id_user){
-        $ticketsMes = DB::Select("SELECT * FROM mes_graficas_user WHERE id_user = $id_user");
+    public static function BuscarMesUsuario($ActualYear,$creadoPor){
+        $ticketsMes = DB::Select("SELECT * FROM mes_graficas_user WHERE year = $ActualYear AND id_user = $creadoPor");
         return $ticketsMes;
     }
 

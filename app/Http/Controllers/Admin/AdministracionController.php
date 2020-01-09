@@ -14,6 +14,7 @@ class AdministracionController extends Controller
 {
     public function dashboard()
     {
+        $creadoPor     = (int)Session::get('IdUsuario');
         setlocale(LC_ALL, 'es_CO');
         $EnDesarrollo   = Tickets::EnDesarrollo();
         foreach($EnDesarrollo as $valor){
@@ -114,13 +115,14 @@ class AdministracionController extends Controller
         $mesActual              = $nombreMes;
         $YearActual             = (int)$anio;
         $guardarMes             = Tickets::GuardarMes($mesActual,$anio);
-
+        Tickets::GuardarMesUsuarioUpd($creadoPor);
         $buscarGestion                  = Tickets::buscarGestion();
         $buscarGestionTotal             = Tickets::buscarGestionTotal();
         $buscarGestionSede              = Tickets::buscarGestionSede();
         $buscarGestionTotalSede         = Tickets::buscarGestionTotalSede();
         $buscarGestionCalificacion      = Tickets::buscarGestionCalificacion();
         $buscarGestionTotalCalificacion = Tickets::buscarGestionTotalCalificacion();
+        Tickets::GuardarMesUsuario($mesActual,$creadoPor,$anio);
 
         foreach($buscarGestionTotal as $row){
             $totalGestion = (int)$row->total;

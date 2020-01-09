@@ -135,7 +135,7 @@ class loginController extends Controller
                         $usuario = Session::get('NombreUsuario');
                         if(($idRol === 1)){
                             return redirect()->route('admin/dashboard');
-                        }elseif($idRol === 6){
+                        }else if($idRol === 6){
                             return redirect()->route('dashboardMonitoreo');
                         }else{
                             return redirect()->route('user/dashboard');

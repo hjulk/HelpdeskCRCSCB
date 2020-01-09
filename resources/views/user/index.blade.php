@@ -106,6 +106,11 @@ Dahsboard
                         @endforeach
                         @endif
                     ],
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
+                    },
                     crosshair: true
                 },
                 yAxis: {
