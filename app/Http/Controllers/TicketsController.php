@@ -773,17 +773,18 @@ class TicketsController extends Controller
 
                 if($Redes > 0){
                     $Categoria = 3;
-                    $BuscarUsuario = Usuarios::UsuarioTicket($Categoria);
-                    if($BuscarUsuario){
-                        foreach($BuscarUsuario as $row){
-                            $IdUsuario      = $row->id;
-                        }
-                    }else{
-                        $BuscarUsuario = Usuarios::UsuarioTicketBackup($Categoria);
-                        foreach($BuscarUsuario as $row){
-                            $IdUsuario = $row->id;
-                        }
-                    }
+                    // $BuscarUsuario = Usuarios::UsuarioTicket($Categoria);
+                    // if($BuscarUsuario){
+                    //     foreach($BuscarUsuario as $row){
+                    //         $IdUsuario      = $row->id;
+                    //     }
+                    // }else{
+                    //     $BuscarUsuario = Usuarios::UsuarioTicketBackup($Categoria);
+                    //     foreach($BuscarUsuario as $row){
+                    //         $IdUsuario = $row->id;
+                    //     }
+                    // }
+                    $IdUsuario = null;
                     $Descripcion .= "Requiere Celular Coorporativo: $Celular_desc\n
                                     Requiere Datos: $Datos_desc\n
                                     Extensión Telefónica: $ExtensionTel_desc\n
@@ -796,30 +797,32 @@ class TicketsController extends Controller
                     foreach($buscarUltimo as $row){
                         $idticket = $row->id;
                     }
-                    Tickets::CrearTicketAsignado($idticket,$Asunto,$Descripcion,$creadoPor,$IdUsuario);
+                    // Tickets::CrearTicketAsignado($idticket,$Asunto,$Descripcion,$creadoPor,$IdUsuario);
                     $Tickets    .= "Ticket Redes y Comunicaciones: $idticket,";
-                    $buscarCorreo = Usuarios::BuscarNombre($IdUsuario);
-                    foreach($buscarCorreo as $rows){
-                        if($emailAsignado === ""){
-                            $emailAsignado  .= $rows->email;
-                        }else{
-                            $emailAsignado  .= ';'.$rows->email;
-                        }
-                    }
+                    // $buscarCorreo = Usuarios::BuscarNombre($IdUsuario);
+                    // foreach($buscarCorreo as $rows){
+                    //     if($emailAsignado === ""){
+                    //         $emailAsignado  .= $rows->email;
+                    //     }else{
+                    //         $emailAsignado  .= ';'.$rows->email;
+                    //     }
+                    // }
+                    $emailAsignado = 'soporte.sistemas@cruzrojabogota.org.co';
                 }
                 if($Infraestructura > 0){
                     $Categoria = 2;
-                    $BuscarUsuario = Usuarios::UsuarioTicket($Categoria);
-                    if($BuscarUsuario){
-                        foreach($BuscarUsuario as $row){
-                            $IdUsuario = $row->id;
-                        }
-                    }else{
-                        $BuscarUsuario = Usuarios::UsuarioTicketBackup($Categoria);
-                        foreach($BuscarUsuario as $row){
-                            $IdUsuario = $row->id;
-                        }
-                    }
+                    // $BuscarUsuario = Usuarios::UsuarioTicket($Categoria);
+                    // if($BuscarUsuario){
+                    //     foreach($BuscarUsuario as $row){
+                    //         $IdUsuario      = $row->id;
+                    //     }
+                    // }else{
+                    //     $BuscarUsuario = Usuarios::UsuarioTicketBackup($Categoria);
+                    //     foreach($BuscarUsuario as $row){
+                    //         $IdUsuario = $row->id;
+                    //     }
+                    // }
+                    $IdUsuario = null;
                     $Descripcion .= "Cargo Nuevo: $CargoNuevo_desc\n
                                     Usuario Dominio: $UsuarioDominio_desc\n
                                     Funcionario que Reemplaza: $Funcionario\n
@@ -834,30 +837,33 @@ class TicketsController extends Controller
                     foreach($buscarUltimo as $row){
                         $idticket = $row->id;
                     }
-                    Tickets::CrearTicketAsignado($idticket,$Asunto,$Descripcion,$creadoPor,$IdUsuario);
+                    // Tickets::CrearTicketAsignado($idticket,$Asunto,$Descripcion,$creadoPor,$IdUsuario);
                     $Tickets    .= "Ticket Infraestructura: $idticket,";
-                    $buscarCorreo = Usuarios::BuscarNombre($IdUsuario);
-                    foreach($buscarCorreo as $rows){
-                        if($emailAsignado === ""){
-                            $emailAsignado  .= $rows->email;
-                        }else{
-                            $emailAsignado  .= ';'.$rows->email;
-                        }
-                    }
+                    // $buscarCorreo = Usuarios::BuscarNombre($IdUsuario);
+                    // foreach($buscarCorreo as $rows){
+                    //     if($emailAsignado === ""){
+                    //         $emailAsignado  .= $rows->email;
+                    //     }else{
+                    //         $emailAsignado  .= ';'.$rows->email;
+                    //     }
+                    // }
+                    $emailAsignado = 'soporte.sistemas@cruzrojabogota.org.co';
                 }
                 if($Aplicaciones > 0){
-                    $Categoria = 1;
-                    $BuscarUsuario = Usuarios::UsuarioTicket($Categoria);
-                    if($BuscarUsuario){
-                        foreach($BuscarUsuario as $row){
-                            $IdUsuario = $row->id;
-                        }
-                    }else{
-                        $BuscarUsuario = Usuarios::UsuarioTicketBackup($Categoria);
-                        foreach($BuscarUsuario as $row){
-                            $IdUsuario = $row->id;
-                        }
-                    }
+                    // $Categoria = 1;
+                    $Categoria = 4;
+                    // $BuscarUsuario = Usuarios::UsuarioTicket($Categoria);
+                    // if($BuscarUsuario){
+                    //     foreach($BuscarUsuario as $row){
+                    //         $IdUsuario      = $row->id;
+                    //     }
+                    // }else{
+                    //     $BuscarUsuario = Usuarios::UsuarioTicketBackup($Categoria);
+                    //     foreach($BuscarUsuario as $row){
+                    //         $IdUsuario = $row->id;
+                    //     }
+                    // }
+                    $IdUsuario = null;
                     $Descripcion .= "Sistema 8.5: $App85_desc\n
                                     Dínamica: $AppDinamica_desc\n
                                     Otro Aplicativo: $OtroAplicativo\n
@@ -870,16 +876,17 @@ class TicketsController extends Controller
                     foreach($buscarUltimo as $row){
                         $idticket = $row->id;
                     }
-                    Tickets::CrearTicketAsignado($idticket,$Asunto,$Descripcion,$creadoPor,$IdUsuario);
+                    // Tickets::CrearTicketAsignado($idticket,$Asunto,$Descripcion,$creadoPor,$IdUsuario);
                     $Tickets    .= "Ticket Aplicaciones: $idticket,";
-                    $buscarCorreo = Usuarios::BuscarNombre($IdUsuario);
-                    foreach($buscarCorreo as $rows){
-                        if($emailAsignado === ""){
-                            $emailAsignado  .= $rows->email;
-                        }else{
-                            $emailAsignado  .= ';'.$rows->email;
-                        }
-                    }
+                    // $buscarCorreo = Usuarios::BuscarNombre($IdUsuario);
+                    // foreach($buscarCorreo as $rows){
+                    //     if($emailAsignado === ""){
+                    //         $emailAsignado  .= $rows->email;
+                    //     }else{
+                    //         $emailAsignado  .= ';'.$rows->email;
+                    //     }
+                    // }
+                    $emailAsignado = 'soporte.sistemas@cruzrojabogota.org.co';
                 }
                 $DescriptionT = "<b>Nombres y Apellidos:</b> $Nombres<br>
                                 <b>Identificación:</b> $Identificacion<br>

@@ -160,6 +160,6 @@ Equipos Móviles
                 endDate: '+0d'
             });
         });
-</script>
+    </script>
 
 @endsection

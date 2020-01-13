@@ -422,10 +422,12 @@ class Tickets extends Model
                                     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
                                     [$Asunto,$Descripcion,$fechaCreacion,$idTipo,$creadoPor,$AsignadoA,$IdSede,$Area,$Categoria,$Prioridad,
                                     $Estado,$NombreUsuario,$TelefonoUsuario,$CorreUsuario,$creadoPor,0,$AsignadoA,$ticketUser]);
-        DB::Insert('INSERT INTO notificaciones (usuario1,usuario2,leido,fecha)
+        if($AsignadoA){
+            DB::Insert('INSERT INTO notificaciones (usuario1,usuario2,leido,fecha)
                     VALUES (?,?,?,?)',
                     [$creadoPor,$AsignadoA,0,$fechaCreacion]);
-
+        }
+        
         return $crearTicket;
     }
 
