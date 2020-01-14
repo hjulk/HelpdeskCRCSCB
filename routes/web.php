@@ -3,11 +3,13 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', 'loginController@index');
 Route::post('RecuperarContrasena', 'loginController@RecuperarContrasena')->name('RecuperarContrasena');
+Route::get('/crearSolicitud','TicketsController@crearSolicitud')->name('crearSolicitud');
 
 // Route::auth();
 
 
 Route::post('Acceso', 'loginController@Acceso')->name('Acceso');
+Route::post('nuevaSolicitud', 'TicketsController@nuevaSolicitud')->name('nuevaSolicitud');
 Auth::routes();
 
 Route::group(['middleware' => 'revalidate'], function () {

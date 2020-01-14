@@ -197,7 +197,7 @@ class Usuarios extends Model
     }
 
     public static function BuscarXCategoria($id_categoria){
-        $activo = DB::Select("SELECT * FROM user WHERE category_id = $id_categoria ORDER BY name");
+        $activo = DB::Select("SELECT * FROM user WHERE category_id = $id_categoria AND is_active = 1 ORDER BY name");
         return $activo;
     }
 

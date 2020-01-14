@@ -1080,4 +1080,149 @@ class TicketsController extends Controller
         return \Response::json(array('valido'=>'true','Usuario'=>$NombreUsuario));
 
     }
+
+    public function crearSolicitud(){
+        $Sedes  = Tickets::Sedes();
+        $NombreSede = array();
+        $NombreSede[''] = 'Seleccione: ';
+        foreach ($Sedes as $row){
+            $NombreSede[$row->id] = $row->name;
+        }
+        $Tipo  = Tickets::ListarTipo();
+        $NombreTipo = array();
+        $NombreTipo[''] = 'Seleccione: ';
+        foreach ($Tipo as $row){
+            $NombreTipo[$row->id] = $row->name;
+        }
+        return view('CrearSolicitud',['Sedes' => $NombreSede,'Tipo' => $NombreTipo]);
+    }
+
+    public function nuevaSolicitud(){
+        $data = Input::all();
+        $reglas = array(
+            'kind_id' => 'required'
+        );
+        $validador = Validator::make($data, $reglas);
+        $messages = $validador->messages();
+        foreach ($reglas as $key => $value){
+            $verrors[$key] = $messages->first($key);
+        }
+        if($validador->passes()) {
+            $idTipo             = (int)Input::get('kind_id');
+            $Asunto             = Input::get('title');
+            $Descripcion        = Input::get('description');
+            $NombreUsuario      = Input::get('nombre_usuario');
+            $TelefonoUsuario    = Input::get('telefono_usuario');
+            $CorreUsuario       = Input::get('correo_usuario');
+            $IdSede             = (int)Input::get('project_id');
+            $Area               = Input::get('dependencia');
+            $Prioridad          = 2;
+            $Categoria          = 6;
+            $AsignadoA          = 44;
+            $Estado             = 2;
+            $creadoPor          = 31;
+
+            $nameCategoria = 'Mesa de Ayuda';
+            $namePrioridad = 'Media';
+            $nameEstado = 'Pendiente';
+            $nameAsignado = 'Soporte Mesa de Ayuda';
+            $emailAsignado = 'soporte.sistemas@cruzrojabogota.org.co';
+            $ticketUser = 0;
+
+            $CrearTicket = Tickets::CrearTicket($idTipo,$Asunto,$Descripcion,$NombreUsuario,$TelefonoUsuario,$CorreUsuario,
+                                                $IdSede,$Area,$Prioridad,$Categoria,$AsignadoA,$Estado,$creadoPor,$ticketUser);
+
+            if($CrearTicket){
+                $buscarUltimo = Tickets::BuscarLastTicket($creadoPor);
+                foreach($buscarUltimo as $row){
+                    $ticket = $row->id;
+                }
+                Tickets::CrearTicketAsignado($ticket,$Asunto,$Descripcion,$creadoPor,$AsignadoA);
+                $destinationPath = null;
+                $filename        = null;
+                if (Input::hasFile('evidencia')) {
+                    $files = Input::file('evidencia');
+                    foreach($files as $file){
+                        $destinationPath    = public_path().'/assets/dist/img/evidencias';
+                        $extension          = $file->getClientOriginalExtension();
+                        $name               = $file->getClientOriginalName();
+                        $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
+                        $nombrearchivo      = TicketsController::eliminar_tildes($nombrearchivo);
+                        $filename           = $nombrearchivo.'_Ticket_'.$ticket.'.'.$extension;
+                        $uploadSuccess      = $file->move($destinationPath, $filename);
+                        $archivofoto        = file_get_contents($uploadSuccess);
+                        $NombreFoto         = $filename;
+                        $actualizarEvidencia = Tickets::Evidencia($ticket,$NombreFoto);
+                    }
+                }
+
+                $BuscarInfoUsuario = Usuarios::BuscarNombre($AsignadoA);
+                foreach($BuscarInfoUsuario as $row){
+                    $NombreAsignado = $row->name;
+                }
+                $nombreCreador = 'Soporte';
+                $Comentario = "Creación de Ticket y asignado a $NombreAsignado";
+                Tickets::HistorialCreacion($ticket,$Comentario,$Estado,$creadoPor,$nombreCreador);
+                $fecha_sistema  = date('d-m-Y h:i a');
+                $fechaCreacion  = date('d-m-Y h:i a', strtotime($fecha_sistema));
+
+                $subject = "Creación ticket Mesa de ayuda";
+
+                $buscar = strpos($CorreUsuario,';');
+                if($buscar === false){
+                    $for = "$CorreUsuario";
+                }else{
+                    $for = array();
+                    $for = explode(';',$CorreUsuario);
+                }
+                // $for = "$CorreUsuario";
+                $cco = "$emailAsignado";
+                $calificacion = 1;
+                if($Estado === 3){
+                    $calificacion1 = "<a href='http://192.168.0.125:8080/helpdeskcrcscb/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/excelente.png' width='60' height='60'/></a>";
+                    $calificacion2 = "<a href='http://192.168.0.125:8080/helpdeskcrcscb/public/calificarTicket?valor=2&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/bueno.png' width='60' height='60'/></a>";
+                    $calificacion3 = "<a href='http://192.168.0.125:8080/helpdeskcrcscb/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/regular.png' width='60' height='60'/></a>";
+                    $calificacion4 = "<a href='http://192.168.0.125:8080/helpdeskcrcscb/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/malo.png' width='60' height='60'/></a>";
+                    $calificacion5 = "<a href='http://192.168.0.125:8080/helpdeskcrcscb/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/pesimo.png' width='60' height='60'/></a>";
+                    // $calificacion1 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=1&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/excelente.png' width='60' height='60'/></a>";
+                    // $calificacion2 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=2&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/dist/img/calificacion/bueno.png' width='60' height='60'/></a>";
+                    // $calificacion3 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=1&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/regular.png' width='60' height='60'/></a>";
+                    // $calificacion4 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=1&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/malo.png' width='60' height='60'/></a>";
+                    // $calificacion5 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=1&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/pesimo.png' width='60' height='60'/></a>";
+                 }else{
+                    $calificacion = 0;
+                    $calificacion1 = null;
+                    $calificacion2 = null;
+                    $calificacion3 = null;
+                    $calificacion4 = null;
+                    $calificacion5 = null;
+                }
+                Mail::send('email/EmailCreacion',
+                        ['Ticket' => $ticket,'Asunto' => $Asunto,'Categoria' => $nameCategoria,'Prioridad' => $namePrioridad,
+                        'Mensaje' => $Descripcion, 'NombreReportante' => $NombreUsuario, 'Telefono' => $TelefonoUsuario,
+                        'Correo' => $CorreUsuario,'AsignadoA' => $nameAsignado,'Estado' => $nameEstado,'Fecha' => $fecha_sistema,'Calificacion' => $calificacion,
+                        'Calificacion1' => $calificacion1,'Calificacion2' => $calificacion2,'Calificacion3' => $calificacion3,
+                        'Calificacion4' => $calificacion4,'Calificacion5' => $calificacion5],
+                        function($msj) use($subject,$for,$cco){
+                            $msj->from("soporte.sistemas@cruzrojabogota.org.co","Mesa de Ayuda - Tics");
+                            $msj->subject($subject);
+                            $msj->to($for);
+                            $msj->cc($cco);
+                        });
+                if(count(Mail::failures()) === 0){
+                    return view('CrearSolicitudMensaje',['Ticket' => $ticket]);
+                }else{
+                    return view('CrearSolicitudMensaje',['Ticket' => $ticket]);
+                }
+
+            }else{
+                $verrors = array();
+                array_push($verrors, 'Hubo un problema al crear el ticket');
+                return Redirect::to('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+            }
+        }else{
+            return Redirect::to('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+            // return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+        }
+    }
 }
