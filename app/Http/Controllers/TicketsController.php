@@ -1209,12 +1209,18 @@ class TicketsController extends Controller
                             $msj->to($for);
                             $msj->cc($cco);
                         });
+                // if(count(Mail::failures()) === 0){
+                //     return view('CrearSolicitudMensaje',['Ticket' => $ticket]);
+                // }else{
+                //     return view('CrearSolicitudMensaje',['Ticket' => $ticket]);
+                // }
                 if(count(Mail::failures()) === 0){
-                    return view('CrearSolicitudMensaje',['Ticket' => $ticket]);
+                    $verrors = 'Se creo con éxito el ticket '.$ticket;
+                    return redirect($url.'/tickets')->with('mensaje', $verrors);
                 }else{
-                    return view('CrearSolicitudMensaje',['Ticket' => $ticket]);
+                    $verrors = 'Se creo con éxito el ticket '.$ticket.', pero no pudo ser enviado el correo al usuario';
+                    return redirect($url.'/tickets')->with('precaucion', $verrors);
                 }
-
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el ticket');
