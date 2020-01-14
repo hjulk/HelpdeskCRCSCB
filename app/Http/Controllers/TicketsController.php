@@ -1216,10 +1216,10 @@ class TicketsController extends Controller
                 // }
                 if(count(Mail::failures()) === 0){
                     $verrors = 'Se creo con éxito el ticket '.$ticket.'\n Por favor revise la información del ticket que fue enviada al correo registrado para realizar su respectivo seguimiento.';
-                    return redirect($url.'/crearSolicitud')->with('mensaje', $verrors);
+                    return redirect('/crearSolicitud')->with('mensaje', $verrors);
                 }else{
                     $verrors = 'Se creo con éxito el ticket '.$ticket.', pero no pudo ser enviado el correo al usuario';
-                    return redirect($url.'/crearSolicitud')->with('precaucion', $verrors);
+                    return redirect('/crearSolicitud')->with('precaucion', $verrors);
                 }
             }else{
                 $verrors = array();
