@@ -6,7 +6,7 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Actualizar Usuario</h4>
             </div>
-            {!! Form::open(['action' => 'Admin\UsuarioController@actualizarUsuario', 'method' => 'post', 'enctype' => 'multipart/form-data','role' => 'form']) !!}
+            {!! Form::open(['action' => 'Admin\UsuarioController@actualizarUsuario', 'method' => 'post', 'enctype' => 'multipart/form-data','role' => 'form','autocomplete'=>'off']) !!}
 
                 <div class="modal-body">
                     <div class="box-body">

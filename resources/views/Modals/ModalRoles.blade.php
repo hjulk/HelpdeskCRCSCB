@@ -7,7 +7,7 @@
                     <h4 class="modal-title">Actualizar Rol</h4>
                 </div>
 
-                {!! Form::open(['action' => 'Admin\RolesController@actualizarRol', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+                {!! Form::open(['action' => 'Admin\RolesController@actualizarRol', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
                     <div class="modal-body">
                         <input type="hidden" name="idR" id="mod_idR">
                         <div class="box-body">
@@ -47,7 +47,7 @@
                         <h4 class="modal-title">Actualizar Categoria</h4>
                     </div>
 
-                    {!! Form::open(['action' => 'Admin\RolesController@actualizarCategoria', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+                    {!! Form::open(['action' => 'Admin\RolesController@actualizarCategoria', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
                         <div class="modal-body">
                                 <input type="hidden" name="idC" id="mod_idC">
                             <div class="box-body">

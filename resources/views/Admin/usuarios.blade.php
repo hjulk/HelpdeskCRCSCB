@@ -56,7 +56,7 @@ Usuarios
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    {!! Form::open(['action' => 'Admin\UsuarioController@crearUsuario', 'method' => 'post', 'enctype' => 'multipart/form-data','role' => 'form']) !!}
+                                    {!! Form::open(['action' => 'Admin\UsuarioController@crearUsuario', 'method' => 'post', 'enctype' => 'multipart/form-data','role' => 'form','autocomplete'=>'off']) !!}
 
                                     <div class="form-group">
                                         <div class="row">

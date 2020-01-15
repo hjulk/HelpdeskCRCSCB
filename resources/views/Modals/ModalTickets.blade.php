@@ -7,7 +7,7 @@
                 <h4 class="modal-title">Crear Ticket</h4>
             </div>
 
-            {!! Form::open(['url' => 'crearTicket', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['url' => 'crearTicket', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
             <div class="modal-body">
                 <div class="box-body">
                     <div class="form-group">
@@ -99,7 +99,7 @@
                     <h4 class="modal-title">Reabrir Ticket</h4>
                 </div>
 
-                {!! Form::open(['action' => 'Admin\TicketsController@reabrirTicket', 'method' => 'post', 'enctype' => 'multipart/form-data','class' => 'form-horizontal']) !!}
+                {!! Form::open(['action' => 'Admin\TicketsController@reabrirTicket', 'method' => 'post', 'enctype' => 'multipart/form-data','class' => 'form-horizontal','autocomplete'=>'off']) !!}
                 <div class="modal-body">
 
                     <div class="box-body">

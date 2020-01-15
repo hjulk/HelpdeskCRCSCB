@@ -41,7 +41,7 @@
                     </div>
                     <br>
                     <div class="header-left-bottom">
-                            {!! Form::open(['action' => 'loginController@Acceso', 'method' => 'post', 'enctype' => 'multipart/form-data','class' => 'login100-form validate-form']) !!}
+                            {!! Form::open(['action' => 'loginController@Acceso', 'method' => 'post', 'enctype' => 'multipart/form-data','class' => 'login100-form validate-form','autocomplete'=>'off']) !!}
                             <fieldset>
                                 <div class="wrap-input100 validate-input" data-validate = "Usuario es requerido">
                                     <input class="input100" type="text" name="user" id="user" placeholder="Usuario">

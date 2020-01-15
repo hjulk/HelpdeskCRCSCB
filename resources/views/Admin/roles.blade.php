@@ -78,7 +78,7 @@ Roles
                                     <span class="info-box-icon bg-aqua"><i class="ion ion-ios-pricetag-outline"></i></span>
                             </div>
                         <div class="col-md-8">
-                            {!! Form::open(['action' => 'Admin\RolesController@crearCategoria', 'method' => 'post', 'enctype' => 'multipart/form-data','role' => 'form']) !!}
+                            {!! Form::open(['action' => 'Admin\RolesController@crearCategoria', 'method' => 'post', 'enctype' => 'multipart/form-data','role' => 'form','autocomplete'=>'off']) !!}
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Nombre</label>
                                     {!! Form::text('nombre_categoria',$CategoriaName,['class'=>'form-control','id'=>'nombre_categoria','placeholder'=>'Nombre Rol']) !!}

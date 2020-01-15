@@ -6,7 +6,7 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title modal-title-primary">Crear Ingreso de Impresora</h4>
             </div>
-            {!! Form::open(['url' => 'ingresarImpresora', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['url' => 'ingresarImpresora', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
@@ -81,7 +81,7 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title modal-title-primary">Actualizar Ingreso de Impresora</h4>
             </div>
-            {!! Form::open(['url' => 'actualizarImpresora', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['url' => 'actualizarImpresora', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
             <div class="modal-body">
                 <input type="hidden" name="idI" id="mod_idI">
                 <div class="form-group">

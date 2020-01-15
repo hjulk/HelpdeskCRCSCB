@@ -7,7 +7,7 @@
                 <h4 class="modal-title">Recuperar Contraseña</h4>
             </div>
 
-            {!! Form::open(['action' => 'loginController@RecuperarContrasena', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['action' => 'loginController@RecuperarContrasena', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
                 <div class="modal-body">
                         <input type="hidden" name="idR" id="mod_idR">
 

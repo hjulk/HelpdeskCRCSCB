@@ -6,7 +6,7 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title modal-title-primary">Crear Ingreso de Equipo</h4>
             </div>
-            {!! Form::open(['url' => 'ingresoEquipo', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['url' => 'ingresoEquipo', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
@@ -90,7 +90,7 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title modal-title-primary">Actualizar Ingreso de Equipo</h4>
             </div>
-            {!! Form::open(['url' => 'actualizacionEquipo', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['url' => 'actualizacionEquipo', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
             <div class="modal-body">
                 <input type="hidden" name="idE" id="mod_idE">
                 <div class="form-group">

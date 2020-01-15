@@ -6,7 +6,7 @@
                 <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Crear Turno</h4>
             </div>
-            {!! Form::open(['action' => 'Admin\TurnosController@crearTurno', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['action' => 'Admin\TurnosController@crearTurno', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
                 <div class="modal-body">
                     <div class="form-group">
                         <div class="row">
@@ -59,7 +59,7 @@
                 <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Actualizar Turno</h4>
             </div>
-            {!! Form::open(['action' => 'Admin\TurnosController@actualizarTurno', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['action' => 'Admin\TurnosController@actualizarTurno', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
                 <div class="modal-body">
                     <input type="hidden" name="idTu" id="mod_idTu">
                     <div class="form-group">

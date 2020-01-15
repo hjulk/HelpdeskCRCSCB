@@ -7,7 +7,7 @@
                     <h4 class="modal-title">Actualizar Ticket</h4>
                 </div>
 
-                {!! Form::open(['url' => 'actualizarTicket', 'method' => 'post', 'enctype' => 'multipart/form-data','id'=>'upd']) !!}
+                {!! Form::open(['url' => 'actualizarTicket', 'method' => 'post', 'enctype' => 'multipart/form-data','id'=>'upd','autocomplete'=>'off']) !!}
                 <div class="modal-body">
                     <input type="hidden" name="idT" id="mod_idT">
                     <div class="box-body">

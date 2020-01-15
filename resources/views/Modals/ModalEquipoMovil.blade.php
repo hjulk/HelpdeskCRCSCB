@@ -4,7 +4,7 @@
             <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title modal-title-primary">Crear Ingreso de Equipo Movil</h4>
+                <h4 class="modal-title modal-title-primary">Crear Ingreso de Equipo'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}</h4>
             </div>
             {!! Form::open(['url' => 'asignacionEquipoMovil', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
             <div class="modal-body">
@@ -88,7 +88,7 @@
             <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title modal-title-primary">Actualizar Ingreso de Equipo Movil</h4>
+                <h4 class="modal-title modal-title-primary">Actualizar Ingreso de Equipo'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}</h4>
             </div>
             {!! Form::open(['url' => 'actualizacionEquipoMovil', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
             <div class="modal-body">
@@ -158,12 +158,12 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Historial Equipo Movil</label>
-                            {!! Form::textarea('historial',null,['class'=>'form-control','id'=>'mod_historial','placeholder'=>'Historial del equipo movil','rows'=>'3','readonly']) !!}
+                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Historial Equipo'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}</label>
+                            {!! Form::textarea('historial',null,['class'=>'form-control','id'=>'mod_historial','placeholder'=>'Historial del equipo'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}','rows'=>'3','readonly']) !!}
                         </div>
                         <div class="col-md-6">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Agregar Comentario</label>
-                            {!! Form::textarea('comentario',null,['class'=>'form-control','id'=>'comentario','placeholder'=>'Ingrese el comentario sobre la gestión del equipo movil','rows'=>'3']) !!}
+                            {!! Form::textarea('comentario',null,['class'=>'form-control','id'=>'comentario','placeholder'=>'Ingrese el comentario sobre la gestión del equipo'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}','rows'=>'3']) !!}
                         </div>
                     </div>
                 </div>

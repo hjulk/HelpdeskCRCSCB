@@ -6,7 +6,7 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title modal-title-primary">Crear Ingreso de Periferico</h4>
             </div>
-            {!! Form::open(['url' => 'ingresoPeriferico', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['url' => 'ingresoPeriferico', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
@@ -78,7 +78,7 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title modal-title-primary">Actualizar Ingreso de Periferico</h4>
             </div>
-            {!! Form::open(['url' => 'actualizacionPeriferico', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['url' => 'actualizacionPeriferico', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
             <div class="modal-body">
                 <input type="hidden" name="idP" id="mod_idP">
                 <div class="form-group">

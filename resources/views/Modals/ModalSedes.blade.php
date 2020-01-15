@@ -6,7 +6,7 @@
                 <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Crear Sede</h4>
             </div>
-            {!! Form::open(['action' => 'Admin\SedesController@crearSede', 'method' => 'post', 'enctype' => 'multipart/form-data','class' => 'form-horizontal']) !!}
+            {!! Form::open(['action' => 'Admin\SedesController@crearSede', 'method' => 'post', 'enctype' => 'multipart/form-data','class' => 'form-horizontal','autocomplete'=>'off']) !!}
                 <div class="modal-body">
                     <div class="box-body">
 
@@ -41,7 +41,7 @@
                     <span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Actualizar Sede</h4>
                 </div>
-                {!! Form::open(['action' => 'Admin\SedesController@actualizarSede', 'method' => 'post', 'enctype' => 'multipart/form-data','class' => 'form-horizontal']) !!}
+                {!! Form::open(['action' => 'Admin\SedesController@actualizarSede', 'method' => 'post', 'enctype' => 'multipart/form-data','class' => 'form-horizontal','autocomplete'=>'off']) !!}
                     <div class="modal-body">
                         <div class="box-body">
                                 <input type="hidden" name="idS" id="mod_idS">

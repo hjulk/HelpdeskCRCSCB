@@ -6,7 +6,7 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title modal-title-primary">Crear Ingreso de Linea Movil</h4>
             </div>
-            {!! Form::open(['url' => 'asignacionLineaMovil', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['url' => 'asignacionLineaMovil', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
@@ -89,7 +89,7 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title modal-title-primary">Actualizar Ingreso de Linea Movil</h4>
             </div>
-            {!! Form::open(['url' => 'actualizacionLineaMovil', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['url' => 'actualizacionLineaMovil', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
             <div class="modal-body">
                 <input type="hidden" name="idLM" id="mod_idLM">
                 <div class="form-group">

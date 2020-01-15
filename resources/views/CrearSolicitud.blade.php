@@ -40,7 +40,7 @@
 		</div>
 		<div class="col-md-8">
 			<div class="contact-form">
-                {!! Form::open(['url' => 'nuevaSolicitud', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+                {!! Form::open(['url' => 'nuevaSolicitud', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
                 <fieldset>
 				<div class="form-group">
                     <div class="row">

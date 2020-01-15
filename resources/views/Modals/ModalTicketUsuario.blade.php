@@ -7,7 +7,7 @@
                 <h4 class="modal-title">Crear Ticket de Creación de Usuario</h4>
             </div>
 
-            {!! Form::open(['url' => 'crearTicketUsuario', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['url' => 'crearTicketUsuario', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
             <div class="modal-body">
                 <div class="box-body">
                     <legend class="subtitle2" style="color: rgba(162, 27, 37, 1);">DATOS USUARIO</legend>

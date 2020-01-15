@@ -6,7 +6,7 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title modal-title-primary">Crear Ingreso de Consumible</h4>
             </div>
-            {!! Form::open(['url' => 'ingresarConsumible', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['url' => 'ingresarConsumible', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
@@ -85,9 +85,9 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title modal-title-primary">Actualizar Ingreso de Consumible</h4>
             </div>
-            {!! Form::open(['url' => 'actualizarConsumible', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['url' => 'actualizarConsumible', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
             <div class="modal-body">
-                <input type="hidden" name="idC" id="mod_idC">
+                'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-3">
