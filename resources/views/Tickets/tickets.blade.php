@@ -118,7 +118,7 @@ Tickets
         $('#form-ticket').submit(function() {
             var fileSize = $('#evidencia')[0].files[0].size;
             var sizekiloBytes = parseInt(fileSize / 1024);
-            if (sizekiloBytes >  $('#profile_pic').attr('size')) {
+            if (sizekiloBytes >  $('#evidencia').attr('size')) {
                 alert('El tamaño supera el limite permitido de 5mb');
                 return false;
             }
@@ -131,14 +131,7 @@ Tickets
                 return false;
             }
         });
-        $('#form-upd_user').submit(function() {
-            var fileSize = $('#profile_pic_upd')[0].files[0].size;
-            var sizekiloBytes = parseInt(fileSize / 1024);
-            if (sizekiloBytes >  $('#profile_pic_upd').attr('size')) {
-                alert('El tamaño supera el limite permitido de 5mb');
-                return false;
-            }
-        });
+
     </script>
     {{-- <script>
         $("#upd").submit(function (event) {
