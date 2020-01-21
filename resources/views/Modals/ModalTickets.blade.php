@@ -7,7 +7,7 @@
                 <h4 class="modal-title">Crear Ticket</h4>
             </div>
 
-            {!! Form::open(['url' => 'crearTicket', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
+            {!! Form::open(['url' => 'crearTicket', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off','id'=>'form-ticket']) !!}
             <div class="modal-body">
                 <div class="box-body">
                     <div class="form-group">
@@ -74,7 +74,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-sm-12 control-label">Anexar Evidencia</label>
-                                <input type="file" id="evidencia[]" name="evidencia[]" class="form-control" multiple>
+                                <input type="file" id="evidencia[]" name="evidencia[]" class="form-control" multiple="multiple" size="5120">
                                 <div align="right"><small class="text-muted" style="font-size: 63%;">Tamaño maximo permitido (5MB), si se supera este tamaño, su archivo no será cargado.</small> <span id="cntDescripHechos" align="right"> </span></div>
                             </div>
                         </div>

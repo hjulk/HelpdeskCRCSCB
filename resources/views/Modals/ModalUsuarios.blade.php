@@ -6,7 +6,7 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Actualizar Usuario</h4>
             </div>
-            {!! Form::open(['action' => 'Admin\UsuarioController@actualizarUsuario', 'method' => 'post', 'enctype' => 'multipart/form-data','role' => 'form','autocomplete'=>'off']) !!}
+            {!! Form::open(['action' => 'Admin\UsuarioController@actualizarUsuario', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off','id'=>'form-upd_user']) !!}
 
                 <div class="modal-body">
                     <div class="box-body">
@@ -48,7 +48,7 @@
                     <div class="row">
                         <div class="col-md-5">
                             <label for="exampleInputFile">Foto</label>
-                            <input type="file" id="profile_pic_upd" name="profile_pic_upd" accept="image/*">
+                            <input type="file" id="profile_pic_upd" name="profile_pic_upd" accept="image/*" size="5120">
                         </div>
                         <div class="col-md-3">
                             <label for="exampleInputEmail1">Activo</label>
@@ -76,7 +76,7 @@
                 <h4 class="modal-title">Actualizar Usuario Admin</h4>
             </div>
             <div class="modal-body">
-                {!! Form::open(['action' => 'Admin\UsuarioController@actualizarUsuarioAdmin', 'method' => 'post', 'enctype' => 'multipart/form-data','role' => 'form']) !!}
+                {!! Form::open(['action' => 'Admin\UsuarioController@actualizarUsuarioAdmin', 'method' => 'post', 'enctype' => 'multipart/form-data','id'=>'form-admin-upd']) !!}
                 <input type="hidden" name="idU" id="mod_idU">
                 <div class="form-group">
                     <div class="row">

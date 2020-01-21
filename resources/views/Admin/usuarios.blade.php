@@ -56,7 +56,7 @@ Usuarios
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    {!! Form::open(['action' => 'Admin\UsuarioController@crearUsuario', 'method' => 'post', 'enctype' => 'multipart/form-data','role' => 'form','autocomplete'=>'off']) !!}
+                                    {!! Form::open(['action' => 'Admin\UsuarioController@crearUsuario', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off','id'=>'form-create_user']) !!}
 
                                     <div class="form-group">
                                         <div class="row">
@@ -90,7 +90,7 @@ Usuarios
                                             </div>
                                             <div class="col-md-3">
                                                 <label for="exampleInputFile">Foto</label>
-                                                <input type="file" id="profile_pic" name="profile_pic" class="form-control" accept="image/*">
+                                                <input type="file" id="profile_pic" name="profile_pic" class="form-control" accept="image/*" size="5120">
                                             </div>
                                         </div>
                                     </div>
@@ -183,5 +183,30 @@ Usuarios
             @endforeach
         @endif
     </script>
-
+    <script>
+        $('#form-create_user').submit(function() {
+            var fileSize = $('#profile_pic')[0].files[0].size;
+            var sizekiloBytes = parseInt(fileSize / 1024);
+            if (sizekiloBytes >  $('#profile_pic').attr('size')) {
+                alert('El tamaño supera el limite permitido de 5mb');
+                return false;
+            }
+        });
+        $('#form-admin-upd').submit(function() {
+            var fileSize = $('#profile_pic_amd')[0].files[0].size;
+            var sizekiloBytes = parseInt(fileSize / 1024);
+            if (sizekiloBytes >  $('#profile_pic_amd').attr('size')) {
+                alert('El tamaño supera el limite permitido de 5mb');
+                return false;
+            }
+        });
+        $('#form-upd_user').submit(function() {
+            var fileSize = $('#profile_pic_upd')[0].files[0].size;
+            var sizekiloBytes = parseInt(fileSize / 1024);
+            if (sizekiloBytes >  $('#profile_pic_upd').attr('size')) {
+                alert('El tamaño supera el limite permitido de 5mb');
+                return false;
+            }
+        });
+    </script>
 @endsection

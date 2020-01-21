@@ -138,7 +138,7 @@
             {!! Form::open(['url' => 'actualizarAsignacion', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
             <div class="modal-body">
                 <input type="hidden" name="idA" id="mod_idA">
-                <legend class="subtitle2" style="color: rgba(162, 27, 37, 1);">DATOS QUIPO</legend>
+                <legend class="subtitle2" style="color: rgba(162, 27, 37, 1);">DATOS EQUIPO</legend>
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-3">
@@ -240,7 +240,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Evidencia</label>
-                            <input type="file" id="mod_evidencia[]" name="evidencia_upd[]" class="form-control" multiple>
+                            <input type="file" id="mod_evidencia[]" name="evidencia_upd[]" class="form-control" multiple="multiple" size="5120">
                             <div align="right"><small class="text-muted" style="font-size: 73%;">Tamaño maximo permitido (5MB), si se supera este tamaño, su archivo no será cargado.</small> <span id="cntDescripHechos" align="right"> </span></div>
                         </div>
                     </div>
