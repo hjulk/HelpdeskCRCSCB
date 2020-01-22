@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tickets extends Model
 {
-
-
     protected $table = "ticket";
     public $timestamps = false;
 
@@ -427,7 +425,7 @@ class Tickets extends Model
                     VALUES (?,?,?,?)',
                     [$creadoPor,$AsignadoA,0,$fechaCreacion]);
         }
-        
+
         return $crearTicket;
     }
 
@@ -846,5 +844,10 @@ class Tickets extends Model
     public static function ListarTipoCalificaciones($idCalificacion){
         $Calificaciones = DB::Select("SELECT * FROM tipo_calificacion WHERE id = $idCalificacion");
         return $Calificaciones;
+    }
+
+    public static function ListarRecurrentes(){
+        $ListarRecurrentes = DB::Select("SELECT * FROM tickets_recurrentes");
+        return $ListarRecurrentes;
     }
 }

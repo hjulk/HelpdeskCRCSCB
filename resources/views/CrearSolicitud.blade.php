@@ -72,16 +72,28 @@
                 </div>
 				<div class="form-group">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <label class="control-label col-sm-12" for="email">Tipo Ticket:</label>
                             {!! Form::select('kind_id',$Tipo,null,['class'=>'form-control','id'=>'kind_id','required']) !!}
                         </div>
-                        <div class="col-sm-8">
-                            <label class="control-label col-sm-12" for="email">Asunto:</label>
+                        <div class="col-sm-3">
+                            <label class="control-label col-sm-12" for="email">Área Sistemas:</label>
+                            {!! Form::select('id_categoria',$Categoria,null,['class'=>'form-control','id'=>'id_categoria','required','onchange'=>'categoriaTFuncS();']) !!}
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="control-label col-sm-12" for="email">Asunto</label>
+                            {!! Form::select('asunto',$TicketRecurrente,null,['class'=>'form-control','id'=>'asunto','required','onChange'=>'mostrar(this.value);']) !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12" id="titulo" style="display: none;">
+                            <label class="control-label col-sm-12" for="email">Cuál?</label>
                             {!! Form::text('title',null,['class'=>'form-control','id'=>'title','placeholder'=>'Asunto del Ticket','required']) !!}
                         </div>
                     </div>
-				</div>
+                </div>
 				<div class="form-group">
                     <div class="row">
                         <div class="col-sm-12">
@@ -95,8 +107,8 @@
                     <div class="row">
                         <div class="col-sm-9">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Anexar Evidencia al Ticket</label>
-                            <input type="file" id="evidencia[]" name="evidencia[]" class="form-control" multiple>
-                            <div align="right"><small class="text-muted" style="font-size: 63%;">Tamaño maximo permitido (5MB), si se supera este tamaño, su archivo no será cargado.</small> <span id="cntDescripHechos" align="right"> </span></div>
+                            <input type="file" id="evidencia[]" name="evidencia[]" class="form-control" multiple="multiple" size="5120">
+                            <div align="right"><small class="text-muted" style="font-size: 73%;">Tamaño maximo permitido (5MB), si se supera este tamaño, su archivo no será cargado.</small> <span id="cntDescripHechos" align="right"> </span></div>
                         </div>
                         <div class="col-sm-3" style="align-self: center;">
                             <button type="submit" class="btn btn-success">Crear Ticket</button>
@@ -134,5 +146,41 @@
             }
         });
 
+    </script>
+    <script>
+        function mostrar(id) {
+            if (id === '61') {
+                $("#titulo").show();
+            }else{
+                $("#titulo").hide();
+            }
+        }
+    </script>
+    <script>
+        function categoriaTFuncS() {
+            var selectBox = document.getElementById("id_categoria");
+            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+            var tipo = 'post';
+            var select = document.getElementById("asunto");
+
+            $.ajax({
+                url: "{{route('buscarCategoriaS')}}",
+                type: "get",
+                data: {_method: tipo, id_categoria: selectedValue},
+                success: function (data) {
+                    var vValido = data['valido'];
+
+                    if (vValido === 'true') {
+                        var ListUsuario = data['Usuario'];
+                        select.options.length = 0;
+                        for (index in ListUsuario) {
+                            select.options[select.options.length] = new Option(ListUsuario[index], index);
+                        }
+
+                    }
+
+                }
+            });
+        }
     </script>
 </html>

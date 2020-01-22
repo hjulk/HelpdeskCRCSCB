@@ -201,6 +201,11 @@ class Usuarios extends Model
         return $activo;
     }
 
+    public static function BuscarXCategoriaSolicitud($id_categoria){
+        $activo = DB::Select("SELECT * FROM tickets_recurrentes WHERE category_id = $id_categoria ORDER BY nombre");
+        return $activo;
+    }
+
     public static function BuscarXSede($id_sede){
         $activo = DB::Select("SELECT * FROM areas WHERE id_sede = $id_sede");
         return $activo;

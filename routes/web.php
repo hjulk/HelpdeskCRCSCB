@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', 'loginController@index');
 Route::post('RecuperarContrasena', 'loginController@RecuperarContrasena')->name('RecuperarContrasena');
 Route::get('/crearSolicitud','TicketsController@crearSolicitud')->name('crearSolicitud');
+Route::get('buscarCategoriaS', 'TicketsController@buscarCategoriaS')->name('buscarCategoriaS');
 
 // Route::auth();
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use App\Models\Admin\Sedes;
 use App\Models\Helpdesk\Tickets;
+use App\Models\Admin\Roles;
 use Illuminate\Support\Facades\Validator;
 use App\Models\HelpDesk\Inventario;
 use App\Models\Admin\Usuarios;
@@ -1053,12 +1054,26 @@ class TicketsController extends Controller
 
     }
 
+    public function buscarCategoriaS(){
+
+        $data = Input::all();
+        $id   = Input::get('id_categoria');
+        $NombreUsuario = array();
+        $buscarUsuario = Usuarios::BuscarXCategoriaSolicitud($id);
+        $NombreUsuario[0] = 'Seleccione: ';
+        foreach ($buscarUsuario as $row){
+            $NombreUsuario[$row->id] = $row->nombre;
+        }
+        return \Response::json(array('valido'=>'true','Usuario'=>$NombreUsuario));
+
+    }
+
     public function buscarCategoriaRepo(){
 
         $data = Input::all();
         $id   = Input::get('id_categoria');
         $NombreUsuario = array();
-        $buscarUsuario = Usuarios::BuscarXCategoria($id);
+        $buscarUsuario = Usuarios::BuscarXCategoriaSolicitud($id);
         $NombreUsuario[0] = 'Seleccione: ';
         foreach ($buscarUsuario as $row){
             $NombreUsuario[$row->id] = $row->name;
@@ -1094,7 +1109,19 @@ class TicketsController extends Controller
         foreach ($Tipo as $row){
             $NombreTipo[$row->id] = $row->name;
         }
-        return view('CrearSolicitud',['Sedes' => $NombreSede,'Tipo' => $NombreTipo]);
+        $Categoria  = Roles::ListarCategorias();
+        $NombreCategoria = array();
+        $NombreCategoria[''] = 'Seleccione: ';
+        foreach ($Categoria as $row){
+            $NombreCategoria[$row->id] = $row->name;
+        }
+        $Recurrente = Tickets::ListarRecurrentes();
+        $TicketRecurrente = array();
+        $TicketRecurrente[''] = 'Seleccione: ';
+        // foreach ($Recurrente as $row){
+        //     $TicketRecurrente[$row->id] = $row->nombre;
+        // }
+        return view('CrearSolicitud',['Sedes' => $NombreSede,'Tipo' => $NombreTipo,'TicketRecurrente' => $TicketRecurrente,'Categoria' => $NombreCategoria]);
     }
 
     public function nuevaSolicitud(){
