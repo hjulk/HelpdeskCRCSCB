@@ -1127,7 +1127,13 @@ class TicketsController extends Controller
     public function nuevaSolicitud(){
         $data = Input::all();
         $reglas = array(
-            'kind_id' => 'required'
+            'kind_id'           => 'required',
+            'nombre_usuario'    => 'required',
+            'description'       => 'required',
+            'telefono_usuario'  => 'required',
+            'correo_usuario'    => 'required',
+            'project_id'        => 'required'
+
         );
         $validador = Validator::make($data, $reglas);
         $messages = $validador->messages();
@@ -1136,19 +1142,37 @@ class TicketsController extends Controller
         }
         if($validador->passes()) {
             $idTipo             = (int)Input::get('kind_id');
-            $Asunto             = Input::get('title');
+
             $Descripcion        = Input::get('description');
             $NombreUsuario      = Input::get('nombre_usuario');
             $TelefonoUsuario    = Input::get('telefono_usuario');
             $CorreUsuario       = Input::get('correo_usuario');
             $IdSede             = (int)Input::get('project_id');
             $Area               = Input::get('dependencia');
-            $Prioridad          = 2;
-            $Categoria          = 6;
+            $idAsunto           = (int)Input::get('asunto');
+            if($idAsunto === 61){
+                $Prioridad      = 2;
+                $Categoria      = 4;
+                $Asunto         = Input::get('title');
+            }else{
+                $buscardatos = Tickets::ListarRecurrentesId($idAsunto);
+                if($buscardatos){
+                    foreach($buscardatos as $row){
+                        $Prioridad = (int)$row->priority_id;
+                        $Categoria = (int)$row->category_id;
+                        $Asunto    = $row->nombre;
+                    }
+                }else{
+                    $Prioridad          = 2;
+                    $Categoria          = 4;
+                    $Asunto             = Input::get('title');
+                }
+            }
+
             $AsignadoA          = 44;
             $Estado             = 2;
             $creadoPor          = 31;
-
+            // dd($Prioridad,$Categoria);
             $nameCategoria = 'Mesa de Ayuda';
             $namePrioridad = 'Media';
             $nameEstado = 'Pendiente';

@@ -90,7 +90,7 @@
                     <div class="row">
                         <div class="col-md-12" id="titulo" style="display: none;">
                             <label class="control-label col-sm-12" for="email">Cuál?</label>
-                            {!! Form::text('title',null,['class'=>'form-control','id'=>'title','placeholder'=>'Asunto del Ticket','required']) !!}
+                            {!! Form::text('title',null,['class'=>'form-control','id'=>'title','placeholder'=>'Asunto del Ticket']) !!}
                         </div>
                     </div>
                 </div>

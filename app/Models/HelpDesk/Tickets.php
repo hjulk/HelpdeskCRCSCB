@@ -850,4 +850,9 @@ class Tickets extends Model
         $ListarRecurrentes = DB::Select("SELECT * FROM tickets_recurrentes");
         return $ListarRecurrentes;
     }
+
+    public static function ListarRecurrentesId($id){
+        $ListarRecurrentes = DB::Select("SELECT * FROM tickets_recurrentes WHERE id = $id");
+        return $ListarRecurrentes;
+    }
 }
