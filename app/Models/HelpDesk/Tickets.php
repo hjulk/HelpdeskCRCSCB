@@ -22,20 +22,8 @@ class Tickets extends Model
     }
 
     public static function TicketsUsuario($id_user,$IdRolUSer,$IdCategoriaUSer){
-        if($IdRolUSer === 2){
-            if($IdCategoriaUSer === 4){
-                $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2)");
-            }else{
-                $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND category_id = $IdCategoriaUSer");
-            }
-        }else{
-            if($IdCategoriaUSer === 4){
-                $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND asigned_id = $id_user");
-            }else{
-                $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND category_id = $IdCategoriaUSer");
-            }
 
-        }
+        $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND category_id = $IdCategoriaUSer");
         return $tickets;
     }
 
