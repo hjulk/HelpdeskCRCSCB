@@ -994,8 +994,8 @@ class TicketsController extends Controller
     public static function eliminar_tildes($nombrearchivo){
 
         //Codificamos la cadena en formato utf8 en caso de que nos de errores
-        $cadena = utf8_encode($nombrearchivo);
-
+        // $cadena = utf8_encode($nombrearchivo);
+        $cadena = $nombrearchivo;
         //Ahora reemplazamos las letras
         $cadena = str_replace(
             array('á', 'à', 'ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä'),
@@ -1026,6 +1026,12 @@ class TicketsController extends Controller
         $cadena = str_replace(
             array('ñ', 'Ñ', 'ç', 'Ç'),
             array('n', 'N', 'c', 'C'),
+            $cadena
+        );
+
+        $cadena = str_replace(
+            array(' ', '-'),
+            array('_', '_'),
             $cadena
         );
 
