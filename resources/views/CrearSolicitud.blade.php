@@ -76,11 +76,7 @@
                             <label class="control-label col-sm-12" for="email">Tipo Ticket:</label>
                             {!! Form::select('kind_id',$Tipo,null,['class'=>'form-control','id'=>'kind_id','required']) !!}
                         </div>
-                        <div class="col-sm-3">
-                            <label class="control-label col-sm-12" for="email">Área Sistemas:</label>
-                            {!! Form::select('id_categoria',$Categoria,null,['class'=>'form-control','id'=>'id_categoria','required','onchange'=>'categoriaTFuncS();']) !!}
-                        </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-9">
                             <label class="control-label col-sm-12" for="email">Asunto</label>
                             {!! Form::select('asunto',$TicketRecurrente,null,['class'=>'form-control','id'=>'asunto','required','onChange'=>'mostrar(this.value);']) !!}
                         </div>

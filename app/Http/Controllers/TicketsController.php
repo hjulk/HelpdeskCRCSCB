@@ -1118,9 +1118,9 @@ class TicketsController extends Controller
         $Recurrente = Tickets::ListarRecurrentes();
         $TicketRecurrente = array();
         $TicketRecurrente[''] = 'Seleccione: ';
-        // foreach ($Recurrente as $row){
-        //     $TicketRecurrente[$row->id] = $row->nombre;
-        // }
+        foreach ($Recurrente as $row){
+            $TicketRecurrente[$row->id] = $row->nombre;
+        }
         return view('CrearSolicitud',['Sedes' => $NombreSede,'Tipo' => $NombreTipo,'TicketRecurrente' => $TicketRecurrente,'Categoria' => $NombreCategoria]);
     }
 

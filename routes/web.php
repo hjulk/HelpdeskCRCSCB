@@ -1,8 +1,9 @@
 <?php
 use Illuminate\Support\Facades\Auth;
-
+Cache::flush();
 Route::get('/', 'loginController@index');
 Route::post('RecuperarContrasena', 'loginController@RecuperarContrasena')->name('RecuperarContrasena');
+
 Route::get('/crearSolicitud','TicketsController@crearSolicitud')->name('crearSolicitud');
 Route::get('buscarCategoriaS', 'TicketsController@buscarCategoriaS')->name('buscarCategoriaS');
 
@@ -14,6 +15,7 @@ Route::post('nuevaSolicitud', 'TicketsController@nuevaSolicitud')->name('nuevaSo
 Auth::routes();
 
 Route::group(['middleware' => 'revalidate'], function () {
+    Cache::flush();
     Route::group(['middleware' => 'monitoreo'], function () {
         Route::get('dashboardMonitoreo', 'loginController@dashboardMonitoreo')->name('dashboardMonitoreo');
     });
@@ -28,6 +30,7 @@ Route::group(['middleware' => 'revalidate'], function () {
     // MODULO ADMINISTRACIÓN
 
     Route::group(['prefix' => 'admin','namespace' => 'Admin','middleware' => 'admin'],function(){
+        Cache::flush();
         Route::get('sedes','SedesController@sedes')->name('sedes');
         Route::get('roles','RolesController@roles')->name('roles');
         Route::get('usuarios','UsuarioController@index')->name('usuarios');
@@ -63,6 +66,8 @@ Route::group(['middleware' => 'revalidate'], function () {
         Route::get('/logout', function() {
             Auth::logout();
             Session::flush();
+            Artisan::call('cache:clear');
+            Cache::flush();
             // Session::destroy();
             return Redirect::to('/')->with('mensaje_login', 'Salida Segura');
         });
@@ -71,6 +76,7 @@ Route::group(['middleware' => 'revalidate'], function () {
     // MODULO USUARIOS
 
     Route::group(['prefix' => 'user','namespace' => 'User','middleware' => 'user'],function(){
+        Cache::flush();
         Route::get('tickets','TicketsUserController@tickets')->name('tickets');
         Route::get('ticketsUsuario','TicketsUserController@ticketsUsuario')->name('ticketsUsuario');
         Route::get('reporteTickets','TicketsUserController@reporteTickets')->name('reporteTickets');
@@ -90,6 +96,8 @@ Route::group(['middleware' => 'revalidate'], function () {
         Route::get('/logout', function() {
             Auth::logout();
             Session::flush();
+            Artisan::call('cache:clear');
+            Cache::flush();
             // Session::destroy();
             return Redirect::to('/')->with('mensaje_login', 'Salida Segura');
         });
@@ -98,6 +106,8 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::get('/logout', function() {
         Auth::logout();
         Session::flush();
+        Artisan::call('cache:clear');
+        Cache::flush();
         // Session::destroy();
 
         return Redirect::to('/')->with('mensaje', 'Salida Segura');

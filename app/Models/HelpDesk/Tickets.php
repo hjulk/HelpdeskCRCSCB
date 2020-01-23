@@ -835,7 +835,7 @@ class Tickets extends Model
     }
 
     public static function ListarRecurrentes(){
-        $ListarRecurrentes = DB::Select("SELECT * FROM tickets_recurrentes");
+        $ListarRecurrentes = DB::Select("SELECT * FROM tickets_recurrentes ORDER BY nombre");
         return $ListarRecurrentes;
     }
 
