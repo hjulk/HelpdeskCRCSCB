@@ -7,7 +7,7 @@ Usuarios
 @section('contenido')
 
 <section class="content-header">
-    <h1>Usuarios</h1>
+    <h1><i class="fa fa-users"></i> Usuarios</h1>
     <ol class="breadcrumb">
         <li><a href="dashboard"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li>Admin</a></li>
@@ -35,7 +35,7 @@ Usuarios
                             <b>Rol</b> <a class="pull-right">{!! Session::get('NombreRol') !!}</a>
                         </li>
                     </ul>
-                    <a href="#" class="btn btn-primary btn-block" title="Editar" data-toggle="modal" data-target=".bs-example-modal-lg-updAdmin"><b>Editar</b></a>
+                    <a href="#" class="btn btn-primary btn-block" title="Editar" data-toggle="modal" data-target=".bs-example-modal-md-updAdmin"><b>Editar</b></a>
                 </div>
             </div>
         </div>
@@ -144,7 +144,7 @@ Usuarios
                                         <td>{{$usuario['categoria']}}</td>
                                         <td>{{$usuario['fecha_creacion']}}</td>
                                         <td>{{$usuario['estado']}}</td>
-                                        <td style="text-align: center;"><a href="#" class="btn btn-warning" title="Editar" onclick="obtener_datos_usuario('{{$usuario['id']}}');" data-toggle="modal" data-target=".bs-example-modal-lg-udpU"><i class="glyphicon glyphicon-edit"></i></a></td>
+                                        <td style="text-align: center;"><a href="#" class="btn btn-warning" title="Editar" onclick="obtener_datos_usuario('{{$usuario['id']}}');" data-toggle="modal" data-target=".bs-example-modal-md-udpU"><i class="glyphicon glyphicon-edit"></i></a></td>
                                         <input type="hidden" value="{{$usuario['id']}}" id="id{{$usuario['id']}}">
                                         <input type="hidden" value="{{$usuario['nombre']}}" id="nombre{{$usuario['id']}}">
                                         <input type="hidden" value="{{$usuario['username']}}" id="username{{$usuario['id']}}">

@@ -33,7 +33,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade bs-example-modal-lg-udpS" id="modal-sedes-upd">
+<div class="modal fade bs-example-modal-md-udpS" id="modal-sedes-upd">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">

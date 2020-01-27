@@ -39,19 +39,28 @@ $(document).ready(function () {
             }
         },
         dom: 'Bfrtip',
-                        buttons: [
-                            {
-                                extend: 'collection',
-                                text: 'Exportar',
-                                buttons: [
-                                    'copy',
-                                    'excel',
-                                    'csv',
-                                    {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'A4'},
-                                    'print'
-                                ]
+        buttons: [
+                {
+                    extend: 'collection',
+                    text: 'Exportar',
+                    buttons: [
+                        'copy',
+                        'excel',
+                        'csv',
+                        {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'LEGAL'},
+                        {
+                            extend: 'print',
+                            customize: function ( win ) {
+                                $(win.document.body)
+                                    .css( 'font-size', '10pt' );
+
+                                $(win.document.body).find( 'table' )
+                                    .addClass( 'compact' )
+                                    .css( 'font-size', 'inherit' );
                             }
-                        ]
+                        }
+                    ]
+                }]
 
     });
 
@@ -96,18 +105,27 @@ $(document).ready(function () {
         },
         dom: 'Bfrtip',
                         buttons: [
-                            {
-                                extend: 'collection',
-                                text: 'Exportar',
-                                buttons: [
-                                    'copy',
-                                    'excel',
-                                    'csv',
-                                    {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'A4'},
-                                    'print'
-                                ]
+                {
+                    extend: 'collection',
+                    text: 'Exportar',
+                    buttons: [
+                        'copy',
+                        'excel',
+                        'csv',
+                        {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'LEGAL'},
+                        {
+                            extend: 'print',
+                            customize: function ( win ) {
+                                $(win.document.body)
+                                    .css( 'font-size', '10pt' );
+
+                                $(win.document.body).find( 'table' )
+                                    .addClass( 'compact' )
+                                    .css( 'font-size', 'inherit' );
                             }
-                        ]
+                        }
+                    ]
+                }]
 
     });
 
@@ -152,18 +170,27 @@ $(document).ready(function () {
         },
         dom: 'Bfrtip',
                         buttons: [
-                            {
-                                extend: 'collection',
-                                text: 'Exportar',
-                                buttons: [
-                                    'copy',
-                                    'excel',
-                                    'csv',
-                                    {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'A4'},
-                                    'print'
-                                ]
+                {
+                    extend: 'collection',
+                    text: 'Exportar',
+                    buttons: [
+                        'copy',
+                        'excel',
+                        'csv',
+                        {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'LEGAL'},
+                        {
+                            extend: 'print',
+                            customize: function ( win ) {
+                                $(win.document.body)
+                                    .css( 'font-size', '10pt' );
+
+                                $(win.document.body).find( 'table' )
+                                    .addClass( 'compact' )
+                                    .css( 'font-size', 'inherit' );
                             }
-                        ]
+                        }
+                    ]
+                }]
 
     });
 
@@ -208,18 +235,27 @@ $(document).ready(function () {
         },
         dom: 'Bfrtip',
                         buttons: [
-                            {
-                                extend: 'collection',
-                                text: 'Exportar',
-                                buttons: [
-                                    'copy',
-                                    'excel',
-                                    'csv',
-                                    {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'A4'},
-                                    'print'
-                                ]
+                {
+                    extend: 'collection',
+                    text: 'Exportar',
+                    buttons: [
+                        'copy',
+                        'excel',
+                        'csv',
+                        {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'LEGAL'},
+                        {
+                            extend: 'print',
+                            customize: function ( win ) {
+                                $(win.document.body)
+                                    .css( 'font-size', '10pt' );
+
+                                $(win.document.body).find( 'table' )
+                                    .addClass( 'compact' )
+                                    .css( 'font-size', 'inherit' );
                             }
-                        ]
+                        }
+                    ]
+                }]
 
     });
 
@@ -264,18 +300,27 @@ $(document).ready(function () {
         },
         dom: 'Bfrtip',
                         buttons: [
-                            {
-                                extend: 'collection',
-                                text: 'Exportar',
-                                buttons: [
-                                    'copy',
-                                    'excel',
-                                    'csv',
-                                    {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'A4'},
-                                    'print'
-                                ]
+                {
+                    extend: 'collection',
+                    text: 'Exportar',
+                    buttons: [
+                        'copy',
+                        'excel',
+                        'csv',
+                        {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'LEGAL'},
+                        {
+                            extend: 'print',
+                            customize: function ( win ) {
+                                $(win.document.body)
+                                    .css( 'font-size', '10pt' );
+
+                                $(win.document.body).find( 'table' )
+                                    .addClass( 'compact' )
+                                    .css( 'font-size', 'inherit' );
                             }
-                        ]
+                        }
+                    ]
+                }]
 
     });
 
@@ -320,18 +365,27 @@ $(document).ready(function () {
         },
         dom: 'Bfrtip',
                         buttons: [
-                            {
-                                extend: 'collection',
-                                text: 'Exportar',
-                                buttons: [
-                                    'copy',
-                                    'excel',
-                                    'csv',
-                                    {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'A4'},
-                                    'print'
-                                ]
+                {
+                    extend: 'collection',
+                    text: 'Exportar',
+                    buttons: [
+                        'copy',
+                        'excel',
+                        'csv',
+                        {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'LEGAL'},
+                        {
+                            extend: 'print',
+                            customize: function ( win ) {
+                                $(win.document.body)
+                                    .css( 'font-size', '10pt' );
+
+                                $(win.document.body).find( 'table' )
+                                    .addClass( 'compact' )
+                                    .css( 'font-size', 'inherit' );
                             }
-                        ]
+                        }
+                    ]
+                }]
 
     });
 
@@ -376,18 +430,27 @@ $(document).ready(function () {
         },
         dom: 'Bfrtip',
                         buttons: [
-                            {
-                                extend: 'collection',
-                                text: 'Exportar',
-                                buttons: [
-                                    'copy',
-                                    'excel',
-                                    'csv',
-                                    {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'A4'},
-                                    'print'
-                                ]
+                {
+                    extend: 'collection',
+                    text: 'Exportar',
+                    buttons: [
+                        'copy',
+                        'excel',
+                        'csv',
+                        {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'LEGAL'},
+                        {
+                            extend: 'print',
+                            customize: function ( win ) {
+                                $(win.document.body)
+                                    .css( 'font-size', '10pt' );
+
+                                $(win.document.body).find( 'table' )
+                                    .addClass( 'compact' )
+                                    .css( 'font-size', 'inherit' );
                             }
-                        ]
+                        }
+                    ]
+                }]
 
     });
 

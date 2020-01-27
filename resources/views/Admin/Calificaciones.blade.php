@@ -15,7 +15,7 @@ Calificaciones
 </section>
 <section class="content">
     <div class="row">
-        <div class="col-lg-5">
+        <div class="col-md-5">
             <div class="box box-warning">
                 <div class="box-body">
                     <div class="row">
@@ -26,7 +26,7 @@ Calificaciones
                 </div>
             </div>
         </div>
-        <div class="col-lg-7">
+        <div class="col-md-7">
             <div class="box box-warning">
                 <div class="box-body">
                     <div class="row">

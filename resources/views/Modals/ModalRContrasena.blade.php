@@ -1,4 +1,4 @@
-<div class="modal fade bs-example-modal-lg-udpR" id="modal-rcontrasena">
+<div class="modal fade bs-example-modal-md-udpR" id="modal-rcontrasena">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

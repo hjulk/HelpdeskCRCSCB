@@ -7,7 +7,7 @@ Tickets
 @section('contenido')
 
 <section class="content-header">
-    <h1>Tickets Creación de Usuario</h1>
+    <h1><i class="fa fa-user-plus"></i> Tickets Creación de Usuario</h1>
     <ol class="breadcrumb">
         <li><a href="dashboard"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li>Tickets</a></li>
@@ -56,7 +56,7 @@ Tickets
                                     <td>{{$value['area']}}</td>
                                     <td>{{$value['jefe']}}</td>
                                     <td>{{$value['fecha_ingreso']}}</td>
-                                    <td><span class="{{$value['label']}}" style="font-size:13px;"><b>{{$value['nombre_prioridad']}}</b></span></td>
+                                    <td style="text-align:center;"><span class="{{$value['label']}}" style="font-size:13px;"><b>{{$value['nombre_prioridad']}}</b></span></td>
                                     <td>{{$value['nombre_estado']}}</td>
                                     <td>{{$value['estadorc']}}</td>
                                     <td>{{$value['estadoit']}}</td>

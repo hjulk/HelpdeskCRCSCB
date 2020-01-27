@@ -967,6 +967,81 @@ class TicketsController extends Controller
         }
     }
 
+    public function crearTicketRecurrente(){
+        $data           = Input::all();
+        $creadoPor      = (int)Session::get('IdUsuario');
+        $buscarUsuario  = Usuarios::BuscarNombre($creadoPor);
+        foreach($buscarUsuario as $value){
+            $Administrador = (int)$value->rol_id;
+        }
+        $url = TicketsController::BuscarURL($Administrador);
+        $reglas = array(
+            'asunto'    =>  'required',
+            'categoria' =>  'required',
+            'prioridad' =>  'required'
+        );
+        $validador  = Validator::make($data, $reglas);
+        $messages   = $validador->messages();
+        foreach ($reglas as $key => $value){
+            $verrors[$key] = $messages->first($key);
+        }
+        if($validador->passes()) {
+            $Asunto     = Input::get('asunto');
+            $Categoria  = (int)Input::get('categoria');
+            $Prioridad  = (int)Input::get('prioridad');
+            $CrearRecurrente    = Tickets::CrearRecurrente($Asunto,$Categoria,$Prioridad,$creadoPor);
+            if($CrearRecurrente){
+                $verrors = 'Se creo con éxito el asunto';
+                return redirect($url.'/ticketsRecurrentes')->with('mensaje', $verrors);
+            }else{
+                $verrors = array();
+                array_push($verrors, 'Hubo un problema al crear el asunto');
+                return Redirect::to($url.'/ticketsRecurrentes')->withErrors(['errors' => $verrors])->withInput();
+            }
+        }else{
+            return Redirect::to($url.'/ticketsRecurrentes')->withErrors(['errors' => $verrors])->withInput();
+        }
+    }
+
+    public function actualizarTicketRecurrente(){
+        $data           = Input::all();
+        $creadoPor      = (int)Session::get('IdUsuario');
+        $buscarUsuario  = Usuarios::BuscarNombre($creadoPor);
+        foreach($buscarUsuario as $value){
+            $Administrador = (int)$value->rol_id;
+        }
+        $url = TicketsController::BuscarURL($Administrador);
+        $reglas = array(
+            'asunto_upd'    =>  'required',
+            'categoria_upd' =>  'required',
+            'prioridad_upd' =>  'required',
+            'activo'        =>  'required'
+        );
+        $validador  = Validator::make($data, $reglas);
+        $messages   = $validador->messages();
+        foreach ($reglas as $key => $value){
+            $verrors[$key] = $messages->first($key);
+        }
+        if($validador->passes()) {
+            $Asunto     = Input::get('asunto_upd');
+            $Categoria  = (int)Input::get('categoria_upd');
+            $Prioridad  = (int)Input::get('prioridad_upd');
+            $IdTicket   = (int)Input::get('idT');
+            $Activo     = (int)Input::get('activo');
+            $ActualizarRecurrente   = Tickets::ActualizarRecurrente($Asunto,$Categoria,$Prioridad,$creadoPor,$IdTicket,$Activo);
+            if($ActualizarRecurrente){
+                $verrors = 'Se actualizó con éxito el asunto';
+                return redirect($url.'/ticketsRecurrentes')->with('mensaje', $verrors);
+            }else{
+                $verrors = array();
+                array_push($verrors, 'Hubo un problema al actualizar el asunto');
+                return Redirect::to($url.'/ticketsRecurrentes')->withErrors(['errors' => $verrors])->withInput();
+            }
+        }else{
+            return Redirect::to($url.'/ticketsRecurrentes')->withErrors(['errors' => $verrors])->withInput();
+        }
+    }
+
     public function calificarTicket(){
         $puntuacion = (int)Input::get('valor');
         $idTicket   = (int)Input::get('idTicket');
@@ -1156,7 +1231,7 @@ class TicketsController extends Controller
             $IdSede             = (int)Input::get('project_id');
             $Area               = Input::get('dependencia');
             $idAsunto           = (int)Input::get('asunto');
-            if($idAsunto === 61){
+            if($idAsunto === 1){
                 $Prioridad      = 2;
                 $Categoria      = 4;
                 $Asunto         = Input::get('title');

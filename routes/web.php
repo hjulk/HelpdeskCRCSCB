@@ -67,6 +67,7 @@ Route::group(['middleware' => 'revalidate'], function () {
         Route::get('turnos','TurnosController@turnos')->name('turnos');
         Route::post('crearTurno','TurnosController@crearTurno')->name('crearTurno');
         Route::post('actualizarTurno','TurnosController@actualizarTurno')->name('actualizarTurno');
+        Route::get('ticketsRecurrentes','TicketsController@ticketsRecurrentes')->name('ticketsRecurrentes');
 
         Route::get('/logout', function() {
             Auth::logout();
@@ -129,6 +130,8 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::post('actualizarTicket', 'TicketsController@actualizarTicket')->name('actualizarTicket');
     Route::post('actualizarTicketUsuario', 'TicketsController@actualizarTicketUsuario')->name('actualizarTicketUsuario');
     Route::any('calificarTicket', 'TicketsController@calificarTicket')->name('calificarTicket');
+    Route::post('crearTicketRecurrente','TicketsController@crearTicketRecurrente')->name('crearTicketRecurrente');
+    Route::post('actualizarTicketRecurrente','TicketsController@actualizarTicketRecurrente')->name('actualizarTicketRecurrente');
 
     // MODULO INVENTARIOS
 

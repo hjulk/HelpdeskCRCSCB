@@ -1,4 +1,4 @@
-<div class="modal fade bs-example-modal-lg-udpZ" id="modal-tickets-upd">
+<div class="modal fade bs-example-modal-md-udpZ" id="modal-tickets-upd">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">

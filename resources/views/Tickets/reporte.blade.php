@@ -7,7 +7,7 @@ Reporte Tickets
 @section('contenido')
 
 <section class="content-header">
-    <h1>Reporte Tickets</h1>
+    <h1><i class="fa fa-list"></i> Reporte Tickets</h1>
     <ol class="breadcrumb">
         <li><a href="dashboard"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li>Reporte</a></li>
@@ -92,7 +92,7 @@ Reporte Tickets
             <h3>Cargando</h3><img src="../assets/dist/img/loader.gif" style="width:35%;">
         </div>
     </div>
-    
+
 <div class="row" id="panelResultado" hidden>
         <div class="col-md-12">
 

@@ -1,4 +1,4 @@
-<div class="modal fade bs-example-modal-lg-udpR" id="modal-turnos">
+<div class="modal fade bs-example-modal-md-udpR" id="modal-turnos">
     <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">
@@ -51,7 +51,7 @@
     </div>
 </div>
 <!-- ACTUALIZACIÓN -->
-<div class="modal fade bs-example-modal-lg-udpR" id="modal-turnos-upd">
+<div class="modal fade bs-example-modal-md-udpR" id="modal-turnos-upd">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">

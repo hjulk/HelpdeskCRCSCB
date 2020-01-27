@@ -6,7 +6,7 @@ Roles
 
 @section('contenido')
 <section class="content-header">
-    <h1>Roles y Categorías</h1>
+    <h1><i class="fa fa-user-secret"></i> Roles y Categorías</h1>
     <ol class="breadcrumb">
         <li><a href="dashboard"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li>Admin</a></li>
@@ -15,7 +15,7 @@ Roles
 </section>
 <section class="content">
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-md-6">
             <div class="box box-success">
                 <div class="box-header with-border">
                     <h3 class="box-title"><strong>Roles</strong></h3>
@@ -54,7 +54,7 @@ Roles
                                         <td>{{$rol['id']}}</td>
                                         <td>{{$rol['name']}}</td>
                                         <td>{{$rol['activo']}}</td>
-                                        <td style="text-align: center;"><a href="#" class="btn btn-warning" title="Editar" onclick="obtener_datos_rol('{{$rol['id']}}');" data-toggle="modal" data-target=".bs-example-modal-lg-udpR"><i class="glyphicon glyphicon-edit"></i></a></td>
+                                        <td style="text-align: center;"><a href="#" class="btn btn-warning" title="Editar" onclick="obtener_datos_rol('{{$rol['id']}}');" data-toggle="modal" data-target=".bs-example-modal-md-udpR"><i class="glyphicon glyphicon-edit"></i></a></td>
                                         <input type="hidden" value="{{$rol['id']}}" id="id{{$rol['id']}}">
                                         <input type="hidden" value="{{$rol['name']}}" id="name{{$rol['id']}}">
                                         <input type="hidden" value="{{$rol['activoR']}}" id="activoR{{$rol['id']}}">
@@ -67,7 +67,7 @@ Roles
                 </div>
             </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-md-6">
             <div class="box box-success">
                 <div class="box-header with-border">
                     <h3 class="box-title"><strong>Categorias</strong></h3>
@@ -106,7 +106,7 @@ Roles
                                         <td>{{$categoria['id']}}</td>
                                         <td>{{$categoria['name']}}</td>
                                         <td>{{$categoria['activo']}}</td>
-                                        <td style="text-align: center;"><a href="#" class="btn btn-warning" title="Editar" onclick="obtener_datos_categoria('{{$categoria['id']}}');" data-toggle="modal" data-target=".bs-example-modal-lg-udpC"><i class="glyphicon glyphicon-edit"></i></a></td>
+                                        <td style="text-align: center;"><a href="#" class="btn btn-warning" title="Editar" onclick="obtener_datos_categoria('{{$categoria['id']}}');" data-toggle="modal" data-target=".bs-example-modal-md-udpC"><i class="glyphicon glyphicon-edit"></i></a></td>
                                         <input type="hidden" value="{{$categoria['id']}}" id="id{{$categoria['id']}}">
                                         <input type="hidden" value="{{$categoria['name']}}" id="categoria{{$categoria['id']}}">
                                         <input type="hidden" value="{{$categoria['activoC']}}" id="activoC{{$categoria['id']}}">

@@ -1,4 +1,4 @@
-<div class="modal fade bs-example-modal-lg-udpU" id="modal-usuarios-upd">
+<div class="modal fade bs-example-modal-md-udpU" id="modal-usuarios-upd">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">
@@ -67,7 +67,7 @@
     </div>
 
 </div>
-<div class="modal fade bs-example-modal-lg-updAdmin" id="modal-usuarios-upd">
+<div class="modal fade bs-example-modal-md-updAdmin" id="modal-usuarios-upd">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">

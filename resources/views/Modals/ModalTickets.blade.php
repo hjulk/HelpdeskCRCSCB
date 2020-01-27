@@ -112,7 +112,7 @@
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-4 control-label">Descripcion Apertura</label>
                             <div class="col-md-8">
-                                    {!! Form::textarea('descripcion_ticket',$Descripcion,['class'=>'form-control','id'=>'descripcion_ticket','placeholder'=>'Ingrese la descripción de la apertura','rows'=>'3']) !!}
+                                {!! Form::textarea('descripcion_ticket',$Descripcion,['class'=>'form-control','id'=>'descripcion_ticket','placeholder'=>'Ingrese la descripción de la apertura','rows'=>'3']) !!}
                             </div>
                         </div>
                         <div class="form-group">

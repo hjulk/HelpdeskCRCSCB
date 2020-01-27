@@ -1,4 +1,4 @@
-<div class="modal fade bs-example-modal-lg-udpR" id="modal-roles-upd">
+<div class="modal fade bs-example-modal-md-udpR" id="modal-roles-upd">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">
@@ -38,7 +38,7 @@
         </div>
 
     </div>
-    <div class="modal fade bs-example-modal-lg-udpC" id="modal-categorias-upd">
+    <div class="modal fade bs-example-modal-md-udpC" id="modal-categorias-upd">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">

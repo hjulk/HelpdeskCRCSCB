@@ -572,5 +572,68 @@ class TicketsController extends Controller
 
     }
 
+    public function ticketsRecurrentes(){
+        $Categoria          = Roles::ListarCategorias();
+        $NombreCategoria    = array();
+        $NombreCategoria[''] = 'Seleccione: ';
+        foreach ($Categoria as $row){
+            $NombreCategoria[$row->id] = $row->name;
+        }
+        $Prioridad          = Tickets::ListarPrioridad();
+        $NombrePrioridad    = array();
+        $NombrePrioridad[''] = 'Seleccione: ';
+        foreach ($Prioridad as $row){
+            $NombrePrioridad[$row->id] = $row->name;
+        }
+        $Activo    = array();
+        $Activo[''] = 'Seleccione: ';
+        $Activo[1] = 'Sí';
+        $Activo[0] = 'No';
+
+        $Tickets            = Tickets::TicketsRecurrentes();
+        $TicketsRecurrentes = array();
+        $cont               = 0;
+        foreach($Tickets as $row){
+            $TicketsRecurrentes[$cont]['id']            = (int)$row->id;
+            $TicketsRecurrentes[$cont]['nombre']        = $row->nombre;
+
+            $TicketsRecurrentes[$cont]['category_id']   = (int)$row->category_id;
+            $IdCategoria    = (int)$row->category_id;
+            $Categoria      =  Roles::BuscarCategoriaID($IdCategoria);
+            foreach($Categoria as $value){
+                $TicketsRecurrentes[$cont]['categoria'] = strtoupper($value->name);
+            }
+
+            $TicketsRecurrentes[$cont]['priority_id']   = (int)$row->priority_id;
+            $IdPrioridad   = (int)$row->priority_id;
+            $Prioridad     =  Tickets::BuscarPrioridadID($IdPrioridad);
+            foreach($Prioridad as $value){
+                if($IdPrioridad === 1){
+                    $TicketsRecurrentes[$cont]['prioridad']     = strtoupper($value->name);
+                    $TicketsRecurrentes[$cont]['label']         = 'label label-danger';
+                }else if($IdPrioridad === 2){
+                    $TicketsRecurrentes[$cont]['prioridad']     = strtoupper($value->name);
+                    $TicketsRecurrentes[$cont]['label']         = 'label label-warning';
+                }else if($IdPrioridad === 3){
+                    $TicketsRecurrentes[$cont]['prioridad']     = strtoupper($value->name);
+                    $TicketsRecurrentes[$cont]['label']         = 'label label-success';
+                }else{
+                    $TicketsRecurrentes[$cont]['prioridad']     = 'SIN PRIORIDAD';
+                }
+            }
+
+            $TicketsRecurrentes[$cont]['id_activo']     = (int)$row->activo;
+            $ActivoT                                    = (int)$row->activo;
+            if($ActivoT === 1){
+                $TicketsRecurrentes[$cont]['activo']    = 'Sí';
+            }else{
+                $TicketsRecurrentes[$cont]['activo']    = 'No';
+            }
+            $cont++;
+        }
+        return view('Tickets.ticketsRecurrentes',['Categoria' => $NombreCategoria,'Prioridad' => $NombrePrioridad,'TicketsRecurrentes' => $TicketsRecurrentes,
+                                                    'Activo' => $Activo]);
+    }
+
 
 }

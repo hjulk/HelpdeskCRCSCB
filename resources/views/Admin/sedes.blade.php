@@ -6,7 +6,7 @@ Sedes
 
 @section('contenido')
 <section class="content-header">
-        <h1>Sedes</h1>
+        <h1><i class="fa fa-map"></i> Sedes</h1>
         <ol class="breadcrumb">
           <li><a href="dashboard"><i class="fa fa-dashboard"></i> Inicio</a></li>
           <li>Admin</a></li>
@@ -58,7 +58,7 @@ Sedes
                                             <td>{{$sede['name']}}</td>
                                             <td>{{$sede['description']}}</td>
                                             <td>{{$sede['name_activo']}}</td>
-                                            <td style="text-align: center;"><a href="#" class="btn btn-warning" title="Editar" onclick="obtener_datos_sede('{{$sede['id']}}');" data-toggle="modal" data-target=".bs-example-modal-lg-udpS"><i class="glyphicon glyphicon-edit"></i></a></td>
+                                            <td style="text-align: center;"><a href="#" class="btn btn-warning" title="Editar" onclick="obtener_datos_sede('{{$sede['id']}}');" data-toggle="modal" data-target=".bs-example-modal-md-udpS"><i class="glyphicon glyphicon-edit"></i></a></td>
                                             <input type="hidden" value="{{$sede['id']}}" id="id{{$sede['id']}}">
                                             <input type="hidden" value="{{$sede['name']}}" id="name{{$sede['id']}}">
                                             <input type="hidden" value="{{$sede['description']}}" id="description{{$sede['id']}}">

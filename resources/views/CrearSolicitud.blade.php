@@ -145,7 +145,7 @@
     </script>
     <script>
         function mostrar(id) {
-            if (id === '61') {
+            if (id === '1') {
                 $("#titulo").show();
             }else{
                 $("#titulo").hide();

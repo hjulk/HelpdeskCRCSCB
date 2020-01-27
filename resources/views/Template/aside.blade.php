@@ -17,6 +17,9 @@
                     <li><a href="tickets"><i class="fa fa-dashboard"></i>Dashboard</a></li>
                     <li><a href="ticketsUsuario"><i class="fa fa-user-plus"></i>Creación Usuarios</a></li>
                     <li><a href="reporteTickets"><i class="fa fa-list"></i>Reportes</a></li>
+                    @if(Session::get('Rol') === 1)
+                        <li><a href="ticketsRecurrentes"><i class="fa fa-ticket"></i>Tickets Recurrentes</a></li>
+                    @endif
                 </ul>
             </li>
             @if((Session::get('Categoria') === 3) || (Session::get('Categoria') === 2))

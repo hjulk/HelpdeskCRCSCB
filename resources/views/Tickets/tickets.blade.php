@@ -54,11 +54,11 @@ Tickets
                                 @foreach($Tickets as $value)
                                 <tr>
                                     <td>{{$value['id']}}</td>
-                                    <td>{{$value['tipo_ticket']}}</td>
+                                    <td style="text-align:center;">{{$value['tipo_ticket']}}</td>
                                     <td>{{$value['title']}}</td>
                                     <td>{{$value['sede']}}</td>
                                     <td>{{$value['area']}}</td>
-                                    <td><span class="{{$value['label']}}" style="font-size:13px;"><b>{{$value['prioridad']}}</b></span></td>
+                                    <td style="text-align:center;"><span class="{{$value['label']}}" style="font-size:13px;"><b>{{$value['prioridad']}}</b></span></td>
                                     <td>{{$value['estado']}}</td>
                                     <td>{{$value['created_at']}}</td>
                                     <td>{{$value['asignado_por']}}</td>
