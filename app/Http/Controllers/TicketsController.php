@@ -865,10 +865,10 @@ class TicketsController extends Controller
                     //     }
                     // }
                     $IdUsuario = null;
-                    $Descripcion .= "Sistema 8.5: $App85_desc\n
+                    $Descripcion .= "Servinté: $App85_desc\n
                                     Dínamica: $AppDinamica_desc\n
                                     Otro Aplicativo: $OtroAplicativo\n
-                                    Capacitación 8.5: $Cap85_desc\n
+                                    Capacitación Servinté: $Cap85_desc\n
                                     Capacitación Dinamica: $CapDinamica_desc\n
                                     Observación: $Observaciones";
                                     $CrearTicket  = Tickets::CrearTicket($idTipo,$Asunto,$Descripcion,$NombreUsuario,$TelefonoUsuario,$CorreoS,

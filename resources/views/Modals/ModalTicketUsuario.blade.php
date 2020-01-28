@@ -320,7 +320,7 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Sistema 8.5</label>
+                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Servinté</label>
                                 {!! Form::select('app_85_upd',$Opciones,null,['class'=>'form-control','readonly','id'=>'mod_app_85_upd']) !!}
                             </div>
                             <div class="col-md-3">
@@ -336,7 +336,7 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Capacitación 8.5?</label>
+                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Capacitación Servinté?</label>
                                 {!! Form::select('cap_85_upd',$Opciones,null,['class'=>'form-control','readonly','id'=>'mod_cap_85_upd']) !!}
                             </div>
                             <div class="col-md-3">

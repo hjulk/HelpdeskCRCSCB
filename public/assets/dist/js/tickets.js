@@ -9,7 +9,6 @@ $(document).ready(function () {
         ordering    : true,
         info        : true,
         autoWidth   : true,
-
         order: [[ 0, "desc" ]],
         language: {
             processing: "Procesando...",
@@ -43,6 +42,9 @@ $(document).ready(function () {
 
     });
 
+    setInterval( function () {
+        $('#ticketsPrincipal').DataTable().draw();
+    }, 300 );
     $('#ticketsUsuario').DataTable({
         columnDefs: [
             { responsivePriority: 1, targets: 0 },

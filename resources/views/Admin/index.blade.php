@@ -620,10 +620,10 @@ Dahsboard
             },
 
             colors:[
-                @if($GestionC)
-                    @foreach($GestionC as $valor)
-                        '{{$valor['color']}}' {{$valor['separador']}}
-                    @endforeach
+                    @if($GestionC)
+                        @foreach($GestionC as $valor)
+                            '{{$valor['color']}}' {{$valor['separador']}}
+                        @endforeach
                     @endif
                     ],
             xAxis: {

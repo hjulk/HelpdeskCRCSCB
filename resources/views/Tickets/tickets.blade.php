@@ -133,6 +133,7 @@ Tickets
         });
 
     </script>
+
     {{-- <script>
         $("#upd").submit(function (event) {
 

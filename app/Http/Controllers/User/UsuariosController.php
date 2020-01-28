@@ -134,9 +134,10 @@ class UsuariosController extends Controller
         $creadoPor  = (int)\Session::get('IdUsuario');
         $infoUsario = Usuarios::BuscarNombre($idUsuario);
         foreach($infoUsario as $valor){
-            $nombreUsuario = $valor->nombre;
-            $nombrefoto    = $valor->profile_pic;
-            $userName      = $valor->username;
+            $nombreUsuario  = $valor->nombre;
+            $nombrefoto     = $valor->profile_pic;
+            $userName       = $valor->username;
+            $userPassword   = $valor->password;
         }
 
         if($Contrasena === $RPassword){
@@ -154,7 +155,13 @@ class UsuariosController extends Controller
                 $filename = $nombrefoto;
             }
             $NombreFoto     = $filename;
-            $Password     = hash('sha512', $Contrasena);
+            if(Input::get('password')){
+                if(Input::get('repeat_password')){
+                    $Password     = hash('sha512', $Contrasena);
+                }
+            }else{
+                $Password     = $userPassword;
+            }
 
             $updateProfile = Usuarios::ActualizarProfile($Password,$idUsuario,$NombreFoto,$creadoPor);
 
