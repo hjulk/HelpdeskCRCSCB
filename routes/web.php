@@ -88,7 +88,7 @@ Route::group(['middleware' => 'revalidate'], function () {
         Route::get('ticketsUsuario','TicketsUserController@ticketsUsuario')->name('ticketsUsuario');
         Route::get('reporteTickets','TicketsUserController@reporteTickets')->name('reporteTickets');
         Route::post('consultarTicket', 'TicketsUserController@consultarTickets')->name('consultarTicket');
-        Route::post('consultarxTicket','TicketsController@consultarxTicket')->name('consultarxTicket');
+        Route::post('consultarxTicket','TicketsUserController@consultarxTicket')->name('consultarxTicket');
         Route::get('profile', 'UsuariosController@profile')->name('profile');
         Route::post('actualizarUsuario', 'UsuariosController@actualizarUsuario')->name('actualizarUsuario');
         Route::get('mobile','InventarioController@mobile')->name('mobile');
