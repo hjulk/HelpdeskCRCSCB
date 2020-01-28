@@ -53,6 +53,7 @@ Route::group(['middleware' => 'revalidate'], function () {
         Route::post('reabrirTicket','TicketsController@reabrirTicket')->name('reabrirTicket');
         Route::get('reporteTickets','TicketsController@reporteTickets')->name('reporteTickets');
         Route::post('consultarTicket','TicketsController@consultarTickets')->name('consultarTicket');
+        Route::post('consultarxTicket','TicketsController@consultarxTicket')->name('consultarxTicket');
         Route::get('ticketsUsuario','TicketsController@ticketsUsuario')->name('ticketsUsuario');
         Route::get('mobile','InventarioController@mobile')->name('mobile');
         Route::get('lineMobile','InventarioController@lineMobile')->name('lineMobile');
@@ -87,6 +88,7 @@ Route::group(['middleware' => 'revalidate'], function () {
         Route::get('ticketsUsuario','TicketsUserController@ticketsUsuario')->name('ticketsUsuario');
         Route::get('reporteTickets','TicketsUserController@reporteTickets')->name('reporteTickets');
         Route::post('consultarTicket', 'TicketsUserController@consultarTickets')->name('consultarTicket');
+        Route::post('consultarxTicket','TicketsController@consultarxTicket')->name('consultarxTicket');
         Route::get('profile', 'UsuariosController@profile')->name('profile');
         Route::post('actualizarUsuario', 'UsuariosController@actualizarUsuario')->name('actualizarUsuario');
         Route::get('mobile','InventarioController@mobile')->name('mobile');

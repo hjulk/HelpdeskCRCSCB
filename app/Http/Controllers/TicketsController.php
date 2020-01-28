@@ -1202,6 +1202,7 @@ class TicketsController extends Controller
         foreach ($Recurrente as $row){
             $TicketRecurrente[$row->id] = $row->nombre;
         }
+
         return view('CrearSolicitud',['Sedes' => $NombreSede,'Tipo' => $NombreTipo,'TicketRecurrente' => $TicketRecurrente,'Categoria' => $NombreCategoria]);
     }
 
