@@ -31,11 +31,12 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Sede</label>
-                                {!! Form::select('sede',$Sede,null,['class'=>'form-control','id'=>'sede','onchange'=>'sedeFunc();','required']) !!}
+                                {!! Form::select('sede',$Sede,null,['class'=>'form-control','id'=>'sede','onchange'=>'Area();','required']) !!}
                             </div>
                             <div class="col-md-4">
                                 <label for="exampleInputEmail1" class="col-sm-12 control-label">Área / Dependencia</label>
-                                {!! Form::text('area',$Area,['class'=>'form-control','id'=>'area','required','placeholder'=>'Area o Dependencia del usuario']) !!}
+                                {{--  {!! Form::text('area',$Area,['class'=>'form-control','id'=>'area','required','placeholder'=>'Area o Dependencia del usuario']) !!}  --}}
+                                {!! Form::select('area',$Areas,null,['class'=>'form-control','id'=>'area','required']) !!}
                             </div>
                             <div class="col-md-4">
                                 <label for="exampleInputEmail1" class="col-sm-12 control-label">Jefe Inmediato</label>
@@ -455,5 +456,32 @@
             $("#mod_estadorc_upd").val(EstadoRC);
             $("#mod_estadoit_upd").val(EstadoIT);
             $("#mod_estadoapp_upd").val(EstadoAPP);
+        }
+    </script>
+    <script>
+        function Area() {
+            var selectBox = document.getElementById("sede");
+            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+            var tipo = 'post';
+            var select = document.getElementById("area");
+
+            $.ajax({
+                url: "{{route('buscarArea')}}",
+                type: "get",
+                data: {_method: tipo, id_sede: selectedValue},
+                success: function (data) {
+                    var vValido = data['valido'];
+
+                    if (vValido === 'true') {
+                        var ListUsuario = data['Usuario'];
+                        select.options.length = 0;
+                        for (index in ListUsuario) {
+                            select.options[select.options.length] = new Option(ListUsuario[index], index);
+                        }
+
+                    }
+
+                }
+            });
         }
     </script>

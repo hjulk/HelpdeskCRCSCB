@@ -45,6 +45,11 @@ class Sedes extends Model
         return $consultaArea;
     }
 
+    public static function BuscarAreaId($Area){
+        $consultaArea = DB::Select("SELECT * FROM areas WHERE id = $Area");
+        return $consultaArea;
+    }
+
     public static function CrearSede($Sede,$Descripcion){
         $CrearSedes = DB::Insert('INSERT INTO project (name,description,activo)
                                     VALUES (?,?,?)', [$Sede,$Descripcion,1]);

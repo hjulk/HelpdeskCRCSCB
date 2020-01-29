@@ -36,12 +36,13 @@ class TicketsController extends Controller
             'telefono_usuario'  =>  'required',
             'correo_usuario'    =>  'required',
             'project_id'        =>  'required',
-            'dependencia'       =>  'required',
+            // 'dependencia'       =>  'required',
             'priority_id'       =>  'required',
             'id_categoria'      =>  'required',
             'id_usuario'        =>  'required',
             'id_estado'         =>  'required',
-            'evidencia'         =>  'max:5120'
+            'evidencia'         =>  'max:5120',
+            'area'              =>  'required'
         );
         $validador = Validator::make($data, $reglas);
         $messages = $validador->messages();
@@ -57,7 +58,12 @@ class TicketsController extends Controller
             $TelefonoUsuario    = Input::get('telefono_usuario');
             $CorreUsuario       = Input::get('correo_usuario');
             $IdSede             = (int)Input::get('project_id');
-            $Area               = Input::get('dependencia');
+            $IdArea             = (int)Input::get('area');
+            $BuscarArea         = Sedes::BuscarAreaId($IdArea);
+            foreach($BuscarArea as $row){
+                $Area           = $row->name;
+            }
+            // $Area               = Input::get('dependencia');
             $Prioridad          = (int)Input::get('priority_id');
             $Categoria          = (int)Input::get('id_categoria');
             $AsignadoA          = (int)Input::get('id_usuario');
@@ -544,7 +550,8 @@ class TicketsController extends Controller
             'correoS'           =>  'required',
             'cargo_nuevo'       =>  'required',
             'estado'            =>  'required',
-            'prioridad'         =>  'required'
+            'prioridad'         =>  'required',
+            'area'              =>  'required'
         );
         $validador  = Validator::make($data, $reglas);
         $messages   = $validador->messages();
@@ -563,7 +570,12 @@ class TicketsController extends Controller
             foreach($BuscarSede as $value){
                 $NombreSede = $value->name;
             }
-            $Area                   = Input::get('area');
+            $IdArea                 = (int)Input::get('area');
+            $BuscarArea             = Sedes::BuscarAreaId($IdArea);
+            foreach($BuscarArea as $row){
+                $Area               = $row->name;
+            }
+            // $Area                   = Input::get('area');
             $Jefe                   = Input::get('jefe');
             $FechaIngreso           = date('Y-m-d H:i:s', strtotime(Input::get('fechaIngreso')));
             $CorreoS                = Input::get('correoS');
@@ -1208,9 +1220,6 @@ class TicketsController extends Controller
         $Areas  = Sedes::Areas();
         $NombreArea = array();
         $NombreArea[''] = 'Seleccione: ';
-        // foreach ($Areas as $row){
-        //     $NombreArea[$row->id] = $row->name;
-        // }
 
         $Tipo  = Tickets::ListarTipo();
         $NombreTipo = array();
@@ -1230,7 +1239,6 @@ class TicketsController extends Controller
         foreach ($Recurrente as $row){
             $TicketRecurrente[$row->id] = $row->nombre;
         }
-
         return view('CrearSolicitud',['Sedes' => $NombreSede,'Tipo' => $NombreTipo,'TicketRecurrente' => $TicketRecurrente,'Categoria' => $NombreCategoria,
                                         'Areas' => $NombreArea]);
     }
@@ -1243,7 +1251,8 @@ class TicketsController extends Controller
             'description'       => 'required',
             'telefono_usuario'  => 'required',
             'correo_usuario'    => 'required',
-            'project_id'        => 'required'
+            'project_id'        => 'required',
+            'area'              => 'required'
 
         );
         $validador = Validator::make($data, $reglas);
@@ -1259,7 +1268,12 @@ class TicketsController extends Controller
             $TelefonoUsuario    = Input::get('telefono_usuario');
             $CorreUsuario       = Input::get('correo_usuario');
             $IdSede             = (int)Input::get('project_id');
-            $Area               = Input::get('dependencia');
+            $IdArea             = (int)Input::get('area');
+            $BuscarArea         = Sedes::BuscarAreaId($IdArea);
+            foreach($BuscarArea as $row){
+                $Area           = $row->name;
+            }
+            // $Area               = Input::get('dependencia');
             $idAsunto           = (int)Input::get('asunto');
             if($idAsunto === 1){
                 $Prioridad      = 2;

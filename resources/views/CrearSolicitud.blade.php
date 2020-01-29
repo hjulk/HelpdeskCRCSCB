@@ -67,7 +67,7 @@
                         <div class="col-sm-6">
                             <label class="control-label col-sm-12" for="fname">Área / Dependencia:</label>
                             {{--  {!! Form::text('dependencia',null,['class'=>'form-control','id'=>'dependencia','required','placeholder'=>'Área u oficina del usuario']) !!}  --}}
-                            {!! Form::select('area_id',$Areas,null,['class'=>'form-control','id'=>'area_id','required']) !!}
+                            {!! Form::select('area',$Areas,null,['class'=>'form-control','id'=>'area','required']) !!}
                         </div>
                     </div>
                 </div>
@@ -158,7 +158,7 @@
             var selectBox = document.getElementById("project_id");
             var selectedValue = selectBox.options[selectBox.selectedIndex].value;
             var tipo = 'post';
-            var select = document.getElementById("area_id");
+            var select = document.getElementById("area");
 
             $.ajax({
                 url: "{{route('buscarArea')}}",

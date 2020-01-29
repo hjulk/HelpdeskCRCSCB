@@ -210,11 +210,15 @@ class TicketsController extends Controller
         $valorNull = null;
         Session::put('Notificaciones',$valorCero);
         Session::put('Notificacion',$valorNull);
+
+        $NombreArea = array();
+        $NombreArea[''] = 'Seleccione: ';
+
         return view('tickets.tickets',['Tickets' => $tickets,'NombreCategoria' => $NombreCategoria,
                                     'NombreUsuario' => $NombreUsuario,'NombrePrioridad' => $NombrePrioridad,'NombreEstado' => $NombreEstado,'NombreEstadoUpd' => $NombreEstadoUpd,
                                     'NombreSede' => $NombreSede,'CorreoUsuario' => null,'NombreTipo' => $NombreTipo,
                                     'Usuario' => null,'Descripcion' => null,'TelefonoUsuario' => null,'Evidencia' => null,'Asunto' => null,'Comentario' => null,
-                                    'NombreEstadoA' => $NombreEstadoA,'NombreCargo' => null,
+                                    'NombreEstadoA' => $NombreEstadoA,'NombreCargo' => null,'Areas' => $NombreArea,
                                     'Dependencia' => null]);
     }
 
@@ -355,11 +359,14 @@ class TicketsController extends Controller
         $Acceso[4]    = 'Bloqueo';
         $Acceso[0]    = 'NO';
 
+        $NombreArea = array();
+        $NombreArea[''] = 'Seleccione: ';
+
         return view('tickets.ticketsUsuario',['Opciones' => $Opciones,'Prioridad' => $NombrePrioridad,'Estado' => $NombreEstadoA,
                                               'TicketUsuario' => $ticketsUsuario,'NombresCompletos' => null,'Identificacion' =>null,
                                               'Cargo' => null,'Sede' => $NombreSede,'Area' => null,'Jefe' => null,'FechaIngreso' => null,
                                               'CorreoSolicitante' => null,'Funcionario' => null,'CorreoFuncionario' => null,'Equipo' => $NombreEquipo,
-                                              'Aplicativo' => null,'Carpeta' => null,'Acceso' => $Acceso,'Observaciones' => null]);
+                                              'Aplicativo' => null,'Carpeta' => null,'Acceso' => $Acceso,'Observaciones' => null,'Areas' => $NombreArea]);
     }
 
     public function reporteTickets(){

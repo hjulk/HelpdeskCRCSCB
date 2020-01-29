@@ -46,11 +46,12 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Sede</label>
-                                {!! Form::select('project_id',$NombreSede,null,['class'=>'form-control','id'=>'project_id','onchange'=>'sedeFunc();','required']) !!}
+                                {!! Form::select('project_id',$NombreSede,null,['class'=>'form-control','id'=>'project_id','onchange'=>'Area();','required']) !!}
                             </div>
                             <div class="col-md-5">
                                 <label for="exampleInputEmail1" class="col-sm-12 control-label">Área / Dependencia</label>
-                                {!! Form::text('dependencia',$Dependencia,['class'=>'form-control','id'=>'dependencia','required']) !!}
+                                {{--  {!! Form::text('dependencia',$Dependencia,['class'=>'form-control','id'=>'dependencia','required']) !!}  --}}
+                                {!! Form::select('area',$Areas,null,['class'=>'form-control','id'=>'area','required']) !!}
                             </div>
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Prioridad</label>
@@ -189,6 +190,33 @@
                 url: "{{route('buscarCategoria')}}",
                 type: "get",
                 data: {_method: tipo, id_categoria: selectedValue},
+                success: function (data) {
+                    var vValido = data['valido'];
+
+                    if (vValido === 'true') {
+                        var ListUsuario = data['Usuario'];
+                        select.options.length = 0;
+                        for (index in ListUsuario) {
+                            select.options[select.options.length] = new Option(ListUsuario[index], index);
+                        }
+
+                    }
+
+                }
+            });
+        }
+    </script>
+    <script>
+        function Area() {
+            var selectBox = document.getElementById("project_id");
+            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+            var tipo = 'post';
+            var select = document.getElementById("area");
+
+            $.ajax({
+                url: "{{route('buscarArea')}}",
+                type: "get",
+                data: {_method: tipo, id_sede: selectedValue},
                 success: function (data) {
                     var vValido = data['valido'];
 
