@@ -49,6 +49,8 @@ Route::group(['middleware' => 'revalidate'], function () {
         Route::post('actualizarUsuarioAdmin','UsuarioController@actualizarUsuarioAdmin')->name('actualizarUsuarioAdmin');
         Route::post('crearSede','SedesController@crearSede')->name('crearSede');
         Route::post('actualizarSede','SedesController@actualizarSede')->name('actualizarSede');
+        Route::post('crearArea','SedesController@crearArea')->name('crearArea');
+        Route::post('actualizarArea','SedesController@actualizarArea')->name('actualizarArea');
         Route::get('tickets','TicketsController@tickets')->name('tickets');
         Route::post('reabrirTicket','TicketsController@reabrirTicket')->name('reabrirTicket');
         Route::get('reporteTickets','TicketsController@reporteTickets')->name('reporteTickets');
@@ -129,6 +131,7 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::get('buscarCategoriaRepo','TicketsController@buscarCategoriaRepo')->name('buscarCategoriaRepo');
     Route::get('buscarCategoriaUPD', 'TicketsController@buscarCategoriaUPD')->name('buscarCategoriaUPD');
     Route::get('buscarSede', 'TicketsController@buscarSede')->name('buscarSede');
+    Route::get('buscarArea', 'TicketsController@buscarArea')->name('buscarArea');
     Route::post('actualizarTicket', 'TicketsController@actualizarTicket')->name('actualizarTicket');
     Route::post('actualizarTicketUsuario', 'TicketsController@actualizarTicketUsuario')->name('actualizarTicketUsuario');
     Route::any('calificarTicket', 'TicketsController@calificarTicket')->name('calificarTicket');

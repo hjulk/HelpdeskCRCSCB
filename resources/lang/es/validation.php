@@ -110,6 +110,7 @@ return array(
         'identificacion'        =>  'Identificación',
         'cargo'                 =>  'Cargo de Usuario',
         'sede'                  =>  'Sede',
+        'sede_upd'              =>  'Sede',
         'area'                  =>  'Area o Dependencia',
         'area_upd'              =>  'Area o Dependencia',
         'jefe'                  =>  'Nombre del Jefe',
@@ -136,6 +137,7 @@ return array(
         'nro_linea_upd'         =>  'Nro de Liena',
         'activo'                =>  'Se encuentra activo',
         'activo_upd'            =>  'Se encuentra activo',
+        'activo_area'           =>  'Activo',
         'proveedores'           =>  'Proveedor',
         'proveedores_upd'       =>  'Proveedor',
         'plan'                  =>  'Nombre / tipo plan',
@@ -169,6 +171,10 @@ return array(
         'tipo_impresora'        =>  'Tipo de Impresora',
         'tipo_impresora_upd'    =>  'Tipo de Impresora',
         'id_consumible'         =>  'Consumible',
-        'id_consumible_upd'     =>  'Consumible'
+        'id_consumible_upd'     =>  'Consumible',
+        'tipo_usuario'          =>  'Tipo de Usuario',
+        'tipo_usuario_upd'      =>  'Tipo de Usuario',
+        'nombre_area'           =>  'Nombre de Área',
+        'nombre_area_upd'       =>  'Nombre de Área'
     ),
 );

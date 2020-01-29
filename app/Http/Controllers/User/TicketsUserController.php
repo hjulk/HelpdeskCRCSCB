@@ -580,10 +580,6 @@ class TicketsUserController extends Controller
 
     }
 
-
-
-
-
     public function actualizarTicket()
     {
         $data = Input::all();

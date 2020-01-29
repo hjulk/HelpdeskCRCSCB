@@ -694,6 +694,12 @@ class TicketsController extends Controller
         $Activo[1] = 'Sí';
         $Activo[0] = 'No';
 
+        $Tipo    = array();
+        $Tipo[''] = 'Seleccione: ';
+        $Tipo[1] = 'Soporte';
+        $Tipo[2] = 'Usuario Final';
+        $Tipo[3] = 'General';
+
         $Tickets            = Tickets::TicketsRecurrentes();
         $TicketsRecurrentes = array();
         $cont               = 0;
@@ -733,10 +739,19 @@ class TicketsController extends Controller
             }else{
                 $TicketsRecurrentes[$cont]['activo']    = 'No';
             }
+            $TicketsRecurrentes[$cont]['tipo']          = (int)$row->tipo;
+            switch((int)$row->tipo){
+                case 1:     $TicketsRecurrentes[$cont]['usuario'] = 'Soporte';
+                            break;
+                case 2:     $TicketsRecurrentes[$cont]['usuario'] = 'Usuario Final';
+                            break;
+                case 3:     $TicketsRecurrentes[$cont]['usuario'] = 'General';
+                            break;
+            }
             $cont++;
         }
         return view('Tickets.ticketsRecurrentes',['Categoria' => $NombreCategoria,'Prioridad' => $NombrePrioridad,'TicketsRecurrentes' => $TicketsRecurrentes,
-                                                    'Activo' => $Activo]);
+                                                    'Activo' => $Activo,'Tipo' => $Tipo]);
     }
 
 

@@ -35,9 +35,13 @@ Tickets Recurrentes
                         </div>
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-md-7">
+                                <div class="col-md-6">
                                     <label for="inputEmail3" class="col-sm-12 control-label">Prioridad</label>
                                     {!! Form::select('prioridad',$Prioridad,null,['class'=>'form-control','id'=>'prioridad']) !!}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="inputEmail3" class="col-sm-12 control-label">Tipo Usuario</label>
+                                    {!! Form::select('tipo_usuario',$Tipo,null,['class'=>'form-control','id'=>'tipo_usuario']) !!}
                                 </div>
                             </div>
                         </div>
@@ -54,6 +58,7 @@ Tickets Recurrentes
                                 <th style="text-align: center;">Categoria</th>
                                 <th style="text-align: center;">Prioridad</th>
                                 <th style="text-align: center;">Activo</th>
+                                <th style="text-align: center;">Tipo Usuario</th>
                                 <th style="text-align: center;">Editar</th>
                             </tr>
                         </thead>
@@ -64,12 +69,14 @@ Tickets Recurrentes
                                 <td style="font-size:13px;text-align:center;">{{$value['categoria']}}</td>
                                 <td style="font-size:13px;text-align:center;"><span class="{{$value['label']}}"><b>{{$value['prioridad']}}</b></span></td>
                                 <td style="font-size:13px;text-align:center;">{{$value['activo']}}</td>
+                                <td style="font-size:13px;text-align:center;">{{$value['usuario']}}</td>
                                 <td style="font-size:13px;text-align: center;"><a href="#" class="btn btn-warning" title="Editar" onclick="obtener_datos_recurrente('{{$value['id']}}');" data-toggle="modal" data-target="#modal-recurrente"><i class="glyphicon glyphicon-edit"></i></a></td>
                                 <input type="hidden" value="{{$value['id']}}" id="id{{$value['id']}}">
                                 <input type="hidden" value="{{$value['nombre']}}" id="nombre{{$value['id']}}">
                                 <input type="hidden" value="{{$value['category_id']}}" id="category_id{{$value['id']}}">
                                 <input type="hidden" value="{{$value['priority_id']}}" id="priority_id{{$value['id']}}">
                                 <input type="hidden" value="{{$value['id_activo']}}" id="id_activo{{$value['id']}}">
+                                <input type="hidden" value="{{$value['tipo']}}" id="tipo{{$value['id']}}">
                             </tr>
                             @endforeach
                         </tbody>

@@ -144,6 +144,14 @@ Dahsboard
             Highcharts.chart('barras', {
                 chart: {
                     type: 'column',
+                    events: {
+                        load: function() {
+                            var chart = this;
+                            setInterval(function() {
+                                chart.redraw();
+                            },600);
+                        }
+                    }
                 },
                 title: {
                     text: 'Tickets Gestionados por Mes'
@@ -215,6 +223,14 @@ Dahsboard
                         enabled: true,
                         alpha: 45,
                         beta: 0
+                    },
+                    events: {
+                        load: function() {
+                            var chart = this;
+                            setInterval(function() {
+                                chart.redraw();
+                            },600);
+                        }
                     }
                 },
                 colors:[
@@ -258,7 +274,15 @@ Dahsboard
 
             Highcharts.chart('terminados', {
             chart: {
-                type: 'column'
+                type: 'column',
+                events: {
+                    load: function() {
+                        var chart = this;
+                        setInterval(function() {
+                            chart.redraw();
+                        },600);
+                    }
+                }
             },
             title: {
                 text: 'Tickets Terminados por Usuario'
@@ -311,7 +335,15 @@ Dahsboard
         });
     Highcharts.chart('desarrollo', {
         chart: {
-            type: 'column'
+            type: 'column',
+            events: {
+                load: function() {
+                    var chart = this;
+                    setInterval(function() {
+                        chart.redraw();
+                    },600);
+                }
+            }
         },
         title: {
             text: 'Tickets En Desarrollo por Usuario'
@@ -363,7 +395,15 @@ Dahsboard
     });
     Highcharts.chart('pendientes', {
         chart: {
-            type: 'column'
+            type: 'column',
+            events: {
+                load: function() {
+                    var chart = this;
+                    setInterval(function() {
+                        chart.redraw();
+                    },600);
+                }
+            }
         },
         title: {
             text: 'Tickets Pendientes por Usuario'
@@ -415,7 +455,15 @@ Dahsboard
     });
     Highcharts.chart('cancelados', {
         chart: {
-            type: 'column'
+            type: 'column',
+            events: {
+                load: function() {
+                    var chart = this;
+                    setInterval(function() {
+                        chart.redraw();
+                    },600);
+                }
+            }
         },
         title: {
             text: 'Tickets Cancelados por Usuario'
@@ -471,6 +519,14 @@ Dahsboard
         Highcharts.chart('gestionTics', {
             chart: {
                 type: 'bar',
+                events: {
+                    load: function() {
+                        var chart = this;
+                        setInterval(function() {
+                            chart.redraw();
+                        },600);
+                    }
+                }
             },
             title: {
                 text: 'Tickets Actuales'
@@ -547,6 +603,14 @@ Dahsboard
         Highcharts.chart('gestionSedes', {
             chart: {
                 type: 'bar',
+                events: {
+                    load: function() {
+                        var chart = this;
+                        setInterval(function() {
+                            chart.redraw();
+                        },600);
+                    }
+                }
             },
             title: {
                 text: 'Tickets Gestionados por Sede'
@@ -615,6 +679,14 @@ Dahsboard
         Highcharts.chart('calificacion', {
             chart: {
                 type: 'column',
+                events: {
+                    load: function() {
+                        var chart = this;
+                        setInterval(function() {
+                            chart.redraw();
+                        },600);
+                    }
+                }
             },
             title: {
                 text: 'Calificacion Gestión Ticket'
@@ -672,7 +744,15 @@ Dahsboard
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false,
-                type: 'pie'
+                type: 'pie',
+                events: {
+                    load: function() {
+                        var chart = this;
+                        setInterval(function() {
+                            chart.redraw();
+                        },600);
+                    }
+                }
             },
             colors:[
                 @if($GestionC)

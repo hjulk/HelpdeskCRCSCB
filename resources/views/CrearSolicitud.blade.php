@@ -62,11 +62,12 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <label class="control-label col-sm-12" for="fname">Sede:</label>
-                            {!! Form::select('project_id',$Sedes,null,['class'=>'form-control','id'=>'project_id','required']) !!}
+                            {!! Form::select('project_id',$Sedes,null,['class'=>'form-control','id'=>'project_id','onchange'=>'Area();','required']) !!}
                         </div>
                         <div class="col-sm-6">
                             <label class="control-label col-sm-12" for="fname">Área / Dependencia:</label>
-                            {!! Form::text('dependencia',null,['class'=>'form-control','id'=>'dependencia','required','placeholder'=>'Área u oficina del usuario']) !!}
+                            {{--  {!! Form::text('dependencia',null,['class'=>'form-control','id'=>'dependencia','required','placeholder'=>'Área u oficina del usuario']) !!}  --}}
+                            {!! Form::select('area_id',$Areas,null,['class'=>'form-control','id'=>'area_id','required']) !!}
                         </div>
                     </div>
                 </div>
@@ -153,16 +154,16 @@
         }
     </script>
     <script>
-        function categoriaTFuncS() {
-            var selectBox = document.getElementById("id_categoria");
+        function Area() {
+            var selectBox = document.getElementById("project_id");
             var selectedValue = selectBox.options[selectBox.selectedIndex].value;
             var tipo = 'post';
-            var select = document.getElementById("asunto");
+            var select = document.getElementById("area_id");
 
             $.ajax({
-                url: "{{route('buscarCategoriaS')}}",
+                url: "{{route('buscarArea')}}",
                 type: "get",
-                data: {_method: tipo, id_categoria: selectedValue},
+                data: {_method: tipo, id_sede: selectedValue},
                 success: function (data) {
                     var vValido = data['valido'];
 

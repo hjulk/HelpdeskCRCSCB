@@ -475,10 +475,14 @@ class TicketsController extends Controller
                 foreach($buscarUsuario as $valor){
                     $value['creado_por'] = strtoupper($valor->nombre);
                 }
-                $asignado = $value['asignado_a'];
-                $buscarUsuario = Usuarios::BuscarNombre($asignado);
-                foreach($buscarUsuario as $valor){
-                    $value['asignado_a'] = strtoupper($valor->nombre);
+                if($value['asignado_a']){
+                    $asignado = $value['asignado_a'];
+                    $buscarUsuario = Usuarios::BuscarNombre($asignado);
+                    foreach($buscarUsuario as $valor){
+                        $value['asignado_a'] = strtoupper($valor->nombre);
+                    }
+                }else{
+                    $value['asignado_a'] = 'SIN AGENTE DE SOPORTE';
                 }
                 $actualizado = $value['actualizado_por'];
                 $buscarUsuario = Usuarios::BuscarNombre($actualizado);
@@ -976,9 +980,10 @@ class TicketsController extends Controller
         }
         $url = TicketsController::BuscarURL($Administrador);
         $reglas = array(
-            'asunto'    =>  'required',
-            'categoria' =>  'required',
-            'prioridad' =>  'required'
+            'asunto'        =>  'required',
+            'categoria'     =>  'required',
+            'prioridad'     =>  'required',
+            'tipo_usuario'  =>  'required'
         );
         $validador  = Validator::make($data, $reglas);
         $messages   = $validador->messages();
@@ -989,7 +994,8 @@ class TicketsController extends Controller
             $Asunto     = Input::get('asunto');
             $Categoria  = (int)Input::get('categoria');
             $Prioridad  = (int)Input::get('prioridad');
-            $CrearRecurrente    = Tickets::CrearRecurrente($Asunto,$Categoria,$Prioridad,$creadoPor);
+            $Tipo       = (int)Input::get('tipo_usuario');
+            $CrearRecurrente    = Tickets::CrearRecurrente($Asunto,$Categoria,$Prioridad,$creadoPor,$Tipo);
             if($CrearRecurrente){
                 $verrors = 'Se creo con éxito el asunto';
                 return redirect($url.'/ticketsRecurrentes')->with('mensaje', $verrors);
@@ -1012,10 +1018,11 @@ class TicketsController extends Controller
         }
         $url = TicketsController::BuscarURL($Administrador);
         $reglas = array(
-            'asunto_upd'    =>  'required',
-            'categoria_upd' =>  'required',
-            'prioridad_upd' =>  'required',
-            'activo'        =>  'required'
+            'asunto_upd'        =>  'required',
+            'categoria_upd'     =>  'required',
+            'prioridad_upd'     =>  'required',
+            'activo'            =>  'required',
+            'tipo_usuario_upd'  =>  'required'
         );
         $validador  = Validator::make($data, $reglas);
         $messages   = $validador->messages();
@@ -1028,7 +1035,8 @@ class TicketsController extends Controller
             $Prioridad  = (int)Input::get('prioridad_upd');
             $IdTicket   = (int)Input::get('idT');
             $Activo     = (int)Input::get('activo');
-            $ActualizarRecurrente   = Tickets::ActualizarRecurrente($Asunto,$Categoria,$Prioridad,$creadoPor,$IdTicket,$Activo);
+            $Tipo       = (int)Input::get('tipo_usuario_upd');
+            $ActualizarRecurrente   = Tickets::ActualizarRecurrente($Asunto,$Categoria,$Prioridad,$creadoPor,$IdTicket,$Activo,$Tipo);
             if($ActualizarRecurrente){
                 $verrors = 'Se actualizó con éxito el asunto';
                 return redirect($url.'/ticketsRecurrentes')->with('mensaje', $verrors);
@@ -1177,6 +1185,18 @@ class TicketsController extends Controller
 
     }
 
+    public function buscarArea(){
+        $data = Input::all();
+        $id   = Input::get('id_sede');
+        $NombreUsuario = array();
+        $buscarUsuario = Sedes::BuscarAreaIdSede($id);
+        $NombreUsuario[0] = 'Seleccione: ';
+        foreach ($buscarUsuario as $row){
+            $NombreUsuario[$row->id] = $row->name;
+        }
+        return \Response::json(array('valido'=>'true','Usuario'=>$NombreUsuario));
+    }
+
     public function crearSolicitud(){
         $Sedes  = Tickets::Sedes();
         $NombreSede = array();
@@ -1184,6 +1204,14 @@ class TicketsController extends Controller
         foreach ($Sedes as $row){
             $NombreSede[$row->id] = $row->name;
         }
+
+        $Areas  = Sedes::Areas();
+        $NombreArea = array();
+        $NombreArea[''] = 'Seleccione: ';
+        // foreach ($Areas as $row){
+        //     $NombreArea[$row->id] = $row->name;
+        // }
+
         $Tipo  = Tickets::ListarTipo();
         $NombreTipo = array();
         $NombreTipo[''] = 'Seleccione: ';
@@ -1203,7 +1231,8 @@ class TicketsController extends Controller
             $TicketRecurrente[$row->id] = $row->nombre;
         }
 
-        return view('CrearSolicitud',['Sedes' => $NombreSede,'Tipo' => $NombreTipo,'TicketRecurrente' => $TicketRecurrente,'Categoria' => $NombreCategoria]);
+        return view('CrearSolicitud',['Sedes' => $NombreSede,'Tipo' => $NombreTipo,'TicketRecurrente' => $TicketRecurrente,'Categoria' => $NombreCategoria,
+                                        'Areas' => $NombreArea]);
     }
 
     public function nuevaSolicitud(){

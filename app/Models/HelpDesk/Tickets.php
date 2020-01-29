@@ -849,27 +849,28 @@ class Tickets extends Model
         return $ListTicketsRecurrentes;
     }
 
-    public static function CrearRecurrente($Asunto,$Categoria,$Prioridad,$creadoPor){
+    public static function CrearRecurrente($Asunto,$Categoria,$Prioridad,$creadoPor,$Tipo){
         date_default_timezone_set('America/Bogota');
         $fecha_sistema      = date('Y-m-d H:i');
         $fechaCreacion      = date('Y-m-d H:i', strtotime($fecha_sistema));
-        $CrearRecurrente    = DB::Insert('INSERT INTO tickets_recurrentes (nombre,category_id,priority_id,creado_por,fecha_creacion,activo)
-                                            VALUES (?,?,?,?,?,?)',
-                                            [$Asunto,$Categoria,$Prioridad,$creadoPor,$fechaCreacion,1]);
+        $CrearRecurrente    = DB::Insert('INSERT INTO tickets_recurrentes (nombre,category_id,priority_id,creado_por,fecha_creacion,activo,tipo)
+                                            VALUES (?,?,?,?,?,?,?)',
+                                            [$Asunto,$Categoria,$Prioridad,$creadoPor,$fechaCreacion,1,$Tipo]);
         return $CrearRecurrente;
     }
 
-    public static function ActualizarRecurrente($Asunto,$Categoria,$Prioridad,$creadoPor,$IdTicket,$Activo){
+    public static function ActualizarRecurrente($Asunto,$Categoria,$Prioridad,$creadoPor,$IdTicket,$Activo,$Tipo){
         date_default_timezone_set('America/Bogota');
         $fecha_sistema          = date('Y-m-d H:i');
         $fechaActualizacion     = date('Y-m-d H:i', strtotime($fecha_sistema));
         $ActualizarRecurrente   = DB::Update("UPDATE tickets_recurrentes SET
-                                                nombre = '$Asunto',
-                                                category_id = $Categoria,
-                                                priority_id = $Prioridad,
-                                                actualizado_por = $creadoPor,
+                                                nombre              = '$Asunto',
+                                                category_id         = $Categoria,
+                                                priority_id         = $Prioridad,
+                                                actualizado_por     = $creadoPor,
                                                 fecha_actualizacion = '$fechaActualizacion',
-                                                activo = $Activo
+                                                activo              = $Activo,
+                                                tipo                = $Tipo
                                                 WHERE id = $IdTicket");
         return $ActualizarRecurrente;
     }
