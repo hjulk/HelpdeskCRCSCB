@@ -60,13 +60,14 @@
                 <legend class="subtitle2" style="color: rgba(162, 27, 37, 1);">DATOS USUARIO</legend>
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-md-3">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Sede</label>
-                            {!! Form::Select('sede',$Sede,null,['class'=>'form-control','id'=>'sede']) !!}
+                        <div class="col-sm-3">
+                            <label class="control-label col-sm-12" for="fname">Sede:</label>
+                            {!! Form::select('sede',$Sedes,null,['class'=>'form-control','id'=>'sede','onchange'=>'Area();','required']) !!}
                         </div>
-                        <div class="col-md-3">
-                            <label for="exampleInputEmail1" class="col-sm-12 control-label">Area</label>
-                            {!! Form::text('area',null,['class'=>'form-control','id'=>'area','placeholder'=>'Area Usuario']) !!}
+                        <div class="col-sm-3">
+                            <label class="control-label col-sm-12" for="fname">Área / Dependencia:</label>
+                            {{--  {!! Form::text('dependencia',null,['class'=>'form-control','id'=>'dependencia','required','placeholder'=>'Área u oficina del usuario']) !!}  --}}
+                            {!! Form::select('area',$Areas,null,['class'=>'form-control','id'=>'area','required']) !!}
                         </div>
                         <div class="col-md-3">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Nombre Asignado</label>
@@ -192,11 +193,11 @@
                     <div class="row">
                         <div class="col-md-3">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Sede</label>
-                            {!! Form::Select('sede_upd',$Sede,null,['class'=>'form-control','id'=>'mod_sede']) !!}
+                            {!! Form::Select('sede_upd',$Sede,null,['class'=>'form-control','id'=>'mod_sede','readonly']) !!}
                         </div>
                         <div class="col-md-3">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Area</label>
-                            {!! Form::text('area_upd',null,['class'=>'form-control','id'=>'mod_area','placeholder'=>'Area Usuario']) !!}
+                            {!! Form::text('area_upd',null,['class'=>'form-control','id'=>'mod_area','placeholder'=>'Area Usuario','readonly']) !!}
                         </div>
                         <div class="col-md-3">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Nombre Asignado</label>
@@ -401,6 +402,60 @@
 
             $("#VerAnexosA").click(function(){
                 document.getElementById('anexosA').innerHTML = Evidencia;
+            });
+        }
+    </script>
+    <script>
+        function Area() {
+            var selectBox = document.getElementById("sede");
+            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+            var tipo = 'post';
+            var select = document.getElementById("area");
+
+            $.ajax({
+                url: "{{route('buscarArea')}}",
+                type: "get",
+                data: {_method: tipo, id_sede: selectedValue},
+                success: function (data) {
+                    var vValido = data['valido'];
+
+                    if (vValido === 'true') {
+                        var ListUsuario = data['Usuario'];
+                        select.options.length = 0;
+                        for (index in ListUsuario) {
+                            select.options[select.options.length] = new Option(ListUsuario[index], index);
+                        }
+
+                    }
+
+                }
+            });
+        }
+    </script>
+    <script>
+        function AreaUpd() {
+            var selectBox = document.getElementById("sede_upd");
+            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+            var tipo = 'post';
+            var select = document.getElementById("area_upd");
+
+            $.ajax({
+                url: "{{route('buscarArea')}}",
+                type: "get",
+                data: {_method: tipo, id_sede: selectedValue},
+                success: function (data) {
+                    var vValido = data['valido'];
+
+                    if (vValido === 'true') {
+                        var ListUsuario = data['Usuario'];
+                        select.options.length = 0;
+                        for (index in ListUsuario) {
+                            select.options[select.options.length] = new Option(ListUsuario[index], index);
+                        }
+
+                    }
+
+                }
             });
         }
     </script>

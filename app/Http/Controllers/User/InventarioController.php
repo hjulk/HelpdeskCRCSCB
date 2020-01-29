@@ -1001,7 +1001,10 @@ class InventarioController extends Controller
         foreach ($ListarMarca as $row){
             $MarcaUpd[$row->id] = $row->marca.' - '.$row->serial;
         }
-        return view('Inventario.Asignados',['Stock' => $TotalStock,'TAsignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos,
+
+        $NombreArea = array();
+        $NombreArea[''] = 'Seleccione: ';
+        return view('Inventario.Asignados',['Stock' => $TotalStock,'TAsignados' => $TotalAsignados,'Mantenimiento' => $TotalMantenimiento,'Obsoletos' => $TotalObsoletos,'Areas' => $NombreArea,
                                             'Estado' => $Estado,'Asignados' => $Asignados,'Equipos' => $Equipos,'Mouse' => $Mouse,'Pantalla' => $Pantalla,'Teclado' => $Teclado,
                                             'Cargador' => $Cargador,'Guaya' => $Guaya,'Sede' => $NombreSede,'Area' => null,'NombreAsignado' => null,'Cargo' => null,'Cedula' => null,
                                             'Telefono' => null,'Correo' => null,'Ticket' => null,'FechaAsignacion' => null,'Marca' => $Marca,'Opcion' => $Opcion,'MarcaUpd' => $MarcaUpd,

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use App\Models\HelpDesk\Inventario;
+use App\Models\Admin\Sedes;
 use App\Models\Admin\Usuarios;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
@@ -1190,11 +1191,16 @@ class InventarioController extends Controller
                 $CodeGuaya      = null;
             }
             $Sede               = (int)Input::get('sede');
-            if(Input::get('area')){
-                $Area           = Input::get('area');
-            }else{
-                $Area           = 'SIN AREA';
+            $IdArea             = (int)Input::get('area');
+            $BuscarArea         = Sedes::BuscarAreaId($IdArea);
+            foreach($BuscarArea as $row){
+                $Area           = $row->name;
             }
+            // if(Input::get('area')){
+            //     $Area           = Input::get('area');
+            // }else{
+            //     $Area           = 'SIN AREA';
+            // }
             $NombreAsignado     = Input::get('nombre_asignado');
             $Cargo              = Input::get('cargo');
             $Cedula             = Input::get('cedula');
