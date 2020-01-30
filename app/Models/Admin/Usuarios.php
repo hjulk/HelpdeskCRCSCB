@@ -17,15 +17,38 @@ class Usuarios extends Model
         return $consulta;
     }
 
+    public static function BuscarUserFinal($Usuario){
+        $consulta = DB::Select("SELECT * FROM usuario_final WHERE username = '$Usuario'");
+        // $consulta = DB::table('user')->where('username',$Usuario)->get();
+        return $consulta;
+    }
+
+    public static function BuscarUsuarioFinal($Usuario){
+        $consulta = DB::Select("SELECT * FROM usuario_final WHERE id = $Usuario");
+        return $consulta;
+    }
+
     public static function BuscarUserEmail($UserEmail){
         $consulta = DB::Select("SELECT * FROM user WHERE email = '$UserEmail'");
         // $consulta = DB::table('user')->where('username',$Usuario)->get();
         return $consulta;
     }
 
+    public static function BuscarUserEmailFinal($UserEmail){
+        $consulta = DB::Select("SELECT * FROM usuario_final WHERE email = '$UserEmail'");
+        return $consulta;
+    }
+
     public static function BuscarPass($Usuario,$clave){
 
         $consulta = DB::Select("SELECT * FROM user WHERE username = '$Usuario' AND password = '$clave'");
+        // $consulta = DB::table('user')->where('username',$Usuario)->where('password',$clave)->get();
+        return $consulta;
+    }
+
+    public static function BuscarPassFinal($Usuario,$clave){
+
+        $consulta = DB::Select("SELECT * FROM usuario_final WHERE username = '$Usuario' AND password = '$clave'");
         // $consulta = DB::table('user')->where('username',$Usuario)->where('password',$clave)->get();
         return $consulta;
     }
@@ -37,6 +60,16 @@ class Usuarios extends Model
         $crearUsuario = DB::insert('INSERT INTO user (username,name,email,password,profile_pic,is_active,kind,rol_id,category_id,created_at,creado_por)
                                     VALUES (?,?,?,?,?,?,?,?,?,?,?)',
                                     [$userName,$nombreUsuario,$email,$contrasena,$NombreFoto,1,1,$idrol,$idcategoria,$fechaCreacion,$creadoPor]);
+        return $crearUsuario;
+    }
+
+    public static function CrearUsuarioFinal($nombreUsuario,$userName,$email,$contrasena,$Sede,$Area,$Cargo,$NombreFoto,$creadoPor){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema = date('Y-m-d H:i');
+        $fechaCreacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+        $crearUsuario = DB::Insert('INSERT INTO usuario_final (username,nombre,email,password,cargo,foto,activo,sede,area,fecha_creacion,creado_por)
+                                    VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+                                    [$userName,$nombreUsuario,$email,$contrasena,$Cargo,$NombreFoto,1,$Sede,$Area,$fechaCreacion,$creadoPor]);
         return $crearUsuario;
     }
 
@@ -69,6 +102,41 @@ class Usuarios extends Model
                                                                 updated_at      = '$fechaActualizacion',
                                                                 actualizado_por = $creadoPor
                                                                 WHERE id = $id");
+        }
+        return $actualizarUsuario;
+    }
+
+    public static function ActualizarUsuarioFinal($id,$nombreUsuario,$userName,$email,$contrasena,$Sede,$Area,$Cargo,$idactivo,$NombreFoto,$creadoPor){
+        date_default_timezone_set('America/Bogota');
+        $fecha_sistema      = date('Y-m-d H:i');
+        $fechaActualizacion = date('Y-m-d H:i', strtotime($fecha_sistema));
+
+        if($NombreFoto){
+            $actualizarUsuario = DB::Update("UPDATE usuario_final SET username              = '$userName',
+                                                                        nombre              = '$nombreUsuario',
+                                                                        email               = '$email',
+                                                                        password            = '$contrasena',
+                                                                        foto                = '$NombreFoto',
+                                                                        activo              = $idactivo,
+                                                                        sede                = $Sede,
+                                                                        area                = $Area,
+                                                                        cargo               = '$Cargo',
+                                                                        fecha_actualizacion = '$fechaActualizacion',
+                                                                        actualizado_por     = $creadoPor
+                                                                        WHERE id = $id");
+
+        }else{
+            $actualizarUsuario = DB::Update("UPDATE usuario_final SET username              = '$userName',
+                                                                        nombre              = '$nombreUsuario',
+                                                                        email               = '$email',
+                                                                        password            = '$contrasena',
+                                                                        activo              = $idactivo,
+                                                                        sede                = $Sede,
+                                                                        area                = $Area,
+                                                                        cargo               = '$Cargo',
+                                                                        fecha_actualizacion = '$fechaActualizacion',
+                                                                        actualizado_por     = $creadoPor
+                                                                        WHERE id = $id");
         }
         return $actualizarUsuario;
     }
@@ -142,6 +210,11 @@ class Usuarios extends Model
         return $consulta;
     }
 
+    public static function BuscarNombreFinal($id_usuario){
+        $consulta = DB::Select("SELECT * FROM usuario_final WHERE id = $id_usuario");
+        return $consulta;
+    }
+
     public static function BuscarNombreRol($id_rol){
         $consulta = DB::Select("SELECT name FROM rol WHERE rol_id = $id_rol");
         // $consulta = DB::table('user')->where('username',$Usuario)->get();
@@ -196,6 +269,11 @@ class Usuarios extends Model
         return $Usuarios;
     }
 
+    public static function ListarUsuarioFinal(){
+        $Usuarios = DB::Select("SELECT * FROM usuario_final ORDER BY nombre");
+        return $Usuarios;
+    }
+
     public static function BuscarXCategoria($id_categoria){
         $activo = DB::Select("SELECT * FROM user WHERE category_id = $id_categoria AND is_active = 1 ORDER BY name");
         return $activo;
@@ -228,9 +306,20 @@ class Usuarios extends Model
         return $contrasena;
     }
 
+    public static function RestablecerPasswordFinal($UserName,$UserEmail){
+        $contrasena= DB::Select("SELECT * FROM usuario_final WHERE username = '$UserName' AND email = '$UserEmail'");
+        return $contrasena;
+    }
+
     public static function NuevaContrasena($idUser,$nuevaContrasena){
 
         $contrasena = DB::Update("UPDATE user SET password = '$nuevaContrasena' WHERE id = $idUser");
+        return $contrasena;
+    }
+
+    public static function NuevaContrasenaFinal($idUser,$nuevaContrasena){
+
+        $contrasena = DB::Update("UPDATE usuario_final SET password = '$nuevaContrasena' WHERE id = $idUser");
         return $contrasena;
     }
 

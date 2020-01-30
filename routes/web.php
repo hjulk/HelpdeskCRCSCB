@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Artisan;
 Cache::flush();
 Route::get('/', 'loginController@index');
 Route::post('RecuperarContrasena', 'loginController@RecuperarContrasena')->name('RecuperarContrasena');
+Route::post('RecuperarContrasenaUsuario', 'loginController@RecuperarContrasenaUsuario')->name('RecuperarContrasenaUsuario');
 
 Route::get('/crearSolicitud','TicketsController@crearSolicitud')->name('crearSolicitud');
 Route::get('buscarCategoriaS', 'TicketsController@buscarCategoriaS')->name('buscarCategoriaS');
@@ -16,7 +17,8 @@ Route::get('buscarCategoriaS', 'TicketsController@buscarCategoriaS')->name('busc
 
 
 Route::post('Acceso', 'loginController@Acceso')->name('Acceso');
-Route::post('nuevaSolicitud', 'TicketsController@nuevaSolicitud')->name('nuevaSolicitud');
+Route::post('AccesoUsuario', 'loginController@AccesoUsuario')->name('AccesoUsuario');
+// Route::post('nuevaSolicitud', 'TicketsController@nuevaSolicitud')->name('nuevaSolicitud');
 Auth::routes();
 
 Route::group(['middleware' => 'revalidate'], function () {
@@ -30,6 +32,9 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::group(['middleware' => 'user'], function () {
         Route::get('user/dashboard', 'User\UsuariosController@inicio')->name('user/dashboard');
     });
+    Route::group(['middleware' => 'usuarioFinal'], function () {
+        Route::get('usuario/dashboard', 'Usuario\UsuarioController@inicio')->name('usuario/dashboard');
+    });
 
 
     // MODULO ADMINISTRACIÓN
@@ -39,12 +44,15 @@ Route::group(['middleware' => 'revalidate'], function () {
         Route::get('sedes','SedesController@sedes')->name('sedes');
         Route::get('roles','RolesController@roles')->name('roles');
         Route::get('usuarios','UsuarioController@index')->name('usuarios');
+        Route::get('usuarioFinal','UsuarioController@usuarioFinal')->name('usuarioFinal');
         Route::post('crearRol','RolesController@crearRol')->name('crearRol');
         Route::post('actualizarRol','RolesController@actualizarRol')->name('actualizarRol');
         Route::post('crearCategoria','RolesController@crearCategoria')->name('crearCategoria');
         Route::post('actualizarCategoria','RolesController@actualizarCategoria')->name('actualizarCategoria');
         Route::post('crearUsuario','UsuarioController@crearUsuario')->name('crearUsuario');
+        Route::post('crearUsuarioFinal','UsuarioController@crearUsuarioFinal')->name('crearUsuarioFinal');
         Route::post('actualizarUsuario','UsuarioController@actualizarUsuario')->name('actualizarUsuario');
+        Route::post('actualizarUsuarioFinal','UsuarioController@actualizarUsuarioFinal')->name('actualizarUsuarioFinal');
         Route::post('actualizarUsuarioP','UsuarioController@actualizarUsuarioP')->name('actualizarUsuarioP');
         Route::post('actualizarUsuarioAdmin','UsuarioController@actualizarUsuarioAdmin')->name('actualizarUsuarioAdmin');
         Route::post('crearSede','SedesController@crearSede')->name('crearSede');
@@ -113,6 +121,20 @@ Route::group(['middleware' => 'revalidate'], function () {
         });
     });
 
+    Route::group(['prefix' => 'usuario','namespace' => 'Usuario','middleware' => 'usuarioFinal'],function(){
+        Cache::flush();
+        Route::get('crearTicket','UsuarioController@inicio')->name('crearTicket');
+        Route::post('nuevaSolicitud', 'UsuarioController@nuevaSolicitud')->name('nuevaSolicitud');
+        Route::get('/logout', function() {
+            Auth::logout();
+            Session::flush();
+            Artisan::call('cache:clear');
+            Cache::flush();
+            // Session::destroy();
+            return Redirect::to('/crearSolicitud')->with('mensaje_login', 'Salida Segura');
+        });
+    });
+
     Route::get('/logout', function() {
         Auth::logout();
         Session::flush();
@@ -155,5 +177,6 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::post('ingresarAsignacion', 'InventarioController@ingresarAsignacion')->name('ingresarAsignacion');
     Route::post('actualizarAsignacion', 'InventarioController@actualizarAsignacion')->name('actualizarAsignacion');
     Route::get('buscarEquipo', 'InventarioController@buscarEquipo')->name('buscarEquipo');
+
 
 });

@@ -20,14 +20,13 @@ class AdminMiddleware
     {
         $idUsuario = Session::get('IdUsuario');
         if($idUsuario){
-            $Usuario = Usuarios::BuscarNombre($idUsuario);
-            foreach($Usuario as $value){
-                $rol = $value->rol_id;
-            }
+            $rol = (int)Session::get('Rol');
             if ($rol === 1)
                 return $next($request);
             if($rol === 5)
                 return redirect('dashboardMonitoreo');
+            if($rol === 0)
+                return redirect('/usuario/dashboard');
             return redirect('/user/dashboard');
         }else{
             return redirect('/');

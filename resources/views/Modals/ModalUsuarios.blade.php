@@ -15,15 +15,15 @@
                     <div class="row">
                         <div class="col-md-4">
                             <label for="exampleInputEmail1">Nombre Completo</label>
-                            {!! Form::text('nombre_usuario_upd',$NombreUsuario,['class'=>'form-control','id'=>'mod_nombre_usuario_upd','placeholder'=>'Asunto del Ticket']) !!}
+                            {!! Form::text('nombre_usuario_upd',$NombreUsuario,['class'=>'form-control','id'=>'mod_nombre_usuario_upd','placeholder'=>'Nombre usuario']) !!}
                         </div>
                         <div class="col-md-3">
                             <label for="exampleInputEmail1">Usuario</label>
-                            {!! Form::text('username_upd',$UserName,['class'=>'form-control','id'=>'mod_username_upd','placeholder'=>'Asunto del Ticket']) !!}
+                            {!! Form::text('username_upd',$UserName,['class'=>'form-control','id'=>'mod_username_upd','placeholder'=>'Usuario']) !!}
                         </div>
                         <div class="col-md-5">
                             <label for="exampleInputEmail1">Correo Electrónico</label>
-                            {!! Form::email('email_upd',$Correo,['class'=>'form-control','id'=>'mod_email_upd','placeholder'=>'Asunto del Ticket']) !!}
+                            {!! Form::email('email_upd',$Correo,['class'=>'form-control','id'=>'mod_email_upd','placeholder'=>'Correo elctrónico']) !!}
                         </div>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
                     <div class="row">
                         <div class="col-md-3">
                             <label for="exampleInputEmail1">Contraseña</label>
-                            <input type="password" class="form-control" id="password_amd" name="password_amd" placeholder="contraseña">
+                            <input type="password" class="form-control" id="password_amd" name="password_amd" placeholder="Contraseña">
                         </div>
                         <div class="col-md-3">
                             <label for="exampleInputEmail1">Rol</label>

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Admin\Usuarios;
 use App\Models\HelpDesk\Tickets;
+use App\Models\Admin\Sedes;
 use App\Models\User\ControlCambios;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
@@ -167,6 +168,114 @@ class loginController extends Controller
         }
     }
 
+    public function AccesoUsuario(){
+
+        $data = Input::all();
+        $reglas = array(
+            'user' => 'required',
+            'password' => 'required'
+        );
+        $validador = Validator::make($data, $reglas);
+        $messages = $validador->messages();
+        foreach ($reglas as $key => $value){
+            $verrors[$key] = $messages->first($key);
+        }
+        if($validador->passes()) {
+            $Usuario    = Input::get('user');
+            $Password   = Input::get('password');
+            $clave      = hash('sha512', $Password);
+
+            $consultarUsuario = Usuarios::BuscarUserFinal($Usuario);
+
+            if($consultarUsuario){
+                $consultarLogin = Usuarios::BuscarPassFinal($Usuario,$clave);
+                if($consultarLogin){
+
+                    foreach($consultarLogin as $value){
+                        $IdUsuario          = (int)$value->id;
+                        $nombreUsuario      = $value->nombre;
+                        $emailUsuario       = $value->email;
+                        $userName           = $value->username;
+                        $profile_pic        = $value->foto;
+                        $estado             = (int)$value->activo;
+                        $idArea             = (int)$value->area;
+                        $idSede             = (int)$value->sede;
+                        $fechaInicio        = $value->fecha_creacion;
+                    }
+
+                    $idRol = 0;
+
+                    If($estado === 1){
+                        $Area    = Sedes::BuscarAreaId($idArea);
+                        foreach($Area as $valor){
+                            $NombreArea = $valor->name;
+                        }
+                        $Sede    = Usuarios::BuscarNombreSede($idSede);
+                        foreach($Sede as $valor){
+                            $NombreSede = $valor->name;
+                        }
+
+                        setlocale(LC_ALL, 'es_ES');
+                        // $fechaCreacion = date('F, Y', strtotime($fechaInicio));
+                        $mesCreacion = date('F', strtotime($fechaInicio));
+                        $anio = date('Y', strtotime($fechaInicio));
+                        $meses_ES = array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+                        $meses_EN = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+                        $nombreMes = str_replace($meses_EN, $meses_ES, $mesCreacion);
+
+                        $fechaCreacion = $nombreMes.', '.$anio;
+
+                        $fotoPerfil = "<img src='../assets/dist/img/profiles/$profile_pic' class='img-circle' alt='User Image'>";
+                        $fotoMenu   = "<img src='../assets/dist/img/profiles/$profile_pic' class='user-image' alt='User Image'>";
+                        $fotoPerfilM = "<img src='./assets/dist/img/profiles/$profile_pic' class='img-circle' alt='User Image'>";
+                        $fotoMenuM   = "<img src='./assets/dist/img/profiles/$profile_pic' class='user-image' alt='User Image'>";
+                        $fotoUser   = "<img src='../assets/dist/img/profiles/$profile_pic' class='profile-user-img img-responsive img-circle' alt='User profile picture' style='width: 40%;border-radius: 40% !important;'>";
+
+                        Session::put('IdUsuario', $IdUsuario);
+                        Session::put('NombreUsuario', $nombreUsuario);
+                        Session::put('UserName', $userName);
+                        Session::put('Area', $idArea);
+                        Session::put('Sede', $idSede);
+                        Session::put('Rol', $idRol);
+                        Session::put('Email', $emailUsuario);
+                        Session::put('Activo', $estado);
+                        Session::put('NombreSede', $NombreSede);
+                        Session::put('NombreArea', $NombreArea);
+                        Session::put('ProfilePicMenu', $fotoMenu);
+                        Session::put('ProfilePic', $fotoPerfil);
+                        Session::put('ProfilePicMenuM', $fotoMenuM);
+                        Session::put('ProfilePicM', $fotoPerfilM);
+                        Session::put('ProfileUser', $fotoUser);
+                        Session::put('FechaCreacion', $fechaCreacion);
+                        Session::save();
+                        $usuario = Session::get('NombreUsuario');
+                        return redirect()->route('usuario/dashboard');
+
+                    }else{
+                        $verrors = array();
+                        array_push($verrors, 'Usuario inactivo');
+                        // return \Response::json(['valido'=>'false','errors'=>$verrors]);
+                        return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+                    }
+                }else{
+                    $verrors = array();
+                    array_push($verrors, 'Contraseña erronea');
+                    // return \Response::json(['valido'=>'false','errors'=>$verrors]);
+                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+                }
+
+            }else{
+                $verrors = array();
+                array_push($verrors, 'Usuario '.$Usuario.' no existe');
+                // return \Response::json(['valido'=>'false','errors'=>$verrors]);
+                return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+            }
+        }else{
+            return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+            // return \Response::json(['valido'=>'false','errors'=>$verrors]);
+        }
+    }
+
     public function RecuperarContrasena(){
         $data = Input::all();
         $UserName = Input::get('username');
@@ -297,6 +406,139 @@ class loginController extends Controller
             $verrors = array();
             array_push($verrors, 'Debe diligenciar uno de los dos campos para continuar');
             return redirect('/')->withErrors(['errors' => $verrors])->withInput();
+        }
+    }
+
+    public function RecuperarContrasenaUsuario(){
+        $data = Input::all();
+        $UserName = Input::get('username');
+        $UserEmail = Input::get('correo');
+
+        if(!empty($UserName) || !empty($UserEmail)){
+
+            if(!empty($UserName) && empty($UserEmail)){
+
+                $BuscarUsuario = Usuarios::BuscarUserFinal($UserName);
+                if($BuscarUsuario){
+                    $cadena = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ()#.$@?';
+                    $limite = strlen($cadena) - 1;
+                    $b = '';
+                    for ($i=0; $i < 8; $i++){
+                        $b .= $cadena[rand(0, $limite)];
+                    }
+                    $nuevaContrasena = Hash('sha512',$b);
+                    foreach($BuscarUsuario as $value){
+                        $idUser = $value->id;
+                        $emailUser = $value->email;
+                    }
+                    $UpdatePassword = Usuarios::NuevaContrasenaFinal($idUser,$nuevaContrasena);
+                    if($UpdatePassword){
+
+                        $for = "$emailUser";
+                        $subject = "Recuperación de Contraseña";
+                        Mail::send('email/EmailRContrasena',
+                                ['Contrasena' => $b,'NombreUser' => $UserName,],
+                                function($msj) use($subject,$for){
+                                    $msj->from("soporte.sistemas@cruzrojabogota.org.co","Mesa de Ayuda Tics");
+                                    $msj->subject($subject);
+                                    $msj->to($for);
+
+                        });
+
+                        $verrors = 'Se envio con exito la nueva contraseña al correo del usuario '.$UserName;
+                        return redirect('/crearSolicitud')->with('mensaje', $verrors);
+                    }else{
+                        $verrors = array();
+                    array_push($verrors, 'Hubo un problema al recuperar la contraseña');
+                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+                    }
+                }else{
+                    $verrors = array();
+                    array_push($verrors, 'El usuario '.$UserName.' NO se encuentra en la base de datos');
+                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+                }
+            }else if(empty($UserName) && !empty($UserEmail)){
+                $BuscarUsuario = Usuarios::BuscarUserEmailFinal($UserEmail);
+                if($BuscarUsuario){
+                    $cadena = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ()#.$@?';
+                    $limite = strlen($cadena) - 1;
+                    $b = '';
+                    for ($i=0; $i < 8; $i++){
+                        $b .= $cadena[rand(0, $limite)];
+                    }
+                    $nuevaContrasena = Hash('sha512',$b);
+                    foreach($BuscarUsuario as $value){
+                        $idUser = $value->id;
+                        $userName = $value->name;
+                        $emailUser = $value->email;
+                    }
+                    $UpdatePassword = Usuarios::NuevaContrasenaFinal($idUser,$nuevaContrasena);
+                    if($UpdatePassword){
+                        $for = "$emailUser";
+                        $subject = "Recuperación de Contraseña";
+                        Mail::send('email/EmailRContrasena',
+                                ['Contrasena' => $b,'NombreUser' => $userName,],
+                                function($msj) use($subject,$for){
+                                    $msj->from("soporte.sistemas@cruzrojabogota.org.co","Mesa de Ayuda Tics");
+                                    $msj->subject($subject);
+                                    $msj->to($for);
+
+                        });
+                        $verrors = 'Se envio con exito la nueva contraseña al correo del usuario '.$UserName;
+                        return redirect('/crearSolicitud')->with('mensaje', $verrors);
+                    }else{
+                        $verrors = array();
+                    array_push($verrors, 'Hubo un problema al recuperar la contraseña');
+                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+                    }
+                }else{
+                    $verrors = array();
+                    array_push($verrors, 'El correo '.$UserEmail.' NO se encuentra en la base de datos');
+                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+                }
+            }else if(!empty($UserName) && !empty($UserEmail)){
+                $BuscarUsuario = Usuarios::RestablecerPasswordFinal($UserName,$UserEmail);
+                if($BuscarUsuario){
+                    $cadena = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ()#.$@?';
+                    $limite = strlen($cadena) - 1;
+                    $b = '';
+                    for ($i=0; $i < 8; $i++){
+                        $b .= $cadena[rand(0, $limite)];
+                    }
+                    $nuevaContrasena = Hash('sha512',$b);
+                    foreach($BuscarUsuario as $value){
+                        $idUser = $value->id;
+                        $userName = $value->name;
+                        $emailUser = $value->email;
+                    }
+                    $UpdatePassword = Usuarios::NuevaContrasenaFinal($idUser,$nuevaContrasena);
+                    if($UpdatePassword){
+                        $subject = "Recuperación de Contraseña";
+                        Mail::send('email/EmailRContrasena',
+                                ['Contrasena' => $b,'NombreUser' => $userName,],
+                                function($msj) use($subject,$for){
+                                    $msj->from("soporte.sistemas@cruzrojabogota.org.co","Mesa de Ayuda Tics");
+                                    $msj->subject($subject);
+                                    $msj->to($for);
+
+                        });
+                        $verrors = 'Se envio con exito la nueva contraseña al correo del usuario '.$UserName;
+                        return redirect('/crearSolicitud')->with('mensaje', $verrors);
+                    }else{
+                        $verrors = array();
+                    array_push($verrors, 'Hubo un problema al recuperar la contraseña');
+                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+                    }
+                }else{
+                    $verrors = array();
+                    array_push($verrors, 'El usuario '.$UserName.' y correo '.$UserEmail.' NO se encuentra en la base de datos');
+                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+                }
+            }
+        }else{
+            $verrors = array();
+            array_push($verrors, 'Debe diligenciar uno de los dos campos para continuar');
+            return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
         }
     }
 
