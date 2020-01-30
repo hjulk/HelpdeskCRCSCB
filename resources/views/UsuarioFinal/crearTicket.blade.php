@@ -53,7 +53,7 @@ Dahsboard
                                             <td style="text-align:center;"><span class="{{$value['label']}}" style="font-size:13px;"><b>{{$value['prioridad']}}</b></span></td>
                                             <td style="font-size:2vh;">{{$value['estado']}}</td>
                                             <td style="font-size:2vh;">{{$value['created_at']}}</td>
-                                            <td><a href="#" class="btn btn-info" title="Editar" data-toggle="modal" data-target="#modal-tickets-upd" onclick="obtener_datos_ticket('{{$value['id']}}');"><i class="glyphicon glyphicon-search"></i></a></td>
+                                            <td style="text-align:center;"><a href="#" class="btn btn-info" title="Editar" data-toggle="modal" data-target="#modal-tickets-upd" onclick="obtener_datos_ticket('{{$value['id']}}');"><i class="glyphicon glyphicon-search"></i></a></td>
                                             <input type="hidden" value="{{$value['id']}}" id="id{{$value['id']}}">
                                             <input type="hidden" value="{{$value['tipo_ticket']}}" id="tipo_ticket{{$value['id']}}">
                                             <input type="hidden" value="{{$value['sede']}}" id="sede{{$value['id']}}">
