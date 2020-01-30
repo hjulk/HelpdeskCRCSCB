@@ -17,11 +17,11 @@
         <link rel="stylesheet" href="{{asset("assets/dist/css/skins/_all-skins.min.css")}}">
         <link rel="stylesheet" href="{{asset("assets/CodeSeven/build/toastr.min.css")}}">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-        <link rel="stylesheet" href="{{asset("assets/DataTable/dist/css/jquery.dataTables.min.css")}}">
-        <link rel="stylesheet" href="{{asset("assets/DataTable/dist/css/dataTables.bootstrap4.min.css")}}">
-        <link rel="stylesheet" href="{{asset("assets/DataTable/Responsive/css/responsive.dataTables.min.css")}}">
-        <link rel="stylesheet" href="{{asset("assets/DataTable/Buttons/css/buttons.dataTables.min.css")}}">
-        <link rel="stylesheet" href="{{asset("assets/DataTable/AutoFill/css/autofill.dataTables.min.css")}}">
+        <link rel="stylesheet" href="{{asset("assets/DataTables/dist/css/jquery.dataTables.min.css")}}">
+        <link rel="stylesheet" href="{{asset("assets/DataTables/dist/css/dataTables.bootstrap4.min.css")}}">
+        <link rel="stylesheet" href="{{asset("assets/DataTables/Responsive/css/responsive.dataTables.min.css")}}">
+        <link rel="stylesheet" href="{{asset("assets/DataTables/Buttons/css/buttons.dataTables.min.css")}}">
+        <link rel="stylesheet" href="{{asset("assets/DataTables/AutoFill/css/autofill.dataTables.min.css")}}">
 
         @yield("styles")
 
@@ -53,17 +53,17 @@
         <script src="{{asset("assets/dist/js/adminlte.min.js")}}"></script>
         <script src="{{asset("assets/dist/js/demo.js")}}"></script>
         <script src="{{asset("assets/CodeSeven/build/toastr.min.js")}}"></script>
-        <script src="{{asset("assets/DataTable/dist/js/jquery.dataTables.min.js")}}"></script>
-        <script src="{{asset("assets/DataTable/dist/js/dataTables.bootstrap4.min.js")}}"></script>
-        <script src="{{asset("assets/DataTable/Responsive/js/dataTables.responsive.min.js")}}"></script>
-        <script src="{{asset("assets/DataTable/Buttons/js/dataTables.buttons.min.js")}}"></script>
-        <script src="{{asset("assets/DataTable/Buttons/js/buttons.flash.min.js")}}"></script>
-        <script src="{{asset("assets/DataTable/Buttons/js/buttons.html5.min.js")}}"></script>
-        <script src="{{asset("assets/DataTable/Buttons/js/buttons.print.min.js")}}"></script>
-        <script src="{{asset("assets/DataTable/JsZip/js/jszip.min.js")}}"></script>
-        <script src="{{asset("assets/DataTable/PdfMake/js/pdfmake.min.js")}}"></script>
-        <script src="{{asset("assets/DataTable/PdfMake/js/vfs_fonts.js")}}"></script>
-        <script src="{{asset("assets/DataTable/AutoFill/js/dataTables.autoFill.min.js")}}"></script>
+        <script src="{{asset("assets/DataTables/dist/js/jquery.dataTables.min.js")}}"></script>
+        <script src="{{asset("assets/DataTables/dist/js/dataTables.bootstrap4.min.js")}}"></script>
+        <script src="{{asset("assets/DataTables/Responsive/js/dataTables.responsive.min.js")}}"></script>
+        <script src="{{asset("assets/DataTables/Buttons/js/dataTables.buttons.min.js")}}"></script>
+        <script src="{{asset("assets/DataTables/Buttons/js/buttons.flash.min.js")}}"></script>
+        <script src="{{asset("assets/DataTables/Buttons/js/buttons.html5.min.js")}}"></script>
+        <script src="{{asset("assets/DataTables/Buttons/js/buttons.print.min.js")}}"></script>
+        <script src="{{asset("assets/DataTables/JsZip/js/jszip.min.js")}}"></script>
+        <script src="{{asset("assets/DataTables/PdfMake/js/pdfmake.min.js")}}"></script>
+        <script src="{{asset("assets/DataTables/PdfMake/js/vfs_fonts.js")}}"></script>
+        <script src="{{asset("assets/DataTables/AutoFill/js/dataTables.autoFill.min.js")}}"></script>
         <script src="{{asset("assets/bower_components/bootstrap-daterangepicker/daterangepicker.js")}}"></script>
         <script src="{{asset("assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js")}}"></script>
         <script src="{{asset("assets/bower_components/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js")}}"></script>
