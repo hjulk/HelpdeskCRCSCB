@@ -3,14 +3,27 @@ $(document).ready(function () {
     $('#solicitudes').DataTable({
         columnDefs: [
             { responsivePriority: 1, targets: 0 },
-            { responsivePriority: 2, targets: -1 }],
+            { responsivePriority: 2, targets: -10 }],
+            responsive: {
+                details: {
+                    display: $.fn.dataTable.Responsive.display.modal( {
+                        header: function ( row ) {
+                            var data = row.data();
+                            return 'Detalle Ticket ';
+                        }
+                    } ),
+                    renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                        tableClass: 'table'
+                    })
+                }
+            },
         responsive: true,
         lengthChange: false,
         searching   : true,
         ordering    : true,
         info        : true,
         autoWidth   : true,
-        pageLength  : 8,
+        pageLength  : 7,
         order: [[ 0, "desc" ]],
         language: {
             processing: "Procesando...",
