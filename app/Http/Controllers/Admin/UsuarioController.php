@@ -465,7 +465,6 @@ class UsuarioController extends Controller
             'nombre_usuario_upd'    =>  'required',
             'username_upd'          =>  'required',
             'email_upd'             =>  'required|email',
-            'sede_upd'              =>  'required',
             'id_activo_upd'         =>  'required'
         );
         $validador = Validator::make($data, $reglas);
@@ -481,7 +480,7 @@ class UsuarioController extends Controller
             $Cargo          = Input::get('cargo_upd');
             $password       = Input::get('password_upd');
             $contrasena     = hash('sha512', $password);
-            $Sede           = (int)Input::get('sede_upd');
+            $idSede         = (int)Input::get('sede_upd');
             $idArea         = (int)Input::get('area_upd');
             $idactivo       = (int)Input::get('id_activo_upd');
             if($password){
@@ -498,6 +497,14 @@ class UsuarioController extends Controller
                 $consultarLogin = Usuarios::BuscarUsuarioFinal($id);
                 foreach($consultarLogin as $value){
                     $Area = $value->area;
+                }
+            }
+            if($idSede){
+                $Sede = $idSede;
+            }else{
+                $consultarLogin = Usuarios::BuscarUsuarioFinal($id);
+                foreach($consultarLogin as $value){
+                    $Sede = $value->sede;
                 }
             }
             $destinationPath = null;

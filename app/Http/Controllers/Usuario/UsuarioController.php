@@ -20,11 +20,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class UsuarioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function inicio()
     {
         $Sedes  = Tickets::Sedes();

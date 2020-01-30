@@ -196,11 +196,17 @@ class loginController extends Controller
                         $nombreUsuario      = $value->nombre;
                         $emailUsuario       = $value->email;
                         $userName           = $value->username;
-                        $profile_pic        = $value->foto;
+                        $foto               = $value->foto;
                         $estado             = (int)$value->activo;
                         $idArea             = (int)$value->area;
                         $idSede             = (int)$value->sede;
                         $fechaInicio        = $value->fecha_creacion;
+                    }
+
+                    if($foto){
+                        $profile_pic = $foto;
+                    }else{
+                        $profile_pic = 'default.jpg';
                     }
 
                     $idRol = 0;
@@ -227,8 +233,8 @@ class loginController extends Controller
 
                         $fotoPerfil = "<img src='../assets/dist/img/profiles/$profile_pic' class='img-circle' alt='User Image'>";
                         $fotoMenu   = "<img src='../assets/dist/img/profiles/$profile_pic' class='user-image' alt='User Image'>";
-                        $fotoPerfilM = "<img src='./assets/dist/img/profiles/$profile_pic' class='img-circle' alt='User Image'>";
-                        $fotoMenuM   = "<img src='./assets/dist/img/profiles/$profile_pic' class='user-image' alt='User Image'>";
+                        $fotoPerfilM = "<img src='../assets/dist/img/profiles/$profile_pic' class='img-circle' alt='User Image'>";
+                        $fotoMenuM   = "<img src='../assets/dist/img/profiles/$profile_pic' class='user-image' alt='User Image'>";
                         $fotoUser   = "<img src='../assets/dist/img/profiles/$profile_pic' class='profile-user-img img-responsive img-circle' alt='User profile picture' style='width: 40%;border-radius: 40% !important;'>";
 
                         Session::put('IdUsuario', $IdUsuario);
