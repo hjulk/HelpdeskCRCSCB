@@ -95,4 +95,149 @@
         </div>
     </div>
 </div>
+<script>
+    function obtener_datos_ticket(id) {
+        var tipo                = $("#tipo_ticket" + id).val();
+        var categoria           = $("#categoria" + id).val();
+        var sede                = $("#sede" + id).val();
+        var area                = $("#area" + id).val();
+        var prioridad           = $("#prioridad" + id).val();
+        var estado              = $("#estado" + id).val();
+        var usuario             = $("#asignado_a" + id).val();
+        var titulo              = $("#title" + id).val();
+        var descripcion         = $("#description" + id).val();
+        var evidencias          = $("#evidencia" + id).val();
+        var historial           = $("#historial" + id).val();
+        var nombre_usuario      = $("#name_user" + id).val();
+        var correo_usuario      = $("#user_email" + id).val();
+        var telefono_usuario    = $("#tel_user" + id).val();
+
+        $("#mod_idT").val(id);
+        $("#mod_tipo").val(tipo);
+        $("#mod_categoria").val(categoria);
+        $("#mod_id_sede").val(sede);
+        $("#mod_dependencia").val(area);
+        $("#mod_prioridad").val(prioridad);
+        $("#mod_estado").val(estado);
+        $("#mod_asignado").val(usuario);
+        $("#mod_asunto").val(titulo);
+        $("#mod_descripcion").val(descripcion);
+        $("#mod_evidencias").val(evidencias);
+        $("#mod_historial").val(historial);
+        $("#mod_nombre_usuario").val(nombre_usuario);
+        $("#mod_correo_usuario").val(correo_usuario);
+        $("#mod_telefono_usuario").val(telefono_usuario);
+        $("#mod_sede").val(sede);
+
+        $("#VerAnexos").click(function(){
+            document.getElementById('anexos').innerHTML = evidencias;
+        });
+    }
+</script>
+<div class="modal fade bs-example-modal-md-udpZ" id="modal-tickets-upd">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="color: white;background-color: rgba(162, 27, 37, 1);">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Información Ticket</h4>
+            </div>
+
+            {!! Form::open(['url' => 'actualizarTicket', 'method' => 'post', 'enctype' => 'multipart/form-data','id'=>'form-ticket-upd','autocomplete'=>'off']) !!}
+            <div class="modal-body">
+                <input type="hidden" name="idT" id="mod_idT">
+                <div class="box-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Tipo</label>
+                                {!! Form::text('tipo_upd',null,['class'=>'form-control','id'=>'mod_tipo','placeholder'=>'Tipo Ticket','readonly']) !!}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Asunto</label>
+                                {!! Form::text('asunto_upd',null,['class'=>'form-control','id'=>'mod_asunto','placeholder'=>'Asunto del Ticket','readonly']) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="exampleInputEmail1" class="col-sm-8 control-label">Descripcion Solicitud</label>
+                                {!! Form::textarea('descripcion_upd',null,['class'=>'form-control','id'=>'mod_descripcion','placeholder'=>'Ingrese la descripción de la solicitud','rows'=>'3','readonly']) !!}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="exampleInputEmail1" class="col-sm-8 control-label">Historial del Ticket</label>
+                        {!! Form::textarea('historial',null,['class'=>'form-control','id'=>'mod_historial','placeholder'=>'Ingrese la descripción de la solicitud','rows'=>'3','readonly']) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Nombre Usuario</label>
+                                {!! Form::text('nombre_usuario_upd',null,['class'=>'form-control','id'=>'mod_nombre_usuario','placeholder'=>'Nombre de quien reporta','readonly']) !!}
+                            </div>
+                            <div class="col-md-3">
+                                <label for="exampleInputEmail1" class="col-md-5 control-label">Telefóno</label>
+                                {!! Form::text('telefono_usuario_upd',null,['class'=>'form-control','id'=>'mod_telefono_usuario','placeholder'=>'No. de telefóno del reportante','readonly']) !!}
+                            </div>
+                            <div class="col-md-4">
+                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Correo</label>
+                                {!! Form::text('correo_usuario_upd',null,['class'=>'form-control','id'=>'mod_correo_usuario','placeholder'=>'Correo(s) del reportante','readonly']) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Sede</label>
+                                {!! Form::text('sede_upd',null,['class'=>'form-control','id'=>'mod_sede','readonly']) !!}
+                            </div>
+                            <div class="col-md-5">
+                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Área</label>
+                                {!! Form::text('dependencia_upd',null,['class'=>'form-control','id'=>'mod_dependencia','readonly']) !!}
+                            </div>
+                            <div class="col-md-3">
+                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Prioridad</label>
+                                {!! Form::text('prioridad_upd',null,['class'=>'form-control','id'=>'mod_prioridad','readonly']) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Categoria</label>
+                                {!! Form::text('categoria_upd',null,['class'=>'form-control','id'=>'mod_categoria','readonly']) !!}
+                            </div>
+                            <div class="col-md-3">
+                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Asignado A</label>
+                                {!! Form::text('asignado_upd',null,['class'=>'form-control','id'=>'mod_asignado','readonly']) !!}
+                            </div>
+                            <div class="col-md-3">
+                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Estado</label>
+                                {!! Form::text('estado_upd',null,['class'=>'form-control','id'=>'mod_estado','readonly']) !!}
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" id="VerAnexos" class="btn btn-success" style="margin-top: 15px;">Ver Anexos</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+
+                            <div class="col-md-9">
+                                <div id="anexos"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+            </div>
+            {!!  Form::close() !!}
+
+        </div>
+    </div>
+</div>
 

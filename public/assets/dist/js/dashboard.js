@@ -3,20 +3,7 @@ $(document).ready(function () {
     $('#solicitudes').DataTable({
         columnDefs: [
             { responsivePriority: 1, targets: 0 },
-            { responsivePriority: 2, targets: -10 }],
-            responsive: {
-                details: {
-                    display: $.fn.dataTable.Responsive.display.modal( {
-                        header: function ( row ) {
-                            var data = row.data();
-                            return 'Detalle Ticket ';
-                        }
-                    } ),
-                    renderer: $.fn.dataTable.Responsive.renderer.tableAll({
-                        tableClass: 'table'
-                    })
-                }
-            },
+            { responsivePriority: 2, targets: -1 }],
         responsive: true,
         lengthChange: false,
         searching   : true,
