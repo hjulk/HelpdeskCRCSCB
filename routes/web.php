@@ -67,8 +67,8 @@ Route::group(['middleware' => 'revalidate'], function () {
         Route::get('ticketsUsuario','TicketsController@ticketsUsuario')->name('ticketsUsuario');
         Route::get('mobile','InventarioController@mobile')->name('mobile');
         Route::get('lineMobile','InventarioController@lineMobile')->name('lineMobile');
-        Route::get('detalleNovedadM', 'InventarioController@detalleNovedadM')->name('detalleNovedadM');
-        Route::get('detalleResponsableM', 'InventarioController@detalleResponsableM')->name('detalleResponsableM');
+
+
         Route::get('desktops','InventarioController@desktops')->name('desktops');
         Route::get('printers','InventarioController@printers')->name('printers');
         Route::get('periferic','InventarioController@periferic')->name('periferic');
@@ -103,8 +103,8 @@ Route::group(['middleware' => 'revalidate'], function () {
         Route::post('actualizarUsuario', 'UsuariosController@actualizarUsuario')->name('actualizarUsuario');
         Route::get('mobile','InventarioController@mobile')->name('mobile');
         Route::get('lineMobile','InventarioController@lineMobile')->name('lineMobile');
-        Route::get('detalleNovedadM', 'InventarioController@detalleNovedadM')->name('detalleNovedadM');
-        Route::get('detalleResponsableM', 'InventarioController@detalleResponsableM')->name('detalleResponsableM');
+
+
         Route::get('desktops','InventarioController@desktops')->name('desktops');
         Route::get('printers','InventarioController@printers')->name('printers');
         Route::get('periferic','InventarioController@periferic')->name('periferic');
