@@ -520,9 +520,6 @@ class TicketsController extends Controller
                 array_push($verrors, 'No hay datos que mostrar');
                 return \Response::json(['valido'=>'false','errors'=>$verrors]);
             }
-
-
-            // return \Response::json(array('valido'=>'true'));
         }else{
             return \Response::json(['valido'=>'false','errors'=>$verrors]);
         }
