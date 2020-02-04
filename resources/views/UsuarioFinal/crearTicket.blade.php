@@ -114,8 +114,10 @@ Dahsboard
         function mostrar(id) {
             if (id === '1') {
                 $("#titulo").show();
+                document.getElementById("title").required = true;
             }else{
                 $("#titulo").hide();
+                document.getElementById("title").required = false;
             }
         }
     </script>
