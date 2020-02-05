@@ -10,6 +10,7 @@ $(document).ready(function () {
         ordering    : true,
         info        : true,
         autoWidth   : true,
+        rowReorder  : false,
         language: {
             processing: "Procesando...",
             search: "Buscar:",
@@ -49,6 +50,7 @@ $(document).ready(function () {
         ordering    : true,
         info        : true,
         autoWidth   : true,
+        rowReorder  : false,
         language: {
             processing: "Procesando...",
             search: "Buscar:",

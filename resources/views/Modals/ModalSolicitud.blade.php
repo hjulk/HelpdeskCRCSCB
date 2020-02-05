@@ -161,11 +161,11 @@
                     </div>
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <label for="exampleInputEmail1" class="col-sm-8 control-label">Descripcion Solicitud</label>
                                 {!! Form::textarea('descripcion_upd',null,['class'=>'form-control','id'=>'mod_descripcion','placeholder'=>'Ingrese la descripción de la solicitud','rows'=>'3','readonly']) !!}
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-7">
                                 <label for="exampleInputEmail1" class="col-sm-8 control-label">Historial del Ticket</label>
                         {!! Form::textarea('historial',null,['class'=>'form-control','id'=>'mod_historial','placeholder'=>'Ingrese la descripción de la solicitud','rows'=>'3','readonly']) !!}
                             </div>

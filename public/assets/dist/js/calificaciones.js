@@ -21,6 +21,7 @@ $(document).ready(function () {
         ordering    : true,
         info        : true,
         autoWidth   : true,
+        rowReorder  : false,
         pageLength  : 6,
         order: [[ 0, "desc" ]],
         language: {

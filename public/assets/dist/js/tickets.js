@@ -9,6 +9,7 @@ $(document).ready(function () {
         ordering    : true,
         info        : true,
         autoWidth   : true,
+        rowReorder  : false,
         order: [[ 0, "desc" ]],
         language: {
             processing: "Procesando...",
@@ -55,7 +56,7 @@ $(document).ready(function () {
         ordering    : true,
         info        : true,
         autoWidth   : true,
-
+        rowReorder  : false,
         order: [[ 0, "desc" ]],
         language: {
             processing: "Procesando...",
@@ -111,6 +112,7 @@ $(document).ready(function () {
         ordering    : true,
         info        : true,
         autoWidth   : true,
+        rowReorder  : false,
         order: [[ 0, "desc" ]],
         language: {
             processing: "Procesando...",
@@ -220,6 +222,7 @@ $(document).ready(function () {
                         info        : true,
                         autoWidth   : true,
                         processing  : true,
+                        rowReorder  : false,
                         order: [[ 0, "desc" ]],
                         columns: [
                                     { "data": "id" },
@@ -348,6 +351,7 @@ $(document).ready(function () {
                             info        : true,
                             autoWidth   : true,
                             processing  : true,
+                            rowReorder  : false,
                             order: [[ 0, "desc" ]],
                             columns: [
                                         { "data": "id" },
@@ -513,6 +517,7 @@ $(document).ready(function () {
         ordering    : true,
         info        : true,
         autoWidth   : true,
+        rowReorder  : false,
         order: [[ 0, "asc" ]],
         language: {
             processing: "Procesando...",
