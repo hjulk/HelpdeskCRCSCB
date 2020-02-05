@@ -178,8 +178,131 @@ class UsuarioController extends Controller
             }
             $cont++;
         }
+        $TicketsF        = Tickets::TicketsUsuarioFinalTerminados($Sede,$Area);
+        $ListadoTicketsF = array();
+        $contF           = 0;
+        foreach($TicketsF as $value){
+            $id_ticket                              = (int)$value->id;
+            $ListadoTicketsF[$contF]['id']            = (int)$value->id;
+            $ListadoTicketsF[$contF]['title']         = $value->title;
+            $ListadoTicketsF[$contF]['description']   = $value->description;
+            $ListadoTicketsF[$contF]['created_at']    = date('d/m/Y h:i A', strtotime($value->created_at));
+            if($value->updated_at){
+                $ListadoTicketsF[$contF]['updated_at']   = date('d/m/Y h:i A', strtotime($value->updated_at));
+            }else{
+                $ListadoTicketsF[$contF]['updated_at']   = "SIN FECHA DE ACTUALIZACIÓN";
+            }
+            $ListadoTicketsF[$contF]['kind_id']       = (int)$value->kind_id;
+            $idTipoTicket = (int)$value->kind_id;
+            $TipoTicket = Tickets::Tipo($idTipoTicket);
+            foreach($TipoTicket as $row){
+                $ListadoTicketsF[$contF]['tipo_ticket'] = $row->name;
+            }
+            $ListadoTicketsF[$contF]['user_id']      = (int)$value->user_id;
+            $ListadoTicketsF[$contF]['asigned_id']   = (int)$value->asigned_id;
+            $ListadoTicketsF[$contF]['session_id']   = (int)$value->session_id;
+            $idAsignador    =  (int)$value->user_id;
+            $idAsignado     =  (int)$value->asigned_id;
+            $Asignador  = Usuarios::BuscarNombre($idAsignador);
+            $Asignado   = Usuarios::BuscarNombre($idAsignado);
+            if($Asignador){
+                foreach($Asignador as $row){
+                    $ListadoTicketsF[$contF]['asignado_por'] = strtoupper($row->name);
+                }
+            }else{
+                $ListadoTicketsF[$contF]['asignado_por'] = 'SIN NOMBRE';
+            }
+            if($Asignado){
+                foreach($Asignado as $row){
+                    $ListadoTicketsF[$contF]['asignado_a'] = strtoupper($row->name);
+                }
+            }else{
+                $ListadoTicketsF[$contF]['asignado_a'] = 'SIN NOMBRE';
+            }
+            $ListadoTicketsF[$contF]['project_id']   = (int)$value->project_id;
+            $idSede = (int)$value->project_id;
+            $BuscarSede = Sedes::BuscarSedeID($idSede);
+            if($BuscarSede){
+                foreach($BuscarSede as $row){
+                    $ListadoTicketsF[$contF]['sede'] = strtoupper($row->name);
+                }
+            }else{
+                $ListadoTicketsF[$contF]['sede'] = 'SEDE POR DETERMINAR';
+            }
+
+            $ListadoTicketsF[$contF]['dependencia']   = (int)$value->dependencia;
+            $dependencia = $value->dependencia;
+            if($dependencia === null){
+                $ListadoTicketsF[$contF]['area'] = "SIN ÁREA/DEPENDENCIA";
+            }else{
+                $ListadoTicketsF[$contF]['area'] = strtoupper($dependencia);
+            }
+            $ListadoTicketsF[$contF]['category_id']   = (int)$value->category_id;
+            $IdCategoria    = (int)$value->category_id;
+            $Categoria      =  Roles::BuscarCategoriaID($IdCategoria);
+            foreach($Categoria as $row){
+                $ListadoTicketsF[$contF]['categoria'] = strtoupper($row->name);
+            }
+            $ListadoTicketsF[$contF]['priority_id']   = (int)$value->priority_id;
+            $IdPrioridad   = (int)$value->priority_id;
+            $Prioridad     =  Tickets::BuscarPrioridadID($IdPrioridad);
+            foreach($Prioridad as $row){
+                if($IdPrioridad === 1){
+                    $ListadoTicketsF[$contF]['prioridad']    = strtoupper($row->name);
+                    $ListadoTicketsF[$contF]['label']        = 'label label-danger';
+                }else if($IdPrioridad === 2){
+                    $ListadoTicketsF[$contF]['prioridad']    = strtoupper($row->name);
+                    $ListadoTicketsF[$contF]['label']        = 'label label-warning';
+                }else if($IdPrioridad === 3){
+                    $ListadoTicketsF[$contF]['prioridad']    = strtoupper($row->name);
+                    $ListadoTicketsF[$contF]['label']        = 'label label-success';
+                }else{
+                    $ListadoTicketsF[$contF]['prioridad'] = 'SIN PRIORIDAD';
+                }
+            }
+            $ListadoTicketsF[$contF]['status_id']   = (int)$value->status_id;
+            $IdEstado   = (int)$value->status_id;
+            $Estado     =  Tickets::Estado($IdEstado);
+            foreach($Estado as $row){
+                $ListadoTicketsF[$contF]['estado'] = strtoupper($row->name);
+            }
+            $ListadoTicketsF[$contF]['name_user']    = strtoupper($value->name_user);
+            $ListadoTicketsF[$contF]['tel_user']     = $value->tel_user;
+            $ListadoTicketsF[$contF]['user_email']   = $value->user_email;
+            $ListadoTicketsF[$contF]['evidencia']    = null;
+            $evidenciaTicket = Tickets::EvidenciaTicket($id_ticket);
+            $contFadorEvidencia = count($evidenciaTicket);
+            if($contFadorEvidencia > 0){
+                $contFE = 1;
+                foreach($evidenciaTicket as $row){
+                    $ListadoTicketsF[$contF]['evidencia'] .= "<p><a href='../assets/dist/img/evidencias/".$row->nombre_evidencia."' target='_blank' class='btn btn-info'><i class='fa fa-file-archive-o'></i>&nbsp;Anexo Ticket  $id_ticket Nro. ".$contFE."</a></p>";
+                    $contFE++;
+                }
+            }else{
+                $ListadoTicketsF[$contF]['evidencia'] = null;
+            }
+
+            $historialTicket = Tickets::HistorialTicket($id_ticket);
+            $contFadorHistorial = count($historialTicket);
+            $ListadoTicketsF[$contF]['historial'] = null;
+            if($contFadorHistorial > 0){
+                foreach($historialTicket as $row){
+                    $ListadoTicketsF[$contF]['historial'] .= "- ".$row->observacion." (".$row->user_id." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
+                }
+            }else{
+                $ListadoTicketsF[$contF]['historial'] = null;
+            }
+            $ListadoTicketsF[$contF]['id_create_user']   = (int)$value->id_create_user;
+            $ListadoTicketsF[$contF]['h_asigned_id']     = (int)$value->h_asigned_id;
+            $idAsignadoh = (int)$value->h_asigned_id;
+            $AsignadoH   = Usuarios::BuscarNombre($idAsignadoh);
+            foreach($AsignadoH as $row){
+                $ListadoTicketsF[$contF]['asignado_h'] = strtoupper($row->name);
+            }
+            $contF++;
+        }
         return view('UsuarioFinal.crearTicket',['Sedes' => $NombreSede,'Tipo' => $NombreTipo,'TicketRecurrente' => $TicketRecurrente,'Categoria' => $NombreCategoria,
-                                        'Areas' => $NombreArea,'Tickets' => $ListadoTickets]);
+                                        'Areas' => $NombreArea,'Tickets' => $ListadoTickets,'TicketsF' => $ListadoTicketsF]);
     }
 
     public function nuevaSolicitud(){

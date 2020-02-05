@@ -876,7 +876,12 @@ class Tickets extends Model
     }
 
     public static function TicketsUsuarioFinal($Sede,$Area){
-        $TicketsUsuarioFinal = DB::Select("SELECT * FROM ticket WHERE project_id = $Sede AND dependencia LIKE '%$Area%'");
+        $TicketsUsuarioFinal = DB::Select("SELECT * FROM ticket WHERE project_id = $Sede AND dependencia LIKE '%$Area%' AND status_id IN (1,2)");
+        return $TicketsUsuarioFinal;
+    }
+
+    public static function TicketsUsuarioFinalTerminados($Sede,$Area){
+        $TicketsUsuarioFinal = DB::Select("SELECT * FROM ticket WHERE project_id = $Sede AND dependencia LIKE '%$Area%' AND status_id IN (3,4)");
         return $TicketsUsuarioFinal;
     }
 }
