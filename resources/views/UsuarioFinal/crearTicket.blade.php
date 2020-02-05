@@ -1,7 +1,16 @@
 @extends("Template.layoutMonitoreo")
-
 @section('titulo')
 Dahsboard
+@endsection
+@section('styles')
+    <style>
+        .nav-tabs-custom>.nav-tabs>li.active>a{
+            color: brown;
+        }
+        .nav-tabs-custom>.nav-tabs>li.active {
+            border-top-color: rgb(162, 27, 37) !important;
+        }
+    </style>
 @endsection
 @section('contenido')
 <section class="content">
@@ -30,9 +39,9 @@ Dahsboard
                             <div class="nav-tabs-custom">
                                 <ul class="nav nav-tabs pull-right ui-sortable-handle">
                                     <li class=""><a href="#finalizados" data-toggle="tab" aria-expanded="false"><b>Tickets Finalizados</b></a></li>
-                                    <li class="active"><a href="#actuales" data-toggle="tab" aria-expanded="true" style="color: brown;"><b>Tickets Actuales</b></a></li>
+                                    <li class="active"><a href="#actuales" data-toggle="tab" aria-expanded="true"><b>Tickets Actuales</b></a></li>
                                     <li class="pull-left header"><button class="btn btn-primary" data-toggle="modal" data-target="#modal-solicitud"><i class="fa fa-plus-circle"></i>&nbsp;Crear Ticket</button></li>
-                                  </ul>
+                                </ul>
                             </div>
                             <div class="tab-content no-padding">
                                 <div class="tab-pane active" id="actuales">
@@ -48,7 +57,6 @@ Dahsboard
                                                 <th style="text-align: center;font-size:2vh;">Estado</th>
                                                 <th style="text-align: center;font-size:2vh;">Fecha Creación</th>
                                                 <th style="text-align: center;font-size:2vh;">Revisar</th>
-
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -97,7 +105,6 @@ Dahsboard
                                                 <th style="text-align: center;font-size:2vh;">Estado</th>
                                                 <th style="text-align: center;font-size:2vh;">Fecha Creación</th>
                                                 <th style="text-align: center;font-size:2vh;">Revisar</th>
-
                                             </tr>
                                         </thead>
                                         <tbody>
