@@ -99,9 +99,14 @@ class UsuarioController extends Controller
             $ListadoTickets[$cont]['project_id']   = (int)$value->project_id;
             $idSede = (int)$value->project_id;
             $BuscarSede = Sedes::BuscarSedeID($idSede);
-            foreach($BuscarSede as $row){
-                $ListadoTickets[$cont]['sede'] = strtoupper($row->name);
+            if($BuscarSede){
+                foreach($BuscarSede as $row){
+                    $ListadoTickets[$cont]['sede'] = strtoupper($row->name);
+                }
+            }else{
+                $ListadoTickets[$cont]['sede'] = 'SEDE POR DETERMINAR';
             }
+
             $ListadoTickets[$cont]['dependencia']   = (int)$value->dependencia;
             $dependencia = $value->dependencia;
             if($dependencia === null){
