@@ -57,16 +57,13 @@
                                         {!! Form::select('asunto',$TicketRecurrente,null,['class'=>'form-control','id'=>'asunto','required','onChange'=>'mostrar(this.value);']) !!}
 
                                     </div> --}}
-                                    <div class="col-md-8">
-                                        <label class="control-label col-sm-12" for="email">Asunto</label>
+                                    <div class="col-md-7">
+                                        <label class="control-label col-sm-12" for="email">Seleccione el asunto que mas se ajuste a su solicitud</label>
                                         <input list="asuntos" name="title" id="title" class="form-control" required type="text">
                                         {{-- {!! Form::text('title',null,['class'=>'form-control text-input','id'=>'title','placeholder'=>'Asunto del Ticket','list'=>'asuntos']) !!} --}}
                                         <datalist id="asuntos"></datalist>
                                     </div>
-                                    {{-- <div class="col-md-4" id="titulo" style="display: none;">
-                                        <label class="control-label col-sm-12" for="email">Cuál?</label>
-                                        {!! Form::text('title',null,['class'=>'form-control','id'=>'title','placeholder'=>'Asunto del Ticket']) !!}
-                                    </div> --}}
+
                                 </div>
                             </div>
                             {{-- <div class="form-group">
