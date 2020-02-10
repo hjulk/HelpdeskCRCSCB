@@ -17,12 +17,12 @@
                                         <label class="control-label col-sm-12" for="fname">Nombre Completo:</label>
                                         {!! Form::text('nombre_usuario',null,['class'=>'form-control','id'=>'nombre_usuario','placeholder'=>'Nombres y Apellidos','required']) !!}
                                     </div>
-                                    <div class="col-md-3">
-                                        <label class="control-label col-sm-12" for="fname">Telefóno:</label>
-                                        {!! Form::text('telefono_usuario',null,['class'=>'form-control','id'=>'telefono_usuario','placeholder'=>'No. de telefóno del reportante','required']) !!}
+                                    <div class="col-md-4">
+                                        <label class="control-label col-sm-12" for="fname">Extensión o celular coorporativo</label>
+                                        {!! Form::text('telefono_usuario',null,['class'=>'form-control','id'=>'telefono_usuario','placeholder'=>'No. de telefóno del coorporativo','required']) !!}
                                     </div>
-                                    <div class="col-md-5">
-                                        <label class="control-label col-sm-12" for="fname">Correo Electrónico:</label>
+                                    <div class="col-md-4">
+                                        <label class="control-label col-sm-12" for="fname">Correo Coorporativo:</label>
                                         {!! Form::email('correo_usuario',null,['class'=>'form-control','id'=>'correo_usuario','placeholder'=>'Correo electrónico corporativo','required']) !!}
                                     </div>
                                 </div>
@@ -55,26 +55,28 @@
                                     {{-- <div class="col-md-5">
                                         <label class="control-label col-sm-12" for="email">Asunto</label>
                                         {!! Form::select('asunto',$TicketRecurrente,null,['class'=>'form-control','id'=>'asunto','required','onChange'=>'mostrar(this.value);']) !!}
+
                                     </div> --}}
-                                    <div class="col-md-5">
+                                    <div class="col-md-8">
                                         <label class="control-label col-sm-12" for="email">Asunto</label>
-                                        <input list="asuntos" name="asunto" class="form-control">
+                                        <input list="asuntos" name="title" id="title" class="form-control" required type="text">
+                                        {{-- {!! Form::text('title',null,['class'=>'form-control text-input','id'=>'title','placeholder'=>'Asunto del Ticket','list'=>'asuntos']) !!} --}}
                                         <datalist id="asuntos"></datalist>
                                     </div>
-                                    <div class="col-md-4" id="titulo" style="display: none;">
+                                    {{-- <div class="col-md-4" id="titulo" style="display: none;">
                                         <label class="control-label col-sm-12" for="email">Cuál?</label>
                                         {!! Form::text('title',null,['class'=>'form-control','id'=>'title','placeholder'=>'Asunto del Ticket']) !!}
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-12" id="titulo" style="display: none;">
                                         <label class="control-label col-sm-12" for="email">Cuál?</label>
                                         {!! Form::text('title',null,['class'=>'form-control','id'=>'title','placeholder'=>'Asunto del Ticket']) !!}
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -103,19 +105,9 @@
         </div>
     </div>
 </div>
-    <script type="text/javascript">
-        var Asunto = new Array();
-        @if($Asuntos)
-            @foreach($Asuntos as $valor)
-                Asunto[{{$valor['id']}}] = '{{$valor['nombre']}}';
-            @endforeach
-        @endif
-        var options = '';
 
-        for(var i = 1; i < Asunto.length; i++)
-        options += '<option value="'+Asunto[i]+'" />';
-        document.getElementById('asuntos').innerHTML = options;
-    </script>
+
+
     <script>
         function obtener_datos_ticket(id) {
             var tipo                = $("#tipo_ticket" + id).val();
@@ -168,14 +160,32 @@
             <div class="modal-body">
                 <input type="hidden" name="idT" id="mod_idT">
                 <div class="box-body">
+                    <legend class="subtitle2" style="color: rgba(162, 27, 37, 1);">DATOS USUARIO</legend>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Nombre Usuario:</label>
+                                {!! Form::text('nombre_usuario_upd',null,['class'=>'form-control','id'=>'mod_nombre_usuario','placeholder'=>'Nombre de quien reporta','readonly']) !!}
+                            </div>
+                            <div class="col-md-4">
+                                <label for="exampleInputEmail1" class="col-md-12 control-label">Extensión o celular coorporativo:</label>
+                                {!! Form::text('telefono_usuario_upd',null,['class'=>'form-control','id'=>'mod_telefono_usuario','placeholder'=>'No. de telefóno del reportante','readonly']) !!}
+                            </div>
+                            <div class="col-md-4">
+                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Correo Coorporativo:</label>
+                                {!! Form::text('correo_usuario_upd',null,['class'=>'form-control','id'=>'mod_correo_usuario','placeholder'=>'Correo(s) del reportante','readonly']) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <legend class="subtitle2" style="color: rgba(162, 27, 37, 1);">DATOS SOLICITUD</legend>
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Tipo</label>
+                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Tipo:</label>
                                 {!! Form::text('tipo_upd',null,['class'=>'form-control','id'=>'mod_tipo','placeholder'=>'Tipo Ticket','readonly']) !!}
                             </div>
                             <div class="col-md-6">
-                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Asunto</label>
+                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Asunto:</label>
                                 {!! Form::text('asunto_upd',null,['class'=>'form-control','id'=>'mod_asunto','placeholder'=>'Asunto del Ticket','readonly']) !!}
                             </div>
                         </div>
@@ -183,43 +193,28 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-5">
-                                <label for="exampleInputEmail1" class="col-sm-8 control-label">Descripcion Solicitud</label>
+                                <label for="exampleInputEmail1" class="col-sm-8 control-label">Descripcion Solicitud:</label>
                                 {!! Form::textarea('descripcion_upd',null,['class'=>'form-control','id'=>'mod_descripcion','placeholder'=>'Ingrese la descripción de la solicitud','rows'=>'3','readonly']) !!}
                             </div>
                             <div class="col-md-7">
-                                <label for="exampleInputEmail1" class="col-sm-8 control-label">Historial del Ticket</label>
+                                <label for="exampleInputEmail1" class="col-sm-8 control-label">Historial del Ticket:</label>
                         {!! Form::textarea('historial',null,['class'=>'form-control','id'=>'mod_historial','placeholder'=>'Ingrese la descripción de la solicitud','rows'=>'3','readonly']) !!}
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Nombre Usuario</label>
-                                {!! Form::text('nombre_usuario_upd',null,['class'=>'form-control','id'=>'mod_nombre_usuario','placeholder'=>'Nombre de quien reporta','readonly']) !!}
-                            </div>
-                            <div class="col-md-3">
-                                <label for="exampleInputEmail1" class="col-md-5 control-label">Telefóno</label>
-                                {!! Form::text('telefono_usuario_upd',null,['class'=>'form-control','id'=>'mod_telefono_usuario','placeholder'=>'No. de telefóno del reportante','readonly']) !!}
-                            </div>
-                            <div class="col-md-4">
-                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Correo</label>
-                                {!! Form::text('correo_usuario_upd',null,['class'=>'form-control','id'=>'mod_correo_usuario','placeholder'=>'Correo(s) del reportante','readonly']) !!}
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-4">
-                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Sede</label>
+                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Sede:</label>
                                 {!! Form::text('sede_upd',null,['class'=>'form-control','id'=>'mod_sede','readonly']) !!}
                             </div>
                             <div class="col-md-5">
-                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Área</label>
+                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Área:</label>
                                 {!! Form::text('dependencia_upd',null,['class'=>'form-control','id'=>'mod_dependencia','readonly']) !!}
                             </div>
                             <div class="col-md-3">
-                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Prioridad</label>
+                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Prioridad:</label>
                                 {!! Form::text('prioridad_upd',null,['class'=>'form-control','id'=>'mod_prioridad','readonly']) !!}
                             </div>
                         </div>
@@ -227,15 +222,15 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Categoria</label>
+                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Categoria:</label>
                                 {!! Form::text('categoria_upd',null,['class'=>'form-control','id'=>'mod_categoria','readonly']) !!}
                             </div>
                             <div class="col-md-3">
-                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Asignado A</label>
+                                <label for="exampleInputEmail1" class="col-sm-12 control-label">Asignado A:</label>
                                 {!! Form::text('asignado_upd',null,['class'=>'form-control','id'=>'mod_asignado','readonly']) !!}
                             </div>
                             <div class="col-md-3">
-                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Estado</label>
+                                <label for="exampleInputEmail1" class="col-sm-5 control-label">Estado:</label>
                                 {!! Form::text('estado_upd',null,['class'=>'form-control','id'=>'mod_estado','readonly']) !!}
                             </div>
                             <div class="col-md-3">

@@ -844,6 +844,11 @@ class Tickets extends Model
         return $ListarRecurrentes;
     }
 
+    public static function ListarRecurrentesName($NombreAsunto){
+        $ListarRecurrentes = DB::Select("SELECT * FROM tickets_recurrentes WHERE nombre LIKE '%$NombreAsunto%'");
+        return $ListarRecurrentes;
+    }
+
     public static function TicketsRecurrentes(){
         $ListTicketsRecurrentes = DB::Select("SELECT * FROM tickets_recurrentes");
         return $ListTicketsRecurrentes;

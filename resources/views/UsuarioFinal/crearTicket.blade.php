@@ -25,10 +25,10 @@ Dahsboard
                                     <img src="{{asset("assets/Solicitud/support.png")}}" alt="image" style="width: 50%;margin: 10px 55px 10px 55px;"/>
                                     <h3 style="color:black;">Tenga en cuenta:</h3>
                                     <p style="color:black;font-size:2.2vh;text-align:justify;">
-                                        <b>Incidente: </b>Es cualquier evento que interrumpa el funcionamiento normal de un servicio afectando ya sea a uno, a un grupo o a todos los usuarios de un servicio, un incidente se puede tomar como la reducción en la calidad de un servicio IT.<br>
+                                        <b>Incidente: </b>cualquier evento que INTERRUMPA el funcionamiento normal de un servicio. Ejemplos: falla de la red, falla de un pc, falla de un aplicativo, entre otros.<br>
                                     </p>
                                     <p style="color:black;font-size:2.2vh;text-align:justify;">
-                                        <b>Requerimiento: </b>Se define como una solicitud formal por parte de un usuario para que algo sea provisto, como por ejemplo Instalaciones, movimientos, adiciones o cambios en los elementos o servicios provistos por la Dirección de TIC.
+                                        <b>Requerimiento: </b>Se define como una solicitud formal para que algo sea PROVISTO. Ejemplos: creación de usuarios, ajuste de perfil de usuarios, creación de VPN, solicitud de nuevas lineas celulares, solicitud de movimientos.
                                     </p>
                                 </div>
                             </div>
@@ -215,6 +215,18 @@ Dahsboard
                 }
             });
         }
+    </script>
+    <script type="text/javascript">
+        var Asunto = new Array();
+        @if($Asuntos)
+            @foreach($Asuntos as $valor)
+                Asunto[{{$valor['id']}}] = '{{$valor['nombre']}}';
+            @endforeach
+        @endif
+        var options = '';
+        for(var i = 1; i < Asunto.length; i++)
+        options += '<option value="'+Asunto[i]+'" />';
+        document.getElementById('asuntos').innerHTML = options;
     </script>
 
     @endsection

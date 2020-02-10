@@ -313,6 +313,7 @@ class UsuarioController extends Controller
 
     public function nuevaSolicitud(){
         $data = Input::all();
+        // dd(Input::get('title'));
         $reglas = array(
             'kind_id'           => 'required',
             'nombre_usuario'    => 'required',
@@ -342,18 +343,20 @@ class UsuarioController extends Controller
                 $Area           = $row->name;
             }
             // $Area               = Input::get('dependencia');
-            $idAsunto           = (int)Input::get('asunto');
+            $idAsunto           = Input::get('asunto');
+            $NombreAsunto       = Input::get('title');
             if($idAsunto === 1){
                 $Prioridad      = 2;
                 $Categoria      = 4;
                 $Asunto         = Input::get('title');
             }else{
-                $buscardatos = Tickets::ListarRecurrentesId($idAsunto);
+                // $buscardatos = Tickets::ListarRecurrentesId($idAsunto);
+                $buscardatos = Tickets::ListarRecurrentesName($NombreAsunto);
                 if($buscardatos){
                     foreach($buscardatos as $row){
                         $Prioridad = (int)$row->priority_id;
                         $Categoria = (int)$row->category_id;
-                        $Asunto    = $row->nombre;
+                        $Asunto    = Input::get('title');
                     }
                 }else{
                     $Prioridad          = 2;

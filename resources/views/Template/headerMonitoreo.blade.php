@@ -1,10 +1,10 @@
 <header class="main-header">
-
-        <nav class="navbar navbar-static-top" style="background-color: rgb(162, 27, 37) !important;">
-                <div class="navbar navbar-header">
-                        <a href="dashboardMonitoreo" class="navbar-brand" style="background-color: rgb(162, 27, 37) !important;"><b><i class="fa fa-dashboard"></i>&nbsp;&nbsp;Help Desk TIC´S</b></a>
-
-                </div>
+    <nav class="navbar navbar-static-top" style="background-color: rgb(162, 27, 37) !important;">
+        <div class="navbar navbar-header">
+            <a href="dashboardMonitoreo" class="navbar-brand" style="background-color: rgb(162, 27, 37) !important;">
+                <b><i class="fa fa-dashboard"></i>&nbsp;&nbsp;Help Desk TICS</b>
+            </a>
+        </div>
             <div class="navbar-custom-menu">
 
                 <ul class="nav navbar-nav">

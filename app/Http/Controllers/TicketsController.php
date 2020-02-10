@@ -1251,6 +1251,7 @@ class TicketsController extends Controller
 
     public function nuevaSolicitud(){
         $data = Input::all();
+        // dd(Input::get('asunto'));
         $reglas = array(
             'kind_id'           => 'required',
             'nombre_usuario'    => 'required',
