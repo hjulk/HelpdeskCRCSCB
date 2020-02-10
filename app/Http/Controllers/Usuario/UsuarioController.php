@@ -301,8 +301,14 @@ class UsuarioController extends Controller
             }
             $contF++;
         }
+        $contT = 0;
+        foreach ($Recurrente as $value){
+            $Asuntos[$contT]['id']     = $value->id;
+            $Asuntos[$contT]['nombre'] = $value->nombre;
+            $contT++;
+        }
         return view('UsuarioFinal.crearTicket',['Sedes' => $NombreSede,'Tipo' => $NombreTipo,'TicketRecurrente' => $TicketRecurrente,'Categoria' => $NombreCategoria,
-                                        'Areas' => $NombreArea,'Tickets' => $ListadoTickets,'TicketsF' => $ListadoTicketsF]);
+                                                'Areas' => $NombreArea,'Tickets' => $ListadoTickets,'TicketsF' => $ListadoTicketsF,'Asuntos' => $Asuntos]);
     }
 
     public function nuevaSolicitud(){

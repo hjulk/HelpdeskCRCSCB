@@ -10,6 +10,7 @@
                     <div class="modal-body">
                         <fieldset>
                             <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
+                            <legend class="subtitle2" style="color: rgba(162, 27, 37, 1);">DATOS USUARIO</legend>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-4">
@@ -41,19 +42,26 @@
                                         {{--  {!! Form::text('dependencia',null,['class'=>'form-control','id'=>'dependencia','required','placeholder'=>'Área u oficina del usuario']) !!}  --}}
                                         {{--  {!! Form::select('area',$Areas,null,['class'=>'form-control','id'=>'area','required']) !!}  --}}
                                     </div>
+
+                                </div>
+                            </div>
+                            <legend class="subtitle2" style="color: rgba(162, 27, 37, 1);">DATOS SOLICITUD</legend>
+                            <div class="form-group">
+                                <div class="row">
                                     <div class="col-md-3">
                                         <label class="control-label col-sm-12" for="email">Tipo Ticket:</label>
                                         {!! Form::select('kind_id',$Tipo,null,['class'=>'form-control','id'=>'kind_id','required']) !!}
                                     </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-5">
+                                    {{-- <div class="col-md-5">
                                         <label class="control-label col-sm-12" for="email">Asunto</label>
                                         {!! Form::select('asunto',$TicketRecurrente,null,['class'=>'form-control','id'=>'asunto','required','onChange'=>'mostrar(this.value);']) !!}
+                                    </div> --}}
+                                    <div class="col-md-5">
+                                        <label class="control-label col-sm-12" for="email">Asunto</label>
+                                        <input list="asuntos" name="asunto" class="form-control">
+                                        <datalist id="asuntos"></datalist>
                                     </div>
-                                    <div class="col-md-7" id="titulo" style="display: none;">
+                                    <div class="col-md-4" id="titulo" style="display: none;">
                                         <label class="control-label col-sm-12" for="email">Cuál?</label>
                                         {!! Form::text('title',null,['class'=>'form-control','id'=>'title','placeholder'=>'Asunto del Ticket']) !!}
                                     </div>
@@ -95,45 +103,58 @@
         </div>
     </div>
 </div>
-<script>
-    function obtener_datos_ticket(id) {
-        var tipo                = $("#tipo_ticket" + id).val();
-        var categoria           = $("#categoria" + id).val();
-        var sede                = $("#sede" + id).val();
-        var area                = $("#area" + id).val();
-        var prioridad           = $("#prioridad" + id).val();
-        var estado              = $("#estado" + id).val();
-        var usuario             = $("#asignado_a" + id).val();
-        var titulo              = $("#title" + id).val();
-        var descripcion         = $("#description" + id).val();
-        var evidencias          = $("#evidencia" + id).val();
-        var historial           = $("#historial" + id).val();
-        var nombre_usuario      = $("#name_user" + id).val();
-        var correo_usuario      = $("#user_email" + id).val();
-        var telefono_usuario    = $("#tel_user" + id).val();
+    <script type="text/javascript">
+        var Asunto = new Array();
+        @if($Asuntos)
+            @foreach($Asuntos as $valor)
+                Asunto[{{$valor['id']}}] = '{{$valor['nombre']}}';
+            @endforeach
+        @endif
+        var options = '';
 
-        $("#mod_idT").val(id);
-        $("#mod_tipo").val(tipo);
-        $("#mod_categoria").val(categoria);
-        $("#mod_id_sede").val(sede);
-        $("#mod_dependencia").val(area);
-        $("#mod_prioridad").val(prioridad);
-        $("#mod_estado").val(estado);
-        $("#mod_asignado").val(usuario);
-        $("#mod_asunto").val(titulo);
-        $("#mod_descripcion").val(descripcion);
-        $("#mod_evidencias").val(evidencias);
-        $("#mod_historial").val(historial);
-        $("#mod_nombre_usuario").val(nombre_usuario);
-        $("#mod_correo_usuario").val(correo_usuario);
-        $("#mod_telefono_usuario").val(telefono_usuario);
-        $("#mod_sede").val(sede);
+        for(var i = 1; i < Asunto.length; i++)
+        options += '<option value="'+Asunto[i]+'" />';
+        document.getElementById('asuntos').innerHTML = options;
+    </script>
+    <script>
+        function obtener_datos_ticket(id) {
+            var tipo                = $("#tipo_ticket" + id).val();
+            var categoria           = $("#categoria" + id).val();
+            var sede                = $("#sede" + id).val();
+            var area                = $("#area" + id).val();
+            var prioridad           = $("#prioridad" + id).val();
+            var estado              = $("#estado" + id).val();
+            var usuario             = $("#asignado_a" + id).val();
+            var titulo              = $("#title" + id).val();
+            var descripcion         = $("#description" + id).val();
+            var evidencias          = $("#evidencia" + id).val();
+            var historial           = $("#historial" + id).val();
+            var nombre_usuario      = $("#name_user" + id).val();
+            var correo_usuario      = $("#user_email" + id).val();
+            var telefono_usuario    = $("#tel_user" + id).val();
 
-        $("#VerAnexos").click(function(){
-            document.getElementById('anexos').innerHTML = evidencias;
-        });
-    }
-</script>
+            $("#mod_idT").val(id);
+            $("#mod_tipo").val(tipo);
+            $("#mod_categoria").val(categoria);
+            $("#mod_id_sede").val(sede);
+            $("#mod_dependencia").val(area);
+            $("#mod_prioridad").val(prioridad);
+            $("#mod_estado").val(estado);
+            $("#mod_asignado").val(usuario);
+            $("#mod_asunto").val(titulo);
+            $("#mod_descripcion").val(descripcion);
+            $("#mod_evidencias").val(evidencias);
+            $("#mod_historial").val(historial);
+            $("#mod_nombre_usuario").val(nombre_usuario);
+            $("#mod_correo_usuario").val(correo_usuario);
+            $("#mod_telefono_usuario").val(telefono_usuario);
+            $("#mod_sede").val(sede);
+
+            $("#VerAnexos").click(function(){
+                document.getElementById('anexos').innerHTML = evidencias;
+            });
+        }
+    </script>
 <div class="modal fade bs-example-modal-md-udpZ" id="modal-tickets-upd">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

@@ -219,7 +219,7 @@ class TicketsController extends Controller
             $TelefonoUsuario    = Input::get('telefono_usuario_upd');
             $CorreUsuario       = Input::get('correo_usuario_upd');
             $IdSede             = (int)Input::get('id_sede_upd');
-            $IdArea             = (int)Input::get('dependencia_upd');
+            $IdArea             = Input::get('dependencia_upd');
             $Prioridad          = (int)Input::get('id_prioridad_upd');
             $Categoria          = (int)Input::get('id_categoriaupd');
             $AsignadoA          = (int)Input::get('id_usuarioupd');
@@ -1239,8 +1239,14 @@ class TicketsController extends Controller
         foreach ($Recurrente as $row){
             $TicketRecurrente[$row->id] = $row->nombre;
         }
+        $contT = 0;
+        foreach ($Recurrente as $value){
+            $Asuntos[$contT]['id']     = $value->id;
+            $Asuntos[$contT]['nombre'] = $value->nombre;
+            $contT++;
+        }
         return view('CrearSolicitud',['Sedes' => $NombreSede,'Tipo' => $NombreTipo,'TicketRecurrente' => $TicketRecurrente,'Categoria' => $NombreCategoria,
-                                        'Areas' => $NombreArea]);
+                                        'Areas' => $NombreArea,'Asuntos' => $Asuntos]);
     }
 
     public function nuevaSolicitud(){

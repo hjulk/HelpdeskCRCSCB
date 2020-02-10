@@ -451,7 +451,7 @@ class Tickets extends Model
                                         asigned_id  = $AsignadoA,
                                         category_id = $Categoria,
                                         project_id  = $IdSede,
-                                        dependencia = $IdArea,
+                                        dependencia = '$IdArea',
                                         name_user   = '$NombreUsuario',
                                         tel_user    = '$TelefonoUsuario',
                                         user_email  = '$CorreUsuario',
