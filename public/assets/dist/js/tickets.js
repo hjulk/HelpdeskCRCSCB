@@ -3,7 +3,7 @@ $(document).ready(function () {
         columnDefs: [
             { responsivePriority: 1, targets: 0 },
             { responsivePriority: 2, targets: -1 }],
-        responsive: true,
+        responsive  : true,
         lengthChange: false,
         searching   : true,
         ordering    : true,
@@ -38,7 +38,30 @@ $(document).ready(function () {
                 row: "registro",
                 selected: "seleccionado"
             }
-        }
+        },
+        dom: 'Bfrtip',
+                        buttons: [
+                {
+                    extend: 'collection',
+                    text: 'Exportar',
+                    buttons: [
+                        'copy',
+                        'excel',
+                        'csv',
+                        {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'LEGAL'},
+                        {
+                            extend: 'print',
+                            customize: function ( win ) {
+                                $(win.document.body)
+                                    .css( 'font-size', '10pt' );
+
+                                $(win.document.body).find( 'table' )
+                                    .addClass( 'compact' )
+                                    .css( 'font-size', 'inherit' );
+                            }
+                        }
+                    ]
+                }]
 
 
     });
