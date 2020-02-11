@@ -39,36 +39,36 @@ $(document).ready(function () {
                 selected: "seleccionado"
             }
         },
-        dom: 'Bfrtip',
-                        buttons: [
-                {
-                    extend: 'collection',
-                    text: 'Exportar',
-                    buttons: [
-                        'copy',
-                        'excel',
-                        'csv',
-                        {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'LEGAL'},
-                        {
-                            extend: 'print',
-                            customize: function ( win ) {
-                                $(win.document.body)
-                                    .css( 'font-size', '10pt' );
+        // dom: 'Bfrtip',
+        //                 buttons: [
+        //         {
+        //             extend: 'collection',
+        //             text: 'Exportar',
+        //             buttons: [
+        //                 'copy',
+        //                 'excel',
+        //                 'csv',
+        //                 {extend: 'pdfHtml5', orientation: 'landscape', pageSize: 'LEGAL'},
+        //                 {
+        //                     extend: 'print',
+        //                     customize: function ( win ) {
+        //                         $(win.document.body)
+        //                             .css( 'font-size', '10pt' );
 
-                                $(win.document.body).find( 'table' )
-                                    .addClass( 'compact' )
-                                    .css( 'font-size', 'inherit' );
-                            }
-                        }
-                    ]
-                }]
+        //                         $(win.document.body).find( 'table' )
+        //                             .addClass( 'compact' )
+        //                             .css( 'font-size', 'inherit' );
+        //                     }
+        //                 }
+        //             ]
+        //         }]
 
 
     });
 
-    setInterval( function () {
-        $('#ticketsPrincipal').DataTable().draw();
-    }, 300 );
+    // setInterval( function () {
+    //     $('#ticketsPrincipal').DataTable().draw();
+    // }, 300 );
     $('#ticketsUsuario').DataTable({
         columnDefs: [
             { responsivePriority: 1, targets: 0 },
