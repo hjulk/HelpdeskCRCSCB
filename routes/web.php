@@ -12,6 +12,8 @@ Route::get('/', 'loginController@index');
 Route::post('RecuperarContrasena', 'loginController@RecuperarContrasena')->name('RecuperarContrasena');
 Route::post('RecuperarContrasenaUsuario', 'loginController@RecuperarContrasenaUsuario')->name('RecuperarContrasenaUsuario');
 
+Route::get('/CREARSOLICITUD','TicketsController@crearSolicitud')->name('crearSolicitud');
+Route::get('/crearsolicitud','TicketsController@crearSolicitud')->name('crearSolicitud');
 Route::get('/crearSolicitud','TicketsController@crearSolicitud')->name('crearSolicitud');
 Route::get('buscarCategoriaS', 'TicketsController@buscarCategoriaS')->name('buscarCategoriaS');
 
