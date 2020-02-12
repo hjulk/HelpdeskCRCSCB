@@ -387,6 +387,7 @@ class loginController extends Controller
                     }
                     $UpdatePassword = Usuarios::NuevaContrasena($idUser,$nuevaContrasena);
                     if($UpdatePassword){
+                        $for = "$emailUser";
                         $subject = "Recuperación de Contraseña";
                         Mail::send('email/EmailRContrasena',
                                 ['Contrasena' => $b,'NombreUser' => $userName,],
@@ -476,7 +477,7 @@ class loginController extends Controller
                     $nuevaContrasena = Hash('sha512',$b);
                     foreach($BuscarUsuario as $value){
                         $idUser = $value->id;
-                        $userName = $value->name;
+                        $userName = $value->nombre;
                         $emailUser = $value->email;
                     }
                     $UpdatePassword = Usuarios::NuevaContrasenaFinal($idUser,$nuevaContrasena);
@@ -520,6 +521,7 @@ class loginController extends Controller
                     }
                     $UpdatePassword = Usuarios::NuevaContrasenaFinal($idUser,$nuevaContrasena);
                     if($UpdatePassword){
+                        $for = "$emailUser";
                         $subject = "Recuperación de Contraseña";
                         Mail::send('email/EmailRContrasena',
                                 ['Contrasena' => $b,'NombreUser' => $userName,],
