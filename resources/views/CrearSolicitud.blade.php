@@ -62,6 +62,7 @@
                                 </div>
                                 <div class="container-login100-form-btn">
                                      {{-- {!! NoCaptcha::display() !!} --}}
+                                     <div class="g-recaptcha" data-sitekey="6Ld8PtgUAAAAAEfU6yymHoQOxg-7yIOvxg7-YDyr"></div>
                                 </div>
                                 <div class="container-login100-form-btn">
                                     <button class="login100-form-btn"  id="btnLogin">
@@ -98,6 +99,7 @@
         <script src="{{asset("assets/dist/js/adminlte.min.js")}}"></script>
         <script src="{{asset("assets/plugins/iCheck/icheck.min.js")}}"></script>
         <script src="{{asset("assets/CodeSeven/build/toastr.min.js")}}"></script>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         {{-- <script src="{{asset("assets/dist/js/helpdesk/login.js")}}"></script> --}}
         <script>
             $(function () {
