@@ -25,7 +25,7 @@
 
     <tr>
         <td><b>Usuario:</b></td>
-        <td>{{$NombreUser}}</td>
+        <td>{{$Usuario}}</td>
     </tr>
     <tr>
         <td><b>Nueva Contraseña:</b></td>
