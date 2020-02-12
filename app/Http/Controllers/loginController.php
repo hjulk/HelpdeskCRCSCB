@@ -172,8 +172,9 @@ class loginController extends Controller
 
         $data = Input::all();
         $reglas = array(
-            'user' => 'required',
-            'password' => 'required'
+            'user'                  => 'required',
+            'password'              => 'required',
+            'g-recaptcha-response'  => 'required|captcha'
         );
         $validador = Validator::make($data, $reglas);
         $messages = $validador->messages();

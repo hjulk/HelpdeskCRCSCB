@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="{{asset("assets/dist/css/skins/_all-skins.min.css")}}">
     <link rel="stylesheet" href="{{asset("assets/plugins/iCheck/square/blue.css")}}">
     <link rel="stylesheet" href="{{asset("assets/CodeSeven/build/toastr.min.css")}}">
+    {!! NoCaptcha::renderJs() !!}
 </head>
     <body>
 
@@ -60,7 +61,7 @@
                                     </span>
                                 </div>
                                 <div class="container-login100-form-btn">
-
+                                    {!! NoCaptcha::display() !!}
                                 </div>
                                 <div class="container-login100-form-btn">
                                     <button class="login100-form-btn"  id="btnLogin">
