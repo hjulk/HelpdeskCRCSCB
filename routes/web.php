@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Artisan;
 
 
 Cache::flush();
+Session::flush();
+Artisan::call('cache:clear');
 Route::get('/', 'loginController@index');
 Route::post('RecuperarContrasena', 'loginController@RecuperarContrasena')->name('RecuperarContrasena');
 Route::post('RecuperarContrasenaUsuario', 'loginController@RecuperarContrasenaUsuario')->name('RecuperarContrasenaUsuario');
