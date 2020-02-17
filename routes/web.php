@@ -28,15 +28,23 @@ Auth::routes();
 Route::group(['middleware' => 'revalidate'], function () {
     Cache::flush();
     Route::group(['middleware' => 'monitoreo'], function () {
+        Cache::flush();
+        Artisan::call('cache:clear');
         Route::get('dashboardMonitoreo', 'loginController@dashboardMonitoreo')->name('dashboardMonitoreo');
     });
     Route::group(['middleware' => 'admin'], function () {
+        Cache::flush();
+        Artisan::call('cache:clear');
         Route::get('admin/dashboard', 'Admin\AdministracionController@dashboard')->name('admin/dashboard');
     });
     Route::group(['middleware' => 'user'], function () {
+        Cache::flush();
+        Artisan::call('cache:clear');
         Route::get('user/dashboard', 'User\UsuariosController@inicio')->name('user/dashboard');
     });
     Route::group(['middleware' => 'usuarioFinal'], function () {
+        Cache::flush();
+        Artisan::call('cache:clear');
         Route::get('usuario/dashboard', 'Usuario\UsuarioController@inicio')->name('usuario/dashboard');
     });
 
@@ -45,6 +53,7 @@ Route::group(['middleware' => 'revalidate'], function () {
 
     Route::group(['prefix' => 'admin','namespace' => 'Admin','middleware' => 'admin'],function(){
         Cache::flush();
+        Artisan::call('cache:clear');
         Route::get('sedes','SedesController@sedes')->name('sedes');
         Route::get('roles','RolesController@roles')->name('roles');
         Route::get('usuarios','UsuarioController@index')->name('usuarios');
@@ -98,6 +107,7 @@ Route::group(['middleware' => 'revalidate'], function () {
 
     Route::group(['prefix' => 'user','namespace' => 'User','middleware' => 'user'],function(){
         Cache::flush();
+        Artisan::call('cache:clear');
         Route::get('tickets','TicketsUserController@tickets')->name('tickets');
         Route::get('ticketsUsuario','TicketsUserController@ticketsUsuario')->name('ticketsUsuario');
         Route::get('reporteTickets','TicketsUserController@reporteTickets')->name('reporteTickets');
@@ -127,6 +137,7 @@ Route::group(['middleware' => 'revalidate'], function () {
 
     Route::group(['prefix' => 'usuario','namespace' => 'Usuario','middleware' => 'usuarioFinal'],function(){
         Cache::flush();
+        Artisan::call('cache:clear');
         Route::get('crearTicket','UsuarioController@inicio')->name('crearTicket');
         Route::post('nuevaSolicitud', 'UsuarioController@nuevaSolicitud')->name('nuevaSolicitud');
         Route::get('/logout', function() {
