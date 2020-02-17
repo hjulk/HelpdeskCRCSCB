@@ -34,6 +34,15 @@
         <link rel="stylesheet" href="{{asset("assets/DataTables/RowReorder/css/rowReorder.bootstrap.min.css")}}">
 
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400&display=swap" rel="stylesheet">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158693845-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-158693845-1');
+</script>
 
         @yield("styles")
 
