@@ -40,8 +40,8 @@ class Sedes extends Model
         return $consultaSede;
     }
 
-    public static function BuscarArea($Area){
-        $consultaArea = DB::Select("SELECT * FROM areas WHERE name LIKE '%$Area%'");
+    public static function BuscarArea($Area,$Sede){
+        $consultaArea = DB::Select("SELECT * FROM areas WHERE name LIKE '%$Area%' AND project_id = $Sede");
         return $consultaArea;
     }
 

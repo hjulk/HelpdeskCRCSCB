@@ -160,7 +160,7 @@ class SedesController extends Controller
         if($validador->passes()) {
             $Area           = Input::get('nombre_area');
             $Sede           = (int)Input::get('sede');
-            $consultarArea  = Sedes::BuscarArea($Area);
+            $consultarArea  = Sedes::BuscarArea($Area,$Sede);
 
             if($consultarArea){
                 $verrors = array();
