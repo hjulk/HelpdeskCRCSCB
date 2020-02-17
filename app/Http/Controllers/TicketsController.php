@@ -1240,6 +1240,7 @@ class TicketsController extends Controller
             $TicketRecurrente[$row->id] = $row->nombre;
         }
         $contT = 0;
+        $Asuntos = array();
         foreach ($Recurrente as $value){
             $Asuntos[$contT]['id']     = $value->id;
             $Asuntos[$contT]['nombre'] = $value->nombre;
