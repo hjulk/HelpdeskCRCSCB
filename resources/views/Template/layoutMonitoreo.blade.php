@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-158693845-1"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-158693845-1');
+        </script>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>HelpDesk | @yield('titulo','Dashboard')</title>
@@ -22,15 +31,6 @@
         <link rel="stylesheet" href="{{asset("assets/DataTables/Responsive/css/responsive.dataTables.min.css")}}">
         <link rel="stylesheet" href="{{asset("assets/DataTables/Buttons/css/buttons.dataTables.min.css")}}">
         <link rel="stylesheet" href="{{asset("assets/DataTables/AutoFill/css/autofill.dataTables.min.css")}}">
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158693845-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-158693845-1');
-</script>
 
         @yield("styles")
 
