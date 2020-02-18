@@ -41,7 +41,7 @@ class SedesController extends Controller
         $contA = 0;
         foreach($Areas as $value){
             $AreasIndex[$contA]['id']           = (int)$value->id;
-            $AreasIndex[$contA]['nombre']       = $value->name;
+            $AreasIndex[$contA]['nombre']       = SedesController::eliminar_tildes_texto($value->name);
             $AreasIndex[$contA]['project_id']   = (int)$value->project_id;
             $AreasIndex[$contA]['activo']       = (int)$value->activo;
             $idactivo                           = (int)$value->activo;
@@ -52,7 +52,7 @@ class SedesController extends Controller
             $idsede                             = (int)$value->project_id;
             $Sede           = Sedes::BuscarSedeID($idsede);
             foreach($Sede as $rowS){
-                $AreasIndex[$contA]['sede'] = $rowS->name;
+                $AreasIndex[$contA]['sede'] = SedesController::eliminar_tildes_texto($rowS->name);
             }
             $contA++;
         }
@@ -86,8 +86,8 @@ class SedesController extends Controller
             $verrors[$key] = $messages->first($key);
         }
         if($validador->passes()) {
-            $Sede           = Input::get('nombre');
-            $Descripcion    = Input::get('descripcion');
+            $Sede           = SedesController::eliminar_tildes_texto(Input::get('nombre'));
+            $Descripcion    = SedesController::eliminar_tildes_texto(Input::get('descripcion'));
             $consultarSede  = Sedes::BuscarSede($Sede);
 
             if($consultarSede){
@@ -128,8 +128,8 @@ class SedesController extends Controller
         }
         if($validador->passes()) {
             $id             = (int)Input::get('idS');
-            $Sede           = Input::get('nombre_upd');
-            $Descripcion    = Input::get('descripcion_upd');
+            $Sede           = SedesController::eliminar_tildes_texto(Input::get('nombre_upd'));
+            $Descripcion    = SedesController::eliminar_tildes_texto(Input::get('descripcion_upd'));
             $idActivo       = Input::get('activo');
             $actualizarSede = Sedes::ActualizarSede($id,$Sede,$Descripcion,$idActivo);
             if($actualizarSede >= 0){
@@ -158,7 +158,7 @@ class SedesController extends Controller
             $verrors[$key] = $messages->first($key);
         }
         if($validador->passes()) {
-            $Area           = Input::get('nombre_area');
+            $Area           = SedesController::eliminar_tildes_texto(Input::get('nombre_area'));
             $Sede           = (int)Input::get('sede');
             $consultarArea  = Sedes::BuscarArea($Area,$Sede);
 
@@ -199,7 +199,7 @@ class SedesController extends Controller
         }
         if($validador->passes()) {
             $id             = (int)Input::get('idA');
-            $Area           = Input::get('nombre_area_upd');
+            $Area           = SedesController::eliminar_tildes_texto(Input::get('nombre_area_upd'));
             $Sede           = (int)Input::get('sede_upd');
             $idActivo       = (int)Input::get('activo_area');
             $ActualizarArea = Sedes::ActualizarArea($id,$Area,$Sede,$idActivo);
@@ -214,6 +214,53 @@ class SedesController extends Controller
         }else{
             return redirect('admin/sedes')->withErrors(['errors' => $verrors]);
         }
+    }
+
+    public static function eliminar_tildes_texto($nombrearchivo){
+
+        //Codificamos la cadena en formato utf8 en caso de que nos de errores
+        // $cadena = utf8_encode($nombrearchivo);
+        $cadena = $nombrearchivo;
+        //Ahora reemplazamos las letras
+        $cadena = str_replace(
+            array('ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä','Ã¡'),
+            array('a', 'a', 'a', 'A', 'A', 'A', 'A','á'),
+            $cadena
+        );
+
+        $cadena = str_replace(
+            array('ë', 'ê', 'É', 'È', 'Ê', 'Ë','Ã©'),
+            array('e', 'e', 'E', 'E', 'E', 'E','é'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ï', 'î', 'Í', 'Ì', 'Ï', 'Î','Ã­'),
+            array('i', 'i', 'I', 'I', 'I', 'I','í'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô','Ã³','Ã"'),
+            array('o', 'o', 'O', 'O', 'O', 'O','ó','Ó'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ü', 'û', 'Ú', 'Ù', 'Û', 'Ü','Ãº'),
+            array('u', 'u', 'U', 'U', 'U', 'U','ú'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ç', 'Ç','Ã±',"Ã'"),
+            array('c', 'C','ñ','Ñ'),
+            $cadena
+        );
+
+        $cadena = str_replace(
+            array("'", ''),
+            array('´', ''),
+            $cadena
+        );
+
+        return $cadena;
     }
 
 }
