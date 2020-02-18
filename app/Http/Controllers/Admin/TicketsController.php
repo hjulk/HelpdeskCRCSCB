@@ -544,6 +544,9 @@ class TicketsController extends Controller
 
             $resultado = json_decode(json_encode($consultaReporte), true);
             foreach($resultado as &$value) {
+                $value['title'] =  TicketsController::eliminar_tildes_texto($value['title']);
+                $value['description'] =  TicketsController::eliminar_tildes_texto($value['description']);
+                $value['dependencia'] =  TicketsController::eliminar_tildes_texto($value['dependencia']);
                 $value['created_at'] = date('d/m/Y h:i A', strtotime($value['created_at']));
                 if($value['updated_at']){
                     $value['updated_at'] = date('d/m/Y h:i A', strtotime($value['updated_at']));
@@ -563,7 +566,7 @@ class TicketsController extends Controller
                 $id_sede = $value['project_id'];
                 $nombreSedeS = Sedes::BuscarSedeID($id_sede);
                 foreach($nombreSedeS as $valor){
-                    $value['project_id'] = $valor->name;
+                    $value['project_id'] = TicketsController::eliminar_tildes_texto($valor->name);
                 }
                 $id_prioridad = $value['priority_id'];
                 $nombrePrioridad = Tickets::Prioridad($id_prioridad);
@@ -600,7 +603,7 @@ class TicketsController extends Controller
                 $contadorHistorial = count($historialTicket);
                 if($contadorHistorial > 0){
                     foreach($historialTicket as $row){
-                        $value['historial'] .= "- ".$row->observacion." (".$row->user_id." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
+                        $value['historial'] .= "- ".TicketsController::eliminar_tildes_texto($row->observacion)." (".$row->user_id." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
                     }
                 }else{
                     $value['historial'] = null;

@@ -54,9 +54,9 @@ class TicketsController extends Controller
             $idTipo             = (int)Input::get('kind_id');
             $Asunto             = TicketsController::eliminar_tildes_texto(Input::get('title'));
             $Descripcion        = TicketsController::eliminar_tildes_texto(Input::get('description'));
-            $NombreUsuario      = Input::get('nombre_usuario');
+            $NombreUsuario      = TicketsController::eliminar_tildes_texto(Input::get('nombre_usuario'));
             $TelefonoUsuario    = Input::get('telefono_usuario');
-            $CorreUsuario       = Input::get('correo_usuario');
+            $CorreUsuario       = TicketsController::editar_correo(Input::get('correo_usuario'));
             $IdSede             = (int)Input::get('project_id');
             $IdArea             = (int)Input::get('area');
             $BuscarArea         = Sedes::BuscarAreaId($IdArea);
@@ -215,9 +215,9 @@ class TicketsController extends Controller
             $idTipo             = (int)Input::get('id_tipo_upd');
             $Asunto             = TicketsController::eliminar_tildes_texto(Input::get('asunto_upd'));
             $Descripcion        = TicketsController::eliminar_tildes_texto(Input::get('descripcion_upd'));
-            $NombreUsuario      = Input::get('nombre_usuario_upd');
+            $NombreUsuario      = TicketsController::eliminar_tildes_texto(Input::get('nombre_usuario_upd'));
             $TelefonoUsuario    = Input::get('telefono_usuario_upd');
-            $CorreUsuario       = Input::get('correo_usuario_upd');
+            $CorreUsuario       = TicketsController::editar_correo(Input::get('correo_usuario_upd'));
             $IdSede             = (int)Input::get('id_sede_upd');
             $IdArea             = Input::get('dependencia_upd');
             $Prioridad          = (int)Input::get('id_prioridad_upd');
@@ -562,9 +562,9 @@ class TicketsController extends Controller
             $Redes = 0;
             $Infraestructura = 0;
             $Aplicaciones = 0;
-            $Nombres                = Input::get('nombres');
+            $Nombres                = TicketsController::eliminar_tildes_texto(Input::get('nombres'));
             $Identificacion         = Input::get('identificacion');
-            $Cargo                  = Input::get('cargo');
+            $Cargo                  = TicketsController::eliminar_tildes_texto(Input::get('cargo'));
             $Sede                   = (int)Input::get('sede');
             $BuscarSede             = Sedes::BuscarSedeID($Sede);
             foreach($BuscarSede as $value){
@@ -612,7 +612,7 @@ class TicketsController extends Controller
             }
 
             if(Input::get('correo_funcionario')){
-                $CorreoFuncionario      = Input::get('correo_funcionario');
+                $CorreoFuncionario      = TicketsController::editar_correo(Input::get('correo_funcionario'));
             }else{
                 $CorreoFuncionario      = 'SIN CORREO';
             }
@@ -1003,7 +1003,7 @@ class TicketsController extends Controller
             $verrors[$key] = $messages->first($key);
         }
         if($validador->passes()) {
-            $Asunto     = Input::get('asunto');
+            $Asunto     = TicketsController::eliminar_tildes_texto(Input::get('asunto'));
             $Categoria  = (int)Input::get('categoria');
             $Prioridad  = (int)Input::get('prioridad');
             $Tipo       = (int)Input::get('tipo_usuario');
@@ -1084,6 +1084,18 @@ class TicketsController extends Controller
 
         return view('Email.CalificacionT',['MENSAJE' => $Mensaje]);
 
+    }
+
+    public static function editar_correo($nombrearchivo){
+
+        $cadena = $nombrearchivo;
+        $cadena = str_replace(
+            array(' ',','),
+            array('',';'),
+            $cadena
+        );
+
+        return $cadena;
     }
 
     public static function eliminar_tildes_texto($nombrearchivo){
