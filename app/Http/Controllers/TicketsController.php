@@ -52,8 +52,8 @@ class TicketsController extends Controller
         if($validador->passes()) {
 
             $idTipo             = (int)Input::get('kind_id');
-            $Asunto             = Input::get('title');
-            $Descripcion        = Input::get('description');
+            $Asunto             = TicketsController::eliminar_tildes_texto(Input::get('title'));
+            $Descripcion        = TicketsController::eliminar_tildes_texto(Input::get('description'));
             $NombreUsuario      = Input::get('nombre_usuario');
             $TelefonoUsuario    = Input::get('telefono_usuario');
             $CorreUsuario       = Input::get('correo_usuario');
@@ -213,8 +213,8 @@ class TicketsController extends Controller
 
             $idTicket           = (int)Input::get('idT');
             $idTipo             = (int)Input::get('id_tipo_upd');
-            $Asunto             = Input::get('asunto_upd');
-            $Descripcion        = Input::get('descripcion_upd');
+            $Asunto             = TicketsController::eliminar_tildes_texto(Input::get('asunto_upd'));
+            $Descripcion        = TicketsController::eliminar_tildes_texto(Input::get('descripcion_upd'));
             $NombreUsuario      = Input::get('nombre_usuario_upd');
             $TelefonoUsuario    = Input::get('telefono_usuario_upd');
             $CorreUsuario       = Input::get('correo_usuario_upd');
@@ -1086,6 +1086,53 @@ class TicketsController extends Controller
 
     }
 
+    public static function eliminar_tildes_texto($nombrearchivo){
+
+        //Codificamos la cadena en formato utf8 en caso de que nos de errores
+        // $cadena = utf8_encode($nombrearchivo);
+        $cadena = $nombrearchivo;
+        //Ahora reemplazamos las letras
+        $cadena = str_replace(
+            array('ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä','Ã¡'),
+            array('a', 'a', 'a', 'A', 'A', 'A', 'A','á'),
+            $cadena
+        );
+
+        $cadena = str_replace(
+            array('ë', 'ê', 'É', 'È', 'Ê', 'Ë','Ã©'),
+            array('e', 'e', 'E', 'E', 'E', 'E','é'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ï', 'î', 'Í', 'Ì', 'Ï', 'Î','Ã­'),
+            array('i', 'i', 'I', 'I', 'I', 'I','í'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô','Ã³'),
+            array('o', 'o', 'O', 'O', 'O', 'O','ó'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ü', 'û', 'Ú', 'Ù', 'Û', 'Ü','Ãº'),
+            array('u', 'u', 'U', 'U', 'U', 'U','ú'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ç', 'Ç','Ã±'),
+            array('c', 'C','ñ'),
+            $cadena
+        );
+
+        $cadena = str_replace(
+            array("'", ''),
+            array('´', ''),
+            $cadena
+        );
+
+        return $cadena;
+    }
+
     public static function eliminar_tildes($nombrearchivo){
 
         //Codificamos la cadena en formato utf8 en caso de que nos de errores
@@ -1093,29 +1140,29 @@ class TicketsController extends Controller
         $cadena = $nombrearchivo;
         //Ahora reemplazamos las letras
         $cadena = str_replace(
-            array('á', 'à', 'ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä'),
-            array('a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A'),
+            array('á', 'à', 'ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä','Ã¡'),
+            array('a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A','a'),
             $cadena
         );
 
         $cadena = str_replace(
-            array('é', 'è', 'ë', 'ê', 'É', 'È', 'Ê', 'Ë'),
-            array('e', 'e', 'e', 'e', 'E', 'E', 'E', 'E'),
+            array('é', 'è', 'ë', 'ê', 'É', 'È', 'Ê', 'Ë','Ã©'),
+            array('e', 'e', 'e', 'e', 'E', 'E', 'E', 'E','e'),
             $cadena );
 
         $cadena = str_replace(
-            array('í', 'ì', 'ï', 'î', 'Í', 'Ì', 'Ï', 'Î'),
-            array('i', 'i', 'i', 'i', 'I', 'I', 'I', 'I'),
+            array('í', 'ì', 'ï', 'î', 'Í', 'Ì', 'Ï', 'Î','Ã­'),
+            array('i', 'i', 'i', 'i', 'I', 'I', 'I', 'I','i'),
             $cadena );
 
         $cadena = str_replace(
-            array('ó', 'ò', 'ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô'),
-            array('o', 'o', 'o', 'o', 'O', 'O', 'O', 'O'),
+            array('ó', 'ò', 'ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô','Ã³'),
+            array('o', 'o', 'o', 'o', 'O', 'O', 'O', 'O','o'),
             $cadena );
 
         $cadena = str_replace(
-            array('ú', 'ù', 'ü', 'û', 'Ú', 'Ù', 'Û', 'Ü'),
-            array('u', 'u', 'u', 'u', 'U', 'U', 'U', 'U'),
+            array('ú', 'ù', 'ü', 'û', 'Ú', 'Ù', 'Û', 'Ü','Ãº'),
+            array('u', 'u', 'u', 'u', 'U', 'U', 'U', 'U','u'),
             $cadena );
 
         $cadena = str_replace(
@@ -1127,6 +1174,12 @@ class TicketsController extends Controller
         $cadena = str_replace(
             array(' ', '-'),
             array('_', '_'),
+            $cadena
+        );
+
+        $cadena = str_replace(
+            array("'", ''),
+            array('´', ''),
             $cadena
         );
 

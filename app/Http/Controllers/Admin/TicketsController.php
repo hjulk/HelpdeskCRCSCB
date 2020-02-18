@@ -25,8 +25,8 @@ class TicketsController extends Controller
         foreach($buscarTickets as $value){
             $id_ticket                      = (int)$value->id;
             $tickets[$cont]['id']           = (int)$value->id;
-            $tickets[$cont]['title']        = $value->title;
-            $tickets[$cont]['description']  = $value->description;
+            $tickets[$cont]['title']        = TicketsController::eliminar_tildes_texto($value->title);
+            $tickets[$cont]['description']  = TicketsController::eliminar_tildes_texto($value->description);
             $tickets[$cont]['created_at']   = date('d/m/Y h:i A', strtotime($value->created_at));
             if($value->updated_at){
                 $tickets[$cont]['updated_at']   = date('d/m/Y h:i A', strtotime($value->updated_at));
@@ -70,7 +70,7 @@ class TicketsController extends Controller
             $idSede = (int)$value->project_id;
             $BuscarSede = Sedes::BuscarSedeID($idSede);
             foreach($BuscarSede as $row){
-                $tickets[$cont]['sede'] = strtoupper($row->name);
+                $tickets[$cont]['sede'] = TicketsController::eliminar_tildes_texto(strtoupper($row->name));
             }
 
             $tickets[$cont]['dependencia']   = (int)$value->dependencia;
@@ -78,7 +78,7 @@ class TicketsController extends Controller
             if($dependencia === null){
                 $tickets[$cont]['area'] = "SIN ÁREA/DEPENDENCIA";
             }else{
-                $tickets[$cont]['area'] = strtoupper($dependencia);
+                $tickets[$cont]['area'] = TicketsController::eliminar_tildes_texto(strtoupper($dependencia));
             }
 
             $tickets[$cont]['category_id']   = (int)$value->category_id;
@@ -135,7 +135,7 @@ class TicketsController extends Controller
             $tickets[$cont]['historial'] = null;
             if($contadorHistorial > 0){
                 foreach($historialTicket as $row){
-                    $tickets[$cont]['historial'] .= "- ".$row->observacion." (".$row->user_id." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
+                    $tickets[$cont]['historial'] .= "- ". TicketsController::eliminar_tildes_texto($row->observacion)." (".$row->user_id." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
                 }
             }else{
                 $tickets[$cont]['historial'] = null;
@@ -444,6 +444,8 @@ class TicketsController extends Controller
 
             $resultado = json_decode(json_encode($consultaReporte), true);
             foreach($resultado as &$value) {
+                $value['title'] = TicketsController::eliminar_tildes_texto($value['title']);
+                $value['description'] = TicketsController::eliminar_tildes_texto($value['description']);
                 $value['created_at'] = date('d/m/Y h:i A', strtotime($value['created_at']));
                 if($value['updated_at']){
                     $value['updated_at'] = date('d/m/Y h:i A', strtotime($value['updated_at']));
@@ -458,12 +460,12 @@ class TicketsController extends Controller
                 $id_categoria = $value['category_id'];
                 $nombreCategoria = Tickets::Categoria($id_categoria);
                 foreach($nombreCategoria as $valor){
-                    $value['category_id'] = $valor->name;
+                    $value['category_id'] =  TicketsController::eliminar_tildes_texto($valor->name);
                 }
                 $id_sede = $value['project_id'];
                 $nombreSedeS = Sedes::BuscarSedeID($id_sede);
                 foreach($nombreSedeS as $valor){
-                    $value['project_id'] = $valor->name;
+                    $value['project_id'] =  TicketsController::eliminar_tildes_texto($valor->name);
                 }
                 $id_prioridad = $value['priority_id'];
                 $nombrePrioridad = Tickets::Prioridad($id_prioridad);
@@ -500,7 +502,7 @@ class TicketsController extends Controller
                 $contadorHistorial = count($historialTicket);
                 if($contadorHistorial > 0){
                     foreach($historialTicket as $row){
-                        $value['historial'] .= "- ".$row->observacion." (".$row->user_id." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
+                        $value['historial'] .= "- ". TicketsController::eliminar_tildes_texto($row->observacion)." (".$row->user_id." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
                     }
                 }else{
                     $value['historial'] = null;
@@ -756,6 +758,53 @@ class TicketsController extends Controller
         }
         return view('Tickets.ticketsRecurrentes',['Categoria' => $NombreCategoria,'Prioridad' => $NombrePrioridad,'TicketsRecurrentes' => $TicketsRecurrentes,
                                                     'Activo' => $Activo,'Tipo' => $Tipo]);
+    }
+
+    public static function eliminar_tildes_texto($nombrearchivo){
+
+        //Codificamos la cadena en formato utf8 en caso de que nos de errores
+        // $cadena = utf8_encode($nombrearchivo);
+        $cadena = $nombrearchivo;
+        //Ahora reemplazamos las letras
+        $cadena = str_replace(
+            array('ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä','Ã¡'),
+            array('a', 'a', 'a', 'A', 'A', 'A', 'A','á'),
+            $cadena
+        );
+
+        $cadena = str_replace(
+            array('ë', 'ê', 'É', 'È', 'Ê', 'Ë','Ã©'),
+            array('e', 'e', 'E', 'E', 'E', 'E','é'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ï', 'î', 'Í', 'Ì', 'Ï', 'Î','Ã­'),
+            array('i', 'i', 'I', 'I', 'I', 'I','í'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô','Ã³'),
+            array('o', 'o', 'O', 'O', 'O', 'O','ó'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ü', 'û', 'Ú', 'Ù', 'Û', 'Ü','Ãº'),
+            array('u', 'u', 'U', 'U', 'U', 'U','ú'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ç', 'Ç','Ã±'),
+            array('c', 'C','ñ'),
+            $cadena
+        );
+
+        $cadena = str_replace(
+            array("'", ''),
+            array('´', ''),
+            $cadena
+        );
+
+        return $cadena;
     }
 
 
