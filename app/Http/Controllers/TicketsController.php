@@ -1109,8 +1109,8 @@ class TicketsController extends Controller
             $cadena );
 
         $cadena = str_replace(
-            array('ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô','Ã³'),
-            array('o', 'o', 'O', 'O', 'O', 'O','ó'),
+            array('ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô','Ã³','Ã“'),
+            array('o', 'o', 'O', 'O', 'O', 'O','ó','Ó'),
             $cadena );
 
         $cadena = str_replace(
@@ -1119,14 +1119,14 @@ class TicketsController extends Controller
             $cadena );
 
         $cadena = str_replace(
-            array('ç', 'Ç','Ã±'),
-            array('c', 'C','ñ'),
+            array('ç', 'Ç','Ã±','Ã‘'),
+            array('c', 'C','ñ','Ñ'),
             $cadena
         );
 
         $cadena = str_replace(
-            array("'", ''),
-            array('´', ''),
+            array("'", '‘'),
+            array(' ', ' '),
             $cadena
         );
 

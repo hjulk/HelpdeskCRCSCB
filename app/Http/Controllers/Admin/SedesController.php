@@ -239,7 +239,7 @@ class SedesController extends Controller
             $cadena );
 
         $cadena = str_replace(
-            array('ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô','Ã³','Ã"'),
+            array('ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô','Ã³','Ã“'),
             array('o', 'o', 'O', 'O', 'O', 'O','ó','Ó'),
             $cadena );
 
@@ -249,14 +249,14 @@ class SedesController extends Controller
             $cadena );
 
         $cadena = str_replace(
-            array('ç', 'Ç','Ã±',"Ã'"),
+            array('ç', 'Ç','Ã±','Ã‘'),
             array('c', 'C','ñ','Ñ'),
             $cadena
         );
 
         $cadena = str_replace(
-            array("'", ''),
-            array('´', ''),
+            array("'", '‘'),
+            array(' ', ' '),
             $cadena
         );
 
