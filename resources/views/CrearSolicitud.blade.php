@@ -39,7 +39,7 @@
                 <div class="header-main">
                     <div class="main-icon">
                         {{--  <img src="{{asset("assets/dist/img/images2.jpg")}}" style="border-radius: 50%;">  --}}
-                        <img src="{{asset("assets/dist/img/images1.jpg")}}" style="--border-radius: 50%;max-width: 70% !important;">
+                        <img src="{{asset("assets/dist/img/images1.jpg")}}" style="--border-radius: 50%;max-width: 70% !important;filter: opacity(0.7);">
                     </div>
                     <br>
                     <div class="header-left-bottom">
