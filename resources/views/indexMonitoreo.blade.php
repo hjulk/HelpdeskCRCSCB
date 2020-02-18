@@ -534,8 +534,9 @@ Dahsboard
 
             colors:[
                     '#7cb5ec',
-                    '#f7a35c',
-                    'green'
+                    '#f7a35c'
+                    {{--  ,
+                    'green'  --}}
                     ],
             xAxis: {
                 categories: [
@@ -589,7 +590,8 @@ Dahsboard
                     @endforeach
                     @endif
             ]
-            },{
+            }
+            {{--  ,{
                 name: 'Terminados',
                 data: [
                     @if($Gestion)
@@ -598,7 +600,8 @@ Dahsboard
                     @endforeach
                     @endif
             ]
-            }]
+            }  --}}
+            ]
         });
         Highcharts.chart('gestionSedes', {
             chart: {
