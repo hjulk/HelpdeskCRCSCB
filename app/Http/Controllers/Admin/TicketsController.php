@@ -452,22 +452,22 @@ class TicketsController extends Controller
                 }else{
                     $value['updated_at'] = 'SIN ACTUALIZACIÓN';
                 }
-                $id_tipo = $value['kind_id'];
+                $id_tipo = (int)$value['kind_id'];
                 $nombreTipo = Tickets::Tipo($id_tipo);
                 foreach($nombreTipo as $valor){
                     $value['kind_id'] = $valor->name;
                 }
-                $id_categoria = $value['category_id'];
+                $id_categoria = (int)$value['category_id'];
                 $nombreCategoria = Tickets::Categoria($id_categoria);
                 foreach($nombreCategoria as $valor){
                     $value['category_id'] =  TicketsController::eliminar_tildes_texto($valor->name);
                 }
-                $id_sede = $value['project_id'];
+                $id_sede = (int)$value['project_id'];
                 $nombreSedeS = Sedes::BuscarSedeID($id_sede);
                 foreach($nombreSedeS as $valor){
                     $value['project_id'] =  TicketsController::eliminar_tildes_texto($valor->name);
                 }
-                $id_prioridad = $value['priority_id'];
+                $id_prioridad = (int)$value['priority_id'];
                 $nombrePrioridad = Tickets::Prioridad($id_prioridad);
                 foreach($nombrePrioridad as $valor){
                     switch($id_prioridad){
@@ -480,17 +480,17 @@ class TicketsController extends Controller
                     }
 
                 }
-                $id_estado = $value['status_id'];
+                $id_estado =(int) $value['status_id'];
                 $nombreEstado = Tickets::Estado($id_estado);
                 foreach($nombreEstado as $valor){
                     $value['status_id'] = $valor->name;
                 }
-                $creado = $value['user_id'];
+                $creado = (int)$value['user_id'];
                 $buscarUsuario = Usuarios::BuscarNombre($creado);
                 foreach($buscarUsuario as $valor){
                     $value['user_id'] = $valor->name;
                 }
-                $asignado = $value['asigned_id'];
+                $asignado = (int)$value['asigned_id'];
                 $buscarUsuario = Usuarios::BuscarNombre($asignado);
                 foreach($buscarUsuario as $valor){
                     $value['asigned_id'] = $valor->name;
@@ -553,22 +553,22 @@ class TicketsController extends Controller
                 }else{
                     $value['updated_at'] = 'SIN ACTUALIZACIÓN';
                 }
-                $id_tipo = $value['kind_id'];
+                $id_tipo = (int)$value['kind_id'];
                 $nombreTipo = Tickets::Tipo($id_tipo);
                 foreach($nombreTipo as $valor){
                     $value['kind_id'] = $valor->name;
                 }
-                $id_categoria = $value['category_id'];
+                $id_categoria = (int)$value['category_id'];
                 $nombreCategoria = Tickets::Categoria($id_categoria);
                 foreach($nombreCategoria as $valor){
                     $value['category_id'] = $valor->name;
                 }
-                $id_sede = $value['project_id'];
+                $id_sede = (int)$value['project_id'];
                 $nombreSedeS = Sedes::BuscarSedeID($id_sede);
                 foreach($nombreSedeS as $valor){
                     $value['project_id'] = TicketsController::eliminar_tildes_texto($valor->name);
                 }
-                $id_prioridad = $value['priority_id'];
+                $id_prioridad = (int)$value['priority_id'];
                 $nombrePrioridad = Tickets::Prioridad($id_prioridad);
                 foreach($nombrePrioridad as $valor){
                     switch($id_prioridad){
@@ -581,23 +581,23 @@ class TicketsController extends Controller
                     }
 
                 }
-                $id_estado = $value['status_id'];
+                $id_estado = (int)$value['status_id'];
                 $nombreEstado = Tickets::Estado($id_estado);
                 foreach($nombreEstado as $valor){
                     $value['status_id'] = $valor->name;
                 }
-                $creado = $value['user_id'];
+                $creado = (int)$value['user_id'];
                 $buscarUsuario = Usuarios::BuscarNombre($creado);
                 foreach($buscarUsuario as $valor){
                     $value['user_id'] = $valor->name;
                 }
-                $asignado = $value['asigned_id'];
+                $asignado = (int)$value['asigned_id'];
                 $buscarUsuario = Usuarios::BuscarNombre($asignado);
                 foreach($buscarUsuario as $valor){
                     $value['asigned_id'] = $valor->name;
                 }
                 $value['name_user'] = strtoupper($value['name_user']);
-                $id_ticket = $value['id'];
+                $id_ticket = (int)$value['id'];
                 $value['historial'] = null;
                 $historialTicket = Tickets::HistorialTicket($id_ticket);
                 $contadorHistorial = count($historialTicket);
