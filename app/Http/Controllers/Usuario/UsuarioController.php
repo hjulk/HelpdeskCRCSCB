@@ -302,6 +302,7 @@ class UsuarioController extends Controller
             $contF++;
         }
         $contT = 0;
+        $Asuntos = array();
         foreach ($Recurrente as $value){
             $Asuntos[$contT]['id']     = $value->id;
             $Asuntos[$contT]['nombre'] = $value->nombre;
