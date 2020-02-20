@@ -52,6 +52,7 @@
                                 <div class="col-md-4">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Correo</label>
                                     {!! Form::text('correo_usuario_upd',$CorreoUsuario,['class'=>'form-control','id'=>'mod_correo_usuario','placeholder'=>'Correo(s) del reportante']) !!}
+                                    <div align="right"><small class="text-muted" style="font-size: 2.1vh;">Separar correos por <b>';'</b> y <b>no dejar espacios</b></small> <span id="cntDescripHechos" align="right"> </span></div>
                                 </div>
                             </div>
                         </div>
