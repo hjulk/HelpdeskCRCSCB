@@ -869,7 +869,7 @@ class TicketsUserController extends Controller
                 foreach($buscarUsuario as $valor){
                     $value['asigned_id'] = $valor->name;
                 }
-                $value['name_user'] = strtoupper($value['name_user']);
+                $value['name_user'] = TicketsUserController::eliminar_tildes_texto($value['name_user']);
                 $id_ticket = $value['id'];
                 $value['historial'] = null;
                 $historialTicket = Tickets::HistorialTicket($id_ticket);

@@ -629,7 +629,6 @@ class Tickets extends Model
     public static function Reporte($idTipo,$idCategoria,$idUsuarioC,$idUsuarioA,$idPrioridad,$idEstado,$idSede,$finicio,$ffin){
         $fechaInicio    = date('Y-m-d', strtotime($finicio));
         $fechaFin       = date('Y-m-d', strtotime($ffin));
-        // dd($fechaInicio);
         if (!empty($idTipo)) {
             $tipo   = 'kind_id';
             $vtipo  = $idTipo;
