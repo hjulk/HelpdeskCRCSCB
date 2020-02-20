@@ -1142,6 +1142,12 @@ class TicketsController extends Controller
             $cadena
         );
 
+        $cadena = str_replace(
+            array("'", '‘','a€“'),
+            array(' ', ' ','-'),
+            $cadena
+        );
+
         return $cadena;
     }
 
@@ -1190,8 +1196,8 @@ class TicketsController extends Controller
         );
 
         $cadena = str_replace(
-            array("'", ''),
-            array('´', ''),
+            array("'", '‘','a€“'),
+            array(' ', ' ','-'),
             $cadena
         );
 

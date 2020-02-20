@@ -944,8 +944,8 @@ class TicketsUserController extends Controller
         );
 
         $cadena = str_replace(
-            array("'", '‘'),
-            array(' ', ' '),
+            array("'", '‘','a€“'),
+            array(' ', ' ','-'),
             $cadena
         );
 
