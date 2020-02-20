@@ -885,17 +885,32 @@ class TicketsUserController extends Controller
 
             $aResultado = json_encode($resultado);
             \Session::put('results', $aResultado);
-            if(empty($consultaReporte)){
-                $verrors = array();
-                array_push($verrors, 'No hay datos que mostrar');
-                return \Response::json(['valido'=>'false','errors'=>$verrors]);
-            }else if(!empty($aResultado)){
-                return \Response::json(['valido'=>'true','results'=>$aResultado]);
+            if($consultaReporte){
+                if($aResultado){
+                    return \Response::json(['valido'=>'true','results'=>$aResultado]);
+                }else{
+                    $verrors = array();
+                    array_push($verrors, 'No hay datos que mostrar');
+                    return \Response::json(['valido'=>'false','errors'=>$verrors]);
+                }
             }else{
                 $verrors = array();
                 array_push($verrors, 'No hay datos que mostrar');
                 return \Response::json(['valido'=>'false','errors'=>$verrors]);
             }
+
+
+            // if(empty($consultaReporte)){
+            //     $verrors = array();
+            //     array_push($verrors, 'No hay datos que mostrar');
+            //     return \Response::json(['valido'=>'false','errors'=>$verrors]);
+            // }else if(!empty($aResultado)){
+            //     return \Response::json(['valido'=>'true','results'=>$aResultado]);
+            // }else{
+            //     $verrors = array();
+            //     array_push($verrors, 'No hay datos que mostrar');
+            //     return \Response::json(['valido'=>'false','errors'=>$verrors]);
+            // }
 
 
             // return \Response::json(array('valido'=>'true'));
