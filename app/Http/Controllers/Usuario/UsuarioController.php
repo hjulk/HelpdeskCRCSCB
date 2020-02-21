@@ -333,7 +333,7 @@ class UsuarioController extends Controller
         if($validador->passes()) {
             $idTipo             = (int)Input::get('kind_id');
 
-            $Descripcion        = Input::get('description');
+            $Descripcion        = UsuarioController::eliminar_tildes_texto(Input::get('description'));
             $NombreUsuario      = Input::get('nombre_usuario');
             $TelefonoUsuario    = Input::get('telefono_usuario');
             $CorreUsuario       = Input::get('correo_usuario');
@@ -345,11 +345,11 @@ class UsuarioController extends Controller
             }
             // $Area               = Input::get('dependencia');
             $idAsunto           = Input::get('asunto');
-            $NombreAsunto       = Input::get('title');
+            $NombreAsunto       = UsuarioController::eliminar_tildes_texto(Input::get('title'));
             if($idAsunto === 1){
                 $Prioridad      = 2;
                 $Categoria      = 4;
-                $Asunto         = Input::get('title');
+                $Asunto         = UsuarioController::eliminar_tildes_texto(Input::get('title'));
             }else{
                 // $buscardatos = Tickets::ListarRecurrentesId($idAsunto);
                 $buscardatos = Tickets::ListarRecurrentesName($NombreAsunto);
@@ -357,16 +357,17 @@ class UsuarioController extends Controller
                     foreach($buscardatos as $row){
                         $Prioridad = (int)$row->priority_id;
                         $Categoria = (int)$row->category_id;
-                        $Asunto    = Input::get('title');
+                        $Asunto    = UsuarioController::eliminar_tildes_texto(Input::get('title'));
                     }
                 }else{
                     $Prioridad          = 2;
                     $Categoria          = 4;
-                    $Asunto             = Input::get('title');
+                    $Asunto             = UsuarioController::eliminar_tildes_texto(Input::get('title'));
                 }
             }
 
             $AsignadoA          = 44;
+            $AsignadoA1         = null;
             $Estado             = 2;
             $creadoPor          = 31;
             // dd($Prioridad,$Categoria);
@@ -378,7 +379,7 @@ class UsuarioController extends Controller
             $ticketUser = 0;
 
             $CrearTicket = Tickets::CrearTicket($idTipo,$Asunto,$Descripcion,$NombreUsuario,$TelefonoUsuario,$CorreUsuario,
-                                                $IdSede,$Area,$Prioridad,$Categoria,$AsignadoA,$Estado,$creadoPor,$ticketUser);
+                                                $IdSede,$Area,$Prioridad,$Categoria,$AsignadoA1,$Estado,$creadoPor,$ticketUser);
 
             if($CrearTicket){
                 $buscarUltimo = Tickets::BuscarLastTicket($creadoPor);
@@ -478,6 +479,59 @@ class UsuarioController extends Controller
             return Redirect::to('usuario/crearTicket')->withErrors(['errors' => $verrors])->withInput();
             // return redirect('usuario/crearTicket')->withErrors(['errors' => $verrors])->withInput();
         }
+    }
+
+    public static function eliminar_tildes_texto($nombrearchivo){
+
+        //Codificamos la cadena en formato utf8 en caso de que nos de errores
+        // $cadena = utf8_encode($nombrearchivo);
+        $cadena = $nombrearchivo;
+        //Ahora reemplazamos las letras
+        $cadena = str_replace(
+            array('ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä','Ã¡'),
+            array('a', 'a', 'a', 'A', 'A', 'A', 'A','á'),
+            $cadena
+        );
+
+        $cadena = str_replace(
+            array('ë', 'ê', 'É', 'È', 'Ê', 'Ë','Ã©'),
+            array('e', 'e', 'E', 'E', 'E', 'E','é'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ï', 'î', 'Í', 'Ì', 'Ï', 'Î','Ã­'),
+            array('i', 'i', 'I', 'I', 'I', 'I','í'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô','Ã³','Ã“'),
+            array('o', 'o', 'O', 'O', 'O', 'O','ó','Ó'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ü', 'û', 'Ú', 'Ù', 'Û', 'Ü','Ãº'),
+            array('u', 'u', 'U', 'U', 'U', 'U','ú'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ç', 'Ç','Ã±','Ã‘'),
+            array('c', 'C','ñ','Ñ'),
+            $cadena
+        );
+
+        $cadena = str_replace(
+            array("'", '‘'),
+            array(' ', ' '),
+            $cadena
+        );
+
+        $cadena = str_replace(
+            array("'", '‘','a€“'),
+            array(' ', ' ','-'),
+            $cadena
+        );
+
+        return $cadena;
     }
 
     public static function eliminar_tildes($nombrearchivo){

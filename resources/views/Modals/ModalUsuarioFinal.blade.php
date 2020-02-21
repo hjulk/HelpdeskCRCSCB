@@ -22,6 +22,7 @@
                         <div class="col-md-3">
                             <label for="exampleInputEmail1">Correo Electrónico</label>
                             {!! Form::email('email',null,['class'=>'form-control','id'=>'email','placeholder'=>'Correo Electrónico']) !!}
+
                         </div>
                         <div class="col-md-3">
                             <label for="exampleInputEmail1">Cargo</label>
