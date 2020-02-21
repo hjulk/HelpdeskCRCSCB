@@ -155,7 +155,7 @@ class TicketsController extends Controller
         $NombreCategoria = array();
         $NombreCategoria[''] = 'Seleccione: ';
         foreach ($Categoria as $row){
-            $NombreCategoria[$row->id] = $row->name;
+            $NombreCategoria[$row->id] = TicketsController::eliminar_tildes_texto($row->name);
         }
 
         $Prioridad  = Tickets::ListarPrioridad();
@@ -174,7 +174,7 @@ class TicketsController extends Controller
         $Sedes  = Tickets::Sedes();
 
         foreach ($Sedes as $row){
-            $NombreSede[$row->id] = $row->name;
+            $NombreSede[$row->id] = TicketsController::eliminar_tildes_texto($row->name);
         }
 
         $Tipo  = Tickets::ListarTipo();

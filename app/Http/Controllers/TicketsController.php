@@ -1220,7 +1220,7 @@ class TicketsController extends Controller
         $buscarUsuario = Usuarios::BuscarXCategoria($id);
         $NombreUsuario[0] = 'Seleccione: ';
         foreach ($buscarUsuario as $row){
-            $NombreUsuario[$row->id] = $row->name;
+            $NombreUsuario[$row->id] = TicketsController::eliminar_tildes_texto($row->name);
         }
         return \Response::json(array('valido'=>'true','Usuario'=>$NombreUsuario));
 
@@ -1234,7 +1234,7 @@ class TicketsController extends Controller
         $buscarUsuario = Usuarios::BuscarXCategoriaSolicitud($id);
         $NombreUsuario[0] = 'Seleccione: ';
         foreach ($buscarUsuario as $row){
-            $NombreUsuario[$row->id] = $row->nombre;
+            $NombreUsuario[$row->id] = TicketsController::eliminar_tildes_texto($row->nombre);
         }
         return \Response::json(array('valido'=>'true','Usuario'=>$NombreUsuario));
 
@@ -1248,7 +1248,7 @@ class TicketsController extends Controller
         $buscarUsuario = Usuarios::BuscarXCategoriaSolicitud($id);
         $NombreUsuario[0] = 'Seleccione: ';
         foreach ($buscarUsuario as $row){
-            $NombreUsuario[$row->id] = $row->name;
+            $NombreUsuario[$row->id] = TicketsController::eliminar_tildes_texto($row->name);
         }
         return \Response::json(array('valido'=>'true','Usuario'=>$NombreUsuario));
 
@@ -1262,7 +1262,7 @@ class TicketsController extends Controller
         $buscarUsuario = Usuarios::BuscarXCategoria($id);
         $NombreUsuario[0] = 'Seleccione: ';
         foreach ($buscarUsuario as $row){
-            $NombreUsuario[$row->id] = $row->name;
+            $NombreUsuario[$row->id] = TicketsController::eliminar_tildes_texto($row->name);
         }
         return \Response::json(array('valido'=>'true','Usuario'=>$NombreUsuario));
 
@@ -1275,7 +1275,7 @@ class TicketsController extends Controller
         $buscarUsuario = Sedes::BuscarAreaIdSede($id);
         $NombreUsuario[0] = 'Seleccione: ';
         foreach ($buscarUsuario as $row){
-            $NombreUsuario[$row->id] = $row->name;
+            $NombreUsuario[$row->id] = TicketsController::eliminar_tildes_texto($row->name);
         }
         return \Response::json(array('valido'=>'true','Usuario'=>$NombreUsuario));
     }

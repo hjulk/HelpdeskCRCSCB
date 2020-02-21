@@ -184,7 +184,7 @@ class TicketsUserController extends Controller
         $Sedes  = Tickets::Sedes();
 
         foreach ($Sedes as $row){
-            $NombreSede[$row->id] = $row->name;
+            $NombreSede[$row->id] = TicketsUserController::eliminar_tildes_texto($row->name);
         }
 
         $Tipo  = Tickets::ListarTipo();
