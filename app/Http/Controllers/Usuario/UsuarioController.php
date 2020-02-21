@@ -366,7 +366,7 @@ class UsuarioController extends Controller
                 }
             }
 
-            $AsignadoA          = 44;
+            $AsignadoA          = 47;
             $AsignadoA1         = null;
             $Estado             = 2;
             $creadoPor          = 31;
