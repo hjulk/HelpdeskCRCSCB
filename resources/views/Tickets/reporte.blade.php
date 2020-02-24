@@ -98,6 +98,10 @@ Reporte Tickets
                                         <label for="exampleInputEmail1" class="col-sm-12 control-label">Sede</label>
                                         {!! Form::select('id_sede',$Sede,null,['class'=>'form-control','id'=>'id_sede']) !!}
                                     </div>
+                                    <div class="col-md-3">
+                                        <label for="exampleInputEmail1" class="col-sm-12 control-label">Area</label>
+                                        {!! Form::select('id_area',$Areas,null,['class'=>'form-control','id'=>'id_area']) !!}
+                                    </div>
                                     <div class="col-md-2">
                                         <label for="exampleInputEmail1" class="col-sm-12 control-label">Fecha Inicio</label>
                                         {!! Form::text('fechaInicio',$FechaInicio,['class'=>'form-control','id'=>'fechaInicio','required']) !!}

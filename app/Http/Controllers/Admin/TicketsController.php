@@ -438,14 +438,16 @@ class TicketsController extends Controller
             $idPrioridad    = Input::get('id_prioridad');
             $idEstado       = Input::get('id_estado');
             $idSede         = Input::get('id_sede');
+            $idArea         = Input::get('id_area');
             $finicio        = Input::get('fechaInicio');
             $ffin           = Input::get('fechaFin');
-            $consultaReporte = Tickets::Reporte($idTipo,$idCategoria,$idUsuarioC,$idUsuarioA,$idPrioridad,$idEstado,$idSede,$finicio,$ffin);
+            $consultaReporte = Tickets::Reporte($idTipo,$idCategoria,$idUsuarioC,$idUsuarioA,$idPrioridad,$idEstado,$idSede,$idArea,$finicio,$ffin);
 
             $resultado = json_decode(json_encode($consultaReporte), true);
             foreach($resultado as &$value) {
                 $value['title']             = TicketsController::eliminar_tildes_texto($value['title']);
                 $value['description']       = TicketsController::eliminar_tildes_texto($value['description']);
+                $value['dependencia']       = TicketsController::eliminar_tildes_texto($value['dependencia']);
                 $value['created_at']        = date('d/m/Y h:i A', strtotime($value['created_at']));
                 if($value['updated_at']){
                     $value['updated_at']    = date('d/m/Y h:i A', strtotime($value['updated_at']));

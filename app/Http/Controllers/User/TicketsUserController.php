@@ -404,13 +404,14 @@ class TicketsUserController extends Controller
         foreach ($Usuarios as $row){
             $NombreUsuario[$row->id] = $row->name;
         }
+
         $NombreSede = array();
         $NombreSede[''] = 'Seleccione: ';
         $Sedes  = Sedes::Sedes();
         $NombreSedes = array();
         $NombreSedes[''] = 'Seleccione: ';
         foreach ($Sedes as $row){
-            $NombreSedes[$row->id] = $row->name;
+            $NombreSedes[$row->id] = TicketsUserController::eliminar_tildes_texto($row->name);
         }
 
         $Estado  = Tickets::ListarEstadoUpd();
@@ -419,13 +420,21 @@ class TicketsUserController extends Controller
         foreach ($Estado as $row){
             $NombreEstado[$row->id] = $row->name;
         }
+
+        $Areas  = Sedes::ListarAreas();
+        $NombreArea = array();
+        $NombreArea[0] = 'Seleccione: ';
+        foreach ($Areas as $row){
+            $NombreArea[$row->id] = TicketsUserController::eliminar_tildes_texto($row->name);
+        }
+
         $Opcion = array();
         $Opcion[''] = "Seleccione :";
         $Opcion[1] = "Número de Ticket";
         $Opcion[2] = "Fechas y otras opciones";
         return view('tickets.reporte',['Tipo' => $NombreTipo,'Estado' => $NombreEstado,'Categoria' => $NombreCategoria,
                                         'Usuario' => $NombreUsuario,'Prioridad' => $NombrePrioridad,'Opcion' => $Opcion,
-                                        'Sede' => $NombreSedes, 'FechaInicio' => null,'FechaFin' => null]);
+                                        'Sede' => $NombreSedes, 'FechaInicio' => null,'FechaFin' => null,'Areas' => $NombreArea]);
     }
 
     public function crearTicket()
@@ -708,14 +717,16 @@ class TicketsUserController extends Controller
             $idPrioridad    = Input::get('id_prioridad');
             $idEstado       = Input::get('id_estado');
             $idSede         = Input::get('id_sede');
+            $idArea         = Input::get('id_area');
             $finicio        = Input::get('fechaInicio');
             $ffin           = Input::get('fechaFin');
-            $consultaReporte = Tickets::Reporte($idTipo,$idCategoria,$idUsuarioC,$idUsuarioA,$idPrioridad,$idEstado,$idSede,$finicio,$ffin);
+            $consultaReporte = Tickets::Reporte($idTipo,$idCategoria,$idUsuarioC,$idUsuarioA,$idPrioridad,$idEstado,$idSede,$idArea,$finicio,$ffin);
 
             $resultado = json_decode(json_encode($consultaReporte), true);
             foreach($resultado as &$value) {
                 $value['title']             = TicketsUserController::eliminar_tildes_texto($value['title']);
                 $value['description']       = TicketsUserController::eliminar_tildes_texto($value['description']);
+                $value['dependencia'] =  TicketsUserController::eliminar_tildes_texto($value['dependencia']);
                 $value['created_at']        = date('d/m/Y h:i A', strtotime($value['created_at']));
                 if($value['updated_at']){
                     $value['updated_at']    = date('d/m/Y h:i A', strtotime($value['updated_at']));
