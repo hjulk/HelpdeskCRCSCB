@@ -34,6 +34,14 @@ class TicketsController extends Controller{
             array_push($verrors, 'Debe seleccionar un usuario a asignar el ticket');
             return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withRequest();
         }
+        $CorreoIndex   = Funciones::editar_correo($request->correo_usuario);
+        $findme   = '@';
+        $pos = strpos($CorreoIndex, $findme);
+        if ($pos === false) {
+            $verrors = array();
+            array_push($verrors, 'El correo debe contener la estructura correcta @');
+            return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withRequest();
+        }
 
         $validator = Validator::make($request->all(), [
             'kind_id'           =>  'required',
@@ -41,7 +49,7 @@ class TicketsController extends Controller{
             'description'       =>  'required',
             'nombre_usuario'    =>  'required',
             'telefono_usuario'  =>  'required',
-            'correo_usuario'    =>  'required',
+            'correo_usuario'    =>  'required|regex:/^.+@.+$/i',
             'project_id'        =>  'required',
             // 'dependencia'       =>  'required',
             'priority_id'       =>  'required',
@@ -210,7 +218,8 @@ class TicketsController extends Controller{
             'id_usuarioupd'         =>  'required',
             'id_estado_upd'         =>  'required',
             'comentario'            =>  'required',
-            'evidencia_upd'         =>  'max:5120'
+            'evidencia_upd'         =>  'max:5120',
+            'correo_usuario_upd'    =>  'required|regex:/^.+@.+$/i'
         ]);
 
         if ($validator->fails()) {
@@ -542,7 +551,7 @@ class TicketsController extends Controller{
             'area'              =>  'required',
             'jefe'              =>  'required',
             'fechaIngreso'      =>  'required',
-            'correoS'           =>  'required',
+            'correoS'           =>  'required|regex:/^.+@.+$/i',
             'cargo_nuevo'       =>  'required',
             'estado'            =>  'required',
             'prioridad'         =>  'required',
@@ -1177,12 +1186,20 @@ class TicketsController extends Controller{
     }
 
     public function nuevaSolicitud(Request $request){
+        $CorreoIndex    = Funciones::editar_correo($request->correo_usuario);
+        $findme         = '@';
+        $pos            = strpos($CorreoIndex, $findme);
+        if ($pos === false) {
+            $verrors = array();
+            array_push($verrors, 'El correo debe contener la estructura correcta @');
+            return Redirect::to('/crearSolicitud')->withErrors(['errors' => $verrors])->withRequest();
+        }
         $validator = Validator::make($request->all(), [
             'kind_id'           => 'required',
             'nombre_usuario'    => 'required',
             'description'       => 'required',
             'telefono_usuario'  => 'required',
-            'correo_usuario'    => 'required',
+            'correo_usuario'    => 'required|regex:/^.+@.+$/i',
             'project_id'        => 'required',
             'area'              => 'required'
         ]);

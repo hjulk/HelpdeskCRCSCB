@@ -312,12 +312,13 @@ class UsuarioController extends Controller
     }
 
     public function nuevaSolicitud(Request $request){
+
         $validator = Validator::make($request->all(), [
             'kind_id'           => 'required',
             'nombre_usuario'    => 'required',
             'description'       => 'required',
             'telefono_usuario'  => 'required',
-            'correo_usuario'    => 'required',
+            'correo_usuario'    => 'required|regex:/^.+@.+$/i',
             'project_id'        => 'required',
             'area'              => 'required'
         ]);
@@ -325,7 +326,14 @@ class UsuarioController extends Controller
         if ($validator->fails()) {
             return redirect('usuario/crearTicket')->withErrors($validator)->withInput();
         }else{
-
+            $CorreoIndex    = Funciones::editar_correo($request->correo_usuario);
+            $findme         = '@';
+            $pos            = strpos($CorreoIndex, $findme);
+            if ($pos === false) {
+                $verrors = array();
+                array_push($verrors, 'El correo debe contener la estructura correcta @');
+                return Redirect::to('usuario/crearTicket')->withErrors(['errors' => $verrors])->withRequest();
+            }
             $idTipo             = (int)$request->kind_id;
 
             $Descripcion        = $request->description;
