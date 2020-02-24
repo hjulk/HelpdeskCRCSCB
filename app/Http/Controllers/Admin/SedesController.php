@@ -170,11 +170,11 @@ class SedesController extends Controller
 
                 $InsertarArea = Sedes::CrearArea($Area,$Sede);
                 if($InsertarArea){
-                    $verrors = 'Se creo con éxito el(la) área '.$Area;
+                    $verrors = 'Se creo con éxito el área '.$Area;
                     return redirect('admin/sedes')->with('mensaje', $verrors);
                 }else{
                     $verrors = array();
-                    array_push($verrors, 'Hubo un problema al crear el(la) área');
+                    array_push($verrors, 'Hubo un problema al crear el área');
                     // return redirect('admin/sedes')->withErrors(['errors' => $verrors]);
                     return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withInput();
                 }
@@ -204,11 +204,11 @@ class SedesController extends Controller
             $idActivo       = (int)Input::get('activo_area');
             $ActualizarArea = Sedes::ActualizarArea($id,$Area,$Sede,$idActivo);
             if($ActualizarArea >= 0){
-                $verrors = 'Se actualizo con éxito el(la) área '.$Area;
+                $verrors = 'Se actualizo con éxito el área '.$Area;
                 return redirect('admin/sedes')->with('mensaje', $verrors);
             }else{
                 $verrors = array();
-                array_push($verrors, 'Hubo un problema al actualizar el(la) área');
+                array_push($verrors, 'Hubo un problema al actualizar el área');
                 return redirect('admin/sedes')->withErrors(['errors' => $verrors]);
             }
         }else{
