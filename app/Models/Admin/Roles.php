@@ -41,6 +41,11 @@ class Roles extends Model
         return $actualizarRol;
     }
 
+    public static function ActualizarRolActivo($id,$idactivo){
+        $actualizarRol = DB::Update('UPDATE rol SET activo = ? WHERE rol_id = ?', [$idactivo,$id]);
+        return $actualizarRol;
+    }
+
     public static function BuscarNombreCategoria($nombreCategoria){
         $consultaCategoria = DB::Select("SELECT * FROM category WHERE name like '%$nombreCategoria%'");
         // dd("SELECT * FROM categoria WHERE nombre like '%$nombreCategoria%'");
