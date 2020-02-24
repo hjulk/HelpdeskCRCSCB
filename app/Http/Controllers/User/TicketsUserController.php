@@ -726,7 +726,7 @@ class TicketsUserController extends Controller
             foreach($resultado as &$value) {
                 $value['title']             = TicketsUserController::eliminar_tildes_texto($value['title']);
                 $value['description']       = TicketsUserController::eliminar_tildes_texto($value['description']);
-                $value['dependencia'] =  TicketsUserController::eliminar_tildes_texto($value['dependencia']);
+                $value['dependencia']       = TicketsUserController::eliminar_tildes_texto($value['dependencia']);
                 $value['created_at']        = date('d/m/Y h:i A', strtotime($value['created_at']));
                 if($value['updated_at']){
                     $value['updated_at']    = date('d/m/Y h:i A', strtotime($value['updated_at']));
