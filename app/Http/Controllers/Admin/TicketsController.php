@@ -410,13 +410,21 @@ class TicketsController extends Controller
         foreach ($Estado as $row){
             $NombreEstado[$row->id] = $row->name;
         }
+
+        $Areas  = Sedes::ListarAreas();
+        $NombreArea = array();
+        $NombreArea[0] = 'Seleccione: ';
+        foreach ($Areas as $row){
+            $NombreArea[$row->id] = TicketsController::eliminar_tildes_texto($row->name);
+        }
+
         $Opcion = array();
         $Opcion[''] = "Seleccione :";
         $Opcion[1] = "Número de Ticket";
         $Opcion[2] = "Fechas y otras opciones";
         return view('tickets.reporte',['Tipo' => $NombreTipo,'Estado' => $NombreEstado,'Categoria' => $NombreCategoria,
                                         'Usuario' => $NombreUsuario,'Prioridad' => $NombrePrioridad,'Opcion' => $Opcion,
-                                        'Sede' => $NombreSedes, 'FechaInicio' => null,'FechaFin' => null]);
+                                        'Sede' => $NombreSedes, 'FechaInicio' => null,'FechaFin' => null,'Areas' => $NombreArea]);
     }
 
     public function consultarTickets(){
