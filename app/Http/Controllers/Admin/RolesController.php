@@ -117,7 +117,7 @@ class RolesController extends Controller
             $nombreRol  = Input::get('nombre_rol_upd');
             $idactivo   = Input::get('id_activoR');
             $ActualizarRol = Roles::ActualizarRol($id,$nombreRol,$idactivo);
-            if($ActualizarRol){
+            if($ActualizarRol >= 0){
                 $verrors = 'Se actualizo con éxito el rol '.$nombreRol;
                 return redirect('admin/roles')->with('mensaje', $verrors);
             }else{
@@ -185,7 +185,7 @@ class RolesController extends Controller
             $nombreCategoria    = Input::get('nombre_categoria_upd');
             $idactivo           = Input::get('id_activoC');
             $ActualizarCategoria = Roles::ActualizarCategoria($id,$nombreCategoria,$idactivo);
-            if($ActualizarCategoria){
+            if($ActualizarCategoria >= 0){
                 $verrors = 'Se actualizo con éxito la categoria '.$nombreCategoria;
                 return redirect('admin/roles')->with('mensaje', $verrors);
             }else{
