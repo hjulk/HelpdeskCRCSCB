@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Usuario;
 
-// use Illuminate\Http\Request;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Funciones;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Input;
 use App\Models\Admin\Sedes;
 use App\Models\Helpdesk\Tickets;
 use App\Models\Admin\Roles;
@@ -13,23 +13,23 @@ use App\Models\HelpDesk\Inventario;
 use App\Models\Admin\Usuarios;
 use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Mail;
-use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Response;
 
 class UsuarioController extends Controller
 {
 
-    public function inicio()
-    {
+    public function inicio(){
         $Sede           = (int)Session::get('Sede');
         $Area           = Session::get('NombreArea');
         $Sedes          = Tickets::Sedes();
         $NombreSede     = array();
         $NombreSede[''] = 'Seleccione: ';
         foreach ($Sedes as $row){
-            $NombreSede[$row->id] = $row->name;
+            $NombreSede[$row->id] = Funciones::eliminar_tildes_texto($row->name);
         }
 
         $Areas          = Sedes::Areas();
@@ -62,7 +62,7 @@ class UsuarioController extends Controller
             $id_ticket                              = (int)$value->id;
             $ListadoTickets[$cont]['id']            = (int)$value->id;
             $ListadoTickets[$cont]['title']         = $value->title;
-            $ListadoTickets[$cont]['description']   = $value->description;
+            $ListadoTickets[$cont]['description']   = Funciones::eliminar_tildes_texto($value->description);
             $ListadoTickets[$cont]['created_at']    = date('d/m/Y h:i A', strtotime($value->created_at));
             if($value->updated_at){
                 $ListadoTickets[$cont]['updated_at']   = date('d/m/Y h:i A', strtotime($value->updated_at));
@@ -101,7 +101,7 @@ class UsuarioController extends Controller
             $BuscarSede = Sedes::BuscarSedeID($idSede);
             if($BuscarSede){
                 foreach($BuscarSede as $row){
-                    $ListadoTickets[$cont]['sede'] = strtoupper($row->name);
+                    $ListadoTickets[$cont]['sede'] = Funciones::eliminar_tildes_texto(strtoupper($row->name));
                 }
             }else{
                 $ListadoTickets[$cont]['sede'] = 'SEDE POR DETERMINAR';
@@ -112,7 +112,7 @@ class UsuarioController extends Controller
             if($dependencia === null){
                 $ListadoTickets[$cont]['area'] = "SIN ÁREA/DEPENDENCIA";
             }else{
-                $ListadoTickets[$cont]['area'] = strtoupper($dependencia);
+                $ListadoTickets[$cont]['area'] = Funciones::eliminar_tildes_texto(strtoupper($dependencia));
             }
             $ListadoTickets[$cont]['category_id']   = (int)$value->category_id;
             $IdCategoria    = (int)$value->category_id;
@@ -164,7 +164,7 @@ class UsuarioController extends Controller
             $ListadoTickets[$cont]['historial'] = null;
             if($contadorHistorial > 0){
                 foreach($historialTicket as $row){
-                    $ListadoTickets[$cont]['historial'] .= "- ".$row->observacion." (".$row->user_id." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
+                    $ListadoTickets[$cont]['historial'] .= "- ".Funciones::eliminar_tildes_texto($row->observacion)." (".$row->user_id." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
                 }
             }else{
                 $ListadoTickets[$cont]['historial'] = null;
@@ -185,7 +185,7 @@ class UsuarioController extends Controller
             $id_ticket                              = (int)$value->id;
             $ListadoTicketsF[$contF]['id']            = (int)$value->id;
             $ListadoTicketsF[$contF]['title']         = $value->title;
-            $ListadoTicketsF[$contF]['description']   = $value->description;
+            $ListadoTicketsF[$contF]['description']   = Funciones::eliminar_tildes_texto($value->description);
             $ListadoTicketsF[$contF]['created_at']    = date('d/m/Y h:i A', strtotime($value->created_at));
             if($value->updated_at){
                 $ListadoTicketsF[$contF]['updated_at']   = date('d/m/Y h:i A', strtotime($value->updated_at));
@@ -224,7 +224,7 @@ class UsuarioController extends Controller
             $BuscarSede = Sedes::BuscarSedeID($idSede);
             if($BuscarSede){
                 foreach($BuscarSede as $row){
-                    $ListadoTicketsF[$contF]['sede'] = strtoupper($row->name);
+                    $ListadoTicketsF[$contF]['sede'] = Funciones::eliminar_tildes_texto(strtoupper($row->name));
                 }
             }else{
                 $ListadoTicketsF[$contF]['sede'] = 'SEDE POR DETERMINAR';
@@ -235,7 +235,7 @@ class UsuarioController extends Controller
             if($dependencia === null){
                 $ListadoTicketsF[$contF]['area'] = "SIN ÁREA/DEPENDENCIA";
             }else{
-                $ListadoTicketsF[$contF]['area'] = strtoupper($dependencia);
+                $ListadoTicketsF[$contF]['area'] = Funciones::eliminar_tildes_texto(strtoupper($dependencia));
             }
             $ListadoTicketsF[$contF]['category_id']   = (int)$value->category_id;
             $IdCategoria    = (int)$value->category_id;
@@ -287,7 +287,7 @@ class UsuarioController extends Controller
             $ListadoTicketsF[$contF]['historial'] = null;
             if($contFadorHistorial > 0){
                 foreach($historialTicket as $row){
-                    $ListadoTicketsF[$contF]['historial'] .= "- ".$row->observacion." (".$row->user_id." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
+                    $ListadoTicketsF[$contF]['historial'] .= "- ".Funciones::eliminar_tildes_texto($row->observacion)." (".$row->user_id." - ".date('d/m/Y h:i a', strtotime($row->created)).")\n";
                 }
             }else{
                 $ListadoTicketsF[$contF]['historial'] = null;
@@ -302,7 +302,6 @@ class UsuarioController extends Controller
             $contF++;
         }
         $contT = 0;
-        $Asuntos = array();
         foreach ($Recurrente as $value){
             $Asuntos[$contT]['id']     = $value->id;
             $Asuntos[$contT]['nombre'] = $value->nombre;
@@ -312,10 +311,8 @@ class UsuarioController extends Controller
                                                 'Areas' => $NombreArea,'Tickets' => $ListadoTickets,'TicketsF' => $ListadoTicketsF,'Asuntos' => $Asuntos]);
     }
 
-    public function nuevaSolicitud(){
-        $data = Input::all();
-        // dd(Input::get('title'));
-        $reglas = array(
+    public function nuevaSolicitud(Request $request){
+        $validator = Validator::make($request->all(), [
             'kind_id'           => 'required',
             'nombre_usuario'    => 'required',
             'description'       => 'required',
@@ -323,33 +320,31 @@ class UsuarioController extends Controller
             'correo_usuario'    => 'required',
             'project_id'        => 'required',
             'area'              => 'required'
+        ]);
 
-        );
-        $validador = Validator::make($data, $reglas);
-        $messages = $validador->messages();
-        foreach ($reglas as $key => $value){
-            $verrors[$key] = $messages->first($key);
-        }
-        if($validador->passes()) {
-            $idTipo             = (int)Input::get('kind_id');
+        if ($validator->fails()) {
+            return redirect('usuario/crearTicket')->withErrors($validator)->withInput();
+        }else{
 
-            $Descripcion        = UsuarioController::eliminar_tildes_texto(Input::get('description'));
-            $NombreUsuario      = Input::get('nombre_usuario');
-            $TelefonoUsuario    = Input::get('telefono_usuario');
-            $CorreUsuario       = Input::get('correo_usuario');
-            $IdSede             = (int)Input::get('project_id');
-            $IdArea             = (int)Input::get('area');
+            $idTipo             = (int)$request->kind_id;
+
+            $Descripcion        = $request->description;
+            $NombreUsuario      = $request->nombre_usuario;
+            $TelefonoUsuario    = $request->telefono_usuario;
+            $CorreUsuario       = $request->correo_usuario;
+            $IdSede             = (int)$request->project_id;
+            $IdArea             = (int)$request->area;
             $BuscarArea         = Sedes::BuscarAreaId($IdArea);
             foreach($BuscarArea as $row){
                 $Area           = $row->name;
             }
-            // $Area               = Input::get('dependencia');
-            $idAsunto           = Input::get('asunto');
-            $NombreAsunto       = UsuarioController::eliminar_tildes_texto(Input::get('title'));
+            // $Area               = $request->dependencia');
+            $idAsunto           = $request->asunto;
+            $NombreAsunto       = $request->title;
             if($idAsunto === 1){
                 $Prioridad      = 2;
                 $Categoria      = 4;
-                $Asunto         = UsuarioController::eliminar_tildes_texto(Input::get('title'));
+                $Asunto         = $request->title;
             }else{
                 // $buscardatos = Tickets::ListarRecurrentesId($idAsunto);
                 $buscardatos = Tickets::ListarRecurrentesName($NombreAsunto);
@@ -357,12 +352,12 @@ class UsuarioController extends Controller
                     foreach($buscardatos as $row){
                         $Prioridad = (int)$row->priority_id;
                         $Categoria = (int)$row->category_id;
-                        $Asunto    = UsuarioController::eliminar_tildes_texto(Input::get('title'));
+                        $Asunto    = $request->title;
                     }
                 }else{
                     $Prioridad          = 2;
                     $Categoria          = 4;
-                    $Asunto             = UsuarioController::eliminar_tildes_texto(Input::get('title'));
+                    $Asunto             = $request->title;
                 }
             }
 
@@ -389,14 +384,14 @@ class UsuarioController extends Controller
                 Tickets::CrearTicketAsignado($ticket,$Asunto,$Descripcion,$creadoPor,$AsignadoA);
                 $destinationPath = null;
                 $filename        = null;
-                if (Input::hasFile('evidencia')) {
-                    $files = Input::file('evidencia');
+                if ($request->hasFile('evidencia')) {
+                    $files = $request->file('evidencia');
                     foreach($files as $file){
                         $destinationPath    = public_path().'/assets/dist/img/evidencias';
                         $extension          = $file->getClientOriginalExtension();
                         $name               = $file->getClientOriginalName();
                         $nombrearchivo      = pathinfo($name, PATHINFO_FILENAME);
-                        $nombrearchivo      = UsuarioController::eliminar_tildes($nombrearchivo);
+                        $nombrearchivo      = Funciones::eliminar_tildes($nombrearchivo);
                         $filename           = $nombrearchivo.'_Ticket_'.$ticket.'.'.$extension;
                         $uploadSuccess      = $file->move($destinationPath, $filename);
                         $archivofoto        = file_get_contents($uploadSuccess);
@@ -433,10 +428,10 @@ class UsuarioController extends Controller
                     // $calificacion3 = "<a href='http://192.168.0.125:8080/helpdeskcrcscb/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/regular.png' width='60' height='60'/></a>";
                     // $calificacion4 = "<a href='http://192.168.0.125:8080/helpdeskcrcscb/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/malo.png' width='60' height='60'/></a>";
                     // $calificacion5 = "<a href='http://192.168.0.125:8080/helpdeskcrcscb/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/pesimo.png' width='60' height='60'/></a>";
-                    $calificacion1 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=1&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/excelente.png' width='60' height='60'/></a>";
-                    $calificacion2 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=2&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/dist/img/calificacion/bueno.png' width='60' height='60'/></a>";
-                    $calificacion3 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=1&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/regular.png' width='60' height='60'/></a>";
-                    $calificacion4 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=1&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/malo.png' width='60' height='60'/></a>";
+                    $calificacion1 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=5&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/excelente.png' width='60' height='60'/></a>";
+                    $calificacion2 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=4&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/dist/img/calificacion/bueno.png' width='60' height='60'/></a>";
+                    $calificacion3 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=3&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/regular.png' width='60' height='60'/></a>";
+                    $calificacion4 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=2&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/malo.png' width='60' height='60'/></a>";
                     $calificacion5 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=1&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/pesimo.png' width='60' height='60'/></a>";
                  }else{
                     $calificacion = 0;
@@ -473,118 +468,9 @@ class UsuarioController extends Controller
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el ticket');
-                return Redirect::to('usuario/crearTicket')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to('usuario/crearTicket')->withErrors(['errors' => $verrors])->withRequest();
             }
-        }else{
-            return Redirect::to('usuario/crearTicket')->withErrors(['errors' => $verrors])->withInput();
-            // return redirect('usuario/crearTicket')->withErrors(['errors' => $verrors])->withInput();
         }
-    }
-
-    public static function eliminar_tildes_texto($nombrearchivo){
-
-        //Codificamos la cadena en formato utf8 en caso de que nos de errores
-        // $cadena = utf8_encode($nombrearchivo);
-        $cadena = $nombrearchivo;
-        //Ahora reemplazamos las letras
-        $cadena = str_replace(
-            array('ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä','Ã¡'),
-            array('a', 'a', 'a', 'A', 'A', 'A', 'A','á'),
-            $cadena
-        );
-
-        $cadena = str_replace(
-            array('ë', 'ê', 'É', 'È', 'Ê', 'Ë','Ã©'),
-            array('e', 'e', 'E', 'E', 'E', 'E','é'),
-            $cadena );
-
-        $cadena = str_replace(
-            array('ï', 'î', 'Í', 'Ì', 'Ï', 'Î','Ã­'),
-            array('i', 'i', 'I', 'I', 'I', 'I','í'),
-            $cadena );
-
-        $cadena = str_replace(
-            array('ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô','Ã³','Ã“'),
-            array('o', 'o', 'O', 'O', 'O', 'O','ó','Ó'),
-            $cadena );
-
-        $cadena = str_replace(
-            array('ü', 'û', 'Ú', 'Ù', 'Û', 'Ü','Ãº'),
-            array('u', 'u', 'U', 'U', 'U', 'U','ú'),
-            $cadena );
-
-        $cadena = str_replace(
-            array('ç', 'Ç','Ã±','Ã‘'),
-            array('c', 'C','ñ','Ñ'),
-            $cadena
-        );
-
-        $cadena = str_replace(
-            array("'", '‘'),
-            array(' ', ' '),
-            $cadena
-        );
-
-        $cadena = str_replace(
-            array("'", '‘','a€“'),
-            array(' ', ' ','-'),
-            $cadena
-        );
-
-        return $cadena;
-    }
-
-    public static function eliminar_tildes($nombrearchivo){
-
-        //Codificamos la cadena en formato utf8 en caso de que nos de errores
-        // $cadena = utf8_encode($nombrearchivo);
-        $cadena = $nombrearchivo;
-        //Ahora reemplazamos las letras
-        $cadena = str_replace(
-            array('á', 'à', 'ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä'),
-            array('a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A'),
-            $cadena
-        );
-
-        $cadena = str_replace(
-            array('é', 'è', 'ë', 'ê', 'É', 'È', 'Ê', 'Ë'),
-            array('e', 'e', 'e', 'e', 'E', 'E', 'E', 'E'),
-            $cadena );
-
-        $cadena = str_replace(
-            array('í', 'ì', 'ï', 'î', 'Í', 'Ì', 'Ï', 'Î'),
-            array('i', 'i', 'i', 'i', 'I', 'I', 'I', 'I'),
-            $cadena );
-
-        $cadena = str_replace(
-            array('ó', 'ò', 'ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô'),
-            array('o', 'o', 'o', 'o', 'O', 'O', 'O', 'O'),
-            $cadena );
-
-        $cadena = str_replace(
-            array('ú', 'ù', 'ü', 'û', 'Ú', 'Ù', 'Û', 'Ü'),
-            array('u', 'u', 'u', 'u', 'U', 'U', 'U', 'U'),
-            $cadena );
-
-        $cadena = str_replace(
-            array('ñ', 'Ñ', 'ç', 'Ç'),
-            array('n', 'N', 'c', 'C'),
-            $cadena
-        );
-
-        $cadena = str_replace(
-            array(' ', '-'),
-            array('_', '_'),
-            $cadena
-        );
-
-        $cadena = str_replace(
-            array("'", '‘','a€“'),
-            array(' ', ' ','-'),
-            $cadena
-        );
-
-        return $cadena;
     }
 
 }

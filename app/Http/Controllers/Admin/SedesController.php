@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Http\Request;
 use App\Models\Admin\Sedes;
 use App\Http\Requests\Validaciones;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Admin\Usuarios;
 use Monolog\Handler\ZendMonitorHandler;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Admin\Activo;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Response;
+use App\Http\Controllers\Funciones;
 
 class SedesController extends Controller
 {
@@ -24,10 +26,10 @@ class SedesController extends Controller
         $SedesIndex = array();
         $contS = 0;
         foreach($Sedes as $value){
-            $SedesIndex[$contS]['id'] = $value->id;
-            $SedesIndex[$contS]['name'] = $value->name;
-            $SedesIndex[$contS]['description'] = $value->description;
-            $SedesIndex[$contS]['activo'] = $value->activo;
+            $SedesIndex[$contS]['id']           = $value->id;
+            $SedesIndex[$contS]['name']         = Funciones::eliminar_tildes_texto($value->name);
+            $SedesIndex[$contS]['description']  = Funciones::eliminar_tildes_texto($value->description);
+            $SedesIndex[$contS]['activo']       = $value->activo;
             $idactivo = $value->activo;
             $nombreActivoS = Usuarios::ActivoID($idactivo);
             foreach($nombreActivoS as $valor){
@@ -41,7 +43,7 @@ class SedesController extends Controller
         $contA = 0;
         foreach($Areas as $value){
             $AreasIndex[$contA]['id']           = (int)$value->id;
-            $AreasIndex[$contA]['nombre']       = SedesController::eliminar_tildes_texto($value->name);
+            $AreasIndex[$contA]['nombre']       = Funciones::eliminar_tildes_texto($value->name);
             $AreasIndex[$contA]['project_id']   = (int)$value->project_id;
             $AreasIndex[$contA]['activo']       = (int)$value->activo;
             $idactivo                           = (int)$value->activo;
@@ -52,7 +54,7 @@ class SedesController extends Controller
             $idsede                             = (int)$value->project_id;
             $Sede           = Sedes::BuscarSedeID($idsede);
             foreach($Sede as $rowS){
-                $AreasIndex[$contA]['sede'] = SedesController::eliminar_tildes_texto($rowS->name);
+                $AreasIndex[$contA]['sede'] = Funciones::eliminar_tildes_texto($rowS->name);
             }
             $contA++;
         }
@@ -67,33 +69,31 @@ class SedesController extends Controller
         $NombreSede = array();
         $NombreSede[''] = 'Seleccione: ';
         foreach($Sedes as $row){
-            $NombreSede[$row->id] = $row->name;
+            $NombreSede[$row->id] = Funciones::eliminar_tildes_texto($row->name);
         }
 
         return view('admin.sedes',['Sedes' => $SedesIndex,'NombreSede' => $NombreSede,'Sede' => null,
                                     'Descripcion' => null,'Activo' => $NombreActivo,'Areas' => $AreasIndex]);
     }
 
-    public function crearSede(){
-        $data = Input::all();
-        $reglas = array(
+    public function crearSede(Request $request){
+        $validator = Validator::make($request->all(), [
             'nombre'        =>  'required',
             'descripcion'   =>  'required'
-        );
-        $validador = Validator::make($data, $reglas);
-        $messages = $validador->messages();
-        foreach ($reglas as $key => $value){
-            $verrors[$key] = $messages->first($key);
-        }
-        if($validador->passes()) {
-            $Sede           = SedesController::eliminar_tildes_texto(Input::get('nombre'));
-            $Descripcion    = SedesController::eliminar_tildes_texto(Input::get('descripcion'));
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/sedes')->withErrors($validator)->withInput();
+        }else{
+
+            $Sede           = Funciones::eliminar_tildes_texto($request->nombre);
+            $Descripcion    = Funciones::eliminar_tildes_texto($request->descripcion);
             $consultarSede  = Sedes::BuscarSede($Sede);
 
             if($consultarSede){
                 $verrors = array();
                 array_push($verrors, 'Nombre de la sede ya se encuentra creada');
-                return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withRequest();
             }else{
 
                 $InsertarSede = Sedes::CrearSede($Sede,$Descripcion);
@@ -104,33 +104,28 @@ class SedesController extends Controller
                     $verrors = array();
                     array_push($verrors, 'Hubo un problema al crear la sede');
                     // return redirect('admin/sedes')->withErrors(['errors' => $verrors]);
-                    return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withInput();
+                    return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withRequest();
                 }
             }
-        }else{
-            // return redirect('admin/sedes')->withErrors(['errors' => $verrors]);
-            return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withInput();
         }
     }
 
-    public function actualizarSede(){
+    public function actualizarSede(Request $request){
 
-        $data = Input::all();
-        $reglas = array(
+        $validator = Validator::make($request->all(), [
             'nombre_upd'        =>  'required',
             'descripcion_upd'   =>  'required',
             'activo'            =>  'required'
-        );
-        $validador = Validator::make($data, $reglas);
-        $messages = $validador->messages();
-        foreach ($reglas as $key => $value){
-            $verrors[$key] = $messages->first($key);
-        }
-        if($validador->passes()) {
-            $id             = (int)Input::get('idS');
-            $Sede           = SedesController::eliminar_tildes_texto(Input::get('nombre_upd'));
-            $Descripcion    = SedesController::eliminar_tildes_texto(Input::get('descripcion_upd'));
-            $idActivo       = Input::get('activo');
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/sedes')->withErrors($validator)->withInput();
+        }else{
+
+            $id             = (int)$request->idS;
+            $Sede           = Funciones::eliminar_tildes_texto($request->nombre_upd);
+            $Descripcion    = Funciones::eliminar_tildes_texto($request->descripcion_upd);
+            $idActivo       = $request->activo;
             $actualizarSede = Sedes::ActualizarSede($id,$Sede,$Descripcion,$idActivo);
             if($actualizarSede >= 0){
                 $verrors = 'Se actualizo con éxito la sede '.$Sede;
@@ -140,32 +135,27 @@ class SedesController extends Controller
                 array_push($verrors, 'Hubo un problema al actualizar la sede');
                 return redirect('admin/sedes')->withErrors(['errors' => $verrors]);
             }
-        }else{
-            return redirect('admin/sedes')->withErrors(['errors' => $verrors]);
         }
-
     }
 
-    public function crearArea(){
-        $data = Input::all();
-        $reglas = array(
+    public function crearArea(Request $request){
+        $validator = Validator::make($request->all(), [
             'nombre_area'   =>  'required',
             'sede'          =>  'required'
-        );
-        $validador = Validator::make($data, $reglas);
-        $messages = $validador->messages();
-        foreach ($reglas as $key => $value){
-            $verrors[$key] = $messages->first($key);
-        }
-        if($validador->passes()) {
-            $Area           = SedesController::eliminar_tildes_texto(Input::get('nombre_area'));
-            $Sede           = (int)Input::get('sede');
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/sedes')->withErrors($validator)->withInput();
+        }else{
+
+            $Area           = Funciones::eliminar_tildes_texto($request->nombre_area);
+            $Sede           = (int)$request->sede;
             $consultarArea  = Sedes::BuscarArea($Area,$Sede);
 
             if($consultarArea){
                 $verrors = array();
                 array_push($verrors, 'Nombre del área ya se encuentra creada');
-                return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withRequest();
             }else{
 
                 $InsertarArea = Sedes::CrearArea($Area,$Sede);
@@ -176,32 +166,27 @@ class SedesController extends Controller
                     $verrors = array();
                     array_push($verrors, 'Hubo un problema al crear el área');
                     // return redirect('admin/sedes')->withErrors(['errors' => $verrors]);
-                    return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withInput();
+                    return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withRequest();
                 }
             }
-        }else{
-            // return redirect('admin/sedes')->withErrors(['errors' => $verrors]);
-            return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withInput();
         }
     }
 
-    public function actualizarArea(){
-        $data = Input::all();
-        $reglas = array(
+    public function actualizarArea(Request $request){
+        $validator = Validator::make($request->all(), [
             'nombre_area_upd'   =>  'required',
             'sede_upd'          =>  'required',
             'activo_area'       =>  'required'
-        );
-        $validador = Validator::make($data, $reglas);
-        $messages = $validador->messages();
-        foreach ($reglas as $key => $value){
-            $verrors[$key] = $messages->first($key);
-        }
-        if($validador->passes()) {
-            $id             = (int)Input::get('idA');
-            $Area           = SedesController::eliminar_tildes_texto(Input::get('nombre_area_upd'));
-            $Sede           = (int)Input::get('sede_upd');
-            $idActivo       = (int)Input::get('activo_area');
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/sedes')->withErrors($validator)->withInput();
+        }else{
+
+            $id             = (int)$request->dA;
+            $Area           = Funciones::eliminar_tildes_texto($request->nombre_area_upd);
+            $Sede           = (int)$request->sede_upd;
+            $idActivo       = (int)$request->activo_area;
             $ActualizarArea = Sedes::ActualizarArea($id,$Area,$Sede,$idActivo);
             if($ActualizarArea >= 0){
                 $verrors = 'Se actualizo con éxito el área '.$Area;
@@ -211,56 +196,8 @@ class SedesController extends Controller
                 array_push($verrors, 'Hubo un problema al actualizar el área');
                 return redirect('admin/sedes')->withErrors(['errors' => $verrors]);
             }
-        }else{
-            return redirect('admin/sedes')->withErrors(['errors' => $verrors]);
         }
     }
 
-    public static function eliminar_tildes_texto($nombrearchivo){
-
-        //Codificamos la cadena en formato utf8 en caso de que nos de errores
-        // $cadena = utf8_encode($nombrearchivo);
-        $cadena = $nombrearchivo;
-        //Ahora reemplazamos las letras
-        $cadena = str_replace(
-            array('ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä','Ã¡'),
-            array('a', 'a', 'a', 'A', 'A', 'A', 'A','á'),
-            $cadena
-        );
-
-        $cadena = str_replace(
-            array('ë', 'ê', 'É', 'È', 'Ê', 'Ë','Ã©'),
-            array('e', 'e', 'E', 'E', 'E', 'E','é'),
-            $cadena );
-
-        $cadena = str_replace(
-            array('ï', 'î', 'Í', 'Ì', 'Ï', 'Î','Ã­'),
-            array('i', 'i', 'I', 'I', 'I', 'I','í'),
-            $cadena );
-
-        $cadena = str_replace(
-            array('ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô','Ã³','Ã“'),
-            array('o', 'o', 'O', 'O', 'O', 'O','ó','Ó'),
-            $cadena );
-
-        $cadena = str_replace(
-            array('ü', 'û', 'Ú', 'Ù', 'Û', 'Ü','Ãº'),
-            array('u', 'u', 'U', 'U', 'U', 'U','ú'),
-            $cadena );
-
-        $cadena = str_replace(
-            array('ç', 'Ç','Ã±','Ã‘'),
-            array('c', 'C','ñ','Ñ'),
-            $cadena
-        );
-
-        $cadena = str_replace(
-            array("'", '‘'),
-            array(' ', ' '),
-            $cadena
-        );
-
-        return $cadena;
-    }
 
 }

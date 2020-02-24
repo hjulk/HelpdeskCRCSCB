@@ -136,7 +136,7 @@ Reporte Tickets
                                         <div class="col-md-12">
                     <table id="reporte" class="display table-striped responsive no-wrap" style="width:100%">
                         <thead style="background: linear-gradient(60deg,rgba(51,101,155,1),rgba(66,132,206,1));color: #ECF0F1;">
-                            <tr>
+                            <tr style="background: linear-gradient(60deg,rgba(51,101,155,1),rgba(66,132,206,1));color: #ECF0F1;">
                                 <th>Ticket</th>
                                 <th>Fecha Creación</th>
                                 <th>Fecha Actualización</th>
@@ -221,7 +221,7 @@ Reporte Tickets
                         for (index in ListUsuario) {
                             select.options[select.options.length] = new Option(ListUsuario[index], index);
                         }
-
+                        document.ready = document.getElementById("id_usuariorepo").value = '';
                     }
 
                 }

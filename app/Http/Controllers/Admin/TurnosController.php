@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Funciones;
 use App\Models\Admin\Usuarios;
 use App\Models\Admin\Sedes;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use App\Http\Requests\Validaciones;
-use Validator;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use Monolog\Handler\ZendMonitorHandler;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Session;
+
 
 class TurnosController extends Controller
 {
@@ -51,7 +52,7 @@ class TurnosController extends Controller
             $IdSede = (int)$row->id_sede;
             $BuscarSede = Sedes::BuscarSedeID($IdSede);
             foreach($BuscarSede as $value){
-                $ListarTurnos[$cont]['sede'] = $value->name;
+                $ListarTurnos[$cont]['sede'] = Funciones::eliminar_tildes_texto($value->name);
             }
             $ListarTurnos[$cont]['id_horario']      = (int)$row->id_horario;
             $IdHorario = (int)$row->id_horario;
@@ -74,7 +75,7 @@ class TurnosController extends Controller
         $Sede = array();
         $Sede[''] = 'Seleccione: ';
         foreach ($ListaSede as $row){
-            $Sede[$row->id] = $row->name;
+            $Sede[$row->id] = Funciones::eliminar_tildes_texto($row->name);
         }
 
         $ListaAgente     = Usuarios::ListarUsuariosTurno();
@@ -92,40 +93,39 @@ class TurnosController extends Controller
         return view('Turnos.Turnos',['Turnos' => $ListarTurnos,'Horario' => $Horario,'Sede' => $Sede,'Agente' => $Agente,
                                     'Disponibilidad' => $Disponibilidad]);
     }
-    public function crearTurno(){
-        $data = Input::all();
+    public function crearTurno(Request $request){
+
         $creadoPor          = (int)Session::get('IdUsuario');
         $buscarUsuario = Usuarios::BuscarNombre($creadoPor);
         foreach($buscarUsuario as $value){
             $Administrador = (int)$value->rol_id;
         }
-        $url = TurnosController::BuscarURL($Administrador);
-        $reglas = array(
+        $url = Funciones::BuscarURL($Administrador);
+        $validator = Validator::make($request->all(), [
             'agente'            =>  'required',
             'fecha_inicio'      =>  'required',
             'sede'              =>  'required',
             'horario'           =>  'required',
             'disponibilidad'    =>  'required'
-        );
-        $validador = Validator::make($data, $reglas);
-        $messages = $validador->messages();
-        foreach ($reglas as $key => $value){
-            $verrors[$key] = $messages->first($key);
-        }
-        if($validador->passes()) {
-            $Agente         = (int)Input::get('agente');
-            $FechaInicio    = date('Y-m-d', strtotime(Input::get('fecha_inicio')));
-            $FechaInicioEmail   = date('d-m-Y', strtotime(Input::get('fecha_inicio')));
-            if(Input::get('fecha_fin')){
-                $FechaFin   = Input::get('fecha_fin');
-                $FechaFinEmail   = date('d-mY', strtotime(Input::get('fecha_fin')));
+        ]);
+
+        if ($validator->fails()) {
+            return redirect($url.'/turnos')->withErrors($validator)->withInput();
+        }else{
+
+            $Agente         = (int)$request->agente;
+            $FechaInicio    = date('Y-m-d', strtotime($request->fecha_inicio));
+            $FechaInicioEmail   = date('d-m-Y', strtotime($request->fecha_inicio));
+            if($request->fecha_fin){
+                $FechaFin   = $request->fecha_fin;
+                $FechaFinEmail   = date('d-mY', strtotime($request->fecha_fin));
             }else{
                 $FechaFin   = 'INDEFINIDO';
                 $FechaFinEmail   = 'INDEFINIDO';
             }
-            $Sede           = (int)Input::get('sede');
-            $Horario        = (int)Input::get('horario');
-            $Disponibilidad = Input::get('disponibilidad');
+            $Sede           = (int)$request->sede;
+            $Horario        = (int)$request->horario;
+            $Disponibilidad = $request->disponibilidad;
 
             $CreacionTurno = Usuarios::CreacionTurno($Agente,$FechaInicio,$FechaFin,$Sede,$Horario,$Disponibilidad);
             if($CreacionTurno){
@@ -175,49 +175,46 @@ class TurnosController extends Controller
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el turno');
-                return Redirect::to($url.'/turnos')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to($url.'/turnos')->withErrors(['errors' => $verrors])->withRequest();
             }
 
-        }else{
-            return Redirect::to($url.'/turnos')->withErrors(['errors' => $verrors])->withInput();
         }
     }
 
-    public function actualizarTurno(){
-        $data = Input::all();
+    public function actualizarTurno(Request $request){
+
         $creadoPor          = (int)Session::get('IdUsuario');
         $buscarUsuario = Usuarios::BuscarNombre($creadoPor);
         foreach($buscarUsuario as $value){
             $Administrador = (int)$value->rol_id;
         }
-        $url = TurnosController::BuscarURL($Administrador);
-        $reglas = array(
+        $url = Funciones::BuscarURL($Administrador);
+        $validator = Validator::make($request->all(), [
             'agente_upd'            =>  'required',
             'fecha_inicio_upd'      =>  'required',
             'sede_upd'              =>  'required',
             'horario_upd'           =>  'required',
             'disponibilidad_upd'    =>  'required'
-        );
-        $validador = Validator::make($data, $reglas);
-        $messages = $validador->messages();
-        foreach ($reglas as $key => $value){
-            $verrors[$key] = $messages->first($key);
-        }
-        if($validador->passes()) {
-            $Agente             = Input::get('agente_upd');
-            $FechaInicio        = date('Y-m-d', strtotime(Input::get('fecha_inicio_upd')));
-            $FechaInicioEmail   = date('d-m-Y', strtotime(Input::get('fecha_inicio_upd')));
-            if(Input::get('fecha_fin_upd')){
-                $FechaFin       = Input::get('fecha_fin_upd');
-                $FechaFinEmail  = date('d-m-Y', strtotime(Input::get('fecha_fin_upd')));
+        ]);
+
+        if ($validator->fails()) {
+            return redirect($url.'/turnos')->withErrors($validator)->withInput();
+        }else{
+
+            $Agente             = $request->agente_upd;
+            $FechaInicio        = date('Y-m-d', strtotime($request->fecha_inicio_upd));
+            $FechaInicioEmail   = date('d-m-Y', strtotime($request->fecha_inicio_upd));
+            if($request->fecha_fin_upd){
+                $FechaFin       = $request->fecha_fin_upd;
+                $FechaFinEmail  = date('d-m-Y', strtotime($request->fecha_fin_upd));
             }else{
                 $FechaFin   = 'INDEFINIDO';
                 $FechaFinEmail   = 'INDEFINIDO';
             }
-            $Sede           = Input::get('sede_upd');
-            $Horario        = Input::get('horario_upd');
-            $Disponibilidad = Input::get('disponibilidad_upd');
-            $IdTurno        = Input::get('idTu');
+            $Sede           = $request->sede_upd;
+            $Horario        = $request->horario_upd;
+            $Disponibilidad = $request->disponibilidad_upd;
+            $IdTurno        = $request->idTu;
 
 
             $ActualizacionTurno = Usuarios::ActualizacionTurno($Agente,$FechaInicio,$FechaFin,$Sede,$Horario,$Disponibilidad,$IdTurno);
@@ -269,18 +266,9 @@ class TurnosController extends Controller
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al actualizar el turno');
-                return Redirect::to($url.'/turnos')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to($url.'/turnos')->withErrors(['errors' => $verrors])->withRequest();
             }
-        }else{
-            return Redirect::to($url.'/turnos')->withErrors(['errors' => $verrors])->withInput();
         }
     }
 
-    public function BuscarURL($Administrador){
-        if($Administrador === 1){
-            return 'admin';
-        }else{
-            return 'user';
-        }
-    }
 }

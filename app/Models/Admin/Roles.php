@@ -16,8 +16,18 @@ class Roles extends Model
         return $roles;
     }
 
+    public static function ListarRolesAdmin(){
+        $roles = DB::Select("SELECT * FROM rol");
+        return $roles;
+    }
+
     public static function ListarCategorias(){
         $categorias = DB::Select("SELECT * FROM category WHERE activo = 1");
+        return $categorias;
+    }
+
+    public static function ListarCategoriasAdmin(){
+        $categorias = DB::Select("SELECT * FROM category");
         return $categorias;
     }
 
@@ -31,13 +41,18 @@ class Roles extends Model
         return $consultaRol;
     }
 
+    public static function BuscarIDRol($id){
+        $consultaRol = DB::Select("SELECT * FROM rol WHERE rol_id = $id");
+        return $consultaRol;
+    }
+
     public static function CrearRol($nombreRol){
         $crearRol = DB::insert('INSERT INTO rol (name,activo) values (?,?)', [$nombreRol,1]);
         return $crearRol;
     }
 
     public static function ActualizarRol($id,$nombreRol,$idactivo){
-        $actualizarRol = DB::Update("UPDATE rol SET name = '$nombreRol', activo = $idactivo WHERE rol_id = $id");
+        $actualizarRol = DB::Update('UPDATE rol SET name = ?,activo = ? WHERE rol_id = ?', [$nombreRol,$idactivo,$id]);
         return $actualizarRol;
     }
 

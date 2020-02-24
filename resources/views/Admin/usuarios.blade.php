@@ -62,15 +62,15 @@ Usuarios
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label for="exampleInputEmail1">Nombre Completo</label>
-                                                {!! Form::text('nombre_usuario',$NombreUsuario,['class'=>'form-control','id'=>'nombre_usuario','placeholder'=>'Nombre Completo']) !!}
+                                                {!! Form::text('nombre_usuario',$NombreUsuario,['class'=>'form-control','id'=>'nombre_usuario','placeholder'=>'Nombre Completo','required']) !!}
                                             </div>
                                             <div class="col-md-3">
                                                 <label for="exampleInputEmail1">Usuario</label>
-                                                {!! Form::text('username',$UserName,['class'=>'form-control','id'=>'username','placeholder'=>'Usuario']) !!}
+                                                {!! Form::text('username',$UserName,['class'=>'form-control','id'=>'username','placeholder'=>'Usuario','required']) !!}
                                             </div>
                                             <div class="col-md-5">
                                                 <label for="exampleInputEmail1">Correo Electrónico</label>
-                                                {!! Form::email('email',$Correo,['class'=>'form-control','id'=>'email','placeholder'=>'Correo Electrónico']) !!}
+                                                {!! Form::email('email',$Correo,['class'=>'form-control','id'=>'email','placeholder'=>'Correo Electrónico','required']) !!}
                                             </div>
                                         </div>
                                     </div>
@@ -78,15 +78,15 @@ Usuarios
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <label for="exampleInputEmail1">Contraseña</label>
-                                                {!! Form::input('password','password',$Contrasena,['class'=>'form-control','id'=>'password','placeholder'=>'Contraseña','type'=>'password']) !!}
+                                                {!! Form::input('password','password',$Contrasena,['class'=>'form-control','id'=>'password','placeholder'=>'Contraseña','type'=>'password','required']) !!}
                                             </div>
                                             <div class="col-md-3">
                                                 <label for="exampleInputEmail1">Rol</label>
-                                                {!! Form::select('id_rol',$Rol,null,['class'=>'form-control','id'=>'id_rol']) !!}
+                                                {!! Form::select('id_rol',$Rol,null,['class'=>'form-control','id'=>'id_rol','required']) !!}
                                             </div>
                                             <div class="col-md-3">
                                                 <label for="exampleInputEmail1">Area</label>
-                                                {!! Form::select('id_categoria',$Categoria,null,['class'=>'form-control','id'=>'id_categoria']) !!}
+                                                {!! Form::select('id_categoria',$Categoria,null,['class'=>'form-control','id'=>'id_categoria','required']) !!}
                                             </div>
                                             <div class="col-md-3">
                                                 <label for="exampleInputFile">Foto</label>

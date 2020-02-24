@@ -15,7 +15,7 @@
                                 <div class="row">
                                     <label for="inputEmail3" class="col-sm-4 control-label">Nombre Rol</label>
                                     <div class="col-sm-8">
-                                        {!! Form::text('nombre_rol_upd',$RolName,['class'=>'form-control','id'=>'mod_nombre_rol_upd','placeholder'=>'Nombre Sede']) !!}
+                                        {!! Form::text('nombre_rol_upd',null,['class'=>'form-control','id'=>'mod_nombre_rol_upd','placeholder'=>'Nombre Rol']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -23,7 +23,7 @@
                                 <div class="row">
                                     <label for="inputEmail3" class="col-sm-4 control-label">Activo</label>
                                     <div class="col-sm-4">
-                                        {!! Form::select('id_activoR',$Activo,null,['class'=>'form-control','id'=>'mod_activoR_upd']) !!}
+                                        {!! Form::select('id_activoR',$Activo,null,['class'=>'form-control','id'=>'mod_activoR_upd','required']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
                                     <div class="row">
                                         <label for="inputEmail3" class="col-sm-4 control-label">Nombre Categoria</label>
                                         <div class="col-sm-8">
-                                            {!! Form::text('nombre_categoria_upd',$CategoriaName,['class'=>'form-control','id'=>'mod_nombre_categoria_upd','placeholder'=>'Nombre Sede']) !!}
+                                            {!! Form::text('nombre_categoria_upd',$CategoriaName,['class'=>'form-control','id'=>'mod_nombre_categoria_upd','placeholder'=>'Nombre Sede','required']) !!}
                                         </div>
                                     </div>
                                 </div>
@@ -63,7 +63,7 @@
                                     <div class="row">
                                         <label for="inputEmail3" class="col-sm-4 control-label">Activo</label>
                                         <div class="col-sm-4">
-                                            {!! Form::select('id_activoC',$Activo,null,['class'=>'form-control','id'=>'mod_activoC_upd']) !!}
+                                            {!! Form::select('id_activoC',$Activo,null,['class'=>'form-control','id'=>'mod_activoC_upd','required']) !!}
                                         </div>
                                     </div>
                                 </div>

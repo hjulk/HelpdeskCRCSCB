@@ -22,21 +22,28 @@ Roles
                 </div>
                 <div class="box-body">
                     <div class="row">
+                        <div class="col-md-12">
                             <div class="col-md-4">
-                                    <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+                                <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
                             </div>
-                        <div class="col-md-8">
-                            {!! Form::open(['action' => 'Admin\RolesController@crearRol', 'method' => 'post', 'enctype' => 'multipart/form-data','role' => 'form']) !!}
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Nombre</label>
-                                {!! Form::text('nombre_rol',$RolName,['class'=>'form-control','id'=>'nombre_rol','placeholder'=>'Nombre Rol']) !!}
+                            <div class="col-md-8">
+                                {!! Form::open(['action' => 'Admin\RolesController@crearRol', 'method' => 'post', 'enctype' => 'multipart/form-data','autocomplete'=>'off']) !!}
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1">Nombre</label>
+                                        {!! Form::text('nombre_rol',null,['class'=>'form-control','id'=>'nombre_rol','placeholder'=>'Nombre Rol','required']) !!}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <button type="submit" class="btn btn-primary pull-right">Crear Rol</button>
+                                    </div>
+                                </div>
+                                {!!  Form::close() !!}
                             </div>
-                            <div class="box-footer">
-                                <button type="submit" class="btn btn-primary pull-right">Crear Rol</button>
-                            </div>
-                            {!!  Form::close() !!}
                         </div>
                     </div>
+                    <br>
                     <div class="row">
                         <div class="col-md-12">
                             <table id="roles" class="display responsive hover" style="width: 100%;">
@@ -81,7 +88,7 @@ Roles
                             {!! Form::open(['action' => 'Admin\RolesController@crearCategoria', 'method' => 'post', 'enctype' => 'multipart/form-data','role' => 'form','autocomplete'=>'off']) !!}
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Nombre</label>
-                                    {!! Form::text('nombre_categoria',$CategoriaName,['class'=>'form-control','id'=>'nombre_categoria','placeholder'=>'Nombre Rol']) !!}
+                                    {!! Form::text('nombre_categoria',null,['class'=>'form-control','id'=>'nombre_categoria','placeholder'=>'Nombre Categoria','required']) !!}
                                 </div>
                                 <div class="box-footer">
                                     <button type="submit" class="btn btn-primary pull-right">Crear Categoria</button>

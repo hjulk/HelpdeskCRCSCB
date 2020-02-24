@@ -12,15 +12,15 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="exampleInputEmail1" class="col-sm-12 control-label">Nombre Agente</label>
-                                {!! Form::select('agente',$Agente,null,['class'=>'form-control','id'=>'agente']) !!}
+                                {!! Form::select('agente',$Agente,null,['class'=>'form-control','id'=>'agente','required']) !!}
                             </div>
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-sm-12 control-label">Fecha Inicio</label>
-                                {!! Form::text('fecha_inicio',null,['class'=>'form-control','id'=>'fecha_inicio','placeholder'=>'Fecha Inicio']) !!}
+                                {!! Form::text('fecha_inicio',null,['class'=>'form-control','id'=>'fecha_inicio','placeholder'=>'Fecha Inicio','required']) !!}
                             </div>
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-sm-12 control-label">Fecha Fin</label>
-                                {!! Form::text('fecha_fin',null,['class'=>'form-control','id'=>'fecha_fin','placeholder'=>'Fecha Fin']) !!}
+                                {!! Form::text('fecha_fin',null,['class'=>'form-control','id'=>'fecha_fin','placeholder'=>'Fecha Fin','required']) !!}
                                 <div align="right"><small class="text-muted" style="font-size: 73%;">En blanco, turno indefinido</small> <span id="cntDescripHechos" align="right"> </span></div>
                             </div>
                         </div>
@@ -29,15 +29,15 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-sm-12 control-label">Sede</label>
-                                {!! Form::select('sede',$Sede,null,['class'=>'form-control','id'=>'sede']) !!}
+                                {!! Form::select('sede',$Sede,null,['class'=>'form-control','id'=>'sede','required']) !!}
                             </div>
                             <div class="col-md-5">
                                 <label for="exampleInputEmail1" class="col-sm-12 control-label">Horario</label>
-                                {!! Form::select('horario',$Horario,null,['class'=>'form-control','id'=>'horario']) !!}
+                                {!! Form::select('horario',$Horario,null,['class'=>'form-control','id'=>'horario','required']) !!}
                             </div>
                             <div class="col-md-4">
                                 <label for="exampleInputEmail1" class="col-sm-12 control-label">Disponibilidad</label>
-                                {!! Form::select('disponibilidad',$Disponibilidad,null,['class'=>'form-control','id'=>'disponibilidad']) !!}
+                                {!! Form::select('disponibilidad',$Disponibilidad,null,['class'=>'form-control','id'=>'disponibilidad','required']) !!}
                             </div>
                         </div>
                     </div>

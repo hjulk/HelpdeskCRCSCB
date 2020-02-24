@@ -9,6 +9,7 @@ use App\Models\Admin\Usuarios;
 use App\Models\Admin\Roles;
 use App\Models\HelpDesk\Inventario;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\Funciones;
 
 class AdministracionController extends Controller
 {
@@ -177,9 +178,9 @@ class AdministracionController extends Controller
             $contadorGestionS = count($buscarGestionSede);
             $contGS = 0;
             foreach($buscarGestionSede as $consulta){
-                    $resultado_gestionS[$contGS]['nombre']= $consulta->nombre_sede;
-                    $resultado_gestionS[$contGS]['incidentes']= $consulta->incidentes;
-                    $resultado_gestionS[$contGS]['requerimientos']= $consulta->requerimientos;
+                    $resultado_gestionS[$contGS]['nombre']          = Funciones::eliminar_tildes_texto($consulta->nombre_sede);
+                    $resultado_gestionS[$contGS]['incidentes']      = $consulta->incidentes;
+                    $resultado_gestionS[$contGS]['requerimientos']  = $consulta->requerimientos;
 
                     if($contGS >= ($contadorGestionS-1)){
                         $resultado_gestionS[$contGS]['separador']= '';

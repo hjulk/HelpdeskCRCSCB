@@ -21,7 +21,7 @@ Tickets Recurrentes
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="inputEmail3" class="col-sm-12 control-label">Asunto Ticket</label>
-                                    {!! Form::textarea('asunto',null,['class'=>'form-control','id'=>'asunto','placeholder'=>'Ingrese el asunto','rows'=>'2']) !!}
+                                    {!! Form::textarea('asunto',null,['class'=>'form-control','id'=>'asunto','placeholder'=>'Ingrese el asunto','rows'=>'2','required']) !!}
                                 </div>
                             </div>
                         </div>
@@ -29,7 +29,7 @@ Tickets Recurrentes
                             <div class="row">
                                 <div class="col-md-9">
                                     <label for="inputEmail3" class="col-sm-12 control-label">Categoria</label>
-                                    {!! Form::select('categoria',$Categoria,null,['class'=>'form-control','id'=>'categoria']) !!}
+                                    {!! Form::select('categoria',$Categoria,null,['class'=>'form-control','id'=>'categoria','required']) !!}
                                 </div>
                             </div>
                         </div>
@@ -37,11 +37,11 @@ Tickets Recurrentes
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="inputEmail3" class="col-sm-12 control-label">Prioridad</label>
-                                    {!! Form::select('prioridad',$Prioridad,null,['class'=>'form-control','id'=>'prioridad']) !!}
+                                    {!! Form::select('prioridad',$Prioridad,null,['class'=>'form-control','id'=>'prioridad','required']) !!}
                                 </div>
                                 <div class="col-md-6">
                                     <label for="inputEmail3" class="col-sm-12 control-label">Tipo Usuario</label>
-                                    {!! Form::select('tipo_usuario',$Tipo,null,['class'=>'form-control','id'=>'tipo_usuario']) !!}
+                                    {!! Form::select('tipo_usuario',$Tipo,null,['class'=>'form-control','id'=>'tipo_usuario','required']) !!}
                                 </div>
                             </div>
                         </div>

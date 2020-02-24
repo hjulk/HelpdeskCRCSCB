@@ -17,7 +17,7 @@
                         </div>
                         <div class="col-md-3">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Marca - Serial</label>
-                            {!! Form::Select('marca_serial',$Marca,null,['class'=>'form-control','id'=>'marca_serial']) !!}
+                            {!! Form::Select('marca_serial',$Marca,null,['class'=>'form-control','id'=>'marca_serial','required']) !!}
                         </div>
                         <div class="col-md-3">
                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Mouse</label>
@@ -62,7 +62,7 @@
                     <div class="row">
                         <div class="col-sm-3">
                             <label class="control-label col-sm-12" for="fname">Sede:</label>
-                            {!! Form::select('sede',$Sedes,null,['class'=>'form-control','id'=>'sede','onchange'=>'Area();','required']) !!}
+                            {!! Form::select('sede',$Sede,null,['class'=>'form-control','id'=>'sede','onchange'=>'Area();','required']) !!}
                         </div>
                         <div class="col-sm-3">
                             <label class="control-label col-sm-12" for="fname">Área / Dependencia:</label>
@@ -323,7 +323,7 @@
                         for (index in ListUsuario) {
                             select.options[select.options.length] = new Option(ListUsuario[index], index);
                         }
-
+                        document.ready = document.getElementById("mod_marca_serial").value = '';
                     }
 
                 }

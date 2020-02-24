@@ -3,7 +3,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Artisan;
-
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Redirect;
 
 Cache::flush();
 Session::flush();

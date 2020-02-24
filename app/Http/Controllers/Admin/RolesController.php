@@ -4,15 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Admin\Roles;
 use App\Models\Admin\Usuarios;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use App\Http\Requests\Validaciones;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use Monolog\Handler\ZendMonitorHandler;
 use App\Http\Middleware\VerifyCsrfToken;
+use App\Http\Controllers\Funciones;
 
 class RolesController extends Controller
 {
@@ -23,24 +25,24 @@ class RolesController extends Controller
      */
     public function roles()
     {
-        $Roles      = Roles::ListarRoles();
-        $Categoria  = Roles::ListarCategorias();
-        $RolIndex = array();
-        $CategoriaIndex = array();
-        $contR = 0;
-        $contC = 0;
-        $Activo     = Usuarios::Activo();
-        $NombreActivo = array();
-        $NombreActivo[''] = 'Seleccione: ';
+        $Roles              = Roles::ListarRolesAdmin();
+        $Categoria          = Roles::ListarCategoriasAdmin();
+        $RolIndex           = array();
+        $CategoriaIndex     = array();
+        $contR              = 0;
+        $contC              = 0;
+        $Activo             = Usuarios::Activo();
+        $NombreActivo       = array();
+        $NombreActivo['']   = 'Seleccione: ';
         foreach ($Activo as $row){
             $NombreActivo[$row->id] = $row->name;
         }
 
         foreach($Roles as $value){
-            $RolIndex[$contR]['id'] = $value->rol_id;
-            $RolIndex[$contR]['name'] = $value->name;
-            $RolIndex[$contR]['activoR'] = $value->activo;
-            $idactivo = $value->activo;
+            $RolIndex[$contR]['id']         = $value->rol_id;
+            $RolIndex[$contR]['name']       = Funciones::eliminar_tildes_texto($value->name);
+            $RolIndex[$contR]['activoR']    = $value->activo;
+            $idactivo                       = $value->activo;
             $nombreActivoS = Usuarios::ActivoID($idactivo);
             foreach($nombreActivoS as $valor){
                 $RolIndex[$contR]['activo'] = $valor->name;
@@ -48,13 +50,13 @@ class RolesController extends Controller
             $contR++;
         }
         foreach($Categoria as $value){
-            $CategoriaIndex[$contC]['id'] = $value->id;
-            $CategoriaIndex[$contC]['name'] = $value->name;
-            $CategoriaIndex[$contC]['activoC'] = $value->activo;
+            $CategoriaIndex[$contC]['id']           = $value->id;
+            $CategoriaIndex[$contC]['name']         = Funciones::eliminar_tildes_texto($value->name);
+            $CategoriaIndex[$contC]['activoC']      = $value->activo;
             $idactivo = $value->activo;
             $nombreActivoS = Usuarios::ActivoID($idactivo);
             foreach($nombreActivoS as $valor){
-                $CategoriaIndex[$contC]['activo'] = $valor->name;
+                $CategoriaIndex[$contC]['activo']   = $valor->name;
             }
             $contC++;
         }
@@ -63,25 +65,22 @@ class RolesController extends Controller
                                     'RolName' => null,'CategoriaName' => null]);
     }
 
-    public function crearRol()
+    public function crearRol(Request $request)
     {
-        $data = Input::all();
-        $reglas = array(
+        $validator = Validator::make($request->all(), [
             'nombre_rol'    =>  'required'
-        );
-        $validador = Validator::make($data, $reglas);
-        $messages = $validador->messages();
-        foreach ($reglas as $key => $value){
-            $verrors[$key] = $messages->first($key);
-        }
-        if($validador->passes()) {
-            $nombreRol = Input::get('nombre_rol');
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/roles')->withErrors($validator)->withInput();
+        }else{
+            $nombreRol = $request->nombre_rol;
             $busquedaNombre = Roles::BuscarNombreRol($nombreRol);
             if($busquedaNombre){
                 $verrors = array();
                 array_push($verrors, 'El nombre de rol '.$nombreRol.', ya se encuentra en la base de datos');
                 // return redirect('admin/roles')->withErrors(['errors' => $verrors]);
-                return Redirect::to('admin/roles')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to('admin/roles')->withErrors(['errors' => $verrors])->withRequest();
             }else{
                 $crearRol = Roles::CrearRol($nombreRol);
                 if($crearRol){
@@ -91,32 +90,39 @@ class RolesController extends Controller
                     $verrors = array();
                     array_push($verrors, 'Hubo un problema al crear el rol');
                     // return redirect('admin/roles')->withErrors(['errors' => $verrors]);
-                    return Redirect::to('admin/roles')->withErrors(['errors' => $verrors])->withInput();
+                    return Redirect::to('admin/roles')->withErrors(['errors' => $verrors])->withRequest();
                 }
             }
-        }else{
-            // return redirect('admin/roles')->withErrors(['errors' => $verrors]);
-            return Redirect::to('admin/roles')->withErrors(['errors' => $verrors])->withInput();
         }
     }
 
-    public function actualizarRol()
+    public function actualizarRol(Request $request)
     {
-        $data = Input::all();
-        $reglas = array(
+        $validator = Validator::make($request->all(), [
             'nombre_rol_upd'    =>  'required',
             'id_activoR'        =>  'required'
-        );
-        $validador = Validator::make($data, $reglas);
-        $messages = $validador->messages();
-        foreach ($reglas as $key => $value){
-            $verrors[$key] = $messages->first($key);
-        }
-        if($validador->passes()) {
-            $id         = Input::get('idR');
-            $nombreRol  = Input::get('nombre_rol_upd');
-            $idactivo   = Input::get('id_activoR');
-            $ActualizarRol = Roles::ActualizarRol($id,$nombreRol,$idactivo);
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/roles')->withErrors($validator)->withInput();
+        }else{
+
+            $id             = (int)$request->idR;
+            $nombreR        = $request->nombre_rol_upd;
+            $idactivo       = $request->id_activoR;
+            $BuscarRol      = Roles::BuscarIDRol($id);
+            foreach($BuscarRol as $row){
+                $Nombre = $row->name;
+                $activo = (int)$row->activo;
+            }
+            if($nombreR === $Nombre){
+                $nombreRol  = $Nombre;
+                $ActualizarRol  = Roles::ActualizarRolActivo($id,$idactivo);
+            }else{
+                $nombreRol  = $request->nombre_rol_upd;
+                $ActualizarRol  = Roles::ActualizarRol($id,$nombreRol,$idactivo);
+            }
+
             if($ActualizarRol >= 0){
                 $verrors = 'Se actualizo con éxito el rol '.$nombreRol;
                 return redirect('admin/roles')->with('mensaje', $verrors);
@@ -125,79 +131,68 @@ class RolesController extends Controller
                 array_push($verrors, 'Hubo un problema al actualizar el rol');
                 return redirect('admin/roles')->withErrors(['errors' => $verrors]);
             }
-
-        }else{
-            return redirect('admin/roles')->withErrors(['errors' => $verrors]);
         }
     }
 
-    public function crearCategoria()
+    public function crearCategoria(Request $request)
     {
-        $data = Input::all();
-        $reglas = array(
+        $validator = Validator::make($request->all(), [
             'nombre_categoria'    =>  'required'
-        );
-        $validador = Validator::make($data, $reglas);
-        $messages = $validador->messages();
-        foreach ($reglas as $key => $value){
-            $verrors[$key] = $messages->first($key);
-        }
-        if($validador->passes()) {
-            $nombreCategoria = Input::get('nombre_categoria');
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/roles')->withErrors($validator)->withInput();
+        }else{
+
+            $nombreCategoria = $request->nombre_categoria;
             $busquedaNombre = Roles::BuscarNombreCategoria($nombreCategoria);
             if($busquedaNombre){
                 $verrors = array();
                 array_push($verrors, 'El nombre de la categoria '.$nombreCategoria.', ya se encuentra en la base de datos');
                 // return redirect('admin/roles')->withErrors(['errors' => $verrors]);
-                return Redirect::to('admin/roles')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to('admin/roles')->withErrors(['errors' => $verrors])->withRequest();
             }else{
                 $crearCategoria = Roles::CrearCategoria($nombreCategoria);
                 if($crearCategoria){
-                    $verrors = 'Se creo con éxito el rol '.$nombreCategoria;
+                    $verrors = 'Se creo con éxito la categoria '.$nombreCategoria;
                     return redirect('admin/roles')->with('mensaje', $verrors);
                 }else{
                     $verrors = array();
                     array_push($verrors, 'Hubo un problema al crear la categoria');
                     // return redirect('admin/roles')->withErrors(['errors' => $verrors]);
-                    return Redirect::to('admin/roles')->withErrors(['errors' => $verrors])->withInput();
+                    return Redirect::to('admin/roles')->withErrors(['errors' => $verrors])->withRequest();
                 }
             }
-        }else{
-            // return redirect('admin/roles')->withErrors(['errors' => $verrors]);
-            return Redirect::to('admin/roles')->withErrors(['errors' => $verrors])->withInput();
         }
     }
 
-    public function actualizarCategoria()
+    public function actualizarCategoria(Request $request)
     {
-        $data = Input::all();
-        $reglas = array(
-            'nombre_categoria_upd'    =>  'required',
-            'id_activoC'        =>  'required'
-        );
-        $validador = Validator::make($data, $reglas);
-        $messages = $validador->messages();
-        foreach ($reglas as $key => $value){
-            $verrors[$key] = $messages->first($key);
-        }
-        if($validador->passes()) {
-            $id                 = Input::get('idC');
-            $nombreCategoria    = Input::get('nombre_categoria_upd');
-            $idactivo           = Input::get('id_activoC');
+        $validator = Validator::make($request->all(), [
+            'nombre_categoria_upd'  =>  'required',
+            'id_activoC'            =>  'required'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/roles')->withErrors($validator)->withInput();
+        }else{
+
+            $id                 = $request->idC;
+            $nombreCategoria    = $request->nombre_categoria_upd;
+            $idactivo           = $request->id_activoC;
             $ActualizarCategoria = Roles::ActualizarCategoria($id,$nombreCategoria,$idactivo);
             if($ActualizarCategoria >= 0){
                 $verrors = 'Se actualizo con éxito la categoria '.$nombreCategoria;
                 return redirect('admin/roles')->with('mensaje', $verrors);
             }else{
                 $verrors = array();
-                array_push($verrors, 'Hubo un problema al actualizar el rol');
+                array_push($verrors, 'Hubo un problema al actualizar la categoria');
                 return redirect('admin/roles')->withErrors(['errors' => $verrors]);
             }
 
-        }else{
-            return redirect('admin/roles')->withErrors(['errors' => $verrors]);
         }
     }
+
 
 
 }

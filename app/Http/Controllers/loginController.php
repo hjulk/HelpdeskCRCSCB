@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\User\UsuariosController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Admin\Usuarios;
 use App\Models\HelpDesk\Tickets;
@@ -14,8 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
-class loginController extends Controller
-{
+class loginController extends Controller{
 
     public function index()
     {
@@ -27,21 +25,19 @@ class loginController extends Controller
         return view('auth.login');
     }
 
-    public function Acceso(){
+    public function Acceso(Request $request){
 
-        $data = Input::all();
-        $reglas = array(
+        $validator = Validator::make($request->all(), [
             'user' => 'required',
             'password' => 'required'
-        );
-        $validador = Validator::make($data, $reglas);
-        $messages = $validador->messages();
-        foreach ($reglas as $key => $value){
-            $verrors[$key] = $messages->first($key);
-        }
-        if($validador->passes()) {
-            $Usuario    = Input::get('user');
-            $Password   = Input::get('password');
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('/')->withErrors($validator)->withInput();
+        }else{
+
+            $Usuario    = $request->user;
+            $Password   = $request->password;
             $clave      = hash('sha512', $Password);
 
             $consultarUsuario = Usuarios::BuscarUser($Usuario);
@@ -147,43 +143,38 @@ class loginController extends Controller
                         $verrors = array();
                         array_push($verrors, 'Usuario inactivo');
                         // return \Response::json(['valido'=>'false','errors'=>$verrors]);
-                        return redirect('/')->withErrors(['errors' => $verrors])->withInput();
+                        return redirect('/')->withErrors(['errors' => $verrors]);
                     }
                 }else{
                     $verrors = array();
                     array_push($verrors, 'Contraseña erronea');
                     // return \Response::json(['valido'=>'false','errors'=>$verrors]);
-                    return redirect('/')->withErrors(['errors' => $verrors])->withInput();
+                    return redirect('/')->withErrors(['errors' => $verrors]);
                 }
 
             }else{
                 $verrors = array();
                 array_push($verrors, 'Usuario '.$Usuario.' no existe');
                 // return \Response::json(['valido'=>'false','errors'=>$verrors]);
-                return redirect('/')->withErrors(['errors' => $verrors])->withInput();
+                return redirect('/')->withErrors(['errors' => $verrors]);
             }
-        }else{
-            return redirect('/')->withErrors(['errors' => $verrors])->withInput();
-            // return \Response::json(['valido'=>'false','errors'=>$verrors]);
         }
     }
 
-    public function AccesoUsuario(){
+    public function AccesoUsuario(Request $request){
 
-        $data = Input::all();
-        $reglas = array(
+        $validator = Validator::make($request->all(), [
             'user'                  => 'required',
             'password'              => 'required',
             'g-recaptcha-response' => 'required|captcha'
-        );
-        $validador = Validator::make($data, $reglas);
-        $messages = $validador->messages();
-        foreach ($reglas as $key => $value){
-            $verrors[$key] = $messages->first($key);
-        }
-        if($validador->passes()) {
-            $Usuario    = Input::get('user');
-            $Password   = Input::get('password');
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('/crearSolicitud')->withErrors($validator)->withInput();
+        }else{
+
+            $Usuario    = $request->user;
+            $Password   = $request->password;
             $clave      = hash('sha512', $Password);
 
             $consultarUsuario = Usuarios::BuscarUserFinal($Usuario);
@@ -262,31 +253,27 @@ class loginController extends Controller
                         $verrors = array();
                         array_push($verrors, 'Usuario inactivo');
                         // return \Response::json(['valido'=>'false','errors'=>$verrors]);
-                        return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+                        return redirect('/crearSolicitud')->withErrors(['errors' => $verrors]);
                     }
                 }else{
                     $verrors = array();
                     array_push($verrors, 'Contraseña erronea');
                     // return \Response::json(['valido'=>'false','errors'=>$verrors]);
-                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors]);
                 }
 
             }else{
                 $verrors = array();
                 array_push($verrors, 'Usuario '.$Usuario.' no existe');
                 // return \Response::json(['valido'=>'false','errors'=>$verrors]);
-                return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+                return redirect('/crearSolicitud')->withErrors(['errors' => $verrors]);
             }
-        }else{
-            return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
-            // return \Response::json(['valido'=>'false','errors'=>$verrors]);
         }
     }
 
-    public function RecuperarContrasena(){
-        $data = Input::all();
-        $UserName = Input::get('username');
-        $UserEmail = Input::get('correo');
+    public function RecuperarContrasena(Request $request){
+        $UserName    = $request->username;
+        $UserEmail   = $request->correo;
 
         if(!empty($UserName) || !empty($UserEmail)){
 
@@ -325,12 +312,12 @@ class loginController extends Controller
                     }else{
                         $verrors = array();
                     array_push($verrors, 'Hubo un problema al recuperar la contraseña');
-                    return redirect('/')->withErrors(['errors' => $verrors])->withInput();
+                    return redirect('/')->withErrors(['errors' => $verrors]);
                     }
                 }else{
                     $verrors = array();
                     array_push($verrors, 'El usuario '.$UserName.' NO se encuentra en la base de datos');
-                    return redirect('/')->withErrors(['errors' => $verrors])->withInput();
+                    return redirect('/')->withErrors(['errors' => $verrors]);
                 }
             }else if(empty($UserName) && !empty($UserEmail)){
                 $BuscarUsuario = Usuarios::BuscarUserEmail($UserEmail);
@@ -365,12 +352,12 @@ class loginController extends Controller
                     }else{
                         $verrors = array();
                     array_push($verrors, 'Hubo un problema al recuperar la contraseña');
-                    return redirect('/')->withErrors(['errors' => $verrors])->withInput();
+                    return redirect('/')->withErrors(['errors' => $verrors]);
                     }
                 }else{
                     $verrors = array();
                     array_push($verrors, 'El correo '.$UserEmail.' NO se encuentra en la base de datos');
-                    return redirect('/')->withErrors(['errors' => $verrors])->withInput();
+                    return redirect('/')->withErrors(['errors' => $verrors]);
                 }
             }else if(!empty($UserName) && !empty($UserEmail)){
                 $BuscarUsuario = Usuarios::RestablecerPassword($UserName,$UserEmail);
@@ -405,25 +392,24 @@ class loginController extends Controller
                     }else{
                         $verrors = array();
                     array_push($verrors, 'Hubo un problema al recuperar la contraseña');
-                    return redirect('/')->withErrors(['errors' => $verrors])->withInput();
+                    return redirect('/')->withErrors(['errors' => $verrors]);
                     }
                 }else{
                     $verrors = array();
                     array_push($verrors, 'El usuario '.$UserName.' y correo '.$UserEmail.' NO se encuentra en la base de datos');
-                    return redirect('/')->withErrors(['errors' => $verrors])->withInput();
+                    return redirect('/')->withErrors(['errors' => $verrors]);
                 }
             }
         }else{
             $verrors = array();
             array_push($verrors, 'Debe diligenciar uno de los dos campos para continuar');
-            return redirect('/')->withErrors(['errors' => $verrors])->withInput();
+            return redirect('/')->withErrors(['errors' => $verrors]);
         }
     }
 
-    public function RecuperarContrasenaUsuario(){
-        $data = Input::all();
-        $UserName = Input::get('username');
-        $UserEmail = Input::get('correo');
+    public function RecuperarContrasenaUsuario(Request $request){
+        $UserName    = $request->username;
+        $UserEmail   = $request->correo;
 
         if(!empty($UserName) || !empty($UserEmail)){
 
@@ -462,12 +448,12 @@ class loginController extends Controller
                     }else{
                         $verrors = array();
                     array_push($verrors, 'Hubo un problema al recuperar la contraseña');
-                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors]);
                     }
                 }else{
                     $verrors = array();
                     array_push($verrors, 'El usuario '.$UserName.' NO se encuentra en la base de datos');
-                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors]);
                 }
             }else if(empty($UserName) && !empty($UserEmail)){
                 $BuscarUsuario = Usuarios::BuscarUserEmailFinal($UserEmail);
@@ -502,12 +488,12 @@ class loginController extends Controller
                     }else{
                         $verrors = array();
                     array_push($verrors, 'Hubo un problema al recuperar la contraseña');
-                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors]);
                     }
                 }else{
                     $verrors = array();
                     array_push($verrors, 'El correo '.$UserEmail.' NO se encuentra en la base de datos');
-                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors]);
                 }
             }else if(!empty($UserName) && !empty($UserEmail)){
                 $BuscarUsuario = Usuarios::RestablecerPasswordFinal($UserName,$UserEmail);
@@ -542,23 +528,22 @@ class loginController extends Controller
                     }else{
                         $verrors = array();
                     array_push($verrors, 'Hubo un problema al recuperar la contraseña');
-                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors]);
                     }
                 }else{
                     $verrors = array();
                     array_push($verrors, 'El usuario '.$UserName.' y correo '.$UserEmail.' NO se encuentra en la base de datos');
-                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+                    return redirect('/crearSolicitud')->withErrors(['errors' => $verrors]);
                 }
             }
         }else{
             $verrors = array();
             array_push($verrors, 'Debe diligenciar uno de los dos campos para continuar');
-            return redirect('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+            return redirect('/crearSolicitud')->withErrors(['errors' => $verrors]);
         }
     }
 
-    public function dashboardMonitoreo()
-    {
+    public function dashboardMonitoreo(){
         setlocale(LC_ALL, 'es_CO');
         $EnDesarrollo   = Tickets::EnDesarrollo();
         foreach($EnDesarrollo as $valor){
