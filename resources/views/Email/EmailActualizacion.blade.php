@@ -9,8 +9,11 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 <div class="row">
     <div class="col-md-12">
+        <h2 style="font-family:Verdana;font-size:2vh;"><b>Buen día {{$NombreReportante}}</b></h2>
         <br>
-        <table style='max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;font-family:Verdana;font-size:13px;' class='tg' cellpadding='5'>
+        <p>A continuación se detalla la información de su ticket actualizado</p>
+        <br>
+        <table style='max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;font-family:Verdana;font-size:2vh;' class='tg' cellpadding='5'>
 
             <colgroup>
                 <col style='width: 200px'>
@@ -77,7 +80,7 @@
         <br>
         <br>
         @if($Calificacion === 1)
-        <table style='max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;font-family:Verdana;font-size:13px;' class='tg' cellpadding='5'>
+        <table style='max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;font-family:Verdana;font-size:2vh;' class='tg' cellpadding='5'>
             <colgroup>
                 <col style='width: 50px'>
                 <col style='width: 50px'>
@@ -95,7 +98,7 @@
         </table>
         @endif
         <br>
-        <table style='max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;font-family:Verdana;font-size:13px;' class='tg' cellpadding='5'>
+        <table style='max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;font-family:Verdana;font-size:2vh;' class='tg' cellpadding='5'>
             <tbody>
                 <tr>
                     <td colspan="2" style="vertical-align:top;width:60px;">

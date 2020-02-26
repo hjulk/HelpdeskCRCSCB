@@ -134,6 +134,7 @@ Usuario Final
                             select.options[select.options.length] = new Option(ListUsuario[index], index);
                         }
                         document.ready = document.getElementById("area").value = '';
+
                     }
                 }
             });

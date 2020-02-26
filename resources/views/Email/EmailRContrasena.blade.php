@@ -8,15 +8,14 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 <div class="row">
     <div class="col-md-12">
+        <h2 style="font-family:Verdana;font-size:2vh;"><b>Buen día {{$NombreReportante}}</b></h2>
         <br>
-        <table style='max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;font-family:Verdana;font-size:13px;' class='tg' cellpadding='5'>
+        <br>
+        <table style='max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;font-family:Verdana;font-size:2vh;' class='tg' cellpadding='5'>
     <colgroup>
         <col style='width: 200px'>
         <col style='width: 500px'>
     </colgroup>
-    <tr>
-        <th colspan='2' style="text-align: center;">RECUPERACIÓN DE CONTRASEÑA</th>
-    </tr>
     <tr height='20px'></tr>
     <tr>
         <td colspan='3' style="text-align: justify;">Se ha generado una nueva contraseña para el acceso al aplicativo de Helpdesk <font style="color:#a21b25;">Cruz Roja Colombiana Seccional Cundinamarca y Bogotá</font></td>
@@ -39,7 +38,7 @@
 </table>
 <br>
 <br>
-<table style='max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;font-family:Verdana;font-size:13px;' class='tg' cellpadding='5'>
+<table style='max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;font-family:Verdana;font-size:2vh;' class='tg' cellpadding='5'>
     <tbody>
         <tr>
             <td colspan="2" style="vertical-align:top;width:60px;">

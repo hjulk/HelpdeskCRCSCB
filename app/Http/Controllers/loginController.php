@@ -297,6 +297,7 @@ class loginController extends Controller{
                         $idUser = $value->id;
                         $emailUser = $value->email;
                         $usuario = $value->username;
+                        $nombreUsuario = $value->name;
                     }
                     $UpdatePassword = Usuarios::NuevaContrasena($idUser,$nuevaContrasena);
                     if($UpdatePassword){
@@ -304,7 +305,7 @@ class loginController extends Controller{
                         $for = "$emailUser";
                         $subject = "Recuperación de Contraseña";
                         Mail::send('email/EmailRContrasena',
-                                ['Contrasena' => $b,'NombreUser' => $UserName,'Usuario'=>$usuario],
+                                ['Contrasena' => $b,'NombreUser' => $UserName,'Usuario'=>$usuario,'NombreReportante'=>$nombreUsuario],
                                 function($msj) use($subject,$for){
                                     $msj->from("soporte.sistemas@cruzrojabogota.org.co","Mesa de Ayuda Tics");
                                     $msj->subject($subject);
@@ -345,7 +346,7 @@ class loginController extends Controller{
                         $for = "$emailUser";
                         $subject = "Recuperación de Contraseña";
                         Mail::send('email/EmailRContrasena',
-                                ['Contrasena' => $b,'NombreUser' => $userName,'Usuario'=>$usuario],
+                                ['Contrasena' => $b,'NombreUser' => $userName,'Usuario'=>$usuario,'NombreReportante'=>$userName],
                                 function($msj) use($subject,$for){
                                     $msj->from("soporte.sistemas@cruzrojabogota.org.co","Mesa de Ayuda Tics");
                                     $msj->subject($subject);
@@ -385,7 +386,7 @@ class loginController extends Controller{
                         $for = "$emailUser";
                         $subject = "Recuperación de Contraseña";
                         Mail::send('email/EmailRContrasena',
-                                ['Contrasena' => $b,'NombreUser' => $userName,'Usuario'=>$usuario],
+                                ['Contrasena' => $b,'NombreUser' => $userName,'Usuario'=>$usuario,'NombreReportante'=>$userName],
                                 function($msj) use($subject,$for){
                                     $msj->from("soporte.sistemas@cruzrojabogota.org.co","Mesa de Ayuda Tics");
                                     $msj->subject($subject);
@@ -433,6 +434,7 @@ class loginController extends Controller{
                         $idUser = $value->id;
                         $emailUser = $value->email;
                         $usuario = $value->username;
+                        $nombreUsuario = $value->nombre;
                     }
                     $UpdatePassword = Usuarios::NuevaContrasenaFinal($idUser,$nuevaContrasena);
                     if($UpdatePassword){
@@ -440,7 +442,7 @@ class loginController extends Controller{
                         $for = "$emailUser";
                         $subject = "Recuperación de Contraseña";
                         Mail::send('email/EmailRContrasena',
-                                ['Contrasena' => $b,'NombreUser' => $UserName,'Usuario'=>$usuario],
+                                ['Contrasena' => $b,'NombreUser' => $UserName,'Usuario'=>$usuario,'NombreReportante'=>$nombreUsuario],
                                 function($msj) use($subject,$for){
                                     $msj->from("soporte.sistemas@cruzrojabogota.org.co","Mesa de Ayuda Tics");
                                     $msj->subject($subject);
@@ -481,7 +483,7 @@ class loginController extends Controller{
                         $for = "$emailUser";
                         $subject = "Recuperación de Contraseña";
                         Mail::send('email/EmailRContrasena',
-                                ['Contrasena' => $b,'NombreUser' => $userName,'Usuario'=>$usuario],
+                                ['Contrasena' => $b,'NombreUser' => $userName,'Usuario'=>$usuario,'NombreReportante'=>$userName],
                                 function($msj) use($subject,$for){
                                     $msj->from("soporte.sistemas@cruzrojabogota.org.co","Mesa de Ayuda Tics");
                                     $msj->subject($subject);
@@ -521,7 +523,7 @@ class loginController extends Controller{
                         $for = "$emailUser";
                         $subject = "Recuperación de Contraseña";
                         Mail::send('email/EmailRContrasena',
-                                ['Contrasena' => $b,'NombreUser' => $userName,'Usuario'=>$usuario],
+                                ['Contrasena' => $b,'NombreUser' => $userName,'Usuario'=>$usuario,'NombreReportante'=>$userName],
                                 function($msj) use($subject,$for){
                                     $msj->from("soporte.sistemas@cruzrojabogota.org.co","Mesa de Ayuda Tics");
                                     $msj->subject($subject);
