@@ -120,7 +120,6 @@ Usuario Final
             var selectedValue = selectBox.options[selectBox.selectedIndex].value;
             var tipo = 'post';
             var select = document.getElementById("area");
-
             $.ajax({
                 url: "{{route('buscarArea')}}",
                 type: "get",

@@ -97,10 +97,15 @@ class loginController extends Controller{
                         foreach($notificaciones as $noti){
                             $UserCreador = $noti->usuario1;
                             $usuarios = Usuarios::BuscarNombre($UserCreador);
-                            foreach($usuarios as $user){
-                                $UsuarioN = $user->name;
+                            if($usuarios){
+                                foreach($usuarios as $user){
+                                    $UsuarioN = $user->name;
+                                }
+                                $listarNotificaciones[$contN]['creador'] = $UsuarioN;
+                            }else{
+                                $listarNotificaciones[$contN]['creador'] = 'USUARIO SOPORTE';
                             }
-                            $listarNotificaciones[$contN]['creador'] = $UsuarioN;
+
                             $contN++;
                         }
                         }else{
