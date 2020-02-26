@@ -62,14 +62,14 @@ class TicketsUserController extends Controller
 
             $Asignador  = Usuarios::BuscarNombre($idAsignador);
             $Asignado   = Usuarios::BuscarNombre($idAsignado);
-            if($Asignador){
+            if($Asignador >= 0){
                 foreach($Asignador as $row){
                     $tickets[$cont]['asignado_por'] = strtoupper($row->name);
                 }
             }else{
                 $tickets[$cont]['asignado_por'] = 'SIN NOMBRE';
             }
-            if($Asignado){
+            if($Asignado >= 0){
                 foreach($Asignado as $row){
                     $tickets[$cont]['asignado_a'] = strtoupper($row->name);
                 }
