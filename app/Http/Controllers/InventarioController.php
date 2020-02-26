@@ -1139,11 +1139,6 @@ class InventarioController extends Controller
             foreach($BuscarArea as $row){
                 $Area           = $row->name;
             }
-            // if($request->area')){
-            //     $Area           = $request->area');
-            // }else{
-            //     $Area           = 'SIN AREA';
-            // }
             $NombreAsignado     = Funciones::eliminar_tildes_texto($request->nombre_asignado);
             $Cargo              = Funciones::eliminar_tildes_texto($request->cargo);
             $Cedula             = $request->cedula;
@@ -1303,6 +1298,4 @@ class InventarioController extends Controller
             }
         }
     }
-
-
 }

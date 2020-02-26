@@ -367,7 +367,6 @@ class UsuarioController extends Controller
             foreach($BuscarArea as $row){
                 $Area           = $row->name;
             }
-            // $Area               = $request->dependencia');
             $idAsunto           = $request->asunto;
             $NombreAsunto       = $request->title;
             if($idAsunto === 1){
@@ -394,7 +393,6 @@ class UsuarioController extends Controller
             $AsignadoA1         = null;
             $Estado             = 2;
             $creadoPor          = 31;
-            // dd($Prioridad,$Categoria);
             $nameCategoria = 'Mesa de Ayuda';
             $namePrioridad = 'Media';
             $nameEstado = 'Pendiente';
@@ -448,15 +446,9 @@ class UsuarioController extends Controller
                     $for = array();
                     $for = explode(';',$CorreUsuario);
                 }
-                // $for = "$CorreUsuario";
                 $cco = "$emailAsignado";
                 $calificacion = 1;
                 if($Estado === 3){
-                    // $calificacion1 = "<a href='http://192.168.0.125:8080/helpdeskcrcscb/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/excelente.png' width='60' height='60'/></a>";
-                    // $calificacion2 = "<a href='http://192.168.0.125:8080/helpdeskcrcscb/public/calificarTicket?valor=2&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/bueno.png' width='60' height='60'/></a>";
-                    // $calificacion3 = "<a href='http://192.168.0.125:8080/helpdeskcrcscb/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/regular.png' width='60' height='60'/></a>";
-                    // $calificacion4 = "<a href='http://192.168.0.125:8080/helpdeskcrcscb/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/malo.png' width='60' height='60'/></a>";
-                    // $calificacion5 = "<a href='http://192.168.0.125:8080/helpdeskcrcscb/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/pesimo.png' width='60' height='60'/></a>";
                     $calificacion1 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=5&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/excelente.png' width='60' height='60'/></a>";
                     $calificacion2 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=4&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/dist/img/calificacion/bueno.png' width='60' height='60'/></a>";
                     $calificacion3 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=3&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/regular.png' width='60' height='60'/></a>";
@@ -482,11 +474,6 @@ class UsuarioController extends Controller
                             $msj->to($for);
                             $msj->cc($cco);
                         });
-                // if(count(Mail::failures()) === 0){
-                //     return view('crearTicketMensaje',['Ticket' => $ticket]);
-                // }else{
-                //     return view('crearTicketMensaje',['Ticket' => $ticket]);
-                // }
                 if(count(Mail::failures()) === 0){
                     $verrors = 'Se creo con éxito el ticket '.$ticket.'\n Por favor revise la información del ticket que fue enviada al correo registrado para realizar su respectivo seguimiento.';
                     return redirect('usuario/crearTicket')->with('mensaje', $verrors);
