@@ -81,7 +81,6 @@ class TicketsController extends Controller{
             $Categoria          = (int)$request->id_categoria;
             $AsignadoA          = (int)$request->id_usuario;
             $Estado             = (int)$request->id_estado;
-            $creadoPor          = (int)$request->IdUsuario;
 
             $nombreCategoria    = Tickets::Categoria($Categoria);
             $nombrePrioridad    = Tickets::Prioridad($Prioridad);
@@ -233,7 +232,6 @@ class TicketsController extends Controller{
             $Categoria          = (int)$request->id_categoriaupd;
             $AsignadoA          = (int)$request->id_usuarioupd;
             $Estado             = (int)$request->id_estado_upd;
-            $creadoPor          = (int)Session::get('IdUsuario');
             $comentario         = $request->comentario;
 
             $nombreCategoria    = Tickets::Categoria($Categoria);
