@@ -657,7 +657,7 @@ class UsuarioController extends Controller
             foreach($nombreEstado as $row){
                 $nameEstado = $row->name;
             }
-            $creadoPor          = 47;
+
             if($request->usuario_dominio){
                 $UsuarioDominio     = (int)$request->usuario_dominio;
                 if($UsuarioDominio === 1){
@@ -711,6 +711,7 @@ class UsuarioController extends Controller
                 $AccesoInternet         = 0;
                 $AccesoInternet_desc    = 'No';
             }
+            $creadoPor          = 47;
             $TicketUsuario = Tickets::CrearTicketUsuario($Nombres,$Identificacion,$Cargo,$Sede,$Area,$JefeInmediato,$FechaIngreso,$CorreoUsuario,$CargoNuevo,$Funcionario,$UsuarioDominio,$CorreoElectronico,$CorreoFuncionario,$EquipoComputo,$AccesoCarpeta,$Celular,$Datos,$Minutos,$ExtensionTel,$Conectividad,$AccesoInternet,$App85,$AppDinamica,$OtroAplicativo,$Cap85,$CapDinamica,$Observaciones,$Estado,$Prioridad,$creadoPor);
             if($TicketUsuario){
                 $buscarUltimo = Tickets::BuscarLastTicketUsuario($creadoPor);
