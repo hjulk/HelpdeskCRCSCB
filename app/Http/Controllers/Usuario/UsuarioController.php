@@ -750,7 +750,7 @@ class UsuarioController extends Controller
                     $Tickets    .= "Ticket Redes y Comunicaciones: $idticket,";
                     $emailAsignado = 'soporte.sistemas@cruzrojabogota.org.co';
                     $Comentario = "Creación Ticket de solicitud de usuario";
-                    $nombreCreador = "Soporte";
+                    $nombreCreador = "Gestión Humana";
                     Tickets::HistorialCreacion($idticket,$Comentario,$Estado,$creadoPor,$nombreCreador);
                 }
                 if($Infraestructura > 0){
@@ -773,7 +773,7 @@ class UsuarioController extends Controller
                     $Tickets    .= "Ticket Infraestructura: $idticket,";
                     $emailAsignado = 'soporte.sistemas@cruzrojabogota.org.co';
                     $Comentario = "Creación Ticket de solicitud de usuario";
-                    $nombreCreador = "Soporte";
+                    $nombreCreador = "Gestión Humana";
                     Tickets::HistorialCreacion($idticket,$Comentario,$Estado,$creadoPor,$nombreCreador);
                 }
                 if($Aplicaciones > 0){
@@ -794,7 +794,7 @@ class UsuarioController extends Controller
                     $Tickets    .= "Ticket Aplicaciones: $idticket,";
                     $emailAsignado = 'soporte.sistemas@cruzrojabogota.org.co';
                     $Comentario = "Creación Ticket de solicitud de usuario";
-                    $nombreCreador = "Soporte";
+                    $nombreCreador = "Gestión Humana";
                     Tickets::HistorialCreacion($idticket,$Comentario,$Estado,$creadoPor,$nombreCreador);
                 }
                 $DescriptionT = "<b>Nombres y Apellidos:</b> $Nombres<br>
