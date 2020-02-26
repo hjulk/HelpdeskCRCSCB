@@ -60,14 +60,14 @@ class TicketsController extends Controller
                     $tickets[$cont]['asignado_por'] = strtoupper($row->name);
                 }
             }else{
-                $tickets[$cont]['asignado_por']     = 'SIN NOMBRE';
+                $tickets[$cont]['asignado_por']     = 'SOPORTE GENERAL';
             }
             if(!empty($Asignado)){
                 foreach($Asignado as $row){
                     $tickets[$cont]['asignado_a']   = strtoupper($row->name);
                 }
             }else{
-                $tickets[$cont]['asignado_a']       = 'SIN NOMBRE';
+                $tickets[$cont]['asignado_a']       = 'SOPORTE GENERAL';
             }
 
 
