@@ -1057,8 +1057,8 @@ class TicketsController extends Controller{
 
     public function buscarArea(Request $request){
         $id             = (int)$request->id_sede;
-        $NombreUsuario = array();
-        $buscarUsuario = Sedes::BuscarAreaIdSede($id);
+        $NombreUsuario  = array();
+        $buscarUsuario  = Sedes::BuscarAreaIdSede($id);
         $NombreUsuario[0] = 'Seleccione: ';
         foreach ($buscarUsuario as $row){
             $NombreUsuario[$row->id] = Funciones::eliminar_tildes_texto($row->name);

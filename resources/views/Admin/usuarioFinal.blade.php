@@ -136,7 +136,6 @@ Usuario Final
                         }
                         document.ready = document.getElementById("area").value = '';
                     }
-
                 }
             });
         }

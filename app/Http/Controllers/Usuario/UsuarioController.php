@@ -374,7 +374,6 @@ class UsuarioController extends Controller
                 $Categoria      = 4;
                 $Asunto         = $request->title;
             }else{
-                // $buscardatos = Tickets::ListarRecurrentesId($idAsunto);
                 $buscardatos = Tickets::ListarRecurrentesName($NombreAsunto);
                 if($buscardatos){
                     foreach($buscardatos as $row){

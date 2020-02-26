@@ -36,7 +36,7 @@ class Sedes extends Model
     }
 
     public static function BuscarAreaIdSede($idsede){
-        $BuscarAreaIdSede = DB::Select("SELECT * FROM areas WHERE project_id = $idsede ORDER BY name");
+        $BuscarAreaIdSede = DB::Select("SELECT * FROM areas WHERE project_id = $idsede ORDER BY name ASC");
         return $BuscarAreaIdSede;
     }
 
