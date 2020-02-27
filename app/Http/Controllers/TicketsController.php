@@ -49,7 +49,7 @@ class TicketsController extends Controller{
             'description'       =>  'required|string',
             'nombre_usuario'    =>  'required',
             'telefono_usuario'  =>  'required',
-            'correo_usuario'    =>  'required|regex:/^.+@.+$/i',
+            'correo_usuario'    =>  'required',
             'project_id'        =>  'required',
             // 'dependencia'       =>  'required',
             'priority_id'       =>  'required',
@@ -212,7 +212,7 @@ class TicketsController extends Controller{
             'id_estado_upd'         =>  'required',
             'comentario'            =>  'required|string',
             'evidencia_upd'         =>  'max:5120',
-            'correo_usuario_upd'    =>  'required|regex:/^.+@.+$/i'
+            'correo_usuario_upd'    =>  'required'
         ]);
 
         if ($validator->fails()) {
@@ -537,7 +537,7 @@ class TicketsController extends Controller{
             'area'              =>  'required',
             'jefe'              =>  'required',
             'fechaIngreso'      =>  'required',
-            'correoS'           =>  'required|regex:/^.+@.+$/i',
+            'correoS'           =>  'required',
             'cargo_nuevo'       =>  'required',
             'estado'            =>  'required',
             'prioridad'         =>  'required',
@@ -1119,7 +1119,7 @@ class TicketsController extends Controller{
             'nombre_usuario'    => 'required',
             'description'       => 'required',
             'telefono_usuario'  => 'required',
-            'correo_usuario'    => 'required|regex:/^.+@.+$/i',
+            'correo_usuario'    => 'required',
             'project_id'        => 'required',
             'area'              => 'required'
         ]);

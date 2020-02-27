@@ -339,7 +339,7 @@ class UsuarioController extends Controller
             'nombre_usuario'    => 'required',
             'description'       => 'required',
             'telefono_usuario'  => 'required',
-            'correo_usuario'    => 'required|regex:/^.+@.+$/i',
+            'correo_usuario'    => 'required',
             'project_id'        => 'required',
             'area'              => 'required'
         ]);
@@ -494,7 +494,7 @@ class UsuarioController extends Controller
             'identificacionT'   => 'required',
             'cargoT'            => 'required',
             'sedeT'             => 'required',
-            'correoS'           => 'required|regex:/^.+@.+$/i',
+            'correoS'           => 'required',
             'jefeT'             => 'required',
             'areaT'             => 'required',
             'fechaIngresoT'     => 'required',
