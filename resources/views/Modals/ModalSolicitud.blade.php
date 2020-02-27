@@ -23,7 +23,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label class="control-label col-sm-12" for="fname">Correo Coorporativo:</label>
-                                        {!! Form::text('correo_usuario',null,['class'=>'form-control','id'=>'correo_usuario','placeholder'=>'Correo electrónico corporativo','required']) !!}
+                                        {!! Form::text('correo_usuario',null,['class'=>'form-control','id'=>'correo_usuario','placeholder'=>'Correo electrónico corporativo','required','onkeyup'=>'this.value=Correo(this.value)']) !!}
                                         <div align="right"><small class="text-muted" style="font-size: 2.1vh;">Separar correos por <b>';'</b> y <b>no dejar espacios</b></small> <span id="cntDescripHechos" align="right"> </span></div>
                                     </div>
                                 </div>
@@ -171,7 +171,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="exampleInputEmail1" class="col-sm-12 control-label">Correo Coorporativo:</label>
-                                {!! Form::text('correo_usuario_upd',null,['class'=>'form-control','id'=>'mod_correo_usuario','placeholder'=>'Correo(s) del reportante','readonly']) !!}
+                                {!! Form::text('correo_usuario_upd',null,['class'=>'form-control','id'=>'mod_correo_usuario','placeholder'=>'Correo(s) del reportante','readonly','onkeyup'=>'this.value=Correo(this.value)']) !!}
                             </div>
                         </div>
                     </div>
@@ -308,7 +308,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-sm-12 control-label">Correo Solicitante</label>
-                                {!! Form::text('correoS',null,['class'=>'form-control','id'=>'correoS','required','placeholder'=>'Correo(s) del solicitante']) !!}
+                                {!! Form::text('correoS',null,['class'=>'form-control','id'=>'correoS','required','placeholder'=>'Correo(s) del solicitante','onkeyup'=>'this.value=Correo(this.value)']) !!}
                             </div>
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-sm-12 control-label">Cargo Nuevo?</label>
@@ -422,6 +422,18 @@
 
                 }
             });
+        }
+    </script>
+    <script>
+        function Correo(string){//solo letras y numeros
+            var out = '';
+            //Se añaden las letras validas
+            var filtro = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_;.@';//Caracteres validos
+
+            for (var i=0; i<string.length; i++)
+               if (filtro.indexOf(string.charAt(i)) != -1)
+                 out += string.charAt(i);
+            return out;
         }
     </script>
 

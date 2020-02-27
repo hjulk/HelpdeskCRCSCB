@@ -32,7 +32,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="exampleInputEmail1" class="col-sm-8 control-label">Agregar Comentario</label>
-                                    {!! Form::textarea('comentario',$Comentario,['class'=>'form-control','id'=>'comentario','placeholder'=>'Ingrese el comentario sobre la gestión del ticket','rows'=>'3']) !!}
+                                    {!! Form::textarea('comentario',$Comentario,['class'=>'form-control','id'=>'comentario','placeholder'=>'Ingrese el comentario sobre la gestión del ticket','rows'=>'3','onkeyup'=>'this.value=NumText(this.value)']) !!}
                                     <div align="right"><small class="text-muted" style="font-size: 2.5vh;">Por favor copiar texto sin <b>íconos</b>. Gracias</small> <span id="cntDescripHechos" align="right"> </span></div>
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Correo</label>
-                                    {!! Form::text('correo_usuario_upd',$CorreoUsuario,['class'=>'form-control','id'=>'mod_correo_usuario','placeholder'=>'Correo(s) del reportante']) !!}
+                                    {!! Form::text('correo_usuario_upd',$CorreoUsuario,['class'=>'form-control','id'=>'mod_correo_usuario','placeholder'=>'Correo(s) del reportante','onkeyup'=>'this.value=Correo(this.value)']) !!}
                                     <div align="right"><small class="text-muted" style="font-size: 2.1vh;">Separar correos por <b>';'</b> y <b>no dejar espacios</b></small> <span id="cntDescripHechos" align="right"> </span></div>
                                 </div>
                             </div>
@@ -182,4 +182,28 @@
             });
         }
 
+    </script>
+    <script>
+        function NumText(string){//solo letras y numeros
+            var out = '';
+            //Se añaden las letras validas
+            var filtro = 'abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890-*(){}[]-_:.;,<>!"#$%&/=?¡¿ \n';//Caracteres validos
+
+            for (var i=0; i<string.length; i++)
+               if (filtro.indexOf(string.charAt(i)) != -1)
+                 out += string.charAt(i);
+            return out;
+        }
+    </script>
+    <script>
+        function Correo(string){//solo letras y numeros
+            var out = '';
+            //Se añaden las letras validas
+            var filtro = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_;.@';//Caracteres validos
+
+            for (var i=0; i<string.length; i++)
+               if (filtro.indexOf(string.charAt(i)) != -1)
+                 out += string.charAt(i);
+            return out;
+        }
     </script>

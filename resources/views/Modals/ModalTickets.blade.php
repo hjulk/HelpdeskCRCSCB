@@ -24,7 +24,7 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1" class="col-sm-12 control-label">Descripcion Solicitud</label>
-                        {!! Form::textarea('description',$Descripcion,['class'=>'form-control','id'=>'description','placeholder'=>'Ingrese la descripción de la solicitud','rows'=>'3','required']) !!}
+                        {!! Form::textarea('description',$Descripcion,['class'=>'form-control','id'=>'description','placeholder'=>'Ingrese la descripción de la solicitud','rows'=>'3','required','onkeyup'=>'this.value=NumText(this.value)']) !!}
                         <div align="right"><small class="text-muted" style="font-size: 2.5vh;">Por favor copiar texto sin <b>íconos</b> que vienen en el correo. Gracias</small> <span id="cntDescripHechos" align="right"> </span></div>
                     </div>
                     <div class="form-group">
@@ -39,7 +39,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Correo</label>
-                                {!! Form::text('correo_usuario',$CorreoUsuario,['class'=>'form-control','id'=>'correo_usuario','placeholder'=>'Correo(s) del reportante','required']) !!}
+                                {!! Form::text('correo_usuario',$CorreoUsuario,['class'=>'form-control','id'=>'correo_usuario','placeholder'=>'Correo(s) del reportante','required','onkeyup'=>'this.value=Correo(this.value)']) !!}
                                 <div align="right"><small class="text-muted" style="font-size: 2.1vh;">Separar correos por <b>';'</b> y <b>no dejar espacios</b></small> <span id="cntDescripHechos" align="right"> </span></div>
                             </div>
                         </div>
@@ -233,5 +233,29 @@
 
                 }
             });
+        }
+    </script>
+    <script>
+        function NumText(string){//solo letras y numeros
+            var out = '';
+            //Se añaden las letras validas
+            var filtro = 'abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890-*(){}[]-_:.;,<>!"#$%&/=?¡¿ \n';//Caracteres validos
+
+            for (var i=0; i<string.length; i++)
+               if (filtro.indexOf(string.charAt(i)) != -1)
+                 out += string.charAt(i);
+            return out;
+        }
+    </script>
+    <script>
+        function Correo(string){//solo letras y numeros
+            var out = '';
+            //Se añaden las letras validas
+            var filtro = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_;.@';//Caracteres validos
+
+            for (var i=0; i<string.length; i++)
+               if (filtro.indexOf(string.charAt(i)) != -1)
+                 out += string.charAt(i);
+            return out;
         }
     </script>

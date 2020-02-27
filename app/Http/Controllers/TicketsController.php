@@ -46,7 +46,7 @@ class TicketsController extends Controller{
         $validator = Validator::make($request->all(), [
             'kind_id'           =>  'required',
             'title'             =>  'required',
-            'description'       =>  'required',
+            'description'       =>  'required|string',
             'nombre_usuario'    =>  'required',
             'telefono_usuario'  =>  'required',
             'correo_usuario'    =>  'required|regex:/^.+@.+$/i',
@@ -210,7 +210,7 @@ class TicketsController extends Controller{
             'id_categoriaupd'       =>  'required',
             'id_usuarioupd'         =>  'required',
             'id_estado_upd'         =>  'required',
-            'comentario'            =>  'required',
+            'comentario'            =>  'required|string',
             'evidencia_upd'         =>  'max:5120',
             'correo_usuario_upd'    =>  'required|regex:/^.+@.+$/i'
         ]);
