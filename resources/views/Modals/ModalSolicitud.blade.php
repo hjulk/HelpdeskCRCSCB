@@ -79,7 +79,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <label class="control-label col-sm-12" for="comment">Descripción de la Solicitud:</label>
-                                        {!! Form::textarea('description',null,['class'=>'form-control','id'=>'description','placeholder'=>'Ingrese la descripción de la solicitud','rows'=>'3','required']) !!}
+                                        {!! Form::textarea('description',null,['class'=>'form-control','id'=>'description','placeholder'=>'Ingrese la descripción de la solicitud','rows'=>'3','required','onkeyup'=>'this.value=NumText(this.value)']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -383,7 +383,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="exampleInputEmail1" class="col-sm-12 control-label">Observaciones de la Solicitud</label>
-                                {!! Form::textarea('observacionesT',null,['class'=>'form-control','id'=>'observacionesT','placeholder'=>'Ingrese la observación sobre la solicitud','rows'=>'2']) !!}
+                                {!! Form::textarea('observacionesT',null,['class'=>'form-control','id'=>'observacionesT','placeholder'=>'Ingrese la observación sobre la solicitud','rows'=>'2','onkeyup'=>'this.value=NumText(this.value)']) !!}
                             </div>
                         </div>
                     </div>
@@ -429,6 +429,18 @@
             var out = '';
             //Se añaden las letras validas
             var filtro = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_;.@';//Caracteres validos
+
+            for (var i=0; i<string.length; i++)
+               if (filtro.indexOf(string.charAt(i)) != -1)
+                 out += string.charAt(i);
+            return out;
+        }
+    </script>
+    <script>
+        function NumText(string){//solo letras y numeros
+            var out = '';
+            //Se añaden las letras validas
+            var filtro = 'áéíóúabcdefghijklmnñopqrstuvwxyzÁÉÍÓÚABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890-*(){}[]-_:.;,<>!"#$%&/=?¡¿ \n';//Caracteres validos
 
             for (var i=0; i<string.length; i++)
                if (filtro.indexOf(string.charAt(i)) != -1)

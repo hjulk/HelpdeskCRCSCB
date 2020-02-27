@@ -115,7 +115,7 @@
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-4 control-label">Descripcion Apertura</label>
                             <div class="col-md-8">
-                                {!! Form::textarea('descripcion_ticket',$Descripcion,['class'=>'form-control','id'=>'descripcion_ticket','placeholder'=>'Ingrese la descripción de la apertura','rows'=>'3']) !!}
+                                {!! Form::textarea('descripcion_ticket',$Descripcion,['class'=>'form-control','id'=>'descripcion_ticket','placeholder'=>'Ingrese la descripción de la apertura','rows'=>'3','onkeyup'=>'this.value=NumText(this.value)']) !!}
                             </div>
                         </div>
                         <div class="form-group">
@@ -239,7 +239,7 @@
         function NumText(string){//solo letras y numeros
             var out = '';
             //Se añaden las letras validas
-            var filtro = 'abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890-*(){}[]-_:.;,<>!"#$%&/=?¡¿ \n';//Caracteres validos
+            var filtro = 'áéíóúabcdefghijklmnñopqrstuvwxyzÁÉÍÓÚABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890-*(){}[]-_:.;,<>!"#$%&/=?¡¿ \n';//Caracteres validos
 
             for (var i=0; i<string.length; i++)
                if (filtro.indexOf(string.charAt(i)) != -1)
