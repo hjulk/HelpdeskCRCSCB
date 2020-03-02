@@ -7,13 +7,13 @@
 <link rel="stylesheet" href="{{asset("assets/DataTables/dist/css/skins/_all-skins.min.css")}}">
 <link rel="stylesheet" href="{{asset("assets/DataTables/CodeSeven/build/toastr.min.css")}}">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-<div class="row" style="font-family:Verdana;font-size:4vh;">
+<div class="row" style="font-family:Verdana;font-size:2vh;">
 <div class="col-md-12">
-    <h2 style="font-family:Verdana;font-size:4vh;"><b>Buen día {{$NombreAgente}}</b></h2>
+    <h2 style="font-family:Verdana;font-size:2vh;"><b>Buen día {{$NombreAgente}}</b></h2>
     <br>
     <p>A continuación se detalla la información de su turno programado</p>
     <br>
-    <table style='max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;font-family:Verdana;font-size:4vh;' class='tg' cellpadding='5'>
+    <table style='max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;font-family:Verdana;font-size:2vh;' class='tg' cellpadding='5'>
 <colgroup>
     <col style='width: 200px'>
     <col style='width: 500px'>
@@ -65,12 +65,12 @@
 <br>
 
 <br>
-    <table style='max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;font-family:Verdana;font-size:4vh;' class='tg' cellpadding='5'>
+    <table style='max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;font-family:Verdana;font-size:2vh;' class='tg' cellpadding='5'>
         <tbody>
             <tr>
                 <td colspan="2" style="vertical-align:top;width:60px;">
-                    {{-- <img src="http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/firma.jpg" usemap="#m_3620493203722104036_SignatureSanitizer_m_-8559001894841881195_SignatureSanitizer_image-map" class="CToWUd"> --}}
-                    <img src="http://crcscbmesadeayuda.cruzrojabogota.org.co/images/firma.jpg" usemap="#m_3620493203722104036_SignatureSanitizer_m_-8559001894841881195_SignatureSanitizer_image-map" class="CToWUd">
+                    <img src="http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/firma.jpg" usemap="#m_3620493203722104036_SignatureSanitizer_m_-8559001894841881195_SignatureSanitizer_image-map" class="CToWUd">
+                    {{-- <img src="http://crcscbmesadeayuda.cruzrojabogota.org.co/images/firma.jpg" usemap="#m_3620493203722104036_SignatureSanitizer_m_-8559001894841881195_SignatureSanitizer_image-map" class="CToWUd"> --}}
                 </td>
             </tr>
 
