@@ -87,11 +87,11 @@
         </colgroup>
         <tbody>
             <tr>
-                <td>{{$Calificacion5}}</td>
-                <td>{{$Calificacion4}}</td>
-                <td>{{$Calificacion3}}</td>
-                <td>{{$Calificacion2}}</td>
-                <td>{{$Calificacion1}}</td>
+                <td>{!!$Calificacion5!!}</td>
+                <td>{!!$Calificacion4!!}</td>
+                <td>{!!$Calificacion3!!}</td>
+                <td>{!!$Calificacion2!!}</td>
+                <td>{!!$Calificacion1!!}</td>
             </tr>
         </tbody>
     </table>
