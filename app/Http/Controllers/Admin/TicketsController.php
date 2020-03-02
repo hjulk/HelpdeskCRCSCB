@@ -42,8 +42,12 @@ class TicketsController extends Controller
             $tickets[$cont]['kind_id']       = (int)$value->kind_id;
             $idTipoTicket = (int)$value->kind_id;
             $TipoTicket = Tickets::Tipo($idTipoTicket);
-            foreach($TipoTicket as $row){
-                $tickets[$cont]['tipo_ticket'] = $row->name;
+            if($TipoTicket){
+                foreach($TipoTicket as $row){
+                    $tickets[$cont]['tipo_ticket'] = $row->name;
+                }
+            }else{
+                $tickets[$cont]['tipo_ticket'] = 'SIN CLASIFICACIÓN';
             }
 
             $tickets[$cont]['user_id']      = (int)$value->user_id;
