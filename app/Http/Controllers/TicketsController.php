@@ -186,7 +186,7 @@ class TicketsController extends Controller{
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el ticket');
-                return redirect($url.'/tickets')->withErrors(['errors' => $verrors])->withRequest();
+                return redirect($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
             }
         }
     }
@@ -913,7 +913,7 @@ class TicketsController extends Controller{
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el ticket');
-                return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
             }
         }
     }
@@ -947,7 +947,7 @@ class TicketsController extends Controller{
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el asunto');
-                return Redirect::to($url.'/ticketsRecurrentes')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to($url.'/ticketsRecurrentes')->withErrors(['errors' => $verrors])->withInput();
             }
         }
     }
@@ -984,7 +984,7 @@ class TicketsController extends Controller{
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al actualizar el asunto');
-                return Redirect::to($url.'/ticketsRecurrentes')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to($url.'/ticketsRecurrentes')->withErrors(['errors' => $verrors])->withInput();
             }
         }
     }
@@ -1263,7 +1263,7 @@ class TicketsController extends Controller{
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el ticket');
-                return Redirect::to('/crearSolicitud')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
             }
         }
     }

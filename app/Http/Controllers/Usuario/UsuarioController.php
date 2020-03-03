@@ -353,7 +353,7 @@ class UsuarioController extends Controller
             if ($pos === false) {
                 $verrors = array();
                 array_push($verrors, 'El correo debe contener la estructura correcta @');
-                return Redirect::to('usuario/crearTicket')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to('usuario/crearTicket')->withErrors(['errors' => $verrors])->withInput();
             }
             $idTipo             = (int)$request->kind_id;
 
@@ -483,7 +483,7 @@ class UsuarioController extends Controller
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el ticket');
-                return Redirect::to('usuario/crearTicket')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to('usuario/crearTicket')->withErrors(['errors' => $verrors])->withInput();
             }
         }
     }
@@ -868,7 +868,7 @@ class UsuarioController extends Controller
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el ticket');
-                return Redirect::to('usuario/crearTicket')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to('usuario/crearTicket')->withErrors(['errors' => $verrors])->withInput();
             }
         }
     }

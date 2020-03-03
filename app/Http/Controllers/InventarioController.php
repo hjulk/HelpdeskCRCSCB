@@ -79,7 +79,7 @@ class InventarioController extends Controller
             if($TicketsBusqueda > 0){
                 $verrors = array();
                 array_push($verrors, 'El equipo con serial '.$Serial.' ya se ecuentra asignado a '.$NombreResponsable);
-                return Redirect::to($url.'/mobile')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to($url.'/mobile')->withErrors(['errors' => $verrors])->withInput();
             }else{
                 $RegistrarEquipo    = Inventario::RegistrarEquipoMovil($TipoEquipo,$FechaAdquisicion,$Serial,$Marca,$Modelo,$IMEI,
                                                                         $Capacidad,$LineaMovil,$Area,$NombreAsignado,$EstadoEquipo,$creadoPor);
@@ -115,7 +115,7 @@ class InventarioController extends Controller
                 }else{
                     $verrors = array();
                     array_push($verrors, 'Hubo un problema al registrar el equipo movil');
-                    return Redirect::to($url.'/mobile')->withErrors(['errors' => $verrors])->withRequest();
+                    return Redirect::to($url.'/mobile')->withErrors(['errors' => $verrors])->withInput();
                 }
             }
         }
@@ -197,12 +197,12 @@ class InventarioController extends Controller
                     }else{
                         $verrors = array();
                         array_push($verrors, 'La linea '.$NombreLinea.' ya se encuentra asignada, por favor escoger otra');
-                        return Redirect::to($url.'/mobile')->withErrors(['errors' => $verrors])->withRequest();
+                        return Redirect::to($url.'/mobile')->withErrors(['errors' => $verrors])->withInput();
                     }
                 }else{
                     $verrors = array();
                     array_push($verrors, 'Hubo un problema al actualizar el equipo movil');
-                    return Redirect::to($url.'/mobile')->withErrors(['errors' => $verrors])->withRequest();
+                    return Redirect::to($url.'/mobile')->withErrors(['errors' => $verrors])->withInput();
                 }
             }
 
@@ -233,7 +233,7 @@ class InventarioController extends Controller
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al actualizar el equipo movil');
-                return Redirect::to($url.'/mobile')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to($url.'/mobile')->withErrors(['errors' => $verrors])->withInput();
             }
         }
     }
@@ -297,7 +297,7 @@ class InventarioController extends Controller
             if($TicketsBusqueda > 0){
                 $verrors = array();
                 array_push($verrors, 'El equipo con serial '.$Serial.' ya se ecuentra asignado a '.$NombreResponsable);
-                return Redirect::to($url.'/lineMobile')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to($url.'/lineMobile')->withErrors(['errors' => $verrors])->withInput();
             }else{
                 $RegistrarLineaMovil = Inventario::RegistrarLineaMovil($NroLinea,$FechaAdquisicion,$Serial,$Activo,$Proveedor,$Plan,$PtoCargo,$Cc,$Area,$Personal,$Estado,$creadoPor);
                 if($RegistrarLineaMovil){
@@ -332,7 +332,7 @@ class InventarioController extends Controller
                 }else{
                     $verrors = array();
                     array_push($verrors, 'Hubo un problema al registrar la linea movil');
-                    return Redirect::to($url.'/lineMobile')->withErrors(['errors' => $verrors])->withRequest();
+                    return Redirect::to($url.'/lineMobile')->withErrors(['errors' => $verrors])->withInput();
                 }
             }
         }
@@ -422,7 +422,7 @@ class InventarioController extends Controller
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al actualizar la linea movil');
-                return Redirect::to($url.'/lineMobile')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to($url.'/lineMobile')->withErrors(['errors' => $verrors])->withInput();
             }
         }
     }
@@ -466,7 +466,7 @@ class InventarioController extends Controller
             if($TotalBusqueda > 0){
                 $verrors = array();
                 array_push($verrors, 'Ya existe un equipo con el serial '.$Serial);
-                return Redirect::to($url.'/desktops')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to($url.'/desktops')->withErrors(['errors' => $verrors])->withInput();
             }else{
 
                 $IngresarEquipo = Inventario::IngresarEquipo($TipoEquipo,$TipoIngreso,$EmpresaRenting,$FechaAdquisicion,$Serial,$Marca,$Procesador,$VelProcesador,$DiscoDuro,$MemoriaRam,$EstadoEquipo,$creadoPor);
@@ -499,7 +499,7 @@ class InventarioController extends Controller
                 }else{
                     $verrors = array();
                     array_push($verrors, 'Hubo un problema al ingresar el equipo');
-                    return Redirect::to($url.'/desktops')->withErrors(['errors' => $verrors])->withRequest();
+                    return Redirect::to($url.'/desktops')->withErrors(['errors' => $verrors])->withInput();
                 }
             }
         }
@@ -570,7 +570,7 @@ class InventarioController extends Controller
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al actualizar el equipo');
-                return Redirect::to($url.'/desktops')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to($url.'/desktops')->withErrors(['errors' => $verrors])->withInput();
             }
         }
     }
@@ -612,7 +612,7 @@ class InventarioController extends Controller
             if($TotalBusqueda > 0){
                 $verrors = array();
                 array_push($verrors, 'Ya existe un periferico con el serial '.$Serial);
-                return Redirect::to($url.'/periferic')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to($url.'/periferic')->withErrors(['errors' => $verrors])->withInput();
             }else{
                 $CrearPeriferico    = Inventario::CrearPeriferico($TipoPeriferico,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Tamano,$Estado,$creadoPor);
                 if($CrearPeriferico){
@@ -662,7 +662,7 @@ class InventarioController extends Controller
                 }else{
                     $verrors = array();
                     array_push($verrors, 'Hubo un problema al ingresar el/la '.$evidencia);
-                    return Redirect::to($url.'/periferic')->withErrors(['errors' => $verrors])->withRequest();
+                    return Redirect::to($url.'/periferic')->withErrors(['errors' => $verrors])->withInput();
                 }
             }
         }
@@ -747,7 +747,7 @@ class InventarioController extends Controller
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al actualizar el/la '.$evidencia);
-                return Redirect::to($url.'/periferic')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to($url.'/periferic')->withErrors(['errors' => $verrors])->withInput();
             }
 
         }
@@ -792,7 +792,7 @@ class InventarioController extends Controller
             if($TotalBusqueda > 0){
                 $verrors = array();
                 array_push($verrors, 'Ya existe un consumible con el serial '.$Serial);
-                return Redirect::to($url.'/consumible')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to($url.'/consumible')->withErrors(['errors' => $verrors])->withInput();
             }else{
                 $CrearConsumible = Inventario::CrearConsumible($TipoConsumible,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Modelo,$CompaRef,$CompaMod,$Estado,$creadoPor);
                 if($CrearConsumible){
@@ -824,7 +824,7 @@ class InventarioController extends Controller
                 }else{
                     $verrors = array();
                     array_push($verrors, 'Hubo un problema al crear el Consumible');
-                    return Redirect::to($url.'/consumible')->withErrors(['errors' => $verrors])->withRequest();
+                    return Redirect::to($url.'/consumible')->withErrors(['errors' => $verrors])->withInput();
                 }
             }
         }
@@ -892,7 +892,7 @@ class InventarioController extends Controller
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al actualizar el Consumible');
-                return Redirect::to($url.'/consumible')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to($url.'/consumible')->withErrors(['errors' => $verrors])->withInput();
             }
         }
     }
@@ -935,7 +935,7 @@ class InventarioController extends Controller
             if($TotalBusqueda > 0){
                 $verrors = array();
                 array_push($verrors, 'Ya existe una impresora con el serial '.$Serial);
-                return Redirect::to($url.'/printers')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to($url.'/printers')->withErrors(['errors' => $verrors])->withInput();
             }else{
                 $CrearImpresora = Inventario::CrearImpresora($TipoImpresora,$TipoIngreso,$EmpresaRent,$FechaAdquisicion,$Serial,$Marca,$Ip,$IdConsumible,$Estado,$creadoPor);
                 if($CrearImpresora){
@@ -967,7 +967,7 @@ class InventarioController extends Controller
                 }else{
                     $verrors = array();
                     array_push($verrors, 'Hubo un problema al ingresar la impresora');
-                    return Redirect::to($url.'/printers')->withErrors(['errors' => $verrors])->withRequest();
+                    return Redirect::to($url.'/printers')->withErrors(['errors' => $verrors])->withInput();
                 }
             }
         }
@@ -1025,12 +1025,12 @@ class InventarioController extends Controller
                     }else{
                         $verrors = array();
                         array_push($verrors, 'El consumible '.$NombreConsumible.' ya se encuentra asignado, por favor escoger otro');
-                        return Redirect::to($url.'/printers')->withErrors(['errors' => $verrors])->withRequest();
+                        return Redirect::to($url.'/printers')->withErrors(['errors' => $verrors])->withInput();
                     }
                 }else{
                     $verrors = array();
                     array_push($verrors, 'Hubo un problema al actualizar la impresora');
-                    return Redirect::to($url.'/printers')->withErrors(['errors' => $verrors])->withRequest();
+                    return Redirect::to($url.'/printers')->withErrors(['errors' => $verrors])->withInput();
                 }
             }
             if($ActualizarImpresora){
@@ -1059,7 +1059,7 @@ class InventarioController extends Controller
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al actualizar la impresora');
-                return Redirect::to($url.'/printers')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to($url.'/printers')->withErrors(['errors' => $verrors])->withInput();
             }
 
         }
@@ -1184,7 +1184,7 @@ class InventarioController extends Controller
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el asignado');
-                return Redirect::to($url.'/asigneds')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to($url.'/asigneds')->withErrors(['errors' => $verrors])->withInput();
             }
         }
     }
@@ -1294,7 +1294,7 @@ class InventarioController extends Controller
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al actualizar el asignado');
-                return Redirect::to($url.'/asigneds')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to($url.'/asigneds')->withErrors(['errors' => $verrors])->withInput();
             }
         }
     }
