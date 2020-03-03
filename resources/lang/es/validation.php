@@ -10,7 +10,8 @@ return array(
     "array" => ":attribute debe ser un array.",
     "before" => ":attribute debe ser una fecha antes a :date.",
     "between" => array(
-        "numeric" => ":attribute debe tener entre :min y :max.",
+        // "numeric" => ":attribute debe tener entre :min y :max.",
+        "numeric" => ":attribute debe ser diferente a seleccione",
         "file" => ":attribute debe tener entre :min y :max kilobytes.",
         "string" => ":attribute debe tener entre :min y :max caracteres.",
         "array" => ":attribute debe tener entre :min y :max items.",

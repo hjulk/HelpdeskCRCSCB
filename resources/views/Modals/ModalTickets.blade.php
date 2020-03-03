@@ -69,7 +69,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Asignado</label>
-                                {!! Form::select('id_usuario',$NombreUsuario,null,['class'=>'form-control','id'=>'id_usuario']) !!}
+                                {!! Form::select('id_usuario',$NombreUsuario,null,['class'=>'form-control','id'=>'id_usuario','required']) !!}
                             </div>
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Estado</label>
@@ -258,4 +258,14 @@
                  out += string.charAt(i);
             return out;
         }
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#area").change(function() {
+                var Seleccionado = $(this).val();
+                if(Seleccionado === 0){
+                    alert('Debe seleciconar un area');
+                }
+            });
+        });
     </script>

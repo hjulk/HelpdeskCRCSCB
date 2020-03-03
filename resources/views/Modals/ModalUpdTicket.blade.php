@@ -32,7 +32,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="exampleInputEmail1" class="col-sm-8 control-label">Agregar Comentario</label>
-                                    {!! Form::textarea('comentario',$Comentario,['class'=>'form-control','id'=>'comentario','placeholder'=>'Ingrese el comentario sobre la gestión del ticket','rows'=>'3','onkeyup'=>'this.value=NumText(this.value)']) !!}
+                                    {!! Form::textarea('comentario',$Comentario,['class'=>'form-control','id'=>'comentario','placeholder'=>'Ingrese el comentario sobre la gestión del ticket','rows'=>'3','onkeyup'=>'this.value=NumText(this.value)','required']) !!}
                                     <div align="right"><small class="text-muted" style="font-size: 2.5vh;">Por favor copiar texto sin <b>íconos</b>. Gracias</small> <span id="cntDescripHechos" align="right"> </span></div>
                                 </div>
                             </div>
@@ -45,15 +45,15 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <label for="exampleInputEmail1" class="col-sm-12 control-label">Nombre Usuario</label>
-                                    {!! Form::text('nombre_usuario_upd',$Usuario,['class'=>'form-control','id'=>'mod_nombre_usuario','placeholder'=>'Nombre de quien reporta']) !!}
+                                    {!! Form::text('nombre_usuario_upd',$Usuario,['class'=>'form-control','id'=>'mod_nombre_usuario','placeholder'=>'Nombre de quien reporta','required']) !!}
                                 </div>
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-md-5 control-label">Telefóno</label>
-                                    {!! Form::text('telefono_usuario_upd',$TelefonoUsuario,['class'=>'form-control','id'=>'mod_telefono_usuario','placeholder'=>'No. de telefóno del reportante']) !!}
+                                    {!! Form::text('telefono_usuario_upd',$TelefonoUsuario,['class'=>'form-control','id'=>'mod_telefono_usuario','placeholder'=>'No. de telefóno del reportante','required']) !!}
                                 </div>
                                 <div class="col-md-4">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Correo</label>
-                                    {!! Form::text('correo_usuario_upd',$CorreoUsuario,['class'=>'form-control','id'=>'mod_correo_usuario','placeholder'=>'Correo(s) del reportante','onkeyup'=>'this.value=Correo(this.value)']) !!}
+                                    {!! Form::text('correo_usuario_upd',$CorreoUsuario,['class'=>'form-control','id'=>'mod_correo_usuario','placeholder'=>'Correo(s) del reportante','onkeyup'=>'this.value=Correo(this.value)','required']) !!}
                                     <div align="right"><small class="text-muted" style="font-size: 2.1vh;">Separar correos por <b>';'</b> y <b>no dejar espacios</b></small> <span id="cntDescripHechos" align="right"> </span></div>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Prioridad</label>
-                                    {!! Form::select('id_prioridad_upd',$NombrePrioridad,null,['class'=>'form-control','id'=>'mod_id_prioridad']) !!}
+                                    {!! Form::select('id_prioridad_upd',$NombrePrioridad,null,['class'=>'form-control','id'=>'mod_id_prioridad','required']) !!}
                                 </div>
                             </div>
                         </div>
@@ -78,15 +78,15 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Categoria</label>
-                                    {!! Form::select('id_categoriaupd',$NombreCategoria,null,['class'=>'form-control','id'=>'id_categoriaupd','onchange'=>'categoriaFuncUPD();']) !!}
+                                    {!! Form::select('id_categoriaupd',$NombreCategoria,null,['class'=>'form-control','id'=>'id_categoriaupd','onchange'=>'categoriaFuncUPD();','required']) !!}
                                 </div>
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Asignado</label>
-                                    {!! Form::select('id_usuarioupd',$NombreUsuario,null,['class'=>'form-control','id'=>'id_usuarioupd']) !!}
+                                    {!! Form::select('id_usuarioupd',$NombreUsuario,null,['class'=>'form-control','id'=>'id_usuarioupd','required']) !!}
                                 </div>
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Estado</label>
-                                    {!! Form::select('id_estado_upd',$NombreEstadoUpd,null,['class'=>'form-control','id'=>'mod_id_estado']) !!}
+                                    {!! Form::select('id_estado_upd',$NombreEstadoUpd,null,['class'=>'form-control','id'=>'mod_id_estado','required']) !!}
                                 </div>
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Evidencia</label>

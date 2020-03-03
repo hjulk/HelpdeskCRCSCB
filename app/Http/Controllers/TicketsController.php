@@ -28,19 +28,18 @@ class TicketsController extends Controller{
             $Administrador = (int)$value->rol_id;
         }
         $url = Funciones::BuscarURL($Administrador);
-        $seleccionado = (int)$request->id_usuario;
-        if($seleccionado === ''){
-            $verrors = array();
-            array_push($verrors, 'Debe seleccionar un usuario a asignar el ticket');
-            return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withRequest();
-        }
+        // $seleccionado = (int)$request->id_usuario;
+        // if($seleccionado === 0){
+        //     $verrors = 'Debe seleccionar un usuario a asignar el ticket';
+        //     return Redirect::to($url.'/tickets')->with('precaucion',$verrors);
+        // }
         $CorreoIndex   = Funciones::editar_correo($request->correo_usuario);
         $findme   = '@';
         $pos = strpos($CorreoIndex, $findme);
         if ($pos === false) {
             $verrors = array();
             array_push($verrors, 'El correo debe contener la estructura correcta @');
-            return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withRequest();
+            return redirect($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
         }
 
         $validator = Validator::make($request->all(), [
@@ -54,14 +53,14 @@ class TicketsController extends Controller{
             // 'dependencia'       =>  'required',
             'priority_id'       =>  'required',
             'id_categoria'      =>  'required',
-            'id_usuario'        =>  'required',
+            'id_usuario'        =>  'required|integer|between:1,100',
             'id_estado'         =>  'required',
             'evidencia'         =>  'max:5120',
-            'area'              =>  'required'
+            'area'              =>  'required|integer|between:1,100'
         ]);
 
         if ($validator->fails()) {
-            return redirect($url.'/tickets')->withErrors($validator)->withInput();
+            return Redirect::to($url.'/tickets')->withErrors($validator)->withInput();
         }else{
 
             $idTipo             = (int)$request->kind_id;
@@ -187,7 +186,7 @@ class TicketsController extends Controller{
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el ticket');
-                return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withRequest();
+                return redirect($url.'/tickets')->withErrors(['errors' => $verrors])->withRequest();
             }
         }
     }
@@ -203,12 +202,12 @@ class TicketsController extends Controller{
         if($seleccionado === 0){
             $verrors = array();
             array_push($verrors, 'Debe seleccionar un usuario a asignar el ticket');
-            return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withRequest();
+            return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
         }
         $validator = Validator::make($request->all(), [
             'id_prioridad_upd'      =>  'required',
             'id_categoriaupd'       =>  'required',
-            'id_usuarioupd'         =>  'required',
+            'id_usuarioupd'         =>  'required|integer|between:1,100',
             'id_estado_upd'         =>  'required',
             'comentario'            =>  'required',
             'evidencia_upd'         =>  'max:5120',
@@ -290,8 +289,7 @@ class TicketsController extends Controller{
                 $cco = "$emailAsignado";
                 $calificacion = 1;
                 if($Estado === 3){
-                    $calificacion1 = '<a href="http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=5&idTicket='.$idTicket.'"><img src="http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/excelente.png" width="60" height="60"/></a>';
-                    // $calificacion1 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=5&idTicket=$idTicket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/excelente.png' width='60' height='60'/></a>";
+                    $calificacion1 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=5&idTicket=$idTicket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/excelente.png' width='60' height='60'/></a>";
                     $calificacion2 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=4&idTicket=$idTicket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/dist/img/calificacion/bueno.png' width='60' height='60'/></a>";
                     $calificacion3 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=3&idTicket=$idTicket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/regular.png' width='60' height='60'/></a>";
                     $calificacion4 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=2&idTicket=$idTicket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/malo.png' width='60' height='60'/></a>";
@@ -329,7 +327,7 @@ class TicketsController extends Controller{
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al actualizar el ticket');
-                return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors]);
             }
         }
     }
@@ -530,6 +528,15 @@ class TicketsController extends Controller{
             $Administrador = (int)$value->rol_id;
         }
         $url = Funciones::BuscarURL($Administrador);
+        $CorreoIndex   = Funciones::editar_correo($request->correoS);
+        $findme   = '@';
+        $pos = strpos($CorreoIndex, $findme);
+        if ($pos === false) {
+            $verrors = array();
+            array_push($verrors, 'El correo debe contener la estructura correcta @');
+            return redirect($url.'/ticketsUsuario')->withErrors(['errors' => $verrors])->withInput();
+        }
+
         $validator = Validator::make($request->all(), [
             'nombres'           =>  'required',
             'identificacion'    =>  'required',
@@ -1113,7 +1120,7 @@ class TicketsController extends Controller{
         if ($pos === false) {
             $verrors = array();
             array_push($verrors, 'El correo debe contener la estructura correcta @');
-            return Redirect::to('/crearSolicitud')->withErrors(['errors' => $verrors])->withRequest();
+            return Redirect::to('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
         }
         $validator = Validator::make($request->all(), [
             'kind_id'           => 'required',

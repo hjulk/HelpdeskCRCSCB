@@ -195,28 +195,28 @@ class TicketsUserController extends Controller
 
         $Tipo  = Tickets::ListarTipo();
         $NombreTipo = array();
-        $NombreTipo[0] = 'Seleccione: ';
+        $NombreTipo[''] = 'Seleccione: ';
         foreach ($Tipo as $row){
             $NombreTipo[$row->id] = $row->name;
         }
 
         $Estado  = Tickets::ListarEstado();
         $NombreEstado = array();
-        $NombreEstado[0] = 'Seleccione: ';
+        $NombreEstado[''] = 'Seleccione: ';
         foreach ($Estado as $row){
             $NombreEstado[$row->id] = $row->name;
         }
 
         $EstadoUpd  = Tickets::ListarEstadoUpd();
         $NombreEstadoUpd = array();
-        $NombreEstadoUpd[0] = 'Seleccione: ';
+        $NombreEstadoUpd[''] = 'Seleccione: ';
         foreach ($EstadoUpd as $row){
             $NombreEstadoUpd[$row->id] = $row->name;
         }
 
         $EstadoA  = Tickets::ListarEstadoA();
         $NombreEstadoA = array();
-        $NombreEstadoA[0] = 'Seleccione: ';
+        $NombreEstadoA[''] = 'Seleccione: ';
         foreach ($EstadoA as $row){
             $NombreEstadoA[$row->id] = $row->name;
         }
@@ -342,7 +342,7 @@ class TicketsUserController extends Controller
 
         $EstadoA  = Tickets::ListarEstadoA();
         $NombreEstadoA = array();
-        $NombreEstadoA[0] = 'Seleccione: ';
+        $NombreEstadoA[''] = 'Seleccione: ';
         foreach ($EstadoA as $row){
             $NombreEstadoA[$row->id] = $row->name;
         }
