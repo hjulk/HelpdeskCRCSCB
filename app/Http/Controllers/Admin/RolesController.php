@@ -80,7 +80,7 @@ class RolesController extends Controller
                 $verrors = array();
                 array_push($verrors, 'El nombre de rol '.$nombreRol.', ya se encuentra en la base de datos');
                 // return redirect('admin/roles')->withErrors(['errors' => $verrors]);
-                return Redirect::to('admin/roles')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to('admin/roles')->withErrors(['errors' => $verrors])->withInput();
             }else{
                 $crearRol = Roles::CrearRol($nombreRol);
                 if($crearRol){
@@ -90,7 +90,7 @@ class RolesController extends Controller
                     $verrors = array();
                     array_push($verrors, 'Hubo un problema al crear el rol');
                     // return redirect('admin/roles')->withErrors(['errors' => $verrors]);
-                    return Redirect::to('admin/roles')->withErrors(['errors' => $verrors])->withRequest();
+                    return Redirect::to('admin/roles')->withErrors(['errors' => $verrors])->withInput();
                 }
             }
         }
@@ -150,7 +150,7 @@ class RolesController extends Controller
                 $verrors = array();
                 array_push($verrors, 'El nombre de la categoria '.$nombreCategoria.', ya se encuentra en la base de datos');
                 // return redirect('admin/roles')->withErrors(['errors' => $verrors]);
-                return Redirect::to('admin/roles')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to('admin/roles')->withErrors(['errors' => $verrors])->withInput();
             }else{
                 $crearCategoria = Roles::CrearCategoria($nombreCategoria);
                 if($crearCategoria){
@@ -160,7 +160,7 @@ class RolesController extends Controller
                     $verrors = array();
                     array_push($verrors, 'Hubo un problema al crear la categoria');
                     // return redirect('admin/roles')->withErrors(['errors' => $verrors]);
-                    return Redirect::to('admin/roles')->withErrors(['errors' => $verrors])->withRequest();
+                    return Redirect::to('admin/roles')->withErrors(['errors' => $verrors])->withInput();
                 }
             }
         }

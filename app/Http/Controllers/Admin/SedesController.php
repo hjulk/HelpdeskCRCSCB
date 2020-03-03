@@ -93,7 +93,7 @@ class SedesController extends Controller
             if($consultarSede){
                 $verrors = array();
                 array_push($verrors, 'Nombre de la sede ya se encuentra creada');
-                return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withInput();
             }else{
 
                 $InsertarSede = Sedes::CrearSede($Sede,$Descripcion);
@@ -104,7 +104,7 @@ class SedesController extends Controller
                     $verrors = array();
                     array_push($verrors, 'Hubo un problema al crear la sede');
                     // return redirect('admin/sedes')->withErrors(['errors' => $verrors]);
-                    return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withRequest();
+                    return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withInput();
                 }
             }
         }
@@ -155,7 +155,7 @@ class SedesController extends Controller
             if($consultarArea){
                 $verrors = array();
                 array_push($verrors, 'Nombre del área ya se encuentra creada');
-                return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withRequest();
+                return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withInput();
             }else{
 
                 $InsertarArea = Sedes::CrearArea($Area,$Sede);
@@ -166,7 +166,7 @@ class SedesController extends Controller
                     $verrors = array();
                     array_push($verrors, 'Hubo un problema al crear el área');
                     // return redirect('admin/sedes')->withErrors(['errors' => $verrors]);
-                    return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withRequest();
+                    return Redirect::to('admin/sedes')->withErrors(['errors' => $verrors])->withInput();
                 }
             }
         }
