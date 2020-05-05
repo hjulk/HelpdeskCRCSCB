@@ -42,36 +42,39 @@ class TicketsController extends Controller
             $tickets[$cont]['kind_id']       = (int)$value->kind_id;
             $idTipoTicket = (int)$value->kind_id;
             $TipoTicket = Tickets::Tipo($idTipoTicket);
-            if($TipoTicket){
-                foreach($TipoTicket as $row){
-                    $tickets[$cont]['tipo_ticket'] = $row->name;
-                }
-            }else{
-                $tickets[$cont]['tipo_ticket'] = 'SIN CLASIFICACIÓN';
+            foreach($TipoTicket as $row){
+                $tickets[$cont]['tipo_ticket'] = $row->name;
             }
 
             $tickets[$cont]['user_id']      = (int)$value->user_id;
             $tickets[$cont]['asigned_id']   = (int)$value->asigned_id;
             $tickets[$cont]['session_id']   = (int)$value->session_id;
-            $idAsignador    =  (int)$value->user_id;
+            // $idAsignador    =  (int)$value->user_id;
             $idAsignado     =  (int)$value->asigned_id;
+            $BuscarTicketAsignado = Tickets::BuscarAsignador($id_ticket);
+            if($BuscarTicketAsignado){
+                foreach($BuscarTicketAsignado as $valorB){
+                    $idAsignador = (int)$valorB->user_id;
+                }
+            }else{
+                $idAsignador    =  (int)$value->user_id;
+            }
 
             $Asignador  = Usuarios::BuscarNombre($idAsignador);
             $Asignado   = Usuarios::BuscarNombre($idAsignado);
-
             if($Asignador){
                 foreach($Asignador as $row){
                     $tickets[$cont]['asignado_por'] = strtoupper($row->name);
                 }
             }else{
-                $tickets[$cont]['asignado_por']     = 'SOPORTE GENERAL';
+                $tickets[$cont]['asignado_por']     = 'SIN NOMBRE';
             }
             if($Asignado){
                 foreach($Asignado as $row){
                     $tickets[$cont]['asignado_a']   = strtoupper($row->name);
                 }
             }else{
-                $tickets[$cont]['asignado_a']       = 'SOPORTE GENERAL';
+                $tickets[$cont]['asignado_a']       = 'SIN NOMBRE';
             }
 
 
@@ -188,28 +191,28 @@ class TicketsController extends Controller
 
         $Tipo  = Tickets::ListarTipo();
         $NombreTipo = array();
-        $NombreTipo[''] = 'Seleccione: ';
+        $NombreTipo[0] = 'Seleccione: ';
         foreach ($Tipo as $row){
             $NombreTipo[$row->id] = $row->name;
         }
 
         $Estado  = Tickets::ListarEstado();
         $NombreEstado = array();
-        $NombreEstado[''] = 'Seleccione: ';
+        $NombreEstado[0] = 'Seleccione: ';
         foreach ($Estado as $row){
             $NombreEstado[$row->id] = $row->name;
         }
 
         $EstadoUpd  = Tickets::ListarEstadoUpd();
         $NombreEstadoUpd = array();
-        $NombreEstadoUpd[''] = 'Seleccione: ';
+        $NombreEstadoUpd[0] = 'Seleccione: ';
         foreach ($EstadoUpd as $row){
             $NombreEstadoUpd[$row->id] = $row->name;
         }
 
         $EstadoA  = Tickets::ListarEstadoA();
         $NombreEstadoA = array();
-        $NombreEstadoA[''] = 'Seleccione: ';
+        $NombreEstadoA[0] = 'Seleccione: ';
         foreach ($EstadoA as $row){
             $NombreEstadoA[$row->id] = $row->name;
         }
@@ -336,7 +339,7 @@ class TicketsController extends Controller
 
         $EstadoA  = Tickets::ListarEstadoA();
         $NombreEstadoA = array();
-        $NombreEstadoA[''] = 'Seleccione: ';
+        $NombreEstadoA[0] = 'Seleccione: ';
         foreach ($EstadoA as $row){
             $NombreEstadoA[$row->id] = $row->name;
         }
@@ -415,7 +418,7 @@ class TicketsController extends Controller
 
         $Estado             = Tickets::ListarEstadoUpd();
         $NombreEstado       = array();
-        $NombreEstado['']   = 'Seleccione: ';
+        // $NombreEstado['']   = 'Seleccione: ';
         foreach ($Estado as $row){
             $NombreEstado[$row->id] = $row->name;
         }

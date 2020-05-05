@@ -44,7 +44,7 @@ Tickets
                                     <th style="text-align: center;">Prioridad</th>
                                     <th style="text-align: center;">Estado</th>
                                     <th style="text-align: center;">Fecha Creación</th>
-                                    <th style="text-align: center;">Creador</th>
+                                    <th style="text-align: center;">Creado Por</th>
                                     <th style="text-align: center;">Asignado A</th>
                                     <th style="text-align: center;">Fecha Actualización</th>
                                     <th style="text-align: center;">Editar</th>
@@ -116,17 +116,15 @@ Tickets
     </script>
     <script>
         $('#form-ticket').submit(function() {
-            var fileSize = $('#evidencia[]')[0].files[0].size;
+            var fileSize = $('#evidencia')[0].files[0].size;
             var sizekiloBytes = parseInt(fileSize / 1024);
-            if (sizekiloBytes >  $('#evidencia[]').attr('size')) {
+            if (sizekiloBytes >  $('#evidencia').attr('size')) {
                 alert('El tamaño supera el limite permitido de 5mb');
                 return false;
             }
         });
-    </script>
-    <script>
         $('#form-ticket-upd').submit(function() {
-            var fileSize = $('#evidencia_upd[]')[0].files[0].size;
+            var fileSize = $('#evidencia_upd')[0].files[0].size;
             var sizekiloBytes = parseInt(fileSize / 1024);
             if (sizekiloBytes >  $('#evidencia_upd').attr('size')) {
                 alert('El tamaño supera el limite permitido de 5mb');

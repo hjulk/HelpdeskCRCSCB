@@ -78,8 +78,16 @@ class UsuarioController extends Controller
             $ListadoTickets[$cont]['user_id']      = (int)$value->user_id;
             $ListadoTickets[$cont]['asigned_id']   = (int)$value->asigned_id;
             $ListadoTickets[$cont]['session_id']   = (int)$value->session_id;
-            $idAsignador    =  (int)$value->user_id;
+            // $idAsignador    =  (int)$value->user_id;
             $idAsignado     =  (int)$value->asigned_id;
+            $BuscarTicketAsignado = Tickets::BuscarAsignador($id_ticket);
+            if($BuscarTicketAsignado){
+                foreach($BuscarTicketAsignado as $valorB){
+                    $idAsignador = (int)$valorB->user_id;
+                }
+            }else{
+                $idAsignador    =  (int)$value->user_id;
+            }
             $Asignador  = Usuarios::BuscarNombre($idAsignador);
             $Asignado   = Usuarios::BuscarNombre($idAsignado);
             if($Asignador){
@@ -339,7 +347,7 @@ class UsuarioController extends Controller
             'nombre_usuario'    => 'required',
             'description'       => 'required',
             'telefono_usuario'  => 'required',
-            'correo_usuario'    => 'required',
+            'correo_usuario'    => 'required|regex:/^.+@.+$/i',
             'project_id'        => 'required',
             'area'              => 'required'
         ]);
@@ -353,7 +361,7 @@ class UsuarioController extends Controller
             if ($pos === false) {
                 $verrors = array();
                 array_push($verrors, 'El correo debe contener la estructura correcta @');
-                return Redirect::to('usuario/crearTicket')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to('usuario/crearTicket')->withErrors(['errors' => $verrors])->withRequest();
             }
             $idTipo             = (int)$request->kind_id;
 
@@ -367,6 +375,7 @@ class UsuarioController extends Controller
             foreach($BuscarArea as $row){
                 $Area           = $row->name;
             }
+            // $Area               = $request->dependencia');
             $idAsunto           = $request->asunto;
             $NombreAsunto       = $request->title;
             if($idAsunto === 1){
@@ -374,6 +383,7 @@ class UsuarioController extends Controller
                 $Categoria      = 4;
                 $Asunto         = $request->title;
             }else{
+                // $buscardatos = Tickets::ListarRecurrentesId($idAsunto);
                 $buscardatos = Tickets::ListarRecurrentesName($NombreAsunto);
                 if($buscardatos){
                     foreach($buscardatos as $row){
@@ -392,6 +402,7 @@ class UsuarioController extends Controller
             $AsignadoA1         = null;
             $Estado             = 2;
             $creadoPor          = 31;
+            // dd($Prioridad,$Categoria);
             $nameCategoria = 'Mesa de Ayuda';
             $namePrioridad = 'Media';
             $nameEstado = 'Pendiente';
@@ -445,9 +456,15 @@ class UsuarioController extends Controller
                     $for = array();
                     $for = explode(';',$CorreUsuario);
                 }
+                // $for = "$CorreUsuario";
                 $cco = "$emailAsignado";
                 $calificacion = 1;
                 if($Estado === 3){
+                    // $calificacion1 = "<a href='http://192.168.0.125:8080/helpdeskcrcscb/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/excelente.png' width='60' height='60'/></a>";
+                    // $calificacion2 = "<a href='http://192.168.0.125:8080/helpdeskcrcscb/public/calificarTicket?valor=2&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/bueno.png' width='60' height='60'/></a>";
+                    // $calificacion3 = "<a href='http://192.168.0.125:8080/helpdeskcrcscb/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/regular.png' width='60' height='60'/></a>";
+                    // $calificacion4 = "<a href='http://192.168.0.125:8080/helpdeskcrcscb/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/malo.png' width='60' height='60'/></a>";
+                    // $calificacion5 = "<a href='http://192.168.0.125:8080/helpdeskcrcscb/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/pesimo.png' width='60' height='60'/></a>";
                     $calificacion1 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=5&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/excelente.png' width='60' height='60'/></a>";
                     $calificacion2 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=4&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/dist/img/calificacion/bueno.png' width='60' height='60'/></a>";
                     $calificacion3 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=3&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/regular.png' width='60' height='60'/></a>";
@@ -473,6 +490,11 @@ class UsuarioController extends Controller
                             $msj->to($for);
                             $msj->cc($cco);
                         });
+                // if(count(Mail::failures()) === 0){
+                //     return view('crearTicketMensaje',['Ticket' => $ticket]);
+                // }else{
+                //     return view('crearTicketMensaje',['Ticket' => $ticket]);
+                // }
                 if(count(Mail::failures()) === 0){
                     $verrors = 'Se creo con éxito el ticket '.$ticket.'\n Por favor revise la información del ticket que fue enviada al correo registrado para realizar su respectivo seguimiento.';
                     return redirect('usuario/crearTicket')->with('mensaje', $verrors);
@@ -483,7 +505,7 @@ class UsuarioController extends Controller
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el ticket');
-                return Redirect::to('usuario/crearTicket')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to('usuario/crearTicket')->withErrors(['errors' => $verrors])->withRequest();
             }
         }
     }
@@ -494,7 +516,7 @@ class UsuarioController extends Controller
             'identificacionT'   => 'required',
             'cargoT'            => 'required',
             'sedeT'             => 'required',
-            'correoS'           => 'required',
+            'correoS'           => 'required|regex:/^.+@.+$/i',
             'jefeT'             => 'required',
             'areaT'             => 'required',
             'fechaIngresoT'     => 'required',
@@ -657,7 +679,7 @@ class UsuarioController extends Controller
             foreach($nombreEstado as $row){
                 $nameEstado = $row->name;
             }
-
+            $creadoPor          = 47;
             if($request->usuario_dominio){
                 $UsuarioDominio     = (int)$request->usuario_dominio;
                 if($UsuarioDominio === 1){
@@ -711,7 +733,6 @@ class UsuarioController extends Controller
                 $AccesoInternet         = 0;
                 $AccesoInternet_desc    = 'No';
             }
-            $creadoPor          = 47;
             $TicketUsuario = Tickets::CrearTicketUsuario($Nombres,$Identificacion,$Cargo,$Sede,$Area,$JefeInmediato,$FechaIngreso,$CorreoUsuario,$CargoNuevo,$Funcionario,$UsuarioDominio,$CorreoElectronico,$CorreoFuncionario,$EquipoComputo,$AccesoCarpeta,$Celular,$Datos,$Minutos,$ExtensionTel,$Conectividad,$AccesoInternet,$App85,$AppDinamica,$OtroAplicativo,$Cap85,$CapDinamica,$Observaciones,$Estado,$Prioridad,$creadoPor);
             if($TicketUsuario){
                 $buscarUltimo = Tickets::BuscarLastTicketUsuario($creadoPor);
@@ -750,9 +771,6 @@ class UsuarioController extends Controller
                     }
                     $Tickets    .= "Ticket Redes y Comunicaciones: $idticket,";
                     $emailAsignado = 'soporte.sistemas@cruzrojabogota.org.co';
-                    $Comentario = "Creación Ticket de solicitud de usuario";
-                    $nombreCreador = "Gestión Humana";
-                    Tickets::HistorialCreacion($idticket,$Comentario,$Estado,$creadoPor,$nombreCreador);
                 }
                 if($Infraestructura > 0){
                     $Categoria = 2;
@@ -773,9 +791,6 @@ class UsuarioController extends Controller
                     }
                     $Tickets    .= "Ticket Infraestructura: $idticket,";
                     $emailAsignado = 'soporte.sistemas@cruzrojabogota.org.co';
-                    $Comentario = "Creación Ticket de solicitud de usuario";
-                    $nombreCreador = "Gestión Humana";
-                    Tickets::HistorialCreacion($idticket,$Comentario,$Estado,$creadoPor,$nombreCreador);
                 }
                 if($Aplicaciones > 0){
                     $Categoria = 4;
@@ -794,9 +809,6 @@ class UsuarioController extends Controller
                     }
                     $Tickets    .= "Ticket Aplicaciones: $idticket,";
                     $emailAsignado = 'soporte.sistemas@cruzrojabogota.org.co';
-                    $Comentario = "Creación Ticket de solicitud de usuario";
-                    $nombreCreador = "Gestión Humana";
-                    Tickets::HistorialCreacion($idticket,$Comentario,$Estado,$creadoPor,$nombreCreador);
                 }
                 $DescriptionT = "<b>Nombres y Apellidos:</b> $Nombres<br>
                                 <b>Identificación:</b> $Identificacion<br>
@@ -868,7 +880,7 @@ class UsuarioController extends Controller
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el ticket');
-                return Redirect::to('usuario/crearTicket')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to('usuario/crearTicket')->withErrors(['errors' => $verrors])->withRequest();
             }
         }
     }

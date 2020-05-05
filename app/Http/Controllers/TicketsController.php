@@ -28,18 +28,19 @@ class TicketsController extends Controller{
             $Administrador = (int)$value->rol_id;
         }
         $url = Funciones::BuscarURL($Administrador);
-        // $seleccionado = (int)$request->id_usuario;
-        // if($seleccionado === 0){
-        //     $verrors = 'Debe seleccionar un usuario a asignar el ticket';
-        //     return Redirect::to($url.'/tickets')->with('precaucion',$verrors);
-        // }
+        $seleccionado = (int)$request->id_usuario;
+        if($seleccionado === ''){
+            $verrors = array();
+            array_push($verrors, 'Debe seleccionar un usuario a asignar el ticket');
+            return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withRequest();
+        }
         $CorreoIndex   = Funciones::editar_correo($request->correo_usuario);
         $findme   = '@';
         $pos = strpos($CorreoIndex, $findme);
         if ($pos === false) {
             $verrors = array();
             array_push($verrors, 'El correo debe contener la estructura correcta @');
-            return redirect($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
+            return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withRequest();
         }
 
         $validator = Validator::make($request->all(), [
@@ -48,19 +49,19 @@ class TicketsController extends Controller{
             'description'       =>  'required',
             'nombre_usuario'    =>  'required',
             'telefono_usuario'  =>  'required',
-            'correo_usuario'    =>  'required',
+            'correo_usuario'    =>  'required|regex:/^.+@.+$/i',
             'project_id'        =>  'required',
             // 'dependencia'       =>  'required',
             'priority_id'       =>  'required',
             'id_categoria'      =>  'required',
-            'id_usuario'        =>  'required|integer|between:1,100',
+            'id_usuario'        =>  'required',
             'id_estado'         =>  'required',
             'evidencia'         =>  'max:5120',
-            'area'              =>  'required|integer|between:1,100'
+            'area'              =>  'required'
         ]);
 
         if ($validator->fails()) {
-            return Redirect::to($url.'/tickets')->withErrors($validator)->withInput();
+            return redirect($url.'/tickets')->withErrors($validator)->withInput();
         }else{
 
             $idTipo             = (int)$request->kind_id;
@@ -80,6 +81,7 @@ class TicketsController extends Controller{
             $Categoria          = (int)$request->id_categoria;
             $AsignadoA          = (int)$request->id_usuario;
             $Estado             = (int)$request->id_estado;
+            $creadoPor          = (int)$request->IdUsuario;
 
             $nombreCategoria    = Tickets::Categoria($Categoria);
             $nombrePrioridad    = Tickets::Prioridad($Prioridad);
@@ -147,9 +149,15 @@ class TicketsController extends Controller{
                     $for = array();
                     $for = explode(';',$CorreUsuario);
                 }
+                // $for = "$CorreUsuario";
                 $cco = "$emailAsignado";
                 $calificacion = 1;
                 if($Estado === 3){
+                    // $calificacion1 = "<a href='http://192.168.0.125:8080/mesadeayuda/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/excelente.png' width='60' height='60'/></a>";
+                    // $calificacion2 = "<a href='http://192.168.0.125:8080/mesadeayuda/public/calificarTicket?valor=2&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/bueno.png' width='60' height='60'/></a>";
+                    // $calificacion3 = "<a href='http://192.168.0.125:8080/mesadeayuda/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/regular.png' width='60' height='60'/></a>";
+                    // $calificacion4 = "<a href='http://192.168.0.125:8080/mesadeayuda/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/malo.png' width='60' height='60'/></a>";
+                    // $calificacion5 = "<a href='http://192.168.0.125:8080/mesadeayuda/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/pesimo.png' width='60' height='60'/></a>";
                     $calificacion1 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=5&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/excelente.png' width='60' height='60'/></a>";
                     $calificacion2 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=4&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/dist/img/calificacion/bueno.png' width='60' height='60'/></a>";
                     $calificacion3 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=3&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/regular.png' width='60' height='60'/></a>";
@@ -186,7 +194,7 @@ class TicketsController extends Controller{
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el ticket');
-                return redirect($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withRequest();
             }
         }
     }
@@ -202,16 +210,16 @@ class TicketsController extends Controller{
         if($seleccionado === 0){
             $verrors = array();
             array_push($verrors, 'Debe seleccionar un usuario a asignar el ticket');
-            return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
+            return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withRequest();
         }
         $validator = Validator::make($request->all(), [
             'id_prioridad_upd'      =>  'required',
             'id_categoriaupd'       =>  'required',
-            'id_usuarioupd'         =>  'required|integer|between:1,100',
+            'id_usuarioupd'         =>  'required',
             'id_estado_upd'         =>  'required',
             'comentario'            =>  'required',
             'evidencia_upd'         =>  'max:5120',
-            'correo_usuario_upd'    =>  'required'
+            'correo_usuario_upd'    =>  'required|regex:/^.+@.+$/i'
         ]);
 
         if ($validator->fails()) {
@@ -226,11 +234,16 @@ class TicketsController extends Controller{
             $TelefonoUsuario    = $request->telefono_usuario_upd;
             $CorreUsuario       = Funciones::editar_correo($request->correo_usuario_upd);
             $IdSede             = (int)$request->id_sede_upd;
-            $IdArea             = $request->dependencia_upd;
+            $IdArea             = (int)$request->dependencia_upd;
+            $BuscarArea         = Sedes::BuscarAreaId($IdArea);
+            foreach($BuscarArea as $row){
+                $Area           = $row->name;
+            }
             $Prioridad          = (int)$request->id_prioridad_upd;
             $Categoria          = (int)$request->id_categoriaupd;
             $AsignadoA          = (int)$request->id_usuarioupd;
             $Estado             = (int)$request->id_estado_upd;
+            $creadoPor          = (int)Session::get('IdUsuario');
             $comentario         = $request->comentario;
 
             $nombreCategoria    = Tickets::Categoria($Categoria);
@@ -253,7 +266,7 @@ class TicketsController extends Controller{
             }
 
             $actualizarTicket   = Tickets::ActualizarTicket($idTicket,$idTipo,$Asunto,$Descripcion,$NombreUsuario,$TelefonoUsuario,$CorreUsuario,
-                                                            $IdSede,$IdArea,$Prioridad,$Categoria,$AsignadoA,$Estado,$creadoPor,$comentario);
+                                                            $IdSede,$Area,$Prioridad,$Categoria,$AsignadoA,$Estado,$creadoPor,$comentario);
             if($actualizarTicket){
 
                 $destinationPath = null;
@@ -289,6 +302,11 @@ class TicketsController extends Controller{
                 $cco = "$emailAsignado";
                 $calificacion = 1;
                 if($Estado === 3){
+                    // $calificacion1 = "<a href='http://192.168.0.125:8080/mesadeayuda/public/calificarTicket?valor=5&idTicket=$idTicket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/excelente.png' width='60' height='60'/></a>";
+                    // $calificacion2 = "<a href='http://192.168.0.125:8080/mesadeayuda/public/calificarTicket?valor=4&idTicket=$idTicket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/bueno.png' width='60' height='60'/></a>";
+                    // $calificacion3 = "<a href='http://192.168.0.125:8080/mesadeayuda/public/calificarTicket?valor=3&idTicket=$idTicket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/regular.png' width='60' height='60'/></a>";
+                    // $calificacion4 = "<a href='http://192.168.0.125:8080/mesadeayuda/public/calificarTicket?valor=2&idTicket=$idTicket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/malo.png' width='60' height='60'/></a>";
+                    // $calificacion5 = "<a href='http://192.168.0.125:8080/mesadeayuda/public/calificarTicket?valor=1&idTicket=$idTicket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/pesimo.png' width='60' height='60'/></a>";
                     $calificacion1 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=5&idTicket=$idTicket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/excelente.png' width='60' height='60'/></a>";
                     $calificacion2 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=4&idTicket=$idTicket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/dist/img/calificacion/bueno.png' width='60' height='60'/></a>";
                     $calificacion3 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=3&idTicket=$idTicket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/regular.png' width='60' height='60'/></a>";
@@ -327,7 +345,7 @@ class TicketsController extends Controller{
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al actualizar el ticket');
-                return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors]);
+                return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withRequest();
             }
         }
     }
@@ -383,7 +401,7 @@ class TicketsController extends Controller{
 
         $Estado  = Tickets::ListarEstadoUpd();
         $NombreEstado = array();
-        $NombreEstado[0] = 'Seleccione: ';
+        // $NombreEstado[0] = 'Seleccione: ';
         foreach ($Estado as $row){
             $NombreEstado[$row->id] = $row->name;
         }
@@ -413,7 +431,11 @@ class TicketsController extends Controller{
             $idUsuarioC     = $request->id_creado;
             $idUsuarioA     = $request->id_asignado;
             $idPrioridad    = $request->id_prioridad;
-            $idEstado       = $request->id_estado;
+            if ($request->id_estado != null){
+                $idEstado = implode(',', $request->id_estado);
+            }else{
+                $idEstado = null;
+            }
             $idZona         = $request->id_zona;
             $idSede         = $request->id_sede;
             $idArea         = $request->id_area;
@@ -465,6 +487,7 @@ class TicketsController extends Controller{
                         Case 3: $value['id_prioridad'] = "<span class='label label-success' style='font-size:13px;'><b></b>".strtoupper($valor->nombre)."</span>";
                                 break;
                     }
+                    // $value['id_prioridad'] = strtoupper($valor->nombre);
                 }
                 $id_estado = $value['id_estado'];
                 $nombreEstado = Tickets::Estado($id_estado);
@@ -528,15 +551,6 @@ class TicketsController extends Controller{
             $Administrador = (int)$value->rol_id;
         }
         $url = Funciones::BuscarURL($Administrador);
-        $CorreoIndex   = Funciones::editar_correo($request->correoS);
-        $findme   = '@';
-        $pos = strpos($CorreoIndex, $findme);
-        if ($pos === false) {
-            $verrors = array();
-            array_push($verrors, 'El correo debe contener la estructura correcta @');
-            return redirect($url.'/ticketsUsuario')->withErrors(['errors' => $verrors])->withInput();
-        }
-
         $validator = Validator::make($request->all(), [
             'nombres'           =>  'required',
             'identificacion'    =>  'required',
@@ -545,7 +559,7 @@ class TicketsController extends Controller{
             'area'              =>  'required',
             'jefe'              =>  'required',
             'fechaIngreso'      =>  'required',
-            'correoS'           =>  'required',
+            'correoS'           =>  'required|regex:/^.+@.+$/i',
             'cargo_nuevo'       =>  'required',
             'estado'            =>  'required',
             'prioridad'         =>  'required',
@@ -789,6 +803,17 @@ class TicketsController extends Controller{
 
                 if($Redes > 0){
                     $Categoria = 3;
+                    // $BuscarUsuario = Usuarios::UsuarioTicket($Categoria);
+                    // if($BuscarUsuario){
+                    //     foreach($BuscarUsuario as $row){
+                    //         $IdUsuario      = $row->id;
+                    //     }
+                    // }else{
+                    //     $BuscarUsuario = Usuarios::UsuarioTicketBackup($Categoria);
+                    //     foreach($BuscarUsuario as $row){
+                    //         $IdUsuario = $row->id;
+                    //     }
+                    // }
                     $IdUsuario = null;
                     $Descripcion .= "Requiere Celular Coorporativo: $Celular_desc\n
                                     Requiere Datos: $Datos_desc\n
@@ -802,11 +827,31 @@ class TicketsController extends Controller{
                     foreach($buscarUltimo as $row){
                         $idticket = $row->id;
                     }
+                    // Tickets::CrearTicketAsignado($idticket,$Asunto,$Descripcion,$creadoPor,$IdUsuario);
                     $Tickets    .= "Ticket Redes y Comunicaciones: $idticket,";
+                    // $buscarCorreo = Usuarios::BuscarNombre($IdUsuario);
+                    // foreach($buscarCorreo as $rows){
+                    //     if($emailAsignado === ""){
+                    //         $emailAsignado  .= $rows->email;
+                    //     }else{
+                    //         $emailAsignado  .= ';'.$rows->email;
+                    //     }
+                    // }
                     $emailAsignado = 'soporte.sistemas@cruzrojabogota.org.co';
                 }
                 if($Infraestructura > 0){
                     $Categoria = 2;
+                    // $BuscarUsuario = Usuarios::UsuarioTicket($Categoria);
+                    // if($BuscarUsuario){
+                    //     foreach($BuscarUsuario as $row){
+                    //         $IdUsuario      = $row->id;
+                    //     }
+                    // }else{
+                    //     $BuscarUsuario = Usuarios::UsuarioTicketBackup($Categoria);
+                    //     foreach($BuscarUsuario as $row){
+                    //         $IdUsuario = $row->id;
+                    //     }
+                    // }
                     $IdUsuario = null;
                     $Descripcion .= "Cargo Nuevo: $CargoNuevo_desc\n
                                     Usuario Dominio: $UsuarioDominio_desc\n
@@ -822,11 +867,32 @@ class TicketsController extends Controller{
                     foreach($buscarUltimo as $row){
                         $idticket = $row->id;
                     }
+                    // Tickets::CrearTicketAsignado($idticket,$Asunto,$Descripcion,$creadoPor,$IdUsuario);
                     $Tickets    .= "Ticket Infraestructura: $idticket,";
+                    // $buscarCorreo = Usuarios::BuscarNombre($IdUsuario);
+                    // foreach($buscarCorreo as $rows){
+                    //     if($emailAsignado === ""){
+                    //         $emailAsignado  .= $rows->email;
+                    //     }else{
+                    //         $emailAsignado  .= ';'.$rows->email;
+                    //     }
+                    // }
                     $emailAsignado = 'soporte.sistemas@cruzrojabogota.org.co';
                 }
                 if($Aplicaciones > 0){
+                    // $Categoria = 1;
                     $Categoria = 4;
+                    // $BuscarUsuario = Usuarios::UsuarioTicket($Categoria);
+                    // if($BuscarUsuario){
+                    //     foreach($BuscarUsuario as $row){
+                    //         $IdUsuario      = $row->id;
+                    //     }
+                    // }else{
+                    //     $BuscarUsuario = Usuarios::UsuarioTicketBackup($Categoria);
+                    //     foreach($BuscarUsuario as $row){
+                    //         $IdUsuario = $row->id;
+                    //     }
+                    // }
                     $IdUsuario = null;
                     $Descripcion .= "Servinté: $App85_desc\n
                                     Dínamica: $AppDinamica_desc\n
@@ -840,7 +906,16 @@ class TicketsController extends Controller{
                     foreach($buscarUltimo as $row){
                         $idticket = $row->id;
                     }
+                    // Tickets::CrearTicketAsignado($idticket,$Asunto,$Descripcion,$creadoPor,$IdUsuario);
                     $Tickets    .= "Ticket Aplicaciones: $idticket,";
+                    // $buscarCorreo = Usuarios::BuscarNombre($IdUsuario);
+                    // foreach($buscarCorreo as $rows){
+                    //     if($emailAsignado === ""){
+                    //         $emailAsignado  .= $rows->email;
+                    //     }else{
+                    //         $emailAsignado  .= ';'.$rows->email;
+                    //     }
+                    // }
                     $emailAsignado = 'soporte.sistemas@cruzrojabogota.org.co';
                 }
                 $DescriptionT = "<b>Nombres y Apellidos:</b> $Nombres<br>
@@ -884,6 +959,8 @@ class TicketsController extends Controller{
                     $cco = array();
                     $cco = explode(';',$emailAsignado);
                 }
+                // dd($for.' '.$cco);
+                // $cco = "$emailAsignado";
                 $calificacion = 0;
                 $calificacion1 = null;
                 $calificacion2 = null;
@@ -913,7 +990,7 @@ class TicketsController extends Controller{
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el ticket');
-                return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to($url.'/tickets')->withErrors(['errors' => $verrors])->withRequest();
             }
         }
     }
@@ -947,7 +1024,7 @@ class TicketsController extends Controller{
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el asunto');
-                return Redirect::to($url.'/ticketsRecurrentes')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to($url.'/ticketsRecurrentes')->withErrors(['errors' => $verrors])->withRequest();
             }
         }
     }
@@ -984,7 +1061,7 @@ class TicketsController extends Controller{
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al actualizar el asunto');
-                return Redirect::to($url.'/ticketsRecurrentes')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to($url.'/ticketsRecurrentes')->withErrors(['errors' => $verrors])->withRequest();
             }
         }
     }
@@ -1008,9 +1085,12 @@ class TicketsController extends Controller{
             }
 
         }
+
         return view('Email.CalificacionT',['MENSAJE' => $Mensaje]);
 
     }
+
+
 
     public function buscarCategoria(Request $request){
         $id   = (int)$request->id_categoria;
@@ -1063,8 +1143,8 @@ class TicketsController extends Controller{
 
     public function buscarArea(Request $request){
         $id             = (int)$request->id_sede;
-        $NombreUsuario  = array();
-        $buscarUsuario  = Sedes::BuscarAreaIdSede($id);
+        $NombreUsuario = array();
+        $buscarUsuario = Sedes::BuscarAreaIdSede($id);
         $NombreUsuario[0] = 'Seleccione: ';
         foreach ($buscarUsuario as $row){
             $NombreUsuario[$row->id] = Funciones::eliminar_tildes_texto($row->name);
@@ -1120,14 +1200,14 @@ class TicketsController extends Controller{
         if ($pos === false) {
             $verrors = array();
             array_push($verrors, 'El correo debe contener la estructura correcta @');
-            return Redirect::to('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+            return Redirect::to('/crearSolicitud')->withErrors(['errors' => $verrors])->withRequest();
         }
         $validator = Validator::make($request->all(), [
             'kind_id'           => 'required',
             'nombre_usuario'    => 'required',
             'description'       => 'required',
             'telefono_usuario'  => 'required',
-            'correo_usuario'    => 'required',
+            'correo_usuario'    => 'required|regex:/^.+@.+$/i',
             'project_id'        => 'required',
             'area'              => 'required'
         ]);
@@ -1172,6 +1252,7 @@ class TicketsController extends Controller{
             $AsignadoA          = 44;
             $Estado             = 2;
             $creadoPor          = 31;
+            // dd($Prioridad,$Categoria);
             $nameCategoria = 'Mesa de Ayuda';
             $namePrioridad = 'Media';
             $nameEstado = 'Pendiente';
@@ -1225,9 +1306,15 @@ class TicketsController extends Controller{
                     $for = array();
                     $for = explode(';',$CorreUsuario);
                 }
+                // $for = "$CorreUsuario";
                 $cco = "$emailAsignado";
                 $calificacion = 1;
                 if($Estado === 3){
+                    // $calificacion1 = "<a href='http://192.168.0.125:8080/mesadeayuda/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/excelente.png' width='60' height='60'/></a>";
+                    // $calificacion2 = "<a href='http://192.168.0.125:8080/mesadeayuda/public/calificarTicket?valor=2&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/bueno.png' width='60' height='60'/></a>";
+                    // $calificacion3 = "<a href='http://192.168.0.125:8080/mesadeayuda/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/regular.png' width='60' height='60'/></a>";
+                    // $calificacion4 = "<a href='http://192.168.0.125:8080/mesadeayuda/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/malo.png' width='60' height='60'/></a>";
+                    // $calificacion5 = "<a href='http://192.168.0.125:8080/mesadeayuda/public/calificarTicket?valor=1&idTicket=$ticket'><img src='http://192.168.0.125:8080/helpdesk/public/assets/dist/img/calificacion/pesimo.png' width='60' height='60'/></a>";
                     $calificacion1 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=5&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/excelente.png' width='60' height='60'/></a>";
                     $calificacion2 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=4&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/dist/img/calificacion/bueno.png' width='60' height='60'/></a>";
                     $calificacion3 = "<a href='http://crcscbmesadeayuda.cruzrojabogota.org.co/calificarTicket?valor=3&idTicket=$ticket'><img src='http://crcscbmesadeayuda.cruzrojabogota.org.co/assets/dist/img/calificacion/regular.png' width='60' height='60'/></a>";
@@ -1253,6 +1340,11 @@ class TicketsController extends Controller{
                             $msj->to($for);
                             $msj->cc($cco);
                         });
+                // if(count(Mail::failures()) === 0){
+                //     return view('CrearSolicitudMensaje',['Ticket' => $ticket]);
+                // }else{
+                //     return view('CrearSolicitudMensaje',['Ticket' => $ticket]);
+                // }
                 if(count(Mail::failures()) === 0){
                     $verrors = 'Se creo con éxito el ticket '.$ticket.'\n Por favor revise la información del ticket que fue enviada al correo registrado para realizar su respectivo seguimiento.';
                     return redirect('/crearSolicitud')->with('mensaje', $verrors);
@@ -1263,7 +1355,7 @@ class TicketsController extends Controller{
             }else{
                 $verrors = array();
                 array_push($verrors, 'Hubo un problema al crear el ticket');
-                return Redirect::to('/crearSolicitud')->withErrors(['errors' => $verrors])->withInput();
+                return Redirect::to('/crearSolicitud')->withErrors(['errors' => $verrors])->withRequest();
             }
         }
     }

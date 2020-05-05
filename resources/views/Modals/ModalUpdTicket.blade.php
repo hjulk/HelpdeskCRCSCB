@@ -28,11 +28,11 @@
                                 <div class="col-md-6">
                                     <label for="exampleInputEmail1" class="col-sm-8 control-label">Descripcion Solicitud</label>
                                     {!! Form::textarea('descripcion_upd',$Descripcion,['class'=>'form-control','id'=>'mod_descripcion','placeholder'=>'Ingrese la descripción de la solicitud','rows'=>'3','readonly']) !!}
-                                    <div align="right"><small class="text-muted" style="font-size: 2.5vh;">Por favor copiar texto sin <b>íconos</b> que vienen en el correo. Gracias</small> <span id="cntDescripHechos" align="right"> </span></div>
+
                                 </div>
                                 <div class="col-md-6">
                                     <label for="exampleInputEmail1" class="col-sm-8 control-label">Agregar Comentario</label>
-                                    {!! Form::textarea('comentario',$Comentario,['class'=>'form-control','id'=>'comentario','placeholder'=>'Ingrese el comentario sobre la gestión del ticket','rows'=>'3','onkeyup'=>'this.value=NumText(this.value)','required']) !!}
+                                    {!! Form::textarea('comentario',$Comentario,['class'=>'form-control','id'=>'comentario','placeholder'=>'Ingrese el comentario sobre la gestión del ticket','rows'=>'3']) !!}
                                     <div align="right"><small class="text-muted" style="font-size: 2.5vh;">Por favor copiar texto sin <b>íconos</b>. Gracias</small> <span id="cntDescripHechos" align="right"> </span></div>
                                 </div>
                             </div>
@@ -45,15 +45,15 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <label for="exampleInputEmail1" class="col-sm-12 control-label">Nombre Usuario</label>
-                                    {!! Form::text('nombre_usuario_upd',$Usuario,['class'=>'form-control','id'=>'mod_nombre_usuario','placeholder'=>'Nombre de quien reporta','required']) !!}
+                                    {!! Form::text('nombre_usuario_upd',$Usuario,['class'=>'form-control','id'=>'mod_nombre_usuario','placeholder'=>'Nombre de quien reporta']) !!}
                                 </div>
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-md-5 control-label">Telefóno</label>
-                                    {!! Form::text('telefono_usuario_upd',$TelefonoUsuario,['class'=>'form-control','id'=>'mod_telefono_usuario','placeholder'=>'No. de telefóno del reportante','required']) !!}
+                                    {!! Form::text('telefono_usuario_upd',$TelefonoUsuario,['class'=>'form-control','id'=>'mod_telefono_usuario','placeholder'=>'No. de telefóno del reportante']) !!}
                                 </div>
                                 <div class="col-md-4">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Correo</label>
-                                    {!! Form::text('correo_usuario_upd',$CorreoUsuario,['class'=>'form-control','id'=>'mod_correo_usuario','placeholder'=>'Correo(s) del reportante','onkeyup'=>'this.value=Correo(this.value)','required']) !!}
+                                    {!! Form::text('correo_usuario_upd',$CorreoUsuario,['class'=>'form-control','id'=>'mod_correo_usuario','placeholder'=>'Correo(s) del reportante']) !!}
                                     <div align="right"><small class="text-muted" style="font-size: 2.1vh;">Separar correos por <b>';'</b> y <b>no dejar espacios</b></small> <span id="cntDescripHechos" align="right"> </span></div>
                                 </div>
                             </div>
@@ -62,15 +62,16 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Sede</label>
-                                    {!! Form::select('id_sede_upd',$NombreSede,null,['class'=>'form-control','id'=>'mod_id_sede','readonly']) !!}
+                                    {!! Form::select('id_sede_upd',$NombreSede,null,['class'=>'form-control','id'=>'mod_id_sede','onchange'=>'AreaUpd();','required']) !!}
                                 </div>
                                 <div class="col-md-5">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Área</label>
-                                    {!! Form::text('dependencia_upd',$Dependencia,['class'=>'form-control','id'=>'mod_dependencia','readonly']) !!}
+                                    {{--  {!! Form::text('dependencia_upd',$Dependencia,['class'=>'form-control','id'=>'mod_dependencia','required']) !!}  --}}
+                                    {!! Form::select('dependencia_upd',$Areas,null,['class'=>'form-control','id'=>'dependencia_upd','required']) !!}
                                 </div>
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Prioridad</label>
-                                    {!! Form::select('id_prioridad_upd',$NombrePrioridad,null,['class'=>'form-control','id'=>'mod_id_prioridad','required']) !!}
+                                    {!! Form::select('id_prioridad_upd',$NombrePrioridad,null,['class'=>'form-control','id'=>'mod_id_prioridad']) !!}
                                 </div>
                             </div>
                         </div>
@@ -78,19 +79,19 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Categoria</label>
-                                    {!! Form::select('id_categoriaupd',$NombreCategoria,null,['class'=>'form-control','id'=>'id_categoriaupd','onchange'=>'categoriaFuncUPD();','required']) !!}
+                                    {!! Form::select('id_categoriaupd',$NombreCategoria,null,['class'=>'form-control','id'=>'id_categoriaupd','onchange'=>'categoriaFuncUPD();']) !!}
                                 </div>
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Asignado</label>
-                                    {!! Form::select('id_usuarioupd',$NombreUsuario,null,['class'=>'form-control','id'=>'id_usuarioupd','required']) !!}
+                                    {!! Form::select('id_usuarioupd',$NombreUsuario,null,['class'=>'form-control','id'=>'id_usuarioupd']) !!}
                                 </div>
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Estado</label>
-                                    {!! Form::select('id_estado_upd',$NombreEstadoUpd,null,['class'=>'form-control','id'=>'mod_id_estado','required']) !!}
+                                    {!! Form::select('id_estado_upd',$NombreEstadoUpd,null,['class'=>'form-control','id'=>'mod_id_estado']) !!}
                                 </div>
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Evidencia</label>
-                                    <input type="file" id="evidencia_upd[]" name="evidencia_upd[]" class="form-control" multiple="multiple" size="10200">
+                                    <input type="file" id="evidencia_upd[]" name="evidencia_upd[]" class="form-control" multiple="multiple" size="5120">
                                     <div align="right"><small class="text-muted" style="font-size: 63%;">Tamaño maximo permitido (5MB), si se supera este tamaño, su archivo no será cargado.</small> <span id="cntDescripHechos" align="right"> </span></div>
                                 </div>
                             </div>
@@ -184,26 +185,29 @@
 
     </script>
     <script>
-        function NumText(string){//solo letras y numeros
-            var out = '';
-            //Se añaden las letras validas
-            var filtro = 'áéíóúabcdefghijklmnñopqrstuvwxyzÁÉÍÓÚABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890-*(){}[]-_:.;,<>!"#$%&/=?¡¿ \n';//Caracteres validos
+        function AreaUpd() {
+            var selectBox = document.getElementById("mod_id_sede");
+            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+            var tipo = 'post';
+            var select = document.getElementById("dependencia_upd");
 
-            for (var i=0; i<string.length; i++)
-               if (filtro.indexOf(string.charAt(i)) != -1)
-                 out += string.charAt(i);
-            return out;
-        }
-    </script>
-    <script>
-        function Correo(string){//solo letras y numeros
-            var out = '';
-            //Se añaden las letras validas
-            var filtro = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_;.@';//Caracteres validos
+            $.ajax({
+                url: "{{route('buscarArea')}}",
+                type: "get",
+                data: {_method: tipo, id_sede: selectedValue},
+                success: function (data) {
+                    var vValido = data['valido'];
 
-            for (var i=0; i<string.length; i++)
-               if (filtro.indexOf(string.charAt(i)) != -1)
-                 out += string.charAt(i);
-            return out;
+                    if (vValido === 'true') {
+                        var ListUsuario = data['Usuario'];
+                        select.options.length = 0;
+                        for (index in ListUsuario) {
+                            select.options[select.options.length] = new Option(ListUsuario[index], index);
+                        }
+
+                    }
+
+                }
+            });
         }
     </script>
