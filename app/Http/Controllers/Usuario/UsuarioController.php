@@ -117,6 +117,14 @@ class UsuarioController extends Controller
 
             $ListadoTickets[$cont]['dependencia']   = (int)$value->dependencia;
             $dependencia = $value->dependencia;
+            $BucarIdArea = Sedes::BuscarArea($dependencia,$idSede);
+            if($BucarIdArea){
+                foreach($BucarIdArea as $valorA){
+                    $tickets[$cont]['areaId']  = $valorA->id;
+                }
+            }else{
+                $tickets[$cont]['areaId']  = 0;
+            }
             if($dependencia === null){
                 $ListadoTickets[$cont]['area'] = "SIN ÁREA/DEPENDENCIA";
             }else{

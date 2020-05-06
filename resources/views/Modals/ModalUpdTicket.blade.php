@@ -64,12 +64,17 @@
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Sede</label>
                                     {!! Form::select('id_sede_upd',$NombreSede,null,['class'=>'form-control','id'=>'mod_id_sede','onchange'=>'AreaUpd();','required']) !!}
                                 </div>
-                                <div class="col-md-5">
-                                    <label for="exampleInputEmail1" class="col-sm-5 control-label">Área</label>
+                                <div class="col-md-3">
+                                    <label for="exampleInputEmail1" class="col-sm-12 control-label">Área Asignar</label>
                                     {{--  {!! Form::text('dependencia_upd',$Dependencia,['class'=>'form-control','id'=>'mod_dependencia','required']) !!}  --}}
                                     {!! Form::select('dependencia_upd',$Areas,null,['class'=>'form-control','id'=>'dependencia_upd','required']) !!}
                                 </div>
                                 <div class="col-md-3">
+                                    <label for="exampleInputEmail1" class="col-sm-12 control-label">Área Actual</label>
+                                     {!! Form::text('dependencia_upd',$Dependencia,['class'=>'form-control','id'=>'mod_dependencia','readonly']) !!}
+                                    {{-- {!! Form::select('dependencia_upd',$Areas,null,['class'=>'form-control','id'=>'dependencia_upd','required']) !!} --}}
+                                </div>
+                                <div class="col-md-2">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Prioridad</label>
                                     {!! Form::select('id_prioridad_upd',$NombrePrioridad,null,['class'=>'form-control','id'=>'mod_id_prioridad']) !!}
                                 </div>
@@ -123,6 +128,7 @@
             var categoria           = $("#category_id" + id).val();
             var sede                = $("#project_id" + id).val();
             var area                = $("#area" + id).val();
+            var areaId              = $("#areaId" + id).val();
             var prioridad           = $("#priority_id" + id).val();
             var estado              = $("#status_id" + id).val();
             var usuario             = $("#id_usuario" + id).val();
@@ -139,6 +145,7 @@
             $("#mod_id_categoria").val(categoria);
             $("#mod_id_sede").val(sede);
             $("#mod_dependencia").val(area);
+            $("#dependencia_upd").val(areaId);
             $("#mod_id_prioridad").val(prioridad);
             $("#mod_id_estado").val(estado);
             $("#mod_id_asignado").val(usuario);

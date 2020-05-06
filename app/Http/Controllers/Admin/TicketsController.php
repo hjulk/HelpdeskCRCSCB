@@ -87,6 +87,14 @@ class TicketsController extends Controller
 
             $tickets[$cont]['dependencia']          = (int)$value->dependencia;
             $dependencia = $value->dependencia;
+            $BucarIdArea = Sedes::BuscarArea($dependencia,$idSede);
+            if($BucarIdArea){
+                foreach($BucarIdArea as $valorA){
+                    $tickets[$cont]['areaId']  = $valorA->id;
+                }
+            }else{
+                $tickets[$cont]['areaId']  = 0;
+            }
             if($dependencia === null){
                 $tickets[$cont]['area']             = "SIN ÁREA/DEPENDENCIA";
             }else{

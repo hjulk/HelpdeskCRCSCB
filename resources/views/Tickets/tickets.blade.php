@@ -76,6 +76,7 @@ Tickets
                                     <input type="hidden" value="{{$value['title']}}" id="title{{$value['id']}}">
                                     <input type="hidden" value="{{$value['description']}}" id="description{{$value['id']}}">
                                     <input type="hidden" value="{{$value['area']}}" id="area{{$value['id']}}">
+                                    <input type="hidden" value="{{$value['areaId']}}" id="areaId{{$value['id']}}">
                                     <input type="hidden" value="{{$value['evidencia']}}" id="evidencia{{$value['id']}}">
                                     <input type="hidden" value="{{$value['historial']}}" id="historial{{$value['id']}}">
                                     <input type="hidden" value="{{$value['name_user']}}" id="name_user{{$value['id']}}">
