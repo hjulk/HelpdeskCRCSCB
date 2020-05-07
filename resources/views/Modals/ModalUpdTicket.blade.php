@@ -32,7 +32,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="exampleInputEmail1" class="col-sm-8 control-label">Agregar Comentario</label>
-                                    {!! Form::textarea('comentario',$Comentario,['class'=>'form-control','id'=>'comentario','placeholder'=>'Ingrese el comentario sobre la gestión del ticket','rows'=>'3']) !!}
+                                    {!! Form::textarea('comentario',$Comentario,['class'=>'form-control','id'=>'comentario','placeholder'=>'Ingrese el comentario sobre la gestión del ticket','rows'=>'3','required']) !!}
                                     <div align="right"><small class="text-muted" style="font-size: 2.5vh;">Por favor copiar texto sin <b>íconos</b>. Gracias</small> <span id="cntDescripHechos" align="right"> </span></div>
                                 </div>
                             </div>
@@ -71,7 +71,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-sm-12 control-label">Área Actual</label>
-                                     {!! Form::text('dependencia_upd',$Dependencia,['class'=>'form-control','id'=>'mod_dependencia','readonly']) !!}
+                                     {!! Form::text('mod_dependencia_upd',$Dependencia,['class'=>'form-control','id'=>'mod_dependencia','readonly']) !!}
                                     {{-- {!! Form::select('dependencia_upd',$Areas,null,['class'=>'form-control','id'=>'dependencia_upd','required']) !!} --}}
                                 </div>
                                 <div class="col-md-2">
@@ -84,15 +84,15 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Categoria</label>
-                                    {!! Form::select('id_categoriaupd',$NombreCategoria,null,['class'=>'form-control','id'=>'id_categoriaupd','onchange'=>'categoriaFuncUPD();']) !!}
+                                    {!! Form::select('id_categoriaupd',$NombreCategoria,null,['class'=>'form-control','id'=>'id_categoriaupd','onchange'=>'categoriaFuncUPD();','required']) !!}
                                 </div>
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Asignado</label>
-                                    {!! Form::select('id_usuarioupd',$NombreUsuario,null,['class'=>'form-control','id'=>'id_usuarioupd']) !!}
+                                    {!! Form::select('id_usuarioupd',$NombreUsuario,null,['class'=>'form-control','id'=>'id_usuarioupd','required']) !!}
                                 </div>
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Estado</label>
-                                    {!! Form::select('id_estado_upd',$NombreEstadoUpd,null,['class'=>'form-control','id'=>'mod_id_estado']) !!}
+                                    {!! Form::select('id_estado_upd',$NombreEstadoUpd,null,['class'=>'form-control','id'=>'mod_id_estado','required']) !!}
                                 </div>
                                 <div class="col-md-3">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Evidencia</label>
@@ -128,7 +128,7 @@
             var categoria           = $("#category_id" + id).val();
             var sede                = $("#project_id" + id).val();
             var area                = $("#area" + id).val();
-            var areaId              = $("#areaId" + id).val();
+
             var prioridad           = $("#priority_id" + id).val();
             var estado              = $("#status_id" + id).val();
             var usuario             = $("#id_usuario" + id).val();
@@ -145,7 +145,6 @@
             $("#mod_id_categoria").val(categoria);
             $("#mod_id_sede").val(sede);
             $("#mod_dependencia").val(area);
-            $("#dependencia_upd").val(areaId);
             $("#mod_id_prioridad").val(prioridad);
             $("#mod_id_estado").val(estado);
             $("#mod_id_asignado").val(usuario);
