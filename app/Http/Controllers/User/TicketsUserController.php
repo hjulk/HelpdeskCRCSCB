@@ -62,10 +62,15 @@ class TicketsUserController extends Controller
             $BuscarTicketAsignado = Tickets::BuscarAsignador($id_ticket);
             if($BuscarTicketAsignado){
                 foreach($BuscarTicketAsignado as $valorB){
-                    $idAsignador = (int)$valorB->user_id;
+                    $idAsignador1 = (int)$valorB->user_id;
                 }
             }else{
+                $idAsignador1    =  (int)$value->user_id;
+            }
+            if($idAsignador1 === 0){
                 $idAsignador    =  (int)$value->user_id;
+            }else{
+                $idAsignador    =  (int)$idAsignador1;
             }
             $Asignador  = Usuarios::BuscarNombre($idAsignador);
             $Asignado   = Usuarios::BuscarNombre($idAsignado);
