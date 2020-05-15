@@ -41,6 +41,8 @@ Reporte Tickets
 
                                     <div class="col-md-5" id="porticket" style="display: none;">
                                         {!! Form::open(['id' => 'consultarTicket','name' => 'consultar','files' => true,'autocomplete' => 'off','method'=>'post']) !!}
+                                        {{ csrf_field() }}
+                                        {!! Form::hidden('_method', 'POST') !!}
                                         <div class="col-md-4">
                                             <label for="exampleInputEmail1" class="col-sm-12 control-label">Nro. Ticket</label>
                                         {!! Form::number('ticket',null,['class'=>'form-control','id'=>'ticket','required']) !!}
@@ -239,6 +241,7 @@ Reporte Tickets
                     $("#porticket").hide();
                 }
             }
+
         </script>
 
 
