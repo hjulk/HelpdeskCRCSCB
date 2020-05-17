@@ -13,7 +13,7 @@ class Tickets extends Model
 
     public static function Tickets()
     {
-        $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2)");
+        $tickets = DB::Select("SELECT * FROM ticket WHERE status_id IN (1,2) AND id NOT IN (0)");
         return $tickets;
     }
 
@@ -823,7 +823,8 @@ class Tickets extends Model
                                 AND $prioridad = $vprioridad
                                 AND $estado IN ($vestado)
                                 AND $sede = $vsede
-                                $BuscarArea");
+                                $BuscarArea
+                                AND id NOT IN (0)");
         return $reporteTicket;
     }
 
