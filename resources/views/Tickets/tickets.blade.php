@@ -53,18 +53,18 @@ Tickets
                             <tbody>
                                 @foreach($Tickets as $value)
                                 <tr>
-                                    <td style="font-size:2vh;">{{$value['id']}}</td>
-                                    <td style="text-align:center;font-size:2vh;">{{$value['tipo_ticket']}}</td>
-                                    <td style="font-size:2vh;">{{$value['title']}}</td>
-                                    <td style="font-size:2vh;">{{$value['sede']}}</td>
-                                    <td style="font-size:2vh;">{{$value['area']}}</td>
-                                    <td style="text-align:center;font-size:2vh;"><span class="{{$value['label']}}" style="font-size:13px;"><b>{{$value['prioridad']}}</b></span></td>
-                                    <td style="font-size:2vh;">{{$value['estado']}}</td>
-                                    <td style="font-size:2vh;">{{$value['created_at']}}</td>
-                                    <td style="font-size:2vh;">{{$value['asignado_por']}}</td>
-                                    <td style="font-size:2vh;">{{$value['asignado_a']}}</td>
-                                    <td style="font-size:2vh;">{{$value['updated_at']}}</td>
-                                    <td style="font-size:2vh;"><a href="#" class="btn btn-warning" title="Editar" data-toggle="modal" data-target="#modal-tickets-upd" onclick="obtener_datos_ticket('{{$value['id']}}');"><i class="glyphicon glyphicon-edit"></i></a></td>
+                                    <td style="font-size:1.5vh;">{{$value['id']}}</td>
+                                    <td style="text-align:center;font-size:1.5vh;">{{$value['tipo_ticket']}}</td>
+                                    <td style="font-size:1.5vh;">{{$value['title']}}</td>
+                                    <td style="font-size:1.5vh;">{{$value['sede']}}</td>
+                                    <td style="font-size:1.5vh;">{{$value['area']}}</td>
+                                    <td style="text-align:center;font-size:1.5vh;"><span class="{{$value['label']}}" style="font-size:13px;"><b>{{$value['prioridad']}}</b></span></td>
+                                    <td style="font-size:1.5vh;">{{$value['estado']}}</td>
+                                    <td style="font-size:1.5vh;">{{$value['created_at']}}</td>
+                                    <td style="font-size:1.5vh;">{{$value['asignado_por']}}</td>
+                                    <td style="font-size:1.5vh;">{{$value['asignado_a']}}</td>
+                                    <td style="font-size:1.5vh;">{{$value['updated_at']}}</td>
+                                    <td style="font-size:1.5vh;"><a href="#" class="btn btn-warning" title="Editar" data-toggle="modal" data-target="#modal-tickets-upd" onclick="obtener_datos_ticket('{{$value['id']}}');"><i class="glyphicon glyphicon-edit"></i></a></td>
                                     <input type="hidden" value="{{$value['id']}}" id="id{{$value['id']}}">
                                     <input type="hidden" value="{{$value['kind_id']}}" id="kind_id{{$value['id']}}">
                                     <input type="hidden" value="{{$value['category_id']}}" id="category_id{{$value['id']}}">

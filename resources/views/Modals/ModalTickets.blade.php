@@ -25,7 +25,7 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1" class="col-sm-12 control-label">Descripcion Solicitud</label>
                         {!! Form::textarea('description',$Descripcion,['class'=>'form-control','id'=>'description','placeholder'=>'Ingrese la descripción de la solicitud','rows'=>'3','required','onkeyup'=>'this.value=NumText(this.value)']) !!}
-                        <div align="right"><small class="text-muted" style="font-size: 2.5vh;">Por favor copiar texto sin <b>íconos</b> que vienen en el correo. Gracias</small> <span id="cntDescripHechos" align="right"> </span></div>
+                        <div align="right"><small class="text-muted" style="font-size: 1.4vh;">Por favor copiar texto sin <b>íconos</b> que vienen en el correo. Gracias</small> <span id="cntDescripHechos" align="right"> </span></div>
                     </div>
                     <div class="form-group">
                         <div class="row">
@@ -40,7 +40,7 @@
                             <div class="col-md-4">
                                 <label for="exampleInputEmail1" class="col-sm-5 control-label">Correo</label>
                                 {!! Form::text('correo_usuario',$CorreoUsuario,['class'=>'form-control','id'=>'correo_usuario','placeholder'=>'Correo(s) del reportante','required','onkeyup'=>'this.value=Correo(this.value)']) !!}
-                                <div align="right"><small class="text-muted" style="font-size: 2.1vh;">Separar correos por <b>';'</b> y <b>no dejar espacios</b></small> <span id="cntDescripHechos" align="right"> </span></div>
+                                <div align="right"><small class="text-muted" style="font-size: 1.4vh;">Separar correos por <b>';'</b> y <b>no dejar espacios</b></small> <span id="cntDescripHechos" align="right"> </span></div>
                             </div>
                         </div>
                     </div>

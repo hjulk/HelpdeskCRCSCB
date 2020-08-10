@@ -218,21 +218,21 @@ class TicketsUserController extends Controller
 
         $Estado  = Tickets::ListarEstado();
         $NombreEstado = array();
-        $NombreEstado[0] = 'Seleccione: ';
+        $NombreEstado[''] = 'Seleccione: ';
         foreach ($Estado as $row){
             $NombreEstado[$row->id] = $row->name;
         }
 
         $EstadoUpd  = Tickets::ListarEstadoUpd();
         $NombreEstadoUpd = array();
-        $NombreEstadoUpd[0] = 'Seleccione: ';
+        $NombreEstadoUpd[''] = 'Seleccione: ';
         foreach ($EstadoUpd as $row){
             $NombreEstadoUpd[$row->id] = $row->name;
         }
 
         $EstadoA  = Tickets::ListarEstadoA();
         $NombreEstadoA = array();
-        $NombreEstadoA[0] = 'Seleccione: ';
+        $NombreEstadoA[''] = 'Seleccione: ';
         foreach ($EstadoA as $row){
             $NombreEstadoA[$row->id] = $row->name;
         }
