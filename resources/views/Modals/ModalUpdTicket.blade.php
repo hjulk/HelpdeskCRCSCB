@@ -33,7 +33,7 @@
                                 <div class="col-md-6">
                                     <label for="exampleInputEmail1" class="col-sm-8 control-label">Agregar Comentario</label>
                                     {!! Form::textarea('comentario',$Comentario,['class'=>'form-control','id'=>'comentario','placeholder'=>'Ingrese el comentario sobre la gestión del ticket','rows'=>'3','required']) !!}
-                                    <div align="right"><small class="text-muted" style="font-size: 2.5vh;">Por favor copiar texto sin <b>íconos</b>. Gracias</small> <span id="cntDescripHechos" align="right"> </span></div>
+                                    <div align="right"><small class="text-muted" style="font-size: 1.5vh;">Por favor copiar texto sin <b>íconos</b>. Gracias</small> <span id="cntDescripHechos" align="right"> </span></div>
                                 </div>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                                 <div class="col-md-4">
                                     <label for="exampleInputEmail1" class="col-sm-5 control-label">Correo</label>
                                     {!! Form::text('correo_usuario_upd',$CorreoUsuario,['class'=>'form-control','id'=>'mod_correo_usuario','placeholder'=>'Correo(s) del reportante']) !!}
-                                    <div align="right"><small class="text-muted" style="font-size: 2.1vh;">Separar correos por <b>';'</b> y <b>no dejar espacios</b></small> <span id="cntDescripHechos" align="right"> </span></div>
+                                    <div align="right"><small class="text-muted" style="font-size: 1.5vh;">Separar correos por <b>';'</b> y <b>no dejar espacios</b></small> <span id="cntDescripHechos" align="right"> </span></div>
                                 </div>
                             </div>
                         </div>
