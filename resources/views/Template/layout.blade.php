@@ -103,6 +103,15 @@
         <script src="{{asset("assets/plugins/input-mask/jquery.inputmask.date.extensions.js")}}"></script>
         <script src="{{asset("assets/plugins/input-mask/jquery.inputmask.extensions.js")}}"></script>
         @yield("scripts")
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-158693845-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-158693845-1');
+        </script>
 
     </body>
 </html>
